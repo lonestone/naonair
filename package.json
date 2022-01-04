@@ -1,0 +1,11 @@
+{
+  "name": "aireal",
+  "description": "Aireal apps",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lonestone/aireal.git"
+  },
+  "private": true,
+  "author": "Lonestone Studio",
+  "license": "ISC"
+}
