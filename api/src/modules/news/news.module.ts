@@ -1,8 +1,8 @@
 import { NewsService } from './news.service';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { NewsController } from './news.controller';
 import { NewsEntity } from 'src/entities/news.entity';
+import { MikroOrmModule } from '@mikro-orm/nestjs/mikro-orm.module';
 
 @Module({
   imports: [MikroOrmModule.forFeature([NewsEntity])],

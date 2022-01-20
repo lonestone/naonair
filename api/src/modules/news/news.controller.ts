@@ -7,7 +7,7 @@ export class NewsController {
   constructor(private readonly newsService: NewsService) {}
 
   @Get()
-  findAll(): NewsDTO[] {
-    return this.newsService.findAll();
+  async findAll(): Promise<NewsDTO[]> {
+    return await this.newsService.findAll();
   }
 }
