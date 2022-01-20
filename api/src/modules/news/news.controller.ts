@@ -1,13 +1,19 @@
 import { NewsService } from './news.service';
-import { Controller, Get } from '@nestjs/common';
-import { NewsDTO } from 'src/dtos/news.dto';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  UseInterceptors,
+} from '@nestjs/common';
+import { NewsEntity } from 'src/entities/news.entity';
 
 @Controller('news')
 export class NewsController {
   constructor(private readonly newsService: NewsService) {}
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
-  async findAll(): Promise<NewsDTO[]> {
+  async findAll(): Promise<NewsEntity[]> {
     return await this.newsService.findAll();
   }
 }

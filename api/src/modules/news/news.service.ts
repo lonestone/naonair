@@ -1,7 +1,6 @@
 import { EntityRepository } from '@mikro-orm/core/entity/EntityRepository';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { NewsDTO } from 'src/dtos/news.dto';
 import { NewsEntity } from 'src/entities/news.entity';
 
 @Injectable()
@@ -14,8 +13,10 @@ export class NewsService {
     public readonly newsRepo: EntityRepository<NewsEntity>,
   ) {}
 
-  async findAll(): Promise<NewsDTO[]> {
-    const res = await this.newsRepo.findAll();
-    return res as unknown as NewsDTO[];
+  async findAll(): Promise<NewsEntity[]> {
+    const newsEntities = await this.newsRepo.findAll();
+    // newsEntities[0].valueNotInBd = 'I want override this, yes please';
+
+    return newsEntities;
   }
 }
