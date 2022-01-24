@@ -20,12 +20,6 @@ export class NewsService {
   }
 
   async create(createNewsDTO: CreateNewsDTO): Promise<NewsEntity> {
-    // TODO : create pipe to validate and transform Date
-
-    // TODO : send parsing in pipe
-    createNewsDTO.startDate = new Date(createNewsDTO.startDate);
-    createNewsDTO.endDate = new Date(createNewsDTO.endDate);
-
     // Check if there are already news for this period
     const existingNewsList = await this.newsRepo.findAll();
     if (

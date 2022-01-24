@@ -1,23 +1,13 @@
-export type NewsDTO = {
-  uuid: string;
-  type: NewsType;
-  message: string;
-  startDate: Date;
-  endDate?: Date;
-  link?: string;
-  linkTitle?: string;
-  displayPeriod: boolean;
-};
-
-export type CreateNewsDTO = {
-  type: NewsType;
-  message: string;
-  startDate: Date;
-  endDate?: Date;
-  link?: string;
-  linkTitle?: string;
-  displayPeriod: boolean;
-};
+import { Type } from 'class-transformer';
+import {
+  IsBoolean,
+  IsDate,
+  IsDateString,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export enum NewsType {
   None = 'none',
@@ -26,4 +16,25 @@ export enum NewsType {
   Info = 'info',
   Event = 'event',
   Warning = 'warning',
+}
+
+export class NewsDTO {
+  uuid: string;
+  type: NewsType;
+  message: string;
+  startDate: Date;
+  endDate?: Date;
+  link?: string;
+  linkTitle?: string;
+  displayPeriod: boolean;
+}
+
+export class CreateNewsDTO {
+  @IsEnum(NewsType) type: NewsType;
+  @IsString() message: string;
+  @Type(() => Date) @IsDate() startDate: Date;
+  @Type(() => Date) @IsDate() @IsOptional() endDate?: Date;
+  @IsString() @IsOptional() link?: string;
+  @IsString() @IsOptional() linkTitle?: string;
+  @IsBoolean() displayPeriod: boolean;
 }
