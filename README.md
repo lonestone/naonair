@@ -19,17 +19,32 @@ Docker is used in dev to start database; but too in staging and production
 
 ### Database
 
-We using a PostgreSQL database in order to store main data of apps. Running at `localhost:5433`
+We using a PostgreSQL database in order to store main data of apps. Running at `localhost:5432`
 
 # Getting started
 
 ## Install dependencies
 
-Go in each project and run `yarn` command
+Go in each project and run `yarn` command.
+
+For nest, you need to install `@nestjs/cli` in global (or locally, as you want)
 
 ## Run Database
 
 You need docker, and run `docker-compose up -d` for running database
+
+## Configure environment
+
+```
+# go in api folder
+$ cd api
+
+# copy example to right file (don't commit it!)
+$ cp .env.example .env
+
+```
+
+Then, fill right properties
 
 ## Start projects
 

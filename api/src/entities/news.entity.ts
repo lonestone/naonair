@@ -1,23 +1,21 @@
-import { DateType, Entity, Enum, PrimaryKey, Property, Unique } from '@mikro-orm/core';
+import {
+  DateType,
+  Entity,
+  Enum,
+  PrimaryKey,
+  Property,
+  Unique,
+} from '@mikro-orm/core';
+import { NewsType } from 'src/dtos/news.dto';
 import { v4 } from 'uuid';
-
-export enum NewsType {
-  None = "none",
-  GoodPractice = "goodPractice",
-  Announcement = "announcement",
-  Info = "info",
-  Event = "event",
-  Warning = "warning"
-}
 
 @Entity()
 export class NewsEntity {
-
   @PrimaryKey({ type: 'uuid' })
   @Unique()
   uuid: string = v4();
 
-  @Enum({ items: () => NewsType})
+  @Enum({ items: () => NewsType })
   type: NewsType;
 
   @Property({ length: 200 })
