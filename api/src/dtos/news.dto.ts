@@ -37,3 +37,13 @@ export class CreateNewsDTO {
   @IsString() @IsOptional() linkTitle?: string;
   @IsBoolean() displayPeriod: boolean;
 }
+
+export class UpdateNewsDTO {
+  @IsEnum(NewsType) @IsOptional() type?: NewsType;
+  @IsString() @IsOptional() message?: string;
+  @Type(() => Date) @IsDate() @IsOptional() startDate?: Date;
+  @Type(() => Date) @IsDate() @IsOptional() endDate?: Date;
+  @IsString() @IsOptional() link?: string;
+  @IsString() @IsOptional() linkTitle?: string;
+  @IsBoolean() @IsOptional() displayPeriod?: boolean;
+}
