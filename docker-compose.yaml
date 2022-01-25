@@ -10,3 +10,13 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: aireal
       POSTGRES_DB: aireal
+
+  postgres-tests:
+    image: postgres:12-alpine
+    container_name: aireal-postgres-tests
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: aireal-tests
+      POSTGRES_DB: aireal-tests

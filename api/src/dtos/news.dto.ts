@@ -2,11 +2,10 @@ import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsDate,
-  IsDateString,
   IsEnum,
-  IsNotEmpty,
   IsOptional,
   IsString,
+  Length,
 } from 'class-validator';
 
 export enum NewsType {
@@ -31,7 +30,7 @@ export class NewsDTO {
 
 export class CreateNewsDTO {
   @IsEnum(NewsType) type: NewsType;
-  @IsString() message: string;
+  @IsString() @Length(0, 200) message: string;
   @Type(() => Date) @IsDate() startDate: Date;
   @Type(() => Date) @IsDate() @IsOptional() endDate?: Date;
   @IsString() @IsOptional() link?: string;

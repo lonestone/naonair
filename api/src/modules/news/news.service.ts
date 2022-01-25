@@ -1,11 +1,11 @@
 import { EntityRepository } from '@mikro-orm/core/entity/EntityRepository';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { isEqual, isToday } from 'date-fns';
-import { HttpErrors } from 'src/dtos/errors.dto';
+import { isToday } from 'date-fns';
 import { CreateNewsDTO } from 'src/dtos/news.dto';
 import { NewsEntity } from 'src/entities/news.entity';
 import { NewsConverterService } from './news.converter';
+import { HttpErrors } from 'src/dtos/errors.dto';
 
 @Injectable()
 export class NewsService {
@@ -21,6 +21,7 @@ export class NewsService {
 
   async create(createNewsDTO: CreateNewsDTO): Promise<NewsEntity> {
     // Check if there are already news for this period
+
     const existingNewsList = await this.newsRepo.findAll();
     if (
       isToday(createNewsDTO.startDate) &&
