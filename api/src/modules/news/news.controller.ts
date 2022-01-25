@@ -1,5 +1,5 @@
 import { NewsService } from './news.service';
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateNewsDTO, NewsDTO } from 'src/dtos/news.dto';
 
 @Controller('news')
@@ -14,5 +14,10 @@ export class NewsController {
   @Get()
   async findAll(): Promise<NewsDTO[]> {
     return await this.newsService.findAll();
+  }
+
+  @Delete(':uuid')
+  remove(@Param('uuid') uuid: string): Promise<void> {
+    return this.newsService.remove(uuid);
   }
 }
