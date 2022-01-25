@@ -1,6 +1,15 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put
+} from '@nestjs/common';
+import { CreateNewsDTO, NewsDTO, UpdateNewsDTO } from 'src/dtos/news.dto';
 import { NewsService } from './news.service';
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { CreateNewsDTO, NewsDTO } from 'src/dtos/news.dto';
 
 @Controller('news')
 export class NewsController {
@@ -19,5 +28,13 @@ export class NewsController {
   @Delete(':uuid')
   remove(@Param('uuid') uuid: string): Promise<void> {
     return this.newsService.remove(uuid);
+  }
+
+  @Patch(':uuid')
+  update(
+    @Body() updateItemDto: UpdateNewsDTO,
+    @Param('uuid') uuid,
+  ): Promise<NewsDTO> {
+    return this.newsService.update(uuid, updateItemDto);
   }
 }

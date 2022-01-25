@@ -3,9 +3,10 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { isToday } from 'date-fns';
 import { HttpErrors } from 'src/dtos/errors.dto';
-import { CreateNewsDTO } from 'src/dtos/news.dto';
+import { CreateNewsDTO, UpdateNewsDTO } from 'src/dtos/news.dto';
 import { NewsEntity } from 'src/entities/news.entity';
 import { NewsConverterService } from './news.converter';
+import { wrap } from '@mikro-orm/core';
 
 @Injectable()
 export class NewsService {
@@ -39,11 +40,18 @@ export class NewsService {
 
   async remove(uuid: string): Promise<void> {
     // Check if news is available for deletion
-    const existingNews = await this.newsRepo.findOne(uuid);    
+    const existingNews = await this.newsRepo.findOne(uuid);
     if (existingNews) {
       await this.newsRepo.removeAndFlush(existingNews);
     } else {
       throw new BadRequestException(HttpErrors.CANT_FIND_NEWS);
     }
+  }
+
+  async update(uuid: string, news: UpdateNewsDTO): Promise<NewsEntity> {
+    const existingNews = await this.newsRepo.findOne(uuid);
+    wrap(existingNews).assign(news);
+    await this.newsRepo.flush();
+    return this.converter.toDTO(existingNews);
   }
 }
