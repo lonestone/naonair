@@ -6,7 +6,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { isToday } from 'date-fns';
+import { compareAsc, compareDesc, isToday, isWithinInterval } from 'date-fns';
 import { HttpErrors } from 'src/dtos/errors.dto';
 import { CreateNewsDTO, UpdateNewsDTO } from 'src/dtos/news.dto';
 import { NewsEntity } from 'src/entities/news.entity';
@@ -35,7 +35,7 @@ export class NewsService {
   async create(createNewsDTO: CreateNewsDTO): Promise<NewsEntity> {
     const newsList = await this.newsRepo.findAll();
     // Check if there are already news for this period
-    if (!this.isDateAuthorized(createNewsDTO, newsList)) {
+    if (!this.isNewsAuthorized(createNewsDTO, newsList)) {
       throw new BadRequestException(HttpErrors.EXISTING_CURRENT_NEWS);
     }
     const newsEntity = await this.newsRepo.create(createNewsDTO);
@@ -64,17 +64,62 @@ export class NewsService {
     await this.newsRepo.removeAndFlush(news);
   }
 
-  private isDateAuthorized(createNews: CreateNewsDTO, news: NewsEntity[]) {
-    // if (
-    //   isToday(createNewsDTO.startDate) &&
-    //   existingNewsList.find((n) => isToday(n.startDate))
-    // ) {
-    //   throw new BadRequestException(HttpErrors.EXISTING_CURRENT_NEWS);
-    // } else if (
-    //   !isToday(createNewsDTO.startDate) &&
-    //   existingNewsList.find((n) => !isToday(n.startDate))
-    // ) {
-    // }
+  private isNewsAuthorized(createNewsDTO: CreateNewsDTO, news: NewsEntity[]) {
+    const now = new Date();
+    const currentNews = this.getCurrentNews(news);
+    const plannedNews = this.getPlannedNews(news);
+
+    console.log(
+      currentNews,
+      compareAsc(createNewsDTO.startDate, currentNews.endDate),
+    );
+    // RULE 1 : cannot start in past
+    if (
+      compareAsc(createNewsDTO.startDate, now) == -1 &&
+      !isToday(createNewsDTO.startDate)
+    ) {
+      throw new BadRequestException(HttpErrors.NEWS_CANNOT_START_IN_PAST);
+    }
+    // RULE 2 : cannot end in past
+    if (
+      createNewsDTO.endDate &&
+      compareAsc(createNewsDTO.endDate, now) == -1 &&
+      !isToday(createNewsDTO.endDate)
+    ) {
+      throw new BadRequestException(HttpErrors.NEWS_CANNOT_FINISH_IN_PAST);
+    }
+
+    // RULE 3 : if exist a current news, start date of incoming news cannot be before
+    // end date of current news
+    if (compareAsc(createNewsDTO.startDate, currentNews.endDate) == -1) {
+      throw new BadRequestException(
+        `${HttpErrors.NEWS_CANNOT_START_BEFORE_END_OF_CURRENT} (${currentNews.endDate}) `,
+      );
+    }
+
+    // RULE 4 : it could be have only 1 planned new
+    if (
+      plannedNews &&
+      compareDesc(currentNews.endDate, createNewsDTO.startDate)
+    ) {
+      throw new BadRequestException(HttpErrors.NEWS_CANNOT_FINISH_IN_PAST);
+    }
+
     return true;
+  }
+
+  private getPlannedNews(news: NewsEntity[]) {
+    return news.find((n) => n.uuid !== this.getCurrentNews(news).uuid);
+  }
+
+  /**
+   * Return news considered as current
+   * @param news
+   */
+  private getCurrentNews(news: NewsEntity[]) {
+    const now = new Date();
+    return news.find(
+      (n) => compareDesc(n.startDate, now) && compareDesc(now, n.endDate),
+    );
   }
 }

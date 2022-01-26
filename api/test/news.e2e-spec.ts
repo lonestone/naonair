@@ -7,7 +7,7 @@ import { NewsEntity } from 'src/entities/news.entity';
 import { OrmModule } from 'src/modules/orm/orm.module';
 import * as request from 'supertest';
 import { NewsModule } from '../src/modules/news/news.module';
-import { createNewsDTO, newsDTO, updateNewsDTO, wrongDTO } from './test-data';
+import { createNewsDTO, newsDTO, updateNewsDTO, wrongDTO } from './data-tests';
 import { removeUuid } from './utils-tests';
 
 describe('News', () => {
@@ -127,6 +127,37 @@ describe('News', () => {
       .expect(400);
   });
 
+  it('POST /news/:id - check business logic', async () => {
+    // RULE 1 : cannot start in past
+    request(app.getHttpServer())
+      .post('/news')
+      .send({ ...createNewsDTO, startDate: '2011-01-26' })
+      .set('Accept', 'application/json')
+      .expect(400);
+
+    // RULE 2 : cannot end in past
+    request(app.getHttpServer())
+      .post('/news')
+      .send({ ...createNewsDTO, endDate: '2011-01-26' })
+      .set('Accept', 'application/json')
+      .expect(400);
+
+    // RULE 3 : if exist a current news, start date of incoming news cannot be before
+    // end date of current news
+    request(app.getHttpServer())
+      .post('/news')
+      .send({ ...createNewsDTO, startDate: '2026-12-12' })
+      .set('Accept', 'application/json')
+      .expect(400);
+
+    // RULE 4 : it could be have only 1 planned new
+    // (reusing news created in POST test, in 2040)
+    request(app.getHttpServer())
+      .post('/news')
+      .send({ ...createNewsDTO, startDate: '2041-01-26' })
+      .set('Accept', 'application/json')
+      .expect(400);
+  });
   afterAll(async () => {
     await app.close();
   });
