@@ -7,12 +7,13 @@ import { NewsEntity } from 'src/entities/news.entity';
 import { OrmModule } from 'src/modules/orm/orm.module';
 import * as request from 'supertest';
 import { NewsModule } from '../src/modules/news/news.module';
-import { news } from './test-data';
+import { createNewsDTO, newsDTO, updateNewsDTO, wrongDTO } from './test-data';
 import { removeUuid } from './utils-tests';
 
 describe('News', () => {
   let app: INestApplication;
   let ormModule: OrmModule;
+  let newsEntityMock: NewsEntity;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -40,22 +41,90 @@ describe('News', () => {
     await app.init();
 
     // initial mocking
-    const newsEntity = await ormModule.getOrm().em.create(NewsEntity, news);
-    await ormModule.getOrm().em.persistAndFlush(newsEntity);
+    newsEntityMock = await ormModule.getOrm().em.create(NewsEntity, newsDTO);
+    await ormModule.getOrm().em.persistAndFlush(newsEntityMock);
   });
+
+  /**
+   * Nominal tests
+   */
 
   it('GET /news', async () => {
     const res = await request(app.getHttpServer()).get('/news').expect(200);
-    expect(res.body.map((r) => removeUuid(r))).toEqual([news]);
+    expect(res.body).toEqual([newsEntityMock]);
   });
 
-  it('POST /news', () => {
-    return request(app.getHttpServer())
+  it('GET /news/:id', async () => {
+    const res = await request(app.getHttpServer())
+      .get('/news/' + newsEntityMock.uuid)
+      .expect(200);
+    expect(res.body).toEqual(newsEntityMock);
+  });
+
+  it('POST /news', async () => {
+    const res = await request(app.getHttpServer())
       .post('/news')
-      .send(news)
+      .send(createNewsDTO)
       .set('Accept', 'application/json')
       .expect(201);
-    // .expect({ data: news });
+    expect(removeUuid(res.body)).toEqual(createNewsDTO);
+  });
+
+  it('PATCH /news/:id', async () => {
+    const res = await request(app.getHttpServer())
+      .patch('/news/' + newsEntityMock.uuid)
+      .send(updateNewsDTO)
+      .set('Accept', 'application/json')
+      .expect(200);
+    expect(res.body).toEqual({ ...updateNewsDTO, uuid: newsEntityMock.uuid });
+  });
+
+  it('DELETE /news/:id', async () => {
+    request(app.getHttpServer())
+      .delete('/news/' + newsEntityMock.uuid)
+      .expect(204);
+
+    // check entity is really deleted
+    request(app.getHttpServer())
+      .get('/news/' + newsEntityMock.uuid)
+      .expect(404);
+  });
+
+  /**
+   * Args validation tests
+   */
+  it('GET /news/:id - validation params', async () => {
+    request(app.getHttpServer())
+      .get('/news/' + 1)
+      .expect(400);
+  });
+
+  it('POST /news - validation body', async () => {
+    request(app.getHttpServer())
+      .post('/news')
+      .send(wrongDTO)
+      .set('Accept', 'application/json')
+      .expect(400);
+  });
+
+  it('PATCH /news/:id - validation params/body', async () => {
+    request(app.getHttpServer())
+      .patch('/news/' + newsEntityMock.uuid)
+      .send(wrongDTO)
+      .set('Accept', 'application/json')
+      .expect(400);
+
+    request(app.getHttpServer())
+      .patch('/news/' + 1)
+      .send(createNewsDTO)
+      .set('Accept', 'application/json')
+      .expect(400);
+  });
+
+  it('DELETE /news/:id - validation params', async () => {
+    request(app.getHttpServer())
+      .delete('/news/' + 1)
+      .expect(400);
   });
 
   afterAll(async () => {
