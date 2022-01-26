@@ -25,42 +25,56 @@ export class NewsService {
   }
 
   async findByUuid(uuid: string): Promise<NewsEntity> {
-    return await this.newsRepo.findOne(uuid);
+    const news = await this.newsRepo.findOne(uuid);
+    if (!news) {
+      throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
+    }
+    return news;
   }
 
   async create(createNewsDTO: CreateNewsDTO): Promise<NewsEntity> {
+    const newsList = await this.newsRepo.findAll();
     // Check if there are already news for this period
-
-    const existingNewsList = await this.newsRepo.findAll();
-    if (
-      isToday(createNewsDTO.startDate) &&
-      existingNewsList.find((n) => isToday(n.startDate))
-    ) {
+    if (!this.isDateAuthorized(createNewsDTO, newsList)) {
       throw new BadRequestException(HttpErrors.EXISTING_CURRENT_NEWS);
-    } else if (
-      !isToday(createNewsDTO.startDate) &&
-      existingNewsList.find((n) => !isToday(n.startDate))
-    ) {
     }
     const newsEntity = await this.newsRepo.create(createNewsDTO);
     await this.newsRepo.persistAndFlush(newsEntity);
     return this.converter.toDTO(newsEntity);
   }
 
-  async remove(uuid: string): Promise<void> {
-    // Check if news is available for deletion
-    const existingNews = await this.findByUuid(uuid);
-    if (existingNews) {
-      await this.newsRepo.removeAndFlush(existingNews);
-    } else {
-      throw new NotFoundException(HttpErrors.CANT_FIND_NEWS);
+  async update(
+    uuid: string,
+    updateNewsDTO: UpdateNewsDTO,
+  ): Promise<NewsEntity> {
+    const newsList = await this.findByUuid(uuid);
+    if (!newsList) {
+      throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
     }
+    wrap(newsList).assign(updateNewsDTO);
+    await this.newsRepo.flush();
+    return this.converter.toDTO(newsList);
   }
 
-  async update(uuid: string, news: UpdateNewsDTO): Promise<NewsEntity> {
-    const existingNews = await this.findByUuid(uuid);
-    wrap(existingNews).assign(news);
-    await this.newsRepo.flush();
-    return this.converter.toDTO(existingNews);
+  async remove(uuid: string): Promise<void> {
+    const news = await this.findByUuid(uuid);
+    if (!news) {
+      throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
+    }
+    await this.newsRepo.removeAndFlush(news);
+  }
+
+  private isDateAuthorized(createNews: CreateNewsDTO, news: NewsEntity[]) {
+    // if (
+    //   isToday(createNewsDTO.startDate) &&
+    //   existingNewsList.find((n) => isToday(n.startDate))
+    // ) {
+    //   throw new BadRequestException(HttpErrors.EXISTING_CURRENT_NEWS);
+    // } else if (
+    //   !isToday(createNewsDTO.startDate) &&
+    //   existingNewsList.find((n) => !isToday(n.startDate))
+    // ) {
+    // }
+    return true;
   }
 }
