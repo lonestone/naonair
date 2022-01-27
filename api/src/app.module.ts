@@ -8,6 +8,7 @@ import ormConfig from './configs/orm.config';
 import { OrmModule } from './modules/orm/orm.module';
 import { SentryModule } from './modules/sentry/sentry.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { AlertsModule } from './modules/alerts/alerts.module';
 import authConfig from './configs/auth.config';
 
 @Module({
@@ -20,6 +21,7 @@ import authConfig from './configs/auth.config';
     OrmModule,
     SentryModule,
     AuthModule,
+    AlertsModule,
   ],
   controllers: [AppController],
 })
