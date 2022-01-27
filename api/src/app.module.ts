@@ -7,16 +7,19 @@ import { NewsModule } from './modules/news/news.module';
 import ormConfig from './configs/orm.config';
 import { OrmModule } from './modules/orm/orm.module';
 import { SentryModule } from './modules/sentry/sentry.module';
+import { AuthModule } from './modules/auth/auth.module';
+import authConfig from './configs/auth.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [ormConfig, appConfig, sentryConfig],
+      load: [ormConfig, appConfig, sentryConfig, authConfig],
     }),
     NewsModule,
     OrmModule,
     SentryModule,
+    AuthModule,
   ],
   controllers: [AppController],
 })

@@ -67,6 +67,12 @@ $ yarn ios
 
 # Other considerations
 
+## API Authentication
+
+You have to log into API with /login, with payload { pass : <secretKey> }. This secret key must be configurated in .env.
+
+This API will return a JWT token, which expire after 24 hours.
+
 ## Mobile developpement
 
 Fast refresh is enabled by default. If not actived:
@@ -82,4 +88,4 @@ To enable debug mode :
 
 # Who build this ?
 
-Build with Love ❤ by Lonestone
+Build with lot of love ❤, by Lonestone

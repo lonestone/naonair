@@ -35,7 +35,7 @@ export class NewsService {
   async create(createNewsDTO: CreateNewsDTO): Promise<NewsEntity> {
     const newsList = await this.newsRepo.findAll();
     // Check if there are already news for this period
-    if (!this.isNewsAuthorized(createNewsDTO, newsList)) {
+    if (!this.isNewsValid(createNewsDTO, newsList)) {
       throw new BadRequestException(HttpErrors.EXISTING_CURRENT_NEWS);
     }
     const newsEntity = await this.newsRepo.create(createNewsDTO);
@@ -64,7 +64,7 @@ export class NewsService {
     await this.newsRepo.removeAndFlush(news);
   }
 
-  private isNewsAuthorized(createNewsDTO: CreateNewsDTO, news: NewsEntity[]) {
+  private isNewsValid(createNewsDTO: CreateNewsDTO, news: NewsEntity[]) {
     const now = new Date();
     const currentNews = this.getCurrentNews(news);
     const plannedNews = this.getPlannedNews(news);
@@ -102,7 +102,9 @@ export class NewsService {
       plannedNews &&
       compareDesc(currentNews.endDate, createNewsDTO.startDate)
     ) {
-      throw new BadRequestException(HttpErrors.NEWS_CANNOT_FINISH_IN_PAST);
+      throw new BadRequestException(
+        HttpErrors.ONLY_ONE_PLANNED_NEWS_AUTHORIZED,
+      );
     }
 
     return true;
