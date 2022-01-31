@@ -23,7 +23,7 @@ const ARButtonIcon = ({ label, icon, backgroundColor }: Props) => {
         <IconButton
           color={backgroundColor}
           sx={{
-            borderRadius: "4px",
+            borderRadius: "14px",
             backgroundColor: "rgba(255, 80, 80, 0.1)",
           }}
         >

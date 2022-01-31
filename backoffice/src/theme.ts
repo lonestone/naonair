@@ -31,26 +31,26 @@ const theme = createTheme({
     },
     h3: {
       fontFamily: "Lato",
-      fontWeight: "normal",
+      fontWeight: "400",
       fontSize: "16px",
       lineHeight: "24px",
     },
     caption: {
       fontFamily: "Lato",
-      fontWeight: "bold",
+      fontWeight: "700",
       fontSize: "16px",
       lineHeight: "24px",
     },
 
     body1: {
       fontFamily: "Lato",
-      fontWeight: "normal",
+      fontWeight: "400",
       fontSize: "14px",
       lineHeight: "20px",
     },
     button: {
       fontFamily: "Lato",
-      fontWeight: 600,
+      fontWeight: "700",
       fontSize: "14px",
       lineHeight: "20px",
       textTransform: "none",
