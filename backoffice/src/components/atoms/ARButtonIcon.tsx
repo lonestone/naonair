@@ -5,9 +5,10 @@ interface Props {
   label?: string;
   icon: ReactNode;
   backgroundColor?: "primary" | "error";
+  onClick?: () => void;
 }
 
-const ARButtonIcon = ({ label, icon, backgroundColor }: Props) => {
+const ARButtonIcon = ({ label, icon, backgroundColor, onClick }: Props) => {
   return (
     <>
       {label ? (
@@ -16,6 +17,7 @@ const ARButtonIcon = ({ label, icon, backgroundColor }: Props) => {
           color={backgroundColor}
           startIcon={icon}
           sx={{ borderRadius: "15px" }}
+          onClick={onClick}
         >
           <Typography variant="button">{label}</Typography>
         </Button>
