@@ -3,5 +3,6 @@ export class AlertDTO {
   startDate: Date;
   endDate: Date;
   pollutant: string;
+  seuil: string;
   color: string;
 }

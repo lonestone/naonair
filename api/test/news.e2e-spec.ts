@@ -1,17 +1,9 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { Test } from '@nestjs/testing/test';
-import { AppController } from 'src/app.controller';
-import appConfig from 'src/configs/app.config';
-import authConfig from 'src/configs/auth.config';
-import ormConfig from 'src/configs/orm.config';
+import { INestApplication } from '@nestjs/common';
 import { NewsEntity } from 'src/entities/news.entity';
-import { AuthModule } from 'src/modules/auth/auth.module';
 import { OrmModule } from 'src/modules/orm/orm.module';
 import * as request from 'supertest';
-import { NewsModule } from '../src/modules/news/news.module';
 import { createNewsDTO, newsDTO, updateNewsDTO, wrongDTO } from './data-tests';
-import { removeUuid } from './utils-tests';
+import { getToken, initTestApp, removeUuid } from './utils-tests';
 
 describe('News', () => {
   let app: INestApplication;
@@ -20,49 +12,22 @@ describe('News', () => {
   let jwtToken: string;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [
-        ConfigModule.forRoot({
-          isGlobal: true,
-          envFilePath: '.env.tests',
-          load: [ormConfig, appConfig, authConfig],
-        }),
-        OrmModule,
-        NewsModule,
-        AuthModule,
-      ],
-      controllers: [AppController],
-    }).compile();
-
-    app = moduleRef.createNestApplication();
-    app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        forbidUnknownValues: true,
-        forbidNonWhitelisted: true,
-        transform: true,
-      }),
-    );
-    ormModule = app.get(OrmModule);
+    app = await initTestApp();
     await app.init();
 
     // initial mocking
+    ormModule = app.get(OrmModule);
     newsEntityMock = await ormModule.getOrm().em.create(NewsEntity, newsDTO);
     await ormModule.getOrm().em.persistAndFlush(newsEntityMock);
+    console.log(newsEntityMock);
 
     // get JWT token
-    const res = await request(app.getHttpServer())
-      .post('/login')
-      .send({ token: process.env.PASS_KEY })
-      .expect(201);
-    jwtToken = res.body.access_token;
-    console.log('jwtToken', jwtToken);
+    jwtToken = await getToken(app);
   });
 
   /**
    * Nominal tests
    */
-
   it('GET /news', async () => {
     const res = await request(app.getHttpServer()).get('/news').expect(200);
     expect(res.body).toEqual([newsEntityMock]);

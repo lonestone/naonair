@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { AlertDTO } from 'src/dtos/alert.dto';
-import { NewsEntity } from 'src/entities/news.entity';
 
 @Injectable()
 export class AlertsConverterService {
@@ -9,6 +8,7 @@ export class AlertsConverterService {
     startDate: alert.date_heure_debut,
     endDate: alert.date_heure_fin,
     pollutant: alert.polluant,
+    seuil: alert.seuil,
     color: alert.couleur,
   });
 }
