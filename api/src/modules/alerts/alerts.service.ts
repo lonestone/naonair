@@ -22,7 +22,6 @@ export class AlertsService {
   logger = new Logger('AlertsModule');
 
   async fetchAll() {
-    console.log(this._appConfig);
     if (!this._appConfig.alertsUrl) {
       this.logger.error('No url set for alerts url');
       throw new InternalServerErrorException();

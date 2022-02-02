@@ -13,13 +13,12 @@ describe('News', () => {
 
   beforeAll(async () => {
     app = await initTestApp();
-    await app.init();
+    // await app.init();
 
     // initial mocking
     ormModule = app.get(OrmModule);
     newsEntityMock = await ormModule.getOrm().em.create(NewsEntity, newsDTO);
     await ormModule.getOrm().em.persistAndFlush(newsEntityMock);
-    console.log(newsEntityMock);
 
     // get JWT token
     jwtToken = await getToken(app);
@@ -76,8 +75,8 @@ describe('News', () => {
    */
   it('GET /news/:id - validation params', async () => {
     request(app.getHttpServer())
-      .get('/news/' + 1)
-      .expect(400);
+      .get('/news/' + 13215648) // wrong uuid
+      .expect(400); // bad request
   });
 
   it('POST /news - validation body', async () => {
@@ -90,24 +89,27 @@ describe('News', () => {
 
   it('PATCH /news/:id - validation params/body', async () => {
     request(app.getHttpServer())
-      .patch('/news/' + newsEntityMock.uuid)
-      .send(wrongDTO)
+      .patch('/news/' + 56 + 451)
+      .send(createNewsDTO)
       .set('Accept', 'application/json')
       .expect(400);
 
     request(app.getHttpServer())
-      .patch('/news/' + 1)
-      .send(createNewsDTO)
+      .patch('/news/' + newsEntityMock.uuid)
+      .send(wrongDTO)
       .set('Accept', 'application/json')
       .expect(400);
   });
 
   it('DELETE /news/:id - validation params', async () => {
     request(app.getHttpServer())
-      .delete('/news/' + 1)
+      .delete('/news/' + 454551)
       .expect(400);
   });
 
+  /**
+   * Business logic validation tests
+   */
   it('POST /news/:id - check business logic', async () => {
     // RULE 1 : cannot start in past
     request(app.getHttpServer())
@@ -143,6 +145,7 @@ describe('News', () => {
       .set('Authorization', 'Bearer ' + jwtToken)
       .expect(400);
   });
+
   afterAll(async () => {
     await app.close();
   });

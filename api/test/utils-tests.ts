@@ -49,6 +49,7 @@ export const initTestApp = async () => {
     }),
   );
 
+  await app.init();
   return app;
 };
 

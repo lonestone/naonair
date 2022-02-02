@@ -31,7 +31,7 @@ export const updateNewsDTO = {
 export const wrongDTO = {
   type: 'qsdqsd',
   message: 'Hello create',
-  startDate: 'qsdqsdqsdqsd',
+  startDate: 'qsdqsdqsdqsd', // wrong date
   endDate: '2023-10-06',
   link: 'https://coucou.com',
   linkTitle: 'Create title',

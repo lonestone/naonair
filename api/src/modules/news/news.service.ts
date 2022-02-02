@@ -21,6 +21,7 @@ export class NewsService {
   ) {}
 
   async findAll(): Promise<NewsEntity[]> {
+    // return with date sorting
     return (await this.newsRepo.findAll()).map((n) => this.converter.toDTO(n));
   }
 
@@ -106,6 +107,8 @@ export class NewsService {
         HttpErrors.ONLY_ONE_PLANNED_NEWS_AUTHORIZED,
       );
     }
+
+    // TODO : Delete news with endDate in the past
 
     return true;
   }
