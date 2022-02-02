@@ -19,17 +19,32 @@ Docker is used in dev to start database; but too in staging and production
 
 ### Database
 
-We using a PostgreSQL database in order to store main data of apps. Running at `localhost:5433`
+We using a PostgreSQL database in order to store main data of apps. Running at `localhost:5432`
 
 # Getting started
 
 ## Install dependencies
 
-Go in each project and run `yarn` command
+Go in each project and run `yarn` command.
+
+For nest, you need to install `@nestjs/cli` in global (or locally, as you want)
 
 ## Run Database
 
 You need docker, and run `docker-compose up -d` for running database
+
+## Configure environment
+
+```
+# go in api folder
+$ cd api
+
+# copy example to right file (don't commit it!)
+$ cp .env.example .env
+
+```
+
+Then, fill right properties
 
 ## Start projects
 
@@ -52,6 +67,12 @@ $ yarn ios
 
 # Other considerations
 
+## API Authentication
+
+You have to log into API with /login, with payload { pass : <secretKey> }. This secret key must be configurated in .env.
+
+This API will return a JWT token, which expire after 24 hours.
+
 ## Mobile developpement
 
 Fast refresh is enabled by default. If not actived:
@@ -67,4 +88,4 @@ To enable debug mode :
 
 # Who build this ?
 
-Build with Love ❤ by Lonestone
+Build with lot of love ❤, by Lonestone
