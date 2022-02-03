@@ -17,6 +17,11 @@ export enum NewsType {
   Warning = 'warning',
 }
 
+export enum NewsCategory {
+  Current = 'current',
+  Planified = 'planified',
+}
+
 export class NewsDTO {
   uuid: string;
   type: NewsType;
@@ -26,6 +31,7 @@ export class NewsDTO {
   link?: string;
   linkTitle?: string;
   displayPeriod: boolean;
+  category: NewsCategory;
 }
 
 export class CreateNewsDTO {

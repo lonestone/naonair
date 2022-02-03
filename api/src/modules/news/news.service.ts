@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { compareAsc, compareDesc, isToday, isWithinInterval } from 'date-fns';
 import { HttpErrors } from 'src/dtos/errors.dto';
-import { CreateNewsDTO, UpdateNewsDTO } from 'src/dtos/news.dto';
+import { CreateNewsDTO, NewsDTO, UpdateNewsDTO } from 'src/dtos/news.dto';
 import { NewsEntity } from 'src/entities/news.entity';
 import { NewsConverterService } from './news.converter';
 
@@ -20,20 +20,19 @@ export class NewsService {
     private readonly converter: NewsConverterService,
   ) {}
 
-  async findAll(): Promise<NewsEntity[]> {
-    // return with date sorting
+  async findAll(): Promise<NewsDTO[]> {
     return (await this.newsRepo.findAll()).map((n) => this.converter.toDTO(n));
   }
 
-  async findByUuid(uuid: string): Promise<NewsEntity> {
+  async findByUuid(uuid: string): Promise<NewsDTO> {
     const news = await this.newsRepo.findOne(uuid);
     if (!news) {
       throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
     }
-    return news;
+    return this.converter.toDTO(news);
   }
 
-  async create(createNewsDTO: CreateNewsDTO): Promise<NewsEntity> {
+  async create(createNewsDTO: CreateNewsDTO): Promise<NewsDTO> {
     const newsList = await this.newsRepo.findAll();
     // Check if there are already news for this period
     if (!this.isNewsValid(createNewsDTO, newsList)) {
@@ -44,11 +43,8 @@ export class NewsService {
     return this.converter.toDTO(newsEntity);
   }
 
-  async update(
-    uuid: string,
-    updateNewsDTO: UpdateNewsDTO,
-  ): Promise<NewsEntity> {
-    const newsList = await this.newsRepo.findOne(uuid);
+  async update(uuid: string, updateNewsDTO: UpdateNewsDTO): Promise<NewsDTO> {
+    const newsList = await this.findByUuid(uuid);
     if (!newsList) {
       throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
     }
