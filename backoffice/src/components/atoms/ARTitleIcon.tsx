@@ -32,7 +32,7 @@ const ARTitleIcon = ({ label, icon, isNewsTitle, subtitle }: Props) => {
         {icon}
       </Icon>
       <div>
-        <Typography variant="h2" color="primary">
+        <Typography variant="h3" color="primary">
           {label}
         </Typography>
         <Typography variant="body1" color="primary.light">

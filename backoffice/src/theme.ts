@@ -26,14 +26,22 @@ const theme = createTheme({
     h2: {
       fontFamily: "Raleway",
       fontWeight: "bold",
+      fontSize: "26px",
+      lineHeight: "34px",
+    },
+    h3: {
+      fontFamily: "Raleway",
+      fontWeight: "700",
       fontSize: "20px",
       lineHeight: "24px",
     },
-    h3: {
+    h4: {
       fontFamily: "Lato",
-      fontWeight: "400",
       fontSize: "16px",
+      fontStyle: "normal",
+      fontWeight: 700,
       lineHeight: "24px",
+      textlign: "left",
     },
     caption: {
       fontFamily: "Lato",
@@ -48,6 +56,7 @@ const theme = createTheme({
       fontSize: "14px",
       lineHeight: "20px",
     },
+
     button: {
       fontFamily: "Lato",
       fontWeight: "700",

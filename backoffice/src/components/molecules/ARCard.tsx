@@ -1,11 +1,13 @@
-import { Add, Delete, Edit, Today } from "@mui/icons-material";
+import { Today } from "@mui/icons-material";
 import { Card, Link, SxProps, Typography } from "@mui/material";
 import { Theme } from "@mui/system";
-import { useState } from "react";
 import theme from "../../theme";
-import ARButtonIcon from "../atoms/ARButtonIcon";
+import { NewsDTO } from "../../types/dist/news.dto";
 import ARTitleIcon from "../atoms/ARTitleIcon";
-import ARModal from "../organisms/ARModal";
+
+type ARCardProps = {
+  news?: NewsDTO | undefined;
+};
 
 const cardStyle: SxProps<Theme> = {
   border: 1,
@@ -29,68 +31,41 @@ const emptyCardStyle: SxProps<Theme> = {
   justifyContent: "center",
 };
 
-interface Props {
-  newsDetails?: {
-    duration: string;
-    mainText: string;
-    linkText: string;
-  };
-}
-
-const ARCard = ({ newsDetails }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
-
+const ARCard = ({ news }: ARCardProps) => {
   return (
     <>
-      {newsDetails ? (
+      {news ? (
         <>
           <Card sx={cardStyle}>
-            <ARTitleIcon label="Titre de linfo" icon={<Today />} isNewsTitle />
+            <ARTitleIcon label={news.type} icon={<Today />} isNewsTitle />
             <div style={{ display: "grid", gap: theme.spacing(2) }}>
               <Typography variant="body1" color="primary.light">
-                {newsDetails.duration}
+                {`Du ${news.startDate} au ${news.endDate} `}
               </Typography>
               <Typography variant="body1" color="primary">
-                {newsDetails.mainText}
+                {news.message}
               </Typography>
               <Link
                 variant="body1"
                 color="primary"
-                underline="always"
                 sx={{ cursor: "pointer" }}
                 onClick={() => {
                   console.info("I'm a button.");
                 }}
               >
-                {newsDetails.linkText}
+                {news.linkTitle}
               </Link>
             </div>
           </Card>
-          <div style={{ display: "flex", gap: 15 }}>
-            <ARButtonIcon
-              label="Modifier"
-              icon={<Edit />}
-              backgroundColor="primary"
-            />
-            <ARButtonIcon icon={<Delete />} backgroundColor="error" />
-          </div>
+          <div style={{ display: "flex", gap: 15 }}></div>
         </>
       ) : (
         <>
           <Card sx={emptyCardStyle}>
-            <Typography variant="h2" color="primary.light">
+            <Typography variant="h3" color="primary.light">
               Pas d'information
             </Typography>
           </Card>
-          <div>
-            <ARButtonIcon
-              label="Créer"
-              icon={<Add />}
-              backgroundColor="primary"
-              onClick={() => setIsOpen(true)}
-            />
-          </div>
-          <ARModal isOpen={isOpen} setIsOpen={setIsOpen} />
         </>
       )}
     </>

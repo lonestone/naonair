@@ -1,46 +1,50 @@
-import { InfoSharp } from "@mui/icons-material";
-import { duration, Grid, SxProps } from "@mui/material";
-import { Theme } from "@mui/system";
-import { useState, useEffect } from "react";
-import request from "../../axios";
-import theme from "../../theme";
+import { Add, Delete, Edit, InfoSharp } from "@mui/icons-material";
+import { useState } from "react";
+import { removeNews } from "../../api/news.api";
+import { NewsDTO } from "../../types/dist/news.dto";
+import ARButtonIcon from "../atoms/ARButton";
 import ARTitleIcon from "../atoms/ARTitleIcon";
 import ARCard from "../molecules/ARCard";
+import ARModal from "./ARModal";
 
-const gridItem: SxProps<Theme> = {
-  display: "grid",
-  gap: theme.spacing(3),
+type ARNewsLayoutProps = {
+  title: string;
+  subtitle: string;
+  news: NewsDTO | undefined;
 };
 
-const ARNewsLayout = () => {
-  const [news, setNews] = useState();
-
-  useEffect(() => {
-    request.get(`/news`).then((res) => {
-      const result = res.data;
-      setNews(result);
-    });
-  }, []);
+const ARNewsLayout = ({ title, subtitle, news }: ARNewsLayoutProps) => {
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <Grid container spacing={10}>
-      <Grid item md={6} xs={12} sx={gridItem}>
-        <ARTitleIcon
-          label="Information en cours"
-          icon={<InfoSharp />}
-          subtitle="C’est l’information active et visible par les utilisateurs sur l’application"
+    <div>
+      <ARTitleIcon label={title} icon={<InfoSharp />} subtitle={subtitle} />
+      <ARCard news={news} />
+
+      {!news ? (
+        <ARButtonIcon
+          label="Créer"
+          icon={<Add />}
+          backgroundColor="primary"
+          onClick={() => setIsOpen(true)}
         />
-        {news ? <ARCard newsDetails={infos} /> : <ARCard />}
-      </Grid>
-      <Grid item md={6} xs={12} sx={gridItem}>
-        <ARTitleIcon
-          label="Information planifiée"
-          icon={<InfoSharp />}
-          subtitle="Vous pouvez prévoir la prochaine information affichée aux utilisateurs"
-        />
-        <ARCard newsDetails={infos} />
-      </Grid>
-    </Grid>
+      ) : (
+        <div style={{ display: "flex", gap: 10 }}>
+          <ARButtonIcon
+            label="Modifier"
+            icon={<Edit />}
+            backgroundColor="primary"
+            onClick={() => setIsOpen(true)}
+          />
+          <ARButtonIcon
+            onClick={() => removeNews(news.uuid)}
+            icon={<Delete />}
+            backgroundColor="error"
+          />
+        </div>
+      )}
+      <ARModal isOpen={isOpen} setIsOpen={setIsOpen} news={news} />
+    </div>
   );
 };
 

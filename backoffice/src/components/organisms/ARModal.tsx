@@ -1,10 +1,13 @@
 import { Box, Modal, SxProps, Typography } from "@mui/material";
 import { Theme } from "@mui/system";
 import { Dispatch, SetStateAction } from "react";
+import theme from "../../theme";
+import { NewsDTO } from "../../types/dist/news.dto";
 import ARInputs from "../molecules/ARInputs";
 
-interface Props {
+interface ARModalProps {
   isOpen: boolean;
+  news?: NewsDTO | undefined;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -21,7 +24,7 @@ const style: SxProps<Theme> = {
   padding: "40px",
 };
 
-const ARModal = ({ isOpen, setIsOpen }: Props) => {
+const ARModal = ({ isOpen, setIsOpen, news }: ARModalProps) => {
   return (
     <Modal
       open={isOpen}
@@ -30,7 +33,11 @@ const ARModal = ({ isOpen, setIsOpen }: Props) => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography variant="h2" color="primary">
+        <Typography
+          variant="h3"
+          color="primary"
+          sx={{ marginBottom: theme.spacing(5) }}
+        >
           Créer une information
         </Typography>
         <ARInputs />

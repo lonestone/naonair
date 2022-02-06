@@ -5,6 +5,7 @@ import {
   IsEnum,
   IsOptional,
   IsString,
+  IsUUID,
   Length,
 } from 'class-validator';
 
@@ -45,6 +46,7 @@ export class CreateNewsDTO {
 }
 
 export class UpdateNewsDTO {
+  @IsUUID() @IsOptional() uuid: string;
   @IsEnum(NewsType) @IsOptional() type?: NewsType;
   @IsString() @IsOptional() message?: string;
   @Type(() => Date) @IsDate() @IsOptional() startDate?: Date;
