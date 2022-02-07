@@ -1,3 +1,6 @@
 api/temp/*
 api/.env
 map-app-tests/*
+
+api/src/dtos/dist/*
+backoffice/src/types/dist/*

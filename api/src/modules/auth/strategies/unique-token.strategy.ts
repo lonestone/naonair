@@ -25,7 +25,6 @@ export class UniqueTokenStrategy extends PassportStrategy(
   }
 
   async validate(token: string) {
-    console.log('this._authConfig.passKey', this._authConfig.passKey, token);
     if (!this._authConfig.passKey) {
       this.logger.error(
         'No pass key defined in .env. API will be unable to authenticate user.',

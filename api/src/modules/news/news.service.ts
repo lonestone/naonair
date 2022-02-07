@@ -48,7 +48,7 @@ export class NewsService {
     uuid: string,
     updateNewsDTO: UpdateNewsDTO,
   ): Promise<NewsEntity> {
-    const newsList = await this.findByUuid(uuid);
+    const newsList = await this.newsRepo.findOne(uuid);
     if (!newsList) {
       throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
     }
@@ -58,7 +58,7 @@ export class NewsService {
   }
 
   async remove(uuid: string): Promise<void> {
-    const news = await this.findByUuid(uuid);
+    const news = await this.newsRepo.findOne(uuid);
     if (!news) {
       throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
     }
@@ -70,10 +70,6 @@ export class NewsService {
     const currentNews = this.getCurrentNews(news);
     const plannedNews = this.getPlannedNews(news);
 
-    console.log(
-      currentNews,
-      compareAsc(createNewsDTO.startDate, currentNews.endDate),
-    );
     // RULE 1 : cannot start in past
     if (
       compareAsc(createNewsDTO.startDate, now) == -1 &&
