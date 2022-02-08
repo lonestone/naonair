@@ -31,10 +31,11 @@ const ARConfirmModal = ({
   setIsOpen,
   fetchNews,
 }: ARConfirmModalProps) => {
+
   const handleRemoveNews = async () => {
     const response = await removeNews(newsUUID!);
     if (response.status === 500) {
-      console.log("Error 500");
+      throw new Error("Error 500");
     }
     await fetchNews();
     setIsOpen(false);

@@ -1,16 +1,18 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import theme from "./theme";
 
 ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-    <CssBaseline />
-    <App />
-  </ThemeProvider>,
+  <BrowserRouter>
+    <ThemeProvider theme={theme}>
+      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
+  </BrowserRouter>,
   document.getElementById("root"),
 );
 
