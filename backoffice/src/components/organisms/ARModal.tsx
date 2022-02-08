@@ -9,9 +9,10 @@ interface ARModalProps {
   isOpen: boolean;
   news?: NewsDTO | undefined;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  fetchNews: () => Promise<void>
 }
 
-const style: SxProps<Theme> = {
+const modalStyle: SxProps<Theme> = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -24,7 +25,7 @@ const style: SxProps<Theme> = {
   padding: "40px",
 };
 
-const ARModal = ({ isOpen, setIsOpen, news }: ARModalProps) => {
+const ARModal = ({ isOpen, setIsOpen, news, fetchNews }: ARModalProps) => {
   return (
     <Modal
       open={isOpen}
@@ -32,15 +33,15 @@ const ARModal = ({ isOpen, setIsOpen, news }: ARModalProps) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box sx={modalStyle}>
         <Typography
           variant="h3"
           color="primary"
           sx={{ marginBottom: theme.spacing(5) }}
         >
-          Créer une information
+          {news ? "Modifier une information" : "Créer une information"}
         </Typography>
-        <ARInputs />
+        <ARInputs news={news} setOpenModal={setIsOpen} fetchNews={fetchNews}/>
       </Box>
     </Modal>
   );

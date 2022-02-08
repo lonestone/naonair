@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {cors: true});
 
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
@@ -23,6 +23,6 @@ async function bootstrap() {
     module.hot.dispose(() => app.close());
   }
 
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();

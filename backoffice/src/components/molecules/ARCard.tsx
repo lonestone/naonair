@@ -1,6 +1,7 @@
 import { Today } from "@mui/icons-material";
 import { Card, Link, SxProps, Typography } from "@mui/material";
 import { Theme } from "@mui/system";
+import { format } from "date-fns";
 import theme from "../../theme";
 import { NewsDTO } from "../../types/dist/news.dto";
 import ARTitleIcon from "../atoms/ARTitleIcon";
@@ -40,7 +41,12 @@ const ARCard = ({ news }: ARCardProps) => {
             <ARTitleIcon label={news.type} icon={<Today />} isNewsTitle />
             <div style={{ display: "grid", gap: theme.spacing(2) }}>
               <Typography variant="body1" color="primary.light">
-                {`Du ${news.startDate} au ${news.endDate} `}
+                {news.endDate
+                  ? `Du ${format(
+                      new Date(news.startDate),
+                      "dd/MM/yyyy",
+                    )} au ${format(new Date(news.endDate), "dd/MM/yyyy")} `
+                  : `Depuis ${format(new Date(news.startDate), "dd/MM/yyyy")}`}
               </Typography>
               <Typography variant="body1" color="primary">
                 {news.message}
@@ -49,9 +55,7 @@ const ARCard = ({ news }: ARCardProps) => {
                 variant="body1"
                 color="primary"
                 sx={{ cursor: "pointer" }}
-                onClick={() => {
-                  console.info("I'm a button.");
-                }}
+                href={news.link}
               >
                 {news.linkTitle}
               </Link>

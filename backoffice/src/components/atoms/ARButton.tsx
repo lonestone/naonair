@@ -1,9 +1,15 @@
 import { SxProps } from "@mui/lab/node_modules/@mui/system";
-import { Button, IconButton, Theme, Typography } from "@mui/material";
-import { ReactNode } from "react";
+import {
+  Button,
+  ButtonTypeMap,
+  IconButton,
+  Theme,
+  Typography,
+} from "@mui/material";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 import theme from "../../theme";
 
-interface ARButtonProps {
+interface ARButtonProps<T> extends ButtonHTMLAttributes<T> {
   label?: string;
   icon?: ReactNode;
   backgroundColor?: "primary" | "error";
@@ -21,7 +27,8 @@ const ARButtonIcon = ({
   icon,
   backgroundColor,
   onClick,
-}: ARButtonProps) => {
+  type,
+}: ARButtonProps<ButtonTypeMap>) => {
   return (
     <>
       {label ? (
@@ -31,6 +38,7 @@ const ARButtonIcon = ({
           color={backgroundColor}
           startIcon={icon}
           onClick={onClick}
+          type={type}
         >
           <Typography variant="button">{label}</Typography>
         </Button>
@@ -38,6 +46,7 @@ const ARButtonIcon = ({
         <IconButton
           sx={{ ...style, backgroundColor: "rgba(122, 88, 88, 0.1)" }}
           color={backgroundColor}
+          onClick={onClick}
         >
           {icon}
         </IconButton>

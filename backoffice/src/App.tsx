@@ -1,7 +1,5 @@
 import { Container } from "@mui/material";
 import ARHeader from "./components/molecules/ARHeader";
-import ARTitleBlock from "./components/molecules/ARTitleBlock";
-import ARNewsLayout from "./components/organisms/ARNewsLayout";
 import { NewsTemplate } from "./components/templates/NewsTemplate";
 
 function App() {

@@ -25,7 +25,7 @@ const ARTitleIcon = ({ label, icon, isNewsTitle, subtitle }: Props) => {
       style={{
         display: "flex",
         gap: theme.spacing(2),
-        marginBottom: theme.spacing(1),
+        marginBottom: theme.spacing(5),
       }}
     >
       <Icon color="primary" style={!isNewsTitle ? iconStyle : undefined}>
