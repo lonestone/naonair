@@ -2,7 +2,7 @@ import { Alert, Grid, Snackbar, SxProps, Theme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getNews } from "../../api/news.api";
 import theme from "../../theme";
-import { NewsCategory, NewsDTO } from "../../types/dist/news.dto.d.ts";
+import { NewsCategory, NewsDTO } from "../../types/dist/news.dto.ts";
 import ARTitleBlock from "../molecules/ARTitleBlock";
 import ARNewsLayout from "../organisms/ARNewsLayout";
 

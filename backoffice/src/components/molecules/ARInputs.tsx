@@ -22,12 +22,12 @@ import theme from "../../theme";
 import {
   CreateNewsDTO,
   NewsDTO,
+  NewsType,
   UpdateNewsDTO,
 } from "../../types/dist/news.dto";
 import ARButtonIcon from "../atoms/ARButton";
 import { ARTitleChip } from "../atoms/ARTitleChip";
 import { ARSnackbarProps } from "../templates/NewsTemplate";
-import { NewsType } from "./../../types/news";
 
 const gridItem: SxProps<Theme> = {
   display: "grid",
