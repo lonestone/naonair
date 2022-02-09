@@ -1,41 +1,34 @@
 import { Container } from "@mui/material";
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import ARHeader from "./components/molecules/ARHeader";
+import ARSnackbarAlert from "./components/molecules/ARSnackbarAlert";
 import LoginTemplate from "./components/templates/LoginTemplate";
 import { NewsTemplate } from "./components/templates/NewsTemplate";
-import useAuth, { AuthProvider } from "./contexts";
+import { AuthProvider } from "./contexts/auth.context";
+import { SnackbarProvider } from "./contexts/snackbar.context";
+import Layout from "./router/layout/Layout";
+import PrivateLayout from "./router/layout/PrivateLayout";
+import { ARRoutes } from "./router/routes";
 
 function App() {
   return (
-    <>
-      <AuthProvider>
+    <AuthProvider>
+      <SnackbarProvider>
         <ARHeader />
         <Container maxWidth="lg">
+          <ARSnackbarAlert />
           <Routes>
-            <Route element={<Layout />} path="/login">
-              <Route path="/login" element={<LoginTemplate />} />
+            <Route element={<Layout />} path={ARRoutes.Login}>
+              <Route path={ARRoutes.Login} element={<LoginTemplate />} />
             </Route>
-            <Route element={<PrivateLayout />} path="/">
-              <Route path="/" element={<NewsTemplate />} />
+            <Route element={<PrivateLayout />} path={ARRoutes.Home}>
+              <Route path={ARRoutes.Home} element={<NewsTemplate />} />
             </Route>
           </Routes>
         </Container>
-      </AuthProvider>
-    </>
+      </SnackbarProvider>
+    </AuthProvider>
   );
 }
 
 export default App;
-
-function Layout() {
-  return (
-    <>
-      <Outlet />
-    </>
-  );
-}
-
-function PrivateLayout() {
-  const { token } = useAuth();
-  return token ? <Outlet /> : <Navigate to="/login" />;
-}

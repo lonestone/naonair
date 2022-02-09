@@ -16,12 +16,12 @@ export function AuthProvider({
   const [token, setToken] = useState<string | undefined>(() => {
     const existingToken = localStorage.getItem("access_token");
     if (existingToken) {
-      return JSON.parse(existingToken);
+      return existingToken;
     }
   });
 
   const setCurrentToken = (token: string) => {
-    localStorage.setItem("access_token", JSON.stringify(token));
+    localStorage.setItem("access_token", token);
     setToken(token);
   };
 

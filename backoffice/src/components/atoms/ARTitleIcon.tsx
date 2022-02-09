@@ -17,7 +17,7 @@ interface Props {
   icon?: ReactNode;
   isNewsTitle?: boolean;
   subtitle?: string;
-  marginBottom?: string | number;
+  marginBottom?: string;
 }
 
 const ARTitleIcon = ({
@@ -32,7 +32,7 @@ const ARTitleIcon = ({
       style={{
         display: "flex",
         gap: theme.spacing(2),
-        marginBottom: marginBottom,
+        marginBottom,
       }}
     >
       <Icon color="primary" style={!isNewsTitle ? iconStyle : undefined}>

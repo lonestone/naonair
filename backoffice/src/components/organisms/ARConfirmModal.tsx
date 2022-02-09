@@ -2,14 +2,13 @@ import { Box, Button, Modal, SxProps, Typography } from "@mui/material";
 import { Theme } from "@mui/system";
 import { Dispatch, SetStateAction } from "react";
 import { removeNews } from "../../api/news.api";
-import { ARSnackbarProps } from "../templates/NewsTemplate";
+import useSnackbar from "../../contexts/snackbar.context";
 
 interface ARConfirmModalProps {
   isOpen: boolean;
   newsUUID?: string;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   fetchNews: () => Promise<void>;
-  setSnackbarStatus: Dispatch<SetStateAction<ARSnackbarProps>>;
 }
 
 const modalStyle: SxProps<Theme> = {
@@ -32,16 +31,22 @@ const ARConfirmModal = ({
   newsUUID,
   setIsOpen,
   fetchNews,
-  setSnackbarStatus,
 }: ARConfirmModalProps) => {
+  const { setSnackbarStatus } = useSnackbar();
+
   const handleRemoveNews = async () => {
     const response = await removeNews(newsUUID!);
     if (response.status === 500) {
-      throw new Error("Error 500");
+      setSnackbarStatus?.({
+        open: true,
+        message:
+          "Une erreur serveur s'est produite, veuillez réessayer plus tard",
+        severity: "error",
+      });
     }
     await fetchNews();
     setIsOpen(false);
-    setSnackbarStatus({
+    setSnackbarStatus?.({
       open: true,
       message: "L'information a bien été suprimée",
       severity: "success",

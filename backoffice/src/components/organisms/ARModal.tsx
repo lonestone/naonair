@@ -3,15 +3,13 @@ import { Theme } from "@mui/system";
 import { Dispatch, SetStateAction } from "react";
 import theme from "../../theme";
 import { NewsDTO } from "../../types/dist/news.dto";
-import ARInputs from "../molecules/ARInputs";
-import { ARSnackbarProps } from "../templates/NewsTemplate";
+import ARNewsForm from "../molecules/ARNewsForm";
 
 interface ARModalProps {
   isOpen: boolean;
   news?: NewsDTO | undefined;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   fetchNews: () => Promise<void>;
-  setSnackbarStatus: Dispatch<SetStateAction<ARSnackbarProps>>;
 }
 
 const modalStyle: SxProps<Theme> = {
@@ -26,7 +24,7 @@ const modalStyle: SxProps<Theme> = {
   padding: "40px",
 };
 
-const ARModal = ({ isOpen, setIsOpen, news, fetchNews, setSnackbarStatus }: ARModalProps) => {
+const ARModal = ({ isOpen, setIsOpen, news, fetchNews }: ARModalProps) => {
   return (
     <Modal
       open={isOpen}
@@ -42,7 +40,7 @@ const ARModal = ({ isOpen, setIsOpen, news, fetchNews, setSnackbarStatus }: ARMo
         >
           {news ? "Modifier une information" : "Créer une information"}
         </Typography>
-        <ARInputs news={news} setOpenModal={setIsOpen} fetchNews={fetchNews} setSnackbarStatus={setSnackbarStatus}/>
+        <ARNewsForm news={news} setOpenModal={setIsOpen} fetchNews={fetchNews} />
       </Box>
     </Modal>
   );

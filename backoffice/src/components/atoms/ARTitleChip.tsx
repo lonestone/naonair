@@ -12,11 +12,6 @@ const rootStyle = {
 const chipStyle: CSSProperties = {
   backgroundColor: theme.palette.primary.main,
   color: "white",
-  // borderRadius: "20px",
-  // height: "40px",
-  // width: "40px",
-  // alignItems: "center",
-  // justifyContent: "center",
 };
 
 interface ARTitleChipProps {

@@ -9,15 +9,17 @@ import {
   Grid,
   MenuItem,
   Select,
+  SelectChangeEvent,
   SxProps,
   TextareaAutosize,
   TextField,
   Theme,
-  Typography,
 } from "@mui/material";
+import axios, { AxiosError } from "axios";
 import frLocale from "date-fns/locale/fr";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { createNews, updateNews } from "../../api/news.api";
+import useSnackbar from "../../contexts/snackbar.context";
 import theme from "../../theme";
 import {
   CreateNewsDTO,
@@ -25,9 +27,9 @@ import {
   NewsType,
   UpdateNewsDTO,
 } from "../../types/dist/news.dto";
+import { convertNewsType } from "../../types/news";
 import ARButtonIcon from "../atoms/ARButton";
 import { ARTitleChip } from "../atoms/ARTitleChip";
-import { ARSnackbarProps } from "../templates/NewsTemplate";
 
 const gridItem: SxProps<Theme> = {
   display: "grid",
@@ -43,15 +45,9 @@ interface Props {
   news?: NewsDTO;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
   fetchNews: () => Promise<void>;
-  setSnackbarStatus: Dispatch<SetStateAction<ARSnackbarProps>>;
 }
 
-const ARInputs = ({
-  news,
-  setOpenModal,
-  fetchNews,
-  setSnackbarStatus,
-}: Props) => {
+const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [displayPeriod, setDisplayPeriod] = useState(false);
@@ -59,9 +55,10 @@ const ARInputs = ({
   const [message, setMessage] = useState("");
   const [link, setLink] = useState("");
   const [linkTitle, setLinkTitle] = useState("");
-  const [error, setError] = useState("");
 
-  const checkHtttps = (link: string) => {
+  const { setSnackbarStatus } = useSnackbar();
+
+  const checkHttps = (link: string) => {
     if (!link.includes("https://")) {
       link = "https://" + link;
     }
@@ -74,7 +71,7 @@ const ARInputs = ({
     news.endDate && setEndDate(news.endDate);
     setNewsType(news.type);
     setMessage(news.message);
-    checkHtttps(news.link!);
+    checkHttps(news.link!);
     setLinkTitle(news.linkTitle!);
   };
 
@@ -82,11 +79,12 @@ const ARInputs = ({
     fetchCurrentNews();
   }, []);
 
-  const handleChange = (event: { target: { value: string } }) => {
+  const handleChange = (event: SelectChangeEvent<NewsType>) => {
     setNewsType(event.target.value as NewsType);
   };
 
   const handleSubmitCreate = async () => {
+    //handling type from MUI component
     if (startDate === null) return;
 
     const news: CreateNewsDTO = {
@@ -100,23 +98,30 @@ const ARInputs = ({
     };
 
     try {
-      const response = await createNews(news);
-      if (response.status === 500) {
-        setError("Error 500");
-      }
+      await createNews(news);
       await fetchNews();
       setOpenModal(false);
-      setSnackbarStatus({
+      setSnackbarStatus?.({
         open: true,
         message: "L'information a été créée",
         severity: "success",
       });
-    } catch (error: any) {
-      setSnackbarStatus({
-        open: true,
-        message: error.message,
-        severity: "error",
-      });
+    } catch (error) {
+      if ((error as AxiosError)?.response?.status === 500) {
+        setSnackbarStatus?.({
+          open: true,
+          message:
+            "Une erreur serveur s'est produite, veuillez réessayer plus tard",
+          severity: "error",
+        });
+      } else if ((error as AxiosError)?.response?.status === 400) {
+        setSnackbarStatus?.({
+          open: true,
+          message:
+            "Une erreur serveur s'est produite, veuillez réessayer plus tard",
+          severity: "error",
+        });
+      } 
     }
   };
 
@@ -137,17 +142,22 @@ const ARInputs = ({
       try {
         const response = await updateNews(updatedNews);
         if (response.status === 500) {
-          setError("Error 500");
+          setSnackbarStatus?.({
+            open: true,
+            message:
+              "Une erreur serveur s'est produite, veuillez réessayer plus tard",
+            severity: "error",
+          });
         }
         await fetchNews();
         setOpenModal(false);
-        setSnackbarStatus({
+        setSnackbarStatus?.({
           open: true,
           message: "L'information a été modifiée",
           severity: "success",
         });
       } catch (error: any) {
-        setSnackbarStatus({
+        setSnackbarStatus?.({
           open: true,
           message: error.message,
           severity: "error",
@@ -170,7 +180,7 @@ const ARInputs = ({
             >
               {Object.values(NewsType).map((option, idx) => (
                 <MenuItem key={idx} value={option}>
-                  {option}
+                  {convertNewsType[option]}
                 </MenuItem>
               ))}
             </Select>
@@ -233,7 +243,7 @@ const ARInputs = ({
             type="url"
             value={link}
             onChange={(e) => setLink(e.target.value)}
-            onBlur={(e) => checkHtttps(e.target.value)}
+            onBlur={(e) => checkHttps(e.target.value)}
           />
           <TextField
             label="Titre du lien"
@@ -243,11 +253,6 @@ const ARInputs = ({
             onChange={(e) => setLinkTitle(e.target.value)}
           />
         </Grid>
-        {error && (
-          <Typography variant="body1" color="warning">
-            {error}
-          </Typography>
-        )}
       </Grid>
       <div style={{ marginLeft: "auto" }}>
         {news ? (
@@ -272,4 +277,4 @@ const ARInputs = ({
   );
 };
 
-export default ARInputs;
+export default ARNewsForm;

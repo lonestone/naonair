@@ -9,7 +9,7 @@ import { Theme } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/login.api";
-import useAuth from "../../contexts";
+import useAuth from "../../contexts/auth.context";
 import ARButtonIcon from "../atoms/ARButton";
 
 const cardStyle: SxProps<Theme> = {

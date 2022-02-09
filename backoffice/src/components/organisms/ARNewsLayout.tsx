@@ -1,11 +1,10 @@
 import { Add, Delete, Edit, InfoSharp } from "@mui/icons-material";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import theme from "../../theme";
 import { NewsDTO } from "../../types/dist/news.dto";
 import ARButtonIcon from "../atoms/ARButton";
 import ARTitleIcon from "../atoms/ARTitleIcon";
 import ARCard from "../molecules/ARCard";
-import { ARSnackbarProps } from "../templates/NewsTemplate";
 import ARConfirmModal from "./ARConfirmModal";
 import ARModal from "./ARModal";
 
@@ -14,7 +13,6 @@ type ARNewsLayoutProps = {
   subtitle: string;
   news: NewsDTO | undefined;
   fetchNews: () => Promise<void>;
-  setSnackbarStatus: Dispatch<SetStateAction<ARSnackbarProps>>;
 };
 
 const ARNewsLayout = ({
@@ -22,7 +20,6 @@ const ARNewsLayout = ({
   subtitle,
   news,
   fetchNews,
-  setSnackbarStatus,
 }: ARNewsLayoutProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -65,14 +62,12 @@ const ARNewsLayout = ({
         setIsOpen={setIsOpen}
         news={news}
         fetchNews={fetchNews}
-        setSnackbarStatus={setSnackbarStatus}
       />
       <ARConfirmModal
         isOpen={isConfirmOpen}
         newsUUID={news?.uuid}
         setIsOpen={setIsConfirmOpen}
         fetchNews={fetchNews}
-        setSnackbarStatus={setSnackbarStatus}
       />
     </div>
   );
