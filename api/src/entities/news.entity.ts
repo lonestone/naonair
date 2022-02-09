@@ -23,8 +23,8 @@ export class NewsEntity {
   @Property({ type: DateType })
   startDate: Date;
 
-  @Property({ type: DateType, nullable: true })
-  endDate?: Date;
+  @Property({ type: DateType })
+  endDate: Date;
 
   @Property({ nullable: true })
   link?: string;

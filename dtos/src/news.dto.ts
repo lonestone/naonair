@@ -25,7 +25,7 @@ export class NewsDTO {
   type: NewsType;
   message: string;
   startDate: Date;
-  endDate?: Date;
+  endDate: Date;
   link?: string;
   linkTitle?: string;
   displayPeriod: boolean;
@@ -38,6 +38,8 @@ export class CreateNewsDTO {
   @IsString() @Length(0, 200) message: string;
   @Type(() => Date) @IsDateString()startDate: Date;
   @Type(() => Date)  @IsDateString() endDate?: Date;
+  @Type(() => Date) @IsDate() startDate: Date;
+  @Type(() => Date) @IsDate() endDate: Date;
   @IsString() @IsOptional() link?: string;
   @IsString() @IsOptional() linkTitle?: string;
   @IsBoolean() displayPeriod: boolean;
