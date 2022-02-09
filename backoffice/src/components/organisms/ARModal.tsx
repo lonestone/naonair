@@ -4,12 +4,14 @@ import { Dispatch, SetStateAction } from "react";
 import theme from "../../theme";
 import { NewsDTO } from "../../types/dist/news.dto";
 import ARInputs from "../molecules/ARInputs";
+import { ARSnackbarProps } from "../templates/NewsTemplate";
 
 interface ARModalProps {
   isOpen: boolean;
   news?: NewsDTO | undefined;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  fetchNews: () => Promise<void>
+  fetchNews: () => Promise<void>;
+  setSnackbarStatus: Dispatch<SetStateAction<ARSnackbarProps>>;
 }
 
 const modalStyle: SxProps<Theme> = {
@@ -18,14 +20,13 @@ const modalStyle: SxProps<Theme> = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   minWidth: "790px",
-  minHeight: "640px",
   background: "#FFFFFF",
   boxShadow: "0px 8px 10px rgba(0, 0, 0, 0.1)",
   borderRadius: "4px",
   padding: "40px",
 };
 
-const ARModal = ({ isOpen, setIsOpen, news, fetchNews }: ARModalProps) => {
+const ARModal = ({ isOpen, setIsOpen, news, fetchNews, setSnackbarStatus }: ARModalProps) => {
   return (
     <Modal
       open={isOpen}
@@ -41,7 +42,7 @@ const ARModal = ({ isOpen, setIsOpen, news, fetchNews }: ARModalProps) => {
         >
           {news ? "Modifier une information" : "Créer une information"}
         </Typography>
-        <ARInputs news={news} setOpenModal={setIsOpen} fetchNews={fetchNews}/>
+        <ARInputs news={news} setOpenModal={setIsOpen} fetchNews={fetchNews} setSnackbarStatus={setSnackbarStatus}/>
       </Box>
     </Modal>
   );

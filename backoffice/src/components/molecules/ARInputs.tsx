@@ -3,7 +3,9 @@ import { DesktopDatePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import {
+  Checkbox,
   FormControl,
+  FormControlLabel,
   Grid,
   MenuItem,
   Select,
@@ -24,6 +26,7 @@ import {
 } from "../../types/dist/news.dto";
 import ARButtonIcon from "../atoms/ARButton";
 import { ARTitleChip } from "../atoms/ARTitleChip";
+import { ARSnackbarProps } from "../templates/NewsTemplate";
 import { NewsType } from "./../../types/news";
 
 const gridItem: SxProps<Theme> = {
@@ -40,11 +43,18 @@ interface Props {
   news?: NewsDTO;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
   fetchNews: () => Promise<void>;
+  setSnackbarStatus: Dispatch<SetStateAction<ARSnackbarProps>>;
 }
 
-const ARInputs = ({ news, setOpenModal, fetchNews }: Props) => {
+const ARInputs = ({
+  news,
+  setOpenModal,
+  fetchNews,
+  setSnackbarStatus,
+}: Props) => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(null);
+  const [displayPeriod, setDisplayPeriod] = useState(false);
   const [newsType, setNewsType] = useState<NewsType>(NewsType.None);
   const [message, setMessage] = useState("");
   const [link, setLink] = useState("");
@@ -86,7 +96,7 @@ const ARInputs = ({ news, setOpenModal, fetchNews }: Props) => {
       endDate,
       link,
       linkTitle,
-      displayPeriod: true,
+      displayPeriod,
     };
 
     try {
@@ -96,8 +106,17 @@ const ARInputs = ({ news, setOpenModal, fetchNews }: Props) => {
       }
       await fetchNews();
       setOpenModal(false);
+      setSnackbarStatus({
+        open: true,
+        message: "L'information a été créée",
+        severity: "success",
+      });
     } catch (error: any) {
-      setError(error.message);
+      setSnackbarStatus({
+        open: true,
+        message: error.message,
+        severity: "error",
+      });
     }
   };
 
@@ -113,7 +132,7 @@ const ARInputs = ({ news, setOpenModal, fetchNews }: Props) => {
         endDate,
         link,
         linkTitle,
-        displayPeriod: true,
+        displayPeriod,
       };
       try {
         const response = await updateNews(updatedNews);
@@ -122,21 +141,30 @@ const ARInputs = ({ news, setOpenModal, fetchNews }: Props) => {
         }
         await fetchNews();
         setOpenModal(false);
+        setSnackbarStatus({
+          open: true,
+          message: "L'information a été modifiée",
+          severity: "success",
+        });
       } catch (error: any) {
-        setError(error.message);
+        setSnackbarStatus({
+          open: true,
+          message: error.message,
+          severity: "error",
+        });
       }
     }
   };
 
   return (
     <FormControl>
-      <Grid container spacing={2}>
+      <Grid container spacing={5}>
         <Grid item md={6} xs={12} sx={gridItem}>
           <>
             <ARTitleChip label={"Type"} chip={"1"} />
             <Select
+              required
               value={newsType}
-              style={{ width: 300 }}
               labelId="select-label"
               onChange={handleChange}
             >
@@ -172,16 +200,26 @@ const ARInputs = ({ news, setOpenModal, fetchNews }: Props) => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={displayPeriod}
+                  onChange={() => setDisplayPeriod(!displayPeriod)}
+                  inputProps={{ "aria-label": "controlled" }}
+                />
+              }
+              label="Visible pour les utilisateurs"
+            />
           </>
         </Grid>
         <Grid item md={6} xs={12} sx={gridItem}>
           <ARTitleChip label={"Rédigez le message"} chip={"3"} />
           <TextareaAutosize
+            required
             aria-label="Message (200 caractères maxi)"
             minRows={3}
             value={message}
             placeholder="Ceci est le début de votre message ..."
-            style={{ width: 300 }}
             onChange={(e) => setMessage(e.target.value)}
           />
         </Grid>
@@ -211,23 +249,25 @@ const ARInputs = ({ news, setOpenModal, fetchNews }: Props) => {
           </Typography>
         )}
       </Grid>
-      {news ? (
-        <ARButtonIcon
-          type="submit"
-          label={"Modifier"}
-          icon={<Edit />}
-          backgroundColor="primary"
-          onClick={handleSubmitUpdate}
-        />
-      ) : (
-        <ARButtonIcon
-          type="submit"
-          label={"Créer l'information"}
-          icon={<Add />}
-          backgroundColor="primary"
-          onClick={handleSubmitCreate}
-        />
-      )}
+      <div style={{ marginLeft: "auto" }}>
+        {news ? (
+          <ARButtonIcon
+            type="submit"
+            label={"Modifier"}
+            icon={<Edit />}
+            backgroundColor="primary"
+            onClick={handleSubmitUpdate}
+          />
+        ) : (
+          <ARButtonIcon
+            type="submit"
+            label={"Créer l'information"}
+            icon={<Add />}
+            backgroundColor="primary"
+            onClick={handleSubmitCreate}
+          />
+        )}
+      </div>
     </FormControl>
   );
 };

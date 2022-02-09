@@ -2,12 +2,14 @@ import { Box, Button, Modal, SxProps, Typography } from "@mui/material";
 import { Theme } from "@mui/system";
 import { Dispatch, SetStateAction } from "react";
 import { removeNews } from "../../api/news.api";
+import { ARSnackbarProps } from "../templates/NewsTemplate";
 
 interface ARConfirmModalProps {
   isOpen: boolean;
   newsUUID?: string;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   fetchNews: () => Promise<void>;
+  setSnackbarStatus: Dispatch<SetStateAction<ARSnackbarProps>>;
 }
 
 const modalStyle: SxProps<Theme> = {
@@ -30,8 +32,8 @@ const ARConfirmModal = ({
   newsUUID,
   setIsOpen,
   fetchNews,
+  setSnackbarStatus,
 }: ARConfirmModalProps) => {
-
   const handleRemoveNews = async () => {
     const response = await removeNews(newsUUID!);
     if (response.status === 500) {
@@ -39,6 +41,11 @@ const ARConfirmModal = ({
     }
     await fetchNews();
     setIsOpen(false);
+    setSnackbarStatus({
+      open: true,
+      message: "L'information a bien été suprimée",
+      severity: "success",
+    });
   };
 
   return (

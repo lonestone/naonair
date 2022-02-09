@@ -7,7 +7,7 @@ import { NewsDTO } from "../../types/dist/news.dto";
 import ARTitleIcon from "../atoms/ARTitleIcon";
 
 type ARCardProps = {
-  news?: NewsDTO | undefined;
+  news?: NewsDTO;
 };
 
 const cardStyle: SxProps<Theme> = {
@@ -38,7 +38,7 @@ const ARCard = ({ news }: ARCardProps) => {
       {news ? (
         <>
           <Card sx={cardStyle}>
-            <ARTitleIcon label={news.type} icon={<Today />} isNewsTitle />
+            <ARTitleIcon label={news.type} icon={<Today />} isNewsTitle marginBottom={theme.spacing(2)}/>
             <div style={{ display: "grid", gap: theme.spacing(2) }}>
               <Typography variant="body1" color="primary.light">
                 {news.endDate
@@ -61,7 +61,6 @@ const ARCard = ({ news }: ARCardProps) => {
               </Link>
             </div>
           </Card>
-          <div style={{ display: "flex", gap: 15 }}></div>
         </>
       ) : (
         <>

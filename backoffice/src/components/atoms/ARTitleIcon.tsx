@@ -17,15 +17,22 @@ interface Props {
   icon?: ReactNode;
   isNewsTitle?: boolean;
   subtitle?: string;
+  marginBottom?: string | number;
 }
 
-const ARTitleIcon = ({ label, icon, isNewsTitle, subtitle }: Props) => {
+const ARTitleIcon = ({
+  label,
+  icon,
+  isNewsTitle,
+  subtitle,
+  marginBottom,
+}: Props) => {
   return (
     <div
       style={{
         display: "flex",
         gap: theme.spacing(2),
-        marginBottom: theme.spacing(5),
+        marginBottom: marginBottom,
       }}
     >
       <Icon color="primary" style={!isNewsTitle ? iconStyle : undefined}>
