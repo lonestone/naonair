@@ -1,3 +1,9 @@
+import {
+  CreateNewsDTO,
+  HttpErrors,
+  NewsDTO,
+  UpdateNewsDTO,
+} from '@aireal/dtos';
 import { wrap } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/core/entity/EntityRepository';
 import { InjectRepository } from '@mikro-orm/nestjs';
@@ -6,9 +12,8 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { compareAsc, compareDesc, isToday } from 'date-fns';
-import { HttpErrors } from '@aireal/dtos';
-import { CreateNewsDTO, NewsDTO, UpdateNewsDTO } from '@aireal/dtos';
+import { compareAsc, isToday } from 'date-fns';
+
 import { NewsEntity } from 'src/entities/news.entity';
 import { NewsConverterService } from './news.converter';
 
@@ -35,9 +40,14 @@ export class NewsService {
   async create(createNewsDTO: CreateNewsDTO): Promise<NewsDTO> {
     const newsList = await this.newsRepo.findAll();
     // Check if there are already news for this period
-    // if (!this.isNewsValid(createNewsDTO, newsList)) {
-    //   throw new BadRequestException(HttpErrors.EXISTING_CURRENT_NEWS);
-    // }
+    if (
+      !this.isNewsValid(
+        createNewsDTO,
+        newsList.map((n) => this.converter.toDTO(n)),
+      )
+    ) {
+      throw new BadRequestException(HttpErrors.EXISTING_CURRENT_NEWS);
+    }
     const newsEntity = await this.newsRepo.create(createNewsDTO);
     await this.newsRepo.persistAndFlush(newsEntity);
     return this.converter.toDTO(newsEntity);
@@ -61,10 +71,14 @@ export class NewsService {
     await this.newsRepo.removeAndFlush(news);
   }
 
-  private isNewsValid(createNewsDTO: CreateNewsDTO, news: NewsEntity[]) {
+  private isNewsValid(createNewsDTO: CreateNewsDTO, newsList: NewsDTO[]) {
     const now = new Date();
-    const currentNews = this.getCurrentNews(news);
-    const plannedNews = this.getPlannedNews(news);
+    const currentNews = newsList.find((n) => n.isCurrent);
+    const plannedNews = newsList.find((n) => !n.isCurrent);
+
+    const isCurrent = [-1, 0].includes(
+      compareAsc(createNewsDTO.startDate, new Date()),
+    );
 
     // RULE 1 : cannot start in past
     if (
@@ -82,41 +96,33 @@ export class NewsService {
       throw new BadRequestException(HttpErrors.NEWS_CANNOT_FINISH_IN_PAST);
     }
 
-    // RULE 3 : if exist a current news, start date of incoming news cannot be before
-    // end date of current news
-    if (compareAsc(createNewsDTO.startDate, currentNews.endDate) == -1) {
+    // RULE 4 : It could be have only 1 current new
+    if (isCurrent && currentNews) {
       throw new BadRequestException(
-        `${HttpErrors.NEWS_CANNOT_START_BEFORE_END_OF_CURRENT} (${currentNews.endDate}) `,
+        HttpErrors.ONLY_ONE_CURRENT_NEWS_AUTHORIZED,
       );
-    }
-
-    // RULE 4 : it could be have only 1 planned new
-    if (
-      plannedNews &&
-      compareDesc(currentNews.endDate, createNewsDTO.startDate)
-    ) {
-      throw new BadRequestException(
-        HttpErrors.ONLY_ONE_PLANNED_NEWS_AUTHORIZED,
-      );
+    } else if (!isCurrent) {
+      // RULE 4 : it could be have only 1 planned new
+      if (plannedNews) {
+        throw new BadRequestException(
+          HttpErrors.ONLY_ONE_PLANNED_NEWS_AUTHORIZED,
+        );
+      } else {
+        // RULE 3 : if exist a current news, start date of incoming news cannot be before
+        // end date of current news
+        if (
+          currentNews &&
+          compareAsc(createNewsDTO.startDate, currentNews.endDate) == -1
+        ) {
+          throw new BadRequestException(
+            `${HttpErrors.NEWS_CANNOT_START_BEFORE_END_OF_CURRENT} (${currentNews.endDate}) `,
+          );
+        }
+      }
     }
 
     // TODO : Delete news with endDate in the past
 
     return true;
-  }
-
-  private getPlannedNews(news: NewsEntity[]) {
-    return news.find((n) => n.uuid !== this.getCurrentNews(news).uuid);
-  }
-
-  /**
-   * Return news considered as current
-   * @param news
-   */
-  private getCurrentNews(news: NewsEntity[]) {
-    const now = new Date();
-    return news.find(
-      (n) => compareDesc(n.startDate, now) && compareDesc(now, n.endDate),
-    );
   }
 }
