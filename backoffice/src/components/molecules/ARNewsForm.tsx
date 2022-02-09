@@ -114,14 +114,13 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
             "Une erreur serveur s'est produite, veuillez réessayer plus tard",
           severity: "error",
         });
-      } else if ((error as AxiosError)?.response?.status === 400) {
+      } else {
         setSnackbarStatus?.({
           open: true,
-          message:
-            "Une erreur serveur s'est produite, veuillez réessayer plus tard",
+          message: (error as AxiosError)?.message,
           severity: "error",
         });
-      } 
+      }
     }
   };
 
