@@ -1,9 +1,10 @@
+// keep "import initTestApp" on the first line (reflect-metadata must be imported before DTOs)
+import { getToken, initTestApp, removeUuid } from './utils-tests';
 import { INestApplication } from '@nestjs/common';
 import { NewsEntity } from 'src/entities/news.entity';
 import { OrmModule } from 'src/modules/orm/orm.module';
 import * as request from 'supertest';
 import { createNewsDTO, newsDTO, updateNewsDTO, wrongDTO } from './data-tests';
-import { getToken, initTestApp, removeUuid } from './utils-tests';
 
 describe('News', () => {
   let app: INestApplication;
@@ -13,7 +14,6 @@ describe('News', () => {
 
   beforeAll(async () => {
     app = await initTestApp();
-    // await app.init();
 
     // initial mocking
     ormModule = app.get(OrmModule);

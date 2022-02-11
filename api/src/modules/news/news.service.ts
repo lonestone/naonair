@@ -35,9 +35,9 @@ export class NewsService {
   async create(createNewsDTO: CreateNewsDTO): Promise<NewsDTO> {
     const newsList = await this.newsRepo.findAll();
     // Check if there are already news for this period
-    if (!this.isNewsValid(createNewsDTO, newsList)) {
-      throw new BadRequestException(HttpErrors.EXISTING_CURRENT_NEWS);
-    }
+    // if (!this.isNewsValid(createNewsDTO, newsList)) {
+    //   throw new BadRequestException(HttpErrors.EXISTING_CURRENT_NEWS);
+    // }
     const newsEntity = await this.newsRepo.create(createNewsDTO);
     await this.newsRepo.persistAndFlush(newsEntity);
     return this.converter.toDTO(newsEntity);

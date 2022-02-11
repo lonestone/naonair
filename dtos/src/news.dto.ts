@@ -2,6 +2,7 @@ import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsDate,
+  IsDateString,
   IsEnum,
   IsOptional,
   IsString,
@@ -35,8 +36,8 @@ export class CreateNewsDTO {
   // @IsString() type:  NewsType;
   @IsEnum(NewsType) type: NewsType;
   @IsString() @Length(0, 200) message: string;
-  @Type(() => Date) @IsDate() startDate: Date;
-  @Type(() => Date) @IsDate() @IsOptional() endDate?: Date;
+  @Type(() => Date) @IsDateString()startDate: Date;
+  @Type(() => Date)  @IsDateString() endDate?: Date;
   @IsString() @IsOptional() link?: string;
   @IsString() @IsOptional() linkTitle?: string;
   @IsBoolean() displayPeriod: boolean;
