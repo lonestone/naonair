@@ -1,7 +1,7 @@
 import { Add, Delete, Edit, InfoSharp } from "@mui/icons-material";
 import { useState } from "react";
 import theme from "../../theme";
-import { NewsDTO } from "../../types/dist/news.dto";
+import { NewsDTO } from "@aireal/dtos";
 import ARButtonIcon from "../atoms/ARButton";
 import ARTitleIcon from "../atoms/ARTitleIcon";
 import ARCard from "../molecules/ARCard";

@@ -6,9 +6,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { compareAsc, compareDesc, isToday, isWithinInterval } from 'date-fns';
-import { HttpErrors } from 'src/dtos/errors.dto';
-import { CreateNewsDTO, NewsDTO, UpdateNewsDTO } from 'src/dtos/news.dto';
+import { compareAsc, compareDesc, isToday } from 'date-fns';
+import { HttpErrors } from '@aireal/dtos';
+import { CreateNewsDTO, NewsDTO, UpdateNewsDTO } from '@aireal/dtos';
 import { NewsEntity } from 'src/entities/news.entity';
 import { NewsConverterService } from './news.converter';
 

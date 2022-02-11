@@ -1,12 +1,11 @@
+import { NewsType } from '@aireal/dtos/dist/news.dto';
 import {
   DateType,
   Entity,
-  Enum,
   PrimaryKey,
   Property,
   Unique,
 } from '@mikro-orm/core';
-import { NewsType } from 'src/dtos/news.dto';
 import { v4 } from 'uuid';
 
 @Entity()
@@ -15,7 +14,7 @@ export class NewsEntity {
   @Unique()
   uuid: string = v4();
 
-  @Enum({ items: () => NewsType })
+  @Property({type: String})
   type: NewsType;
 
   @Property({ length: 200 })

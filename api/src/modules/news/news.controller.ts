@@ -9,7 +9,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { CreateNewsDTO, NewsDTO, UpdateNewsDTO } from 'src/dtos/news.dto';
+import { CreateNewsDTO, NewsDTO, UpdateNewsDTO } from '@aireal/dtos';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { NewsService } from './news.service';
 

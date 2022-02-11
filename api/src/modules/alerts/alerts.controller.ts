@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { AlertDTO } from 'src/dtos/alert.dto';
+import { AlertDTO } from '@aireal/dtos';
 import { AlertsService } from './alerts.service';
 
 @Controller('alerts')

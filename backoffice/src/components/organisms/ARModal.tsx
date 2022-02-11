@@ -2,7 +2,7 @@ import { Box, Modal, SxProps, Typography } from "@mui/material";
 import { Theme } from "@mui/system";
 import { Dispatch, SetStateAction } from "react";
 import theme from "../../theme";
-import { NewsDTO } from "../../types/dist/news.dto";
+import { NewsDTO } from "@aireal/dtos";
 import ARNewsForm from "../molecules/ARNewsForm";
 
 interface ARModalProps {

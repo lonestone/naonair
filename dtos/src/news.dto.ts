@@ -9,6 +9,7 @@ import {
   Length,
 } from 'class-validator';
 
+// export type NewsType = 'none' | 'goodPractice' | 'announcement' | 'info' | 'event' | 'warning' 
 export enum NewsType {
   None = 'none',
   GoodPractice = 'goodPractice',
@@ -16,11 +17,6 @@ export enum NewsType {
   Info = 'info',
   Event = 'event',
   Warning = 'warning',
-}
-
-export enum NewsCategory {
-  Current = 'current',
-  Planified = 'planified',
 }
 
 export class NewsDTO {
@@ -32,10 +28,11 @@ export class NewsDTO {
   link?: string;
   linkTitle?: string;
   displayPeriod: boolean;
-  category: NewsCategory;
+  isCurrent: boolean;
 }
 
 export class CreateNewsDTO {
+  // @IsString() type:  NewsType;
   @IsEnum(NewsType) type: NewsType;
   @IsString() @Length(0, 200) message: string;
   @Type(() => Date) @IsDate() startDate: Date;
@@ -47,7 +44,8 @@ export class CreateNewsDTO {
 
 export class UpdateNewsDTO {
   @IsUUID() @IsOptional() uuid: string;
-  @IsEnum(NewsType) @IsOptional() type?: NewsType;
+  // @IsString()  @IsOptional() type?:  NewsType;
+  @IsEnum(NewsType) type: NewsType;
   @IsString() @IsOptional() message?: string;
   @Type(() => Date) @IsDate() @IsOptional() startDate?: Date;
   @Type(() => Date) @IsDate() @IsOptional() endDate?: Date;

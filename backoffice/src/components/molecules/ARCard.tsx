@@ -3,7 +3,7 @@ import { Card, Link, SxProps, Typography } from "@mui/material";
 import { Theme } from "@mui/system";
 import { format } from "date-fns";
 import theme from "../../theme";
-import { NewsDTO } from "../../types/dist/news.dto";
+import { NewsDTO } from "@aireal/dtos";
 import { convertNewsType } from "../../types/news";
 import ARTitleIcon from "../atoms/ARTitleIcon";
 

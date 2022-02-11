@@ -1,3 +1,4 @@
+import { CreateNewsDTO, NewsDTO, UpdateNewsDTO } from "@aireal/dtos";
 import { Add, Edit } from "@mui/icons-material";
 import { DesktopDatePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -15,19 +16,13 @@ import {
   TextField,
   Theme,
 } from "@mui/material";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import frLocale from "date-fns/locale/fr";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { createNews, updateNews } from "../../api/news.api";
 import useSnackbar from "../../contexts/snackbar.context";
 import theme from "../../theme";
-import {
-  CreateNewsDTO,
-  NewsDTO,
-  NewsType,
-  UpdateNewsDTO,
-} from "../../types/dist/news.dto";
-import { convertNewsType } from "../../types/news";
+import { convertNewsType, NewsType } from "../../types/news";
 import ARButtonIcon from "../atoms/ARButton";
 import { ARTitleChip } from "../atoms/ARTitleChip";
 
@@ -46,6 +41,8 @@ interface Props {
   setOpenModal: Dispatch<SetStateAction<boolean>>;
   fetchNews: () => Promise<void>;
 }
+
+// const type = typeof NewsDTO;
 
 const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
@@ -69,7 +66,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
     if (!news) return;
     setStartDate(news.startDate);
     news.endDate && setEndDate(news.endDate);
-    setNewsType(news.type);
+    setNewsType(news.type as NewsType);
     setMessage(news.message);
     checkHttps(news.link!);
     setLinkTitle(news.linkTitle!);
@@ -98,7 +95,15 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
     };
 
     try {
-      await createNews(news);
+      const res = await createNews(news);
+      if (res.statusCode >= 400) {
+        setSnackbarStatus?.({
+          open: true,
+          message: `${res.error} : ${res.message}`,
+          severity: "error",
+        });
+        return;
+      }
       await fetchNews();
       setOpenModal(false);
       setSnackbarStatus?.({
@@ -107,20 +112,11 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
         severity: "success",
       });
     } catch (error) {
-      if ((error as AxiosError)?.response?.status === 500) {
-        setSnackbarStatus?.({
-          open: true,
-          message:
-            "Une erreur serveur s'est produite, veuillez réessayer plus tard",
-          severity: "error",
-        });
-      } else {
-        setSnackbarStatus?.({
-          open: true,
-          message: (error as AxiosError)?.message,
-          severity: "error",
-        });
-      }
+      setSnackbarStatus?.({
+        open: true,
+        message: (error as AxiosError)?.message,
+        severity: "error",
+      });
     }
   };
 
@@ -139,14 +135,14 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
         displayPeriod,
       };
       try {
-        const response = await updateNews(updatedNews);
-        if (response.status === 500) {
+        const res = await updateNews(updatedNews);
+        if (res.statusCode >= 400) {
           setSnackbarStatus?.({
             open: true,
-            message:
-              "Une erreur serveur s'est produite, veuillez réessayer plus tard",
+            message: `${res.error} : ${res.message}`,
             severity: "error",
           });
+          return;
         }
         await fetchNews();
         setOpenModal(false);
