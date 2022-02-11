@@ -8,7 +8,7 @@ import { ConfigType } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import * as Passport from 'passport-unique-token';
 import authConfig from 'src/configs/auth.config';
-import { HttpErrors } from 'src/dtos/errors.dto';
+import { HttpErrors } from '@aireal/dtos';
 
 @Injectable()
 export class UniqueTokenStrategy extends PassportStrategy(

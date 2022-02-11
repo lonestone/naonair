@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AlertDTO } from 'src/dtos/alert.dto';
+import { AlertDTO } from '@aireal/dtos';
 
 @Injectable()
 export class AlertsConverterService {

@@ -10,6 +10,9 @@ request.interceptors.request.use(
     const token = localStorage.getItem("access_token");
     if (token && token !== "" && config && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
+      config.validateStatus = function (status) {
+        return status >= 200 && status < 500
+      }
     }
 
     return config;

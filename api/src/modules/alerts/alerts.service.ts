@@ -8,7 +8,7 @@ import {
 import { ConfigType } from '@nestjs/config';
 import { map } from 'rxjs';
 import appConfig from 'src/configs/app.config';
-import { AlertDTO } from 'src/dtos/alert.dto';
+import { AlertDTO } from '@aireal/dtos';
 import { AlertsConverterService } from './alerts.converter';
 
 @Injectable()

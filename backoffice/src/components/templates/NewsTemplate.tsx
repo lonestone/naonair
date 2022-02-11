@@ -1,8 +1,8 @@
-import { Alert, Grid, Snackbar, SxProps, Theme } from "@mui/material";
+import { NewsDTO } from "@aireal/dtos";
+import { Grid, SxProps, Theme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getNews } from "../../api/news.api";
 import theme from "../../theme";
-import { NewsCategory, NewsDTO } from "../../types/dist/news.dto.ts";
 import ARTitleBlock from "../molecules/ARTitleBlock";
 import ARNewsLayout from "../organisms/ARNewsLayout";
 
@@ -32,7 +32,7 @@ export const NewsTemplate = () => {
             subtitle={
               "C’est l’information active et visible par les utilisateurs sur l’application"
             }
-            news={newsList.find((n) => n.category === NewsCategory.Current)}
+            news={newsList.find((n) => n.isCurrent)}
             fetchNews={fetchNews}
           />
         </Grid>
@@ -42,7 +42,7 @@ export const NewsTemplate = () => {
             subtitle={
               "Vous pouvez prévoir la prochaine information affichée aux utilisateurs"
             }
-            news={newsList.find((n) => n.category === NewsCategory.Planified)}
+            news={newsList.find((n) => !n.isCurrent)}
             fetchNews={fetchNews}
           />
         </Grid>
