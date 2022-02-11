@@ -54,7 +54,7 @@ export class NewsService {
   }
 
   async update(uuid: string, updateNewsDTO: UpdateNewsDTO): Promise<NewsDTO> {
-    const newsList = await this.findByUuid(uuid);
+    const newsList = await this.newsRepo.findOne(uuid);
     if (!newsList) {
       throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
     }
