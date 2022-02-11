@@ -1,3 +1,5 @@
+// don't remove this import, and keep it in first line
+import 'reflect-metadata';
 import {
   INestApplication,
   InternalServerErrorException,
@@ -13,6 +15,7 @@ import { AlertsModule } from 'src/modules/alerts/alerts.module';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { NewsModule } from 'src/modules/news/news.module';
 import { OrmModule } from 'src/modules/orm/orm.module';
+import { DateInDTOConversionPipe } from 'src/pipes/DateInDTOConversion.pipe';
 import * as request from 'supertest';
 
 export const removeUuid = (data: any) => {
@@ -22,7 +25,6 @@ export const removeUuid = (data: any) => {
 
 export const initTestApp = async () => {
   let app: INestApplication;
-
   const moduleRef = await Test.createTestingModule({
     imports: [
       ConfigModule.forRoot({
@@ -40,6 +42,7 @@ export const initTestApp = async () => {
 
   // eslint-disable-next-line prefer-const
   app = moduleRef.createNestApplication();
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -48,6 +51,7 @@ export const initTestApp = async () => {
       transform: true,
     }),
   );
+  app.useGlobalPipes(new DateInDTOConversionPipe());
 
   await app.init();
   return app;
