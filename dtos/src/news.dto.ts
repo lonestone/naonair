@@ -36,10 +36,8 @@ export class CreateNewsDTO {
   // @IsString() type:  NewsType;
   @IsEnum(NewsType) type: NewsType;
   @IsString() @Length(0, 200) message: string;
-  @Type(() => Date) @IsDateString()startDate: Date;
-  @Type(() => Date)  @IsDateString() endDate?: Date;
-  @Type(() => Date) @IsDate() startDate: Date;
-  @Type(() => Date) @IsDate() endDate: Date;
+  @Type(() => Date) @IsDateString() startDate: Date;
+  @Type(() => Date) @IsDateString() endDate: Date;
   @IsString() @IsOptional() link?: string;
   @IsString() @IsOptional() linkTitle?: string;
   @IsBoolean() displayPeriod: boolean;
@@ -50,8 +48,8 @@ export class UpdateNewsDTO {
   // @IsString()  @IsOptional() type?:  NewsType;
   @IsEnum(NewsType) type: NewsType;
   @IsString() @IsOptional() message?: string;
-  @Type(() => Date) @IsDate() @IsOptional() startDate?: Date;
-  @Type(() => Date) @IsDate() @IsOptional() endDate?: Date;
+  @Type(() => Date) @IsDateString() @IsOptional() startDate?: Date;
+  @Type(() => Date) @IsDateString() @IsOptional() endDate?: Date;
   @IsString() @IsOptional() link?: string;
   @IsString() @IsOptional() linkTitle?: string;
   @IsBoolean() @IsOptional() displayPeriod?: boolean;
