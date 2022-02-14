@@ -45,8 +45,8 @@ interface Props {
 // const type = typeof NewsDTO;
 
 const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
   const [displayPeriod, setDisplayPeriod] = useState(false);
   const [newsType, setNewsType] = useState<NewsType>(NewsType.None);
   const [message, setMessage] = useState("");
@@ -194,14 +194,14 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
                 label="Date de début"
                 value={startDate}
                 minDate={new Date()}
-                onChange={(date) => setStartDate(date)}
+                onChange={(date) => (date ? setStartDate(date) : null)}
                 renderInput={(params) => <TextField {...params} />}
               />
               <DesktopDatePicker
                 label="Date de fin"
                 value={endDate}
                 minDate={startDate}
-                onChange={(date) => setEndDate(date)}
+                onChange={(date) => (date ? setEndDate(date) : null)}
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>

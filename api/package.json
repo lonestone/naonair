@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json --runInBand --verbose"
   },
   "dependencies": {
+    "@aireal/dtos" : "file:../dtos",
     "@mikro-orm/cli": "^4.5.10",
     "@mikro-orm/core": "^4.5.10",
     "@mikro-orm/nestjs": "^4.3.1",
