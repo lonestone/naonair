@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   map: {flex: 1},
 });
 
-const styleJSON = JSON.stringify(require('./mapViewStyle.json'));
+const styleJSON = JSON.stringify(require('../../mapViewStyle.json'));
 
 const defaultSettingsCamera: CameraSettings = {
   zoomLevel: 11,

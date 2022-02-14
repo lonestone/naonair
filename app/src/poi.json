@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "categorie": "parc",
+    "nom": "parc de la chaumière",
+    "adresse": "4rue montesquieu, 44000 nantes",
+    "gps": "47.205312938178885, -1.5514398352612988"
+  },
+  {
+    "id": 2,
+    "categorie": "parc",
+    "nom": "parc du plessis-tison",
+    "adresse": "parc rond-point de paris, rue racapé, 44300 nantes",
+    "gps": "47.235054719861246, -1.5359057732783556"
+  },
+  {
+    "id": 3,
+    "categorie": "musee",
+    "nom": "château des ducs de bretagne",
+    "adresse": "4 pl. marc elder, 44000 nantes",
+    "gps": "47.2165135408333, -1.5488970574453509"
+  },
+  {
+    "id": 4,
+    "categorie": "magasin",
+    "nom": "galeries lafayette nantes",
+    "adresse": "2-20 rue de la marne, 44000 nantes",
+    "gps": "47.216465461747696, -1.5538489302768206"
+  }
+]
