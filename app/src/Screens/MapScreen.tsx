@@ -1,9 +1,12 @@
 import React, {ReactElement, useState} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {Caption, Headline} from 'react-native-paper';
-import Header from '../components/Header';
-import MapView from '../components/MapView';
-import SwitchToggle, {SwitchToggleItem} from '../components/SwitchToggle';
+import {getAll} from '../actions/poi';
+import Header from '../components/molecules/ARHeader';
+import MapView from '../components/molecules/ARMapView';
+import SwitchToggle, {
+  SwitchToggleItem,
+} from '../components/molecules/ARSwitchToggle';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,12 +31,15 @@ const displayTypeItems: (SwitchToggleItem & {render: () => ReactElement})[] = [
   {
     key: 'list',
     icon: 'list',
-    render: () => <View></View>,
+    render: () => <View />,
   },
 ];
 
 export default () => {
   const [displayTypeIndex, setDisplayTypeIndex] = useState(0);
+
+  const pois = getAll();
+  console.log({pois});
 
   return (
     <>
