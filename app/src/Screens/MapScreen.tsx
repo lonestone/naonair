@@ -1,26 +1,60 @@
-import React from 'react';
+import React, {ReactElement, useState} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {Caption, Headline} from 'react-native-paper';
 import Header from '../components/Header';
 import MapView from '../components/MapView';
+import SwitchToggle, {SwitchToggleItem} from '../components/SwitchToggle';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
+  headlineContainer: {
+    flexDirection: 'row',
+  },
+  headline: {
+    flex: 1,
+    alignItems: 'stretch',
+  },
 });
 
+const displayTypeItems: (SwitchToggleItem & {render: () => ReactElement})[] = [
+  {
+    key: 'map',
+    icon: 'map',
+    render: () => <MapView />,
+  },
+  {
+    key: 'list',
+    icon: 'list',
+    render: () => <View></View>,
+  },
+];
+
 export default () => {
+  const [displayTypeIndex, setDisplayTypeIndex] = useState(0);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <>
       <Header>
-        <View>
-          <Headline>Les points d'intérêts</Headline>
-        </View>
-        <Caption>Découvrez la qualité de l'air en temps réel</Caption>
+        <SafeAreaView>
+          <View style={styles.headlineContainer}>
+            <Headline style={styles.headline}>Les points d'intérêts</Headline>
+            <SwitchToggle
+              onChange={setDisplayTypeIndex}
+              activeIndex={displayTypeIndex}
+              items={displayTypeItems}
+              activeColor="#4863f1"
+            />
+          </View>
+
+          <Caption>Découvrez la qualité de l'air en temps réel</Caption>
+        </SafeAreaView>
       </Header>
-      <MapView />
-    </SafeAreaView>
+      <SafeAreaView style={styles.container}>
+        {displayTypeItems[displayTypeIndex].render()}
+      </SafeAreaView>
+    </>
   );
 };
