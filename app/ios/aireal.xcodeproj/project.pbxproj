@@ -11,6 +11,8 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		2E9DA21D27B69091005C44B6 /* Mapbox in Frameworks */ = {isa = PBXBuildFile; productRef = C15FA7DB49D042EBAF1F8F69 /* Mapbox */; };
+		2E9DA21E27B69091005C44B6 /* Mapbox in Frameworks */ = {isa = PBXBuildFile; productRef = 377179F87266CC0523511F77 /* Mapbox */; };
 		58DA82946F51706F72F949AC /* libPods-aireal-airealTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D63FDA3E65409FD788D7030 /* libPods-aireal-airealTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B47C937B070B7A309CD76A92 /* libPods-aireal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76F773935A49DBC0B65C4538 /* libPods-aireal.a */; };
@@ -52,6 +54,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58DA82946F51706F72F949AC /* libPods-aireal-airealTests.a in Frameworks */,
+				2E9DA21E27B69091005C44B6 /* Mapbox in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +63,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B47C937B070B7A309CD76A92 /* libPods-aireal.a in Frameworks */,
+				2E9DA21D27B69091005C44B6 /* Mapbox in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,7 +118,6 @@
 				2E033874DEB8636B8F07F95D /* Pods-aireal-airealTests.debug.xcconfig */,
 				8D6E17AB57C2C3F3117BFC4B /* Pods-aireal-airealTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -155,7 +158,6 @@
 			children = (
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,6 +180,9 @@
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
 			name = airealTests;
+			packageProductDependencies = (
+				377179F87266CC0523511F77 /* Mapbox */,
+			);
 			productName = airealTests;
 			productReference = 00E356EE1AD99517003FC87E /* airealTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -200,6 +205,9 @@
 			dependencies = (
 			);
 			name = aireal;
+			packageProductDependencies = (
+				C15FA7DB49D042EBAF1F8F69 /* Mapbox */,
+			);
 			productName = aireal;
 			productReference = 13B07F961A680F5B00A75B9A /* aireal.app */;
 			productType = "com.apple.product-type.application";
@@ -230,6 +238,9 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
+			packageReferences = (
+				6EA639284BCF4EED8815BE81 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */,
+			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -494,6 +505,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RDMK6X89BJ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = aireal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -520,6 +532,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RDMK6X89BJ;
 				INFOPLIST_FILE = aireal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -693,6 +706,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6EA639284BCF4EED8815BE81 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/maplibre/maplibre-gl-native-distribution";
+			requirement = {
+				kind = exactVersion;
+				version = 5.12.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		377179F87266CC0523511F77 /* Mapbox */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA639284BCF4EED8815BE81 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */;
+			productName = Mapbox;
+		};
+		C15FA7DB49D042EBAF1F8F69 /* Mapbox */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA639284BCF4EED8815BE81 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */;
+			productName = Mapbox;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }

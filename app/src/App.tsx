@@ -9,39 +9,27 @@
  */
 
 import React from 'react';
-import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
-import {Button, ThemeProvider} from 'react-native-paper';
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
+import {StatusBar, StyleSheet} from 'react-native';
+import {ThemeProvider} from 'react-native-paper';
 import {NewsDialog} from './components/templates/NewsDialog';
+import Screens from './Screens';
 import {theme} from './theme';
 
-const App = () => {
-  const [visible, setVisible] = React.useState(true);
-  const isDarkMode = false; // useColorScheme() === 'dark';
+const styles = StyleSheet.create({});
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    height: '100%',
-  };
+const App = () => {
+  const [visible, setVisible] = React.useState(false);
+  const isDarkMode = false; // useColorScheme() === 'dark';
 
   console.log('visible', visible);
 
   return (
     <ThemeProvider theme={theme}>
-      <SafeAreaView style={backgroundStyle}>
-        <StatusBar barStyle={isDarkMode ? 'dark-content' : 'light-content'} />
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={backgroundStyle}>
-          {/* <Header /> */}
-          <View>
-            <Button onPress={() => setVisible(true)}>Show news</Button>
-          </View>
-        </ScrollView>
-        {visible && (
-          <NewsDialog visible={visible} onClose={() => setVisible(false)} />
-        )}
-      </SafeAreaView>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <Screens />
+      {visible && (
+        <NewsDialog visible={visible} onClose={() => setVisible(false)} />
+      )}
     </ThemeProvider>
   );
 };
