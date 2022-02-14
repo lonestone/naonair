@@ -2,7 +2,7 @@ import MapboxGL, {
   CameraSettings,
   RasterSourceProps,
 } from '@react-native-mapbox-gl/maps';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -30,6 +30,10 @@ const rasterSourceProps: RasterSourceProps = {
 };
 
 export default () => {
+  useEffect(() => {
+    MapboxGL.setAccessToken('');
+  });
+
   return (
     <View style={styles.container}>
       <MapboxGL.MapView
