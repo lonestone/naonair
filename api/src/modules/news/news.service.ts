@@ -10,15 +10,17 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { compareAsc, isToday } from 'date-fns';
-
+import { compareAsc, format, isPast, isToday } from 'date-fns';
 import { NewsEntity } from 'src/entities/news.entity';
 import { NewsConverterService } from './news.converter';
 
 @Injectable()
 export class NewsService {
+  logger = new Logger('NewsModule');
+
   constructor(
     @InjectRepository(NewsEntity)
     public readonly newsRepo: EntityRepository<NewsEntity>,
@@ -26,7 +28,11 @@ export class NewsService {
   ) {}
 
   async findAll(): Promise<NewsDTO[]> {
-    return (await this.newsRepo.findAll()).map((n) => this.converter.toDTO(n));
+    return (
+      await this.newsRepo.find({
+        endDate: { $gte: format(new Date(), 'yyyy-MM-dd') },
+      })
+    ).map((n) => this.converter.toDTO(n));
   }
 
   async findByUuid(uuid: string): Promise<NewsDTO> {
@@ -49,22 +55,27 @@ export class NewsService {
     ) {
       throw new BadRequestException(HttpErrors.EXISTING_CURRENT_NEWS);
     }
+
     const newsEntity = await this.newsRepo.create(createNewsDTO);
     await this.newsRepo.persistAndFlush(newsEntity);
+    this.deleteNewsInPast();
     return this.converter.toDTO(newsEntity);
   }
 
   async update(uuid: string, updateNewsDTO: UpdateNewsDTO): Promise<NewsDTO> {
-    const newsList = await this.newsRepo.findOne(uuid);
-    if (!newsList) {
+    const news = await this.newsRepo.findOne(uuid);
+    if (!news) {
       throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
     }
-    wrap(newsList).assign(updateNewsDTO);
+    wrap(news).assign(updateNewsDTO);
     await this.newsRepo.flush();
-    return this.converter.toDTO(newsList);
+    this.deleteNewsInPast();
+    return this.converter.toDTO(news);
   }
 
   async remove(uuid: string): Promise<void> {
+    console.log('HERE', uuid);
+    
     const news = await this.newsRepo.findOne(uuid);
     if (!news) {
       throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
@@ -74,8 +85,10 @@ export class NewsService {
 
   private isNewsValid(createNewsDTO: CreateNewsDTO, newsList: NewsDTO[]) {
     const now = new Date();
-    const currentNews = newsList.find((n) => n.isCurrent);
-    const plannedNews = newsList.find((n) => !n.isCurrent);
+    const currentNews = newsList.find((n) => n.isCurrent && !isPast(n.endDate));
+    const plannedNews = newsList.find(
+      (n) => !n.isCurrent && !isPast(n.endDate),
+    );
 
     const isCurrent = [-1, 0].includes(
       compareAsc(createNewsDTO.startDate, new Date()),
@@ -121,9 +134,16 @@ export class NewsService {
         }
       }
     }
-
-    // TODO : Delete news with endDate in the past
-
     return true;
+  }
+
+  private async deleteNewsInPast() {
+    try {
+      (await this.newsRepo.findAll()).map(
+        (n) => isPast(n.endDate) && this.remove(n.uuid),
+      );
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
 }
