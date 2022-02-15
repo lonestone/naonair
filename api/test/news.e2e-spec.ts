@@ -4,22 +4,38 @@ import { INestApplication } from '@nestjs/common';
 import { NewsEntity } from 'src/entities/news.entity';
 import { OrmModule } from 'src/modules/orm/orm.module';
 import * as request from 'supertest';
-import { createNewsDTO, newsDTO, updateNewsDTO, wrongDTO } from './data-tests';
+import {
+  createNewsDTO,
+  mockNewsToCreate,
+  updateNewsDTO,
+  wrongDTO,
+} from './data-tests';
 
 describe('News', () => {
   let app: INestApplication;
   let ormModule: OrmModule;
   let newsEntityMock: NewsEntity;
   let jwtToken: string;
+  let newsDTO;
 
   beforeAll(async () => {
     app = await initTestApp();
 
     // initial mocking
     ormModule = app.get(OrmModule);
-    newsEntityMock = await ormModule.getOrm().em.create(NewsEntity, newsDTO);
+    newsEntityMock = await ormModule.getOrm().em.create(NewsEntity, {
+      ...mockNewsToCreate,
+      startDate: new Date(mockNewsToCreate.startDate),
+      endDate: new Date(mockNewsToCreate.endDate),
+    });
     await ormModule.getOrm().em.persistAndFlush(newsEntityMock);
 
+    newsDTO = {
+      ...newsEntityMock,
+      startDate: newsEntityMock.startDate.toISOString(),
+      endDate: newsEntityMock.endDate.toISOString(),
+      isCurrent: false,
+    };
     // get JWT token
     jwtToken = await getToken(app);
   });
@@ -29,14 +45,14 @@ describe('News', () => {
    */
   it('GET /news', async () => {
     const res = await request(app.getHttpServer()).get('/news').expect(200);
-    expect(res.body).toEqual([newsEntityMock]);
+    expect(res.body).toEqual([newsDTO]);
   });
 
   it('GET /news/:id', async () => {
     const res = await request(app.getHttpServer())
       .get('/news/' + newsEntityMock.uuid)
       .expect(200);
-    expect(res.body).toEqual(newsEntityMock);
+    expect(res.body).toEqual(newsDTO);
   });
 
   it('POST /news', async () => {
@@ -46,7 +62,7 @@ describe('News', () => {
       .set('Accept', 'application/json')
       .set('Authorization', 'Bearer ' + jwtToken)
       .expect(201);
-    expect(removeUuid(res.body)).toEqual(createNewsDTO);
+    expect(removeUuid(res.body)).toEqual({ ...createNewsDTO, isCurrent: true });
   });
 
   it('PATCH /news/:id', async () => {
@@ -56,7 +72,11 @@ describe('News', () => {
       .set('Accept', 'application/json')
       .set('Authorization', 'Bearer ' + jwtToken)
       .expect(200);
-    expect(res.body).toEqual({ ...updateNewsDTO, uuid: newsEntityMock.uuid });
+    expect(res.body).toEqual({
+      ...updateNewsDTO,
+      uuid: newsEntityMock.uuid,
+      isCurrent: false,
+    });
   });
 
   it('DELETE /news/:id', async () => {

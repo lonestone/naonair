@@ -17,6 +17,7 @@ import { NewsModule } from 'src/modules/news/news.module';
 import { OrmModule } from 'src/modules/orm/orm.module';
 import { DateInDTOConversionPipe } from 'src/pipes/DateInDTOConversion.pipe';
 import * as request from 'supertest';
+import { LoggingInterceptor } from 'src/interceptors/log.interceptors';
 
 export const removeUuid = (data: any) => {
   delete data.uuid;
@@ -24,7 +25,6 @@ export const removeUuid = (data: any) => {
 };
 
 export const initTestApp = async () => {
-  let app: INestApplication;
   const moduleRef = await Test.createTestingModule({
     imports: [
       ConfigModule.forRoot({
@@ -40,8 +40,7 @@ export const initTestApp = async () => {
     controllers: [AppController],
   }).compile();
 
-  // eslint-disable-next-line prefer-const
-  app = moduleRef.createNestApplication();
+  const app = moduleRef.createNestApplication();
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -52,6 +51,7 @@ export const initTestApp = async () => {
     }),
   );
   app.useGlobalPipes(new DateInDTOConversionPipe());
+  app.useGlobalInterceptors(new LoggingInterceptor());
 
   await app.init();
   return app;

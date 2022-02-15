@@ -38,6 +38,7 @@ export class NewsService {
   }
 
   async create(createNewsDTO: CreateNewsDTO): Promise<NewsDTO> {
+  
     const newsList = await this.newsRepo.findAll();
     // Check if there are already news for this period
     if (

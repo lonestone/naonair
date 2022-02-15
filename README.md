@@ -24,6 +24,10 @@ Docker is used in dev to start databases :
 
 We using a PostgreSQL database in order to store main data of apps. Running at `localhost:5432`
 
+### Migrations
+
+Update your entities and use `npx mikro-orm migration:create ` to create migration.
+
 # 🚀 Getting started
 
 ## Install dependencies and build dtos

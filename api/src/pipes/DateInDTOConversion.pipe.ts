@@ -9,7 +9,6 @@ export class DateInDTOConversionPipe implements PipeTransform {
   transform(value: any) {
     if (typeof value === 'object') {
       Object.entries(value).forEach((item) => {
-        // console.log(item[1] )
         if (
           typeof item[1] === 'string' &&
           (isValid(parseISO(item[1])) ||
