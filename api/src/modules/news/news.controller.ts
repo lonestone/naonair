@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   ParseUUIDPipe,
   Patch,
@@ -45,6 +46,7 @@ export class NewsController {
   }
 
   @Delete(':uuid')
+  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   remove(@Param('uuid', ParseUUIDPipe) uuid: string): Promise<void> {
     return this.newsService.remove(uuid);
