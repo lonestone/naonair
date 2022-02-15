@@ -237,7 +237,6 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
             value={link}
             required={!linkTitle ? false : true}
             onChange={(e) => setLink(e.target.value)}
-            // onBlur={(e) => checkHttps(e.target.value)}
             onFocus={(e) => checkHttps(e.target.value)}
           />
           <TextField
@@ -264,7 +263,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
             type="submit"
             label={"Créer l'information"}
             icon={<Add />}
-            disabled={(!link && !linkTitle) || (linkTitle && link) ? false : true}
+            disabled={!((!link && !linkTitle) || (linkTitle && link))}
             backgroundColor="primary"
             onClick={handleSubmitCreate}
           />
