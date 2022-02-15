@@ -19,7 +19,6 @@ export interface ARMapViewProps {
 
 const styles = StyleSheet.create({
   markerContainer: {
-    // borderRadius: 20,
     overflow: 'visible',
     width: 40,
     height: 46,

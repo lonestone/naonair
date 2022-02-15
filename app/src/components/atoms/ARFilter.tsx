@@ -9,9 +9,7 @@ const styles = StyleSheet.create({
   },
   chip: {
     paddingHorizontal: 12,
-    // paddingVertical: 6,
     marginHorizontal: 4,
-    // height: 32,
     flexDirection: 'row',
     borderRadius: 20,
     backgroundColor: theme.colors.accent,
