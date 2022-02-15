@@ -74,8 +74,6 @@ export class NewsService {
   }
 
   async remove(uuid: string): Promise<void> {
-    console.log('HERE', uuid);
-    
     const news = await this.newsRepo.findOne(uuid);
     if (!news) {
       throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
@@ -139,9 +137,11 @@ export class NewsService {
 
   private async deleteNewsInPast() {
     try {
-      (await this.newsRepo.findAll()).map(
-        (n) => isPast(n.endDate) && this.remove(n.uuid),
-      );
+      (
+        await this.newsRepo.find({
+          endDate: { $lt: format(new Date(), 'yyyy-MM-dd') },
+        })
+      ).map((n) => this.remove(n.uuid));
     } catch (error) {
       this.logger.error(error);
     }
