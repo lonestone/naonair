@@ -2,7 +2,7 @@ import MapboxGL, {
   CameraSettings,
   RasterSourceProps,
 } from '@react-native-mapbox-gl/maps';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, ViewProps} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 const styleJSON = JSON.stringify(require('../../mapViewStyle.json'));
 
 const defaultSettingsCamera: CameraSettings = {
-  zoomLevel: 11,
+  zoomLevel: 14,
   centerCoordinate: [-1.56857384817453, 47.20300691709389],
 };
 
@@ -30,6 +30,8 @@ const rasterSourceProps: RasterSourceProps = {
 };
 
 export default (props: ViewProps) => {
+  const mapRef = React.createRef<MapboxGL.Camera>();
+
   useEffect(() => {
     MapboxGL.setAccessToken('');
   });
@@ -46,12 +48,18 @@ export default (props: ViewProps) => {
         rotateEnabled={false}
         zoomEnabled
         scrollEnabled>
-        <MapboxGL.Camera defaultSettings={defaultSettingsCamera} />
+        <MapboxGL.Camera ref={mapRef} defaultSettings={defaultSettingsCamera} />
         <MapboxGL.UserLocation
           visible
           renderMode="native"
           animated
           showsUserHeadingIndicator
+          onUpdate={location => {
+            mapRef.current?.moveTo([
+              location.coords.longitude,
+              location.coords.latitude,
+            ]);
+          }}
         />
         <MapboxGL.RasterSource {...rasterSourceProps}>
           <MapboxGL.RasterLayer
