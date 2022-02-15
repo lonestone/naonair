@@ -1,11 +1,12 @@
 import poiJson from '../poi.json';
 
 export enum POICategory {
-  PARK = 'parc',
-  SPORT = 'sport',
-  CULTURE = 'culture',
-  MARKET = 'market',
-  UNDEFINED = 'undefined',
+  UNDEFINED = -1,
+  FAVORITE = 0,
+  PARK = 1,
+  SPORT = 2,
+  CULTURE = 4,
+  MARKET = 8,
 }
 
 export interface POI {
@@ -45,8 +46,10 @@ const POIs = poiJson.map<POI>(({id, nom, categorie, adresse, gps}) => {
   };
 });
 
-export const getAll = () => {
-  return POIs;
+export const getAll = (categories: POICategory[]) => {
+  return POIs.filter(pois => {
+    return categories.includes(pois.category);
+  });
 };
 
 export const getOne = (id: number) => {

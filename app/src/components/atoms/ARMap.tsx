@@ -47,7 +47,12 @@ export default (props: ViewProps) => {
         zoomEnabled
         scrollEnabled>
         <MapboxGL.Camera defaultSettings={defaultSettingsCamera} />
-        <MapboxGL.UserLocation visible renderMode="native" animated />
+        <MapboxGL.UserLocation
+          visible
+          renderMode="native"
+          animated
+          showsUserHeadingIndicator
+        />
         <MapboxGL.RasterSource {...rasterSourceProps}>
           <MapboxGL.RasterLayer
             id="airreel_layer"
