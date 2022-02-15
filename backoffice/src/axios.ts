@@ -1,9 +1,7 @@
 import axios from "axios";
 import { ARRoutes } from "./router/routes";
 
-const request = axios.create({
-  withCredentials: true,
-});
+const request = axios.create({});
 
 request.interceptors.request.use(
   (config) => {
