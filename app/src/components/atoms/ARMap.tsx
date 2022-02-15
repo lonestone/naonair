@@ -30,9 +30,10 @@ const rasterSourceProps: RasterSourceProps = {
 };
 
 export default (props: ViewProps) => {
-  const mapRef = React.createRef<MapboxGL.Camera>();
+  const cameraRef = React.createRef<MapboxGL.Camera>();
 
   useEffect(() => {
+    // if we don't call this methods, MapboxGL crash on Android
     MapboxGL.setAccessToken('');
   });
 
@@ -48,14 +49,17 @@ export default (props: ViewProps) => {
         rotateEnabled={false}
         zoomEnabled
         scrollEnabled>
-        <MapboxGL.Camera ref={mapRef} defaultSettings={defaultSettingsCamera} />
+        <MapboxGL.Camera
+          ref={cameraRef}
+          defaultSettings={defaultSettingsCamera}
+        />
         <MapboxGL.UserLocation
           visible
           renderMode="native"
           animated
           showsUserHeadingIndicator
           onUpdate={location => {
-            mapRef.current?.moveTo([
+            cameraRef.current?.moveTo([
               location.coords.longitude,
               location.coords.latitude,
             ]);
