@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableHighlight, View, ViewProps} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export interface SwitchToggleItem {
   label?: string;

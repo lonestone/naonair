@@ -1,9 +1,10 @@
 import React, {ReactElement, useState} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {Caption, Headline} from 'react-native-paper';
-import {getAll} from '../actions/poi';
+import {getAll, POICategory} from '../actions/poi';
+import ARFilter, {ARFilterItem} from '../components/atoms/ARFilter';
 import Header from '../components/molecules/ARHeader';
-import MapView from '../components/molecules/ARMapView';
+import ARMapView from '../components/templates/ARMapView';
 import SwitchToggle, {
   SwitchToggleItem,
 } from '../components/molecules/ARSwitchToggle';
@@ -22,24 +23,35 @@ const styles = StyleSheet.create({
   },
 });
 
-const displayTypeItems: (SwitchToggleItem & {render: () => ReactElement})[] = [
-  {
-    key: 'map',
-    icon: 'map',
-    render: () => <MapView />,
-  },
-  {
-    key: 'list',
-    icon: 'list',
-    render: () => <View />,
-  },
+const filters: ARFilterItem[] = [
+  {label: 'Mes favoris', value: POICategory.FAVORITE},
+  {label: 'Parcs', value: POICategory.PARK},
+  {label: 'Sport', value: POICategory.SPORT},
+  {label: 'Culture', value: POICategory.CULTURE},
+  {label: 'Marché', value: POICategory.MARKET},
 ];
 
 export default () => {
   const [displayTypeIndex, setDisplayTypeIndex] = useState(0);
+  const [selectedCategories, setSelectedCategories] = useState<POICategory[]>(
+    [],
+  );
 
-  const pois = getAll();
-  console.log({pois});
+  const pois = getAll(selectedCategories);
+
+  const displayTypeItems: (SwitchToggleItem & {render: () => ReactElement})[] =
+    [
+      {
+        key: 'map',
+        icon: 'map',
+        render: () => <ARMapView pois={pois} />,
+      },
+      {
+        key: 'list',
+        icon: 'list',
+        render: () => <View />,
+      },
+    ];
 
   return (
     <>
@@ -56,6 +68,14 @@ export default () => {
           </View>
 
           <Caption>Découvrez la qualité de l'air en temps réel</Caption>
+
+          <ARFilter
+            items={filters}
+            multiple
+            onChange={items => {
+              setSelectedCategories(items.map(item => item.value));
+            }}
+          />
         </SafeAreaView>
       </Header>
       <SafeAreaView style={styles.container}>

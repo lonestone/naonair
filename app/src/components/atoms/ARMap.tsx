@@ -2,8 +2,8 @@ import MapboxGL, {
   CameraSettings,
   RasterSourceProps,
 } from '@react-native-mapbox-gl/maps';
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, ViewProps} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 const styleJSON = JSON.stringify(require('../../mapViewStyle.json'));
 
 const defaultSettingsCamera: CameraSettings = {
-  zoomLevel: 11,
+  zoomLevel: 14,
   centerCoordinate: [-1.56857384817453, 47.20300691709389],
 };
 
@@ -29,7 +29,14 @@ const rasterSourceProps: RasterSourceProps = {
   tileSize: 256,
 };
 
-export default () => {
+export default (props: ViewProps) => {
+  const cameraRef = React.createRef<MapboxGL.Camera>();
+
+  useEffect(() => {
+    // if we don't call this methods, MapboxGL crash on Android
+    MapboxGL.setAccessToken('');
+  });
+
   return (
     <View style={styles.container}>
       <MapboxGL.MapView
@@ -42,8 +49,22 @@ export default () => {
         rotateEnabled={false}
         zoomEnabled
         scrollEnabled>
-        <MapboxGL.Camera defaultSettings={defaultSettingsCamera} />
-        <MapboxGL.UserLocation visible renderMode="native" animated />
+        <MapboxGL.Camera
+          ref={cameraRef}
+          defaultSettings={defaultSettingsCamera}
+        />
+        <MapboxGL.UserLocation
+          visible
+          renderMode="native"
+          animated
+          showsUserHeadingIndicator
+          onUpdate={location => {
+            cameraRef.current?.moveTo([
+              location.coords.longitude,
+              location.coords.latitude,
+            ]);
+          }}
+        />
         <MapboxGL.RasterSource {...rasterSourceProps}>
           <MapboxGL.RasterLayer
             id="airreel_layer"
@@ -51,6 +72,7 @@ export default () => {
             sourceID="aireel_source"
           />
         </MapboxGL.RasterSource>
+        {props.children}
       </MapboxGL.MapView>
     </View>
   );
