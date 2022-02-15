@@ -6,6 +6,6 @@ export enum HttpErrors {
   ONLY_ONE_CURRENT_NEWS_AUTHORIZED = 'Only one current news is authorized',
   ONLY_ONE_PLANNED_NEWS_AUTHORIZED = 'Only one planned news is authorized',
   NEWS_NOT_FOUND = 'News not found',
-
   AUTH_INVALID_TOKEN = 'Invalid token',
+  ENDDATE_CANNOT_START_BEFORE_STARTDATE = "End date cannot start before start date"
 }
