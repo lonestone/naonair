@@ -26,7 +26,7 @@ export class LoggingInterceptor implements NestInterceptor {
 
       const msg = `${status} ${method.toUpperCase()} ${url} +${
         Date.now() - now
-      }ms ${err.message}`;
+      }ms ${err?.message}`;
 
       err ? this.logger.error(msg) : this.logger.log(msg);
       return err;
