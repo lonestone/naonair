@@ -1,61 +1,72 @@
-import MapboxGL, {
-  CameraSettings,
-  RasterSourceProps,
-} from '@react-native-mapbox-gl/maps';
-import React, {useEffect} from 'react';
+/// <reference path="../../custom.d.ts" />
+
+import MapboxGL from '@react-native-mapbox-gl/maps';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {SvgXml} from 'react-native-svg';
+import {POI, POICategory} from '../../actions/poi';
+import cultureIcon from '../../assets/culture-icon.svg';
+import marketIcon from '../../assets/market-icon.svg';
+import sportIcon from '../../assets/sport-icon.svg';
+import parkIcon from '../../assets/park-icon.svg';
+import markerBackground from '../../assets/marker-background.svg';
+import ARMap from '../atoms/ARMap';
+
+export interface ARMapViewProps {
+  pois: POI[];
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  markerContainer: {
+    borderRadius: 20,
+    alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'stretch',
+    shadowColor: 'black',
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
   },
-  map: {flex: 1},
+  markerBackground: {
+    position: 'absolute',
+    top: -10,
+  },
 });
 
-const styleJSON = JSON.stringify(require('../../mapViewStyle.json'));
-
-const defaultSettingsCamera: CameraSettings = {
-  zoomLevel: 11,
-  centerCoordinate: [-1.56857384817453, 47.20300691709389],
+const icons = {
+  [POICategory.CULTURE]: cultureIcon,
+  [POICategory.MARKET]: marketIcon,
+  [POICategory.SPORT]: sportIcon,
+  [POICategory.PARK]: parkIcon,
+  [POICategory.UNDEFINED]: null,
 };
 
-const rasterSourceProps: RasterSourceProps = {
-  id: 'aireel_source',
-  tileUrlTemplates: [
-    'https://data.airpl.org/geoserver/aireel/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/jpeg&TRANSPARENT=true&STYLES=&LAYERS=aireel:aireel_indic_7m_atmo_deg&SRS=EPSG:3857&WIDTH=768&HEIGHT=497&BBOX={bbox-epsg-3857}',
-  ],
-  tileSize: 256,
-};
-
-export default () => {
-  useEffect(() => {
-    MapboxGL.setAccessToken('');
-  });
-
+const POIMarker = (poi: POI) => {
   return (
-    <View style={styles.container}>
-      <MapboxGL.MapView
-        // styleURL="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json" // leave it for now if we need to use this style
-        // styleURL="https://geoserveis.icgc.cat/contextmaps/positron.json" // same as `styleJSON`, but I prefer to keep the URL to prevent finding it if we decided to use it
-        styleJSON={styleJSON}
-        style={styles.map}
-        logoEnabled={false}
-        attributionEnabled={false}
-        rotateEnabled={false}
-        zoomEnabled
-        scrollEnabled>
-        <MapboxGL.Camera defaultSettings={defaultSettingsCamera} />
-        <MapboxGL.UserLocation visible renderMode="native" animated />
-        <MapboxGL.RasterSource {...rasterSourceProps}>
-          <MapboxGL.RasterLayer
-            id="airreel_layer"
-            aboveLayerID="landcover_glacier" // used to force the layer to draw below roads and buildings
-            sourceID="aireel_source"
-          />
-        </MapboxGL.RasterSource>
-      </MapboxGL.MapView>
-    </View>
+    <MapboxGL.PointAnnotation
+      coordinate={[poi.geolocation.lon, poi.geolocation.lat]}
+      anchor={{x: 0.5, y: 1}}
+      id={`${poi.id}`}
+      key={`poi-${poi.id}`}>
+      <View style={styles.markerContainer}>
+        <SvgXml
+          width="40"
+          height="46"
+          xml={markerBackground}
+          style={styles.markerBackground}
+        />
+        <SvgXml width="20" height="20" xml={icons[poi.category]} />
+      </View>
+    </MapboxGL.PointAnnotation>
+  );
+};
+
+export default ({pois}: ARMapViewProps) => {
+  return (
+    <>
+      <ARMap>{pois.map(POIMarker)}</ARMap>
+    </>
   );
 };
