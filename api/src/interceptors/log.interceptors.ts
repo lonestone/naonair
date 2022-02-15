@@ -1,9 +1,9 @@
 import {
-    CallHandler,
-    ExecutionContext,
-    Injectable,
-    Logger,
-    NestInterceptor
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  Logger,
+  NestInterceptor,
 } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -35,30 +35,6 @@ export class LoggingInterceptor implements NestInterceptor {
     return next
       .handle()
       .pipe(tap(() => log()))
-      .pipe(catchError((err) => throwError(() =>log(err))));
+      .pipe(catchError((err) => throwError(() => log(err))));
   }
-
-  // return call$
-  //   .pipe(
-  //     map(response => {
-  //       const msg =
-  //         response && response.data && Array.isArray(response.data) ? `OK - ${response.data.length} items` : `OK`;
-
-  //       // Save programs info asked by users at INFO level in order to keep logs. DEBUG messages will be purged.
-  //       if (method === 'GET' && (url as string).includes('/program')) {
-  //         this.logService.log(LogLevels.INFO, method, url, msg, user, body);
-  //       } else {
-  //         this.logService.log(LogLevels.DEBUG, method, url, msg, user, body);
-  //       }
-
-  //       return response;
-  //     }),
-  //   )
-  //   .pipe(
-  //     catchError(err => {
-  //       const logLevel = err.status && err.status < 500 ? LogLevels.WARN : LogLevels.ERROR;
-  //       this.logService.log(logLevel, method, url, err, user, body);
-  //       throw err;
-  //     }),
-  //   );
 }
