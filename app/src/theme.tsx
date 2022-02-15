@@ -6,9 +6,7 @@ declare global {
       myOwnColor: string;
     }
 
-    interface Theme {
-      myOwnProperty: boolean;
-    }
+    interface Theme {}
   }
 }
 
@@ -19,7 +17,9 @@ export const theme = {
   // Specify custom property in nested object
   colors: {
     ...DefaultTheme.colors,
-    primary: '#25244E',
-    myOwnColor: '#BADA55',
+    primary: '#4863F1',
+    accent: '#EDEFFE',
+    surface: '#EDEFFE',
+    white: 'white',
   },
 };

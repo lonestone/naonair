@@ -4,7 +4,7 @@ import {Caption, Headline} from 'react-native-paper';
 import {getAll, POICategory} from '../actions/poi';
 import ARFilter, {ARFilterItem} from '../components/atoms/ARFilter';
 import Header from '../components/molecules/ARHeader';
-import ARMapView from '../components/molecules/ARMapView';
+import ARMapView from '../components/templates/ARMapView';
 import SwitchToggle, {
   SwitchToggleItem,
 } from '../components/molecules/ARSwitchToggle';

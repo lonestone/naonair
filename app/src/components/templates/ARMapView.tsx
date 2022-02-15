@@ -11,6 +11,7 @@ import sportIcon from '../../assets/sport-icon.svg';
 import parkIcon from '../../assets/park-icon.svg';
 import markerBackground from '../../assets/marker-background.svg';
 import ARMap from '../atoms/ARMap';
+import ARLegend from '../molecules/ARLegend';
 
 export interface ARMapViewProps {
   pois: POI[];
@@ -34,6 +35,11 @@ const styles = StyleSheet.create({
       height: 8,
     },
   },
+  legends: {
+    position: 'absolute',
+    bottom: 30,
+    right: 30,
+  },
   markerBackground: {
     position: 'absolute',
   },
@@ -43,11 +49,11 @@ const styles = StyleSheet.create({
 });
 
 const icons = {
-  [POICategory.CULTURE]: cultureIcon,
-  [POICategory.MARKET]: marketIcon,
-  [POICategory.SPORT]: sportIcon,
-  [POICategory.PARK]: parkIcon,
-  [POICategory.UNDEFINED]: null,
+  [`${POICategory.CULTURE}`]: cultureIcon,
+  [`${POICategory.MARKET}`]: marketIcon,
+  [`${POICategory.SPORT}`]: sportIcon,
+  [`${POICategory.PARK}`]: parkIcon,
+  [`${POICategory.UNDEFINED}`]: null,
 };
 
 const POIMarker = (poi: POI) => {
@@ -68,7 +74,7 @@ const POIMarker = (poi: POI) => {
           width="20"
           height="20"
           style={styles.markerIcon}
-          xml={icons[poi.category]}
+          xml={icons[`${poi.category}`]}
         />
       </View>
     </MapboxGL.PointAnnotation>
@@ -79,6 +85,7 @@ export default ({pois}: ARMapViewProps) => {
   return (
     <>
       <ARMap>{pois.map(POIMarker)}</ARMap>
+      <ARLegend style={styles.legends} />
     </>
   );
 };
