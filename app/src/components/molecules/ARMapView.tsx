@@ -18,12 +18,17 @@ export interface ARMapViewProps {
 
 const styles = StyleSheet.create({
   markerContainer: {
-    borderRadius: 20,
+    // borderRadius: 20,
+    overflow: 'visible',
+    width: 40,
+    height: 46,
+    backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: 'black',
     shadowOpacity: 0.1,
     shadowRadius: 10,
+    elevation: 2,
     shadowOffset: {
       width: 0,
       height: 8,
@@ -31,7 +36,9 @@ const styles = StyleSheet.create({
   },
   markerBackground: {
     position: 'absolute',
-    top: -10,
+  },
+  markerIcon: {
+    top: -2,
   },
 });
 
@@ -57,7 +64,12 @@ const POIMarker = (poi: POI) => {
           xml={markerBackground}
           style={styles.markerBackground}
         />
-        <SvgXml width="20" height="20" xml={icons[poi.category]} />
+        <SvgXml
+          width="20"
+          height="20"
+          style={styles.markerIcon}
+          xml={icons[poi.category]}
+        />
       </View>
     </MapboxGL.PointAnnotation>
   );
