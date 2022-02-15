@@ -2,7 +2,7 @@ import { MikroORM } from '@mikro-orm/core';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Inject, Logger, Module, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigModule, ConfigService, ConfigType } from '@nestjs/config';
-import mikroOrmConfig from '../../configs/mikro-orm.config';
+import mikroOrmConfig from 'src/mikro-orm.config';
 import ormConfig from '../../configs/orm.config';
 
 @Module({
