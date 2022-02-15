@@ -4,5 +4,6 @@
         "titleBar.activeBackground": "#7E1439",
         "titleBar.activeForeground": "#FEFCFD"
     },
-    "thunder-client.loadFromProject": true
+    "thunder-client.loadFromProject": true,
+    "files.autoSave": "onFocusChange"
 }
