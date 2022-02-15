@@ -2,6 +2,7 @@ import { NewsType } from '@aireal/dtos/dist/news.dto';
 import {
   DateType,
   Entity,
+  Enum,
   PrimaryKey,
   Property,
   Unique,
@@ -14,7 +15,7 @@ export class NewsEntity {
   @Unique()
   uuid: string = v4();
 
-  @Property({type: String})
+  @Enum({ items: () => NewsType })
   type: NewsType;
 
   @Property({ length: 200 })
