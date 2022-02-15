@@ -14,7 +14,7 @@ const config: MikroOrmModuleSyncOptions = {
   dbName: process.env.ORM_DB,
   clientUrl: process.env.ORM_URL,
   migrations: {
-    path: './migrations', // path to the folder with migrations
+    path: './src/migrations', // path to the folder with migrations
     transactional: true, // wrap each migration in a transaction
     disableForeignKeys: false, // wrap statements with `set foreign_key_checks = 0` or equivalent
   },
