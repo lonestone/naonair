@@ -28,6 +28,7 @@ const ARButtonIcon = ({
   backgroundColor,
   onClick,
   type,
+  disabled
 }: ARButtonProps<ButtonTypeMap>) => {
   return (
     <>
@@ -39,6 +40,7 @@ const ARButtonIcon = ({
           startIcon={icon}
           onClick={onClick}
           type={type}
+          disabled={disabled}
         >
           <Typography variant="button">{label}</Typography>
         </Button>

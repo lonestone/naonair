@@ -42,8 +42,6 @@ interface Props {
   fetchNews: () => Promise<void>;
 }
 
-// const type = typeof NewsDTO;
-
 const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -237,13 +235,16 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
             focused
             type="url"
             value={link}
+            required={!linkTitle ? false : true}
             onChange={(e) => setLink(e.target.value)}
-            onBlur={(e) => checkHttps(e.target.value)}
+            // onBlur={(e) => checkHttps(e.target.value)}
+            onFocus={(e) => checkHttps(e.target.value)}
           />
           <TextField
             label="Titre du lien"
             color="primary"
             focused
+            required={!link ? false : true}
             value={linkTitle}
             onChange={(e) => setLinkTitle(e.target.value)}
           />
@@ -263,6 +264,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
             type="submit"
             label={"Créer l'information"}
             icon={<Add />}
+            disabled={(!link && !linkTitle) || (linkTitle && link) ? false : true}
             backgroundColor="primary"
             onClick={handleSubmitCreate}
           />

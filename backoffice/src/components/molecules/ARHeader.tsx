@@ -14,7 +14,7 @@ const logoStyle: SxProps<Theme> = {
 };
 
 const ARHeader = () => {
-  const { removeCurrentToken } = useAuth();
+  const { token, removeCurrentToken } = useAuth();
 
   const handleLogout = useCallback(() => {
     removeCurrentToken?.();
@@ -23,14 +23,16 @@ const ARHeader = () => {
   return (
     <AppBar position="static" color="primary" sx={logoStyle}>
       <ARLogo style={{ width: "125px", height: "36px" }} />
-      <IconButton
-        aria-details="Déconnexion"
-        color="inherit"
-        onClick={handleLogout}
-        sx={{ width: 20, height: 20 }}
-      >
-        <LogoutIcon />
-      </IconButton>
+      {token && (
+        <IconButton
+          aria-details="Déconnexion"
+          color="inherit"
+          onClick={handleLogout}
+          sx={{ width: 20, height: 20 }}
+        >
+          <LogoutIcon />
+        </IconButton>
+      )}
     </AppBar>
   );
 };

@@ -56,6 +56,12 @@ export class NewsService {
       throw new BadRequestException(HttpErrors.EXISTING_CURRENT_NEWS);
     }
 
+    if (createNewsDTO.endDate < createNewsDTO.startDate) {
+      throw new BadRequestException(
+        HttpErrors.ENDDATE_CANNOT_START_BEFORE_STARTDATE,
+      );
+    }
+
     const newsEntity = await this.newsRepo.create(createNewsDTO);
     await this.newsRepo.persistAndFlush(newsEntity);
     this.deleteNewsInPast();
