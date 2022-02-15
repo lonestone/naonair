@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ARRoutes } from "./router/routes";
 
 const request = axios.create({
   withCredentials: true,
@@ -10,13 +11,19 @@ request.interceptors.request.use(
     if (token && token !== "" && config && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
       config.validateStatus = function (status) {
-        return status >= 200 && status < 500
-      }
+        return status >= 200 && status < 500;
+      };
     }
-
     return config;
   },
   (error) => {
+    if (
+      error.response.status === 401 &&
+      error.response.statusText === "Unauthorized"
+    ) {
+      localStorage.removeItem("access_token");
+      document.location.href = ARRoutes.Login;
+    }
     console.error("axios interceptors error : ", error);
     return error;
   },
