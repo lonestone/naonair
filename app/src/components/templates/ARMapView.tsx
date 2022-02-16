@@ -57,7 +57,7 @@ const icons = {
 
 const POIMarker = (poi: POI) => {
   return (
-    <MapboxGL.PointAnnotation
+    <MapboxGL.MarkerView
       coordinate={[poi.geolocation.lon, poi.geolocation.lat]}
       anchor={{x: 0.5, y: 1}}
       id={`${poi.id}`}
@@ -76,7 +76,7 @@ const POIMarker = (poi: POI) => {
           xml={icons[`${poi.category}`]}
         />
       </View>
-    </MapboxGL.PointAnnotation>
+    </MapboxGL.MarkerView>
   );
 };
 
