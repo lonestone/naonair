@@ -1,14 +1,14 @@
-import React, { ReactElement, useState } from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { Caption, Headline } from 'react-native-paper';
-import { getAll, POICategory } from '../actions/poi';
-import ARFilter, { ARFilterItem } from '../components/atoms/ARFilter';
+import React, {ReactElement, useState} from 'react';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {Caption, Headline} from 'react-native-paper';
+import {getAll, POICategory} from '../actions/poi';
+import ARFilter, {ARFilterItem} from '../components/atoms/ARFilter';
 import Header from '../components/molecules/ARHeader';
-import ARMapView from '../components/templates/ARMapView';
 import SwitchToggle, {
-  SwitchToggleItem
+  SwitchToggleItem,
 } from '../components/molecules/ARSwitchToggle';
 import ARListView from '../components/templates/ARListView';
+import ARMapView from '../components/templates/ARMapView';
 
 const styles = StyleSheet.create({
   container: {
@@ -50,7 +50,7 @@ export default () => {
       {
         key: 'list',
         icon: 'list',
-        render: () => <ARListView />,
+        render: () => <ARListView pois={pois} />,
       },
     ];
 

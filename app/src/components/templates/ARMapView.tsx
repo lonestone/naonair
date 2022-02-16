@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const icons = {
+export const icons = {
   [`${POICategory.CULTURE}`]: cultureIcon,
   [`${POICategory.MARKET}`]: marketIcon,
   [`${POICategory.SPORT}`]: sportIcon,
