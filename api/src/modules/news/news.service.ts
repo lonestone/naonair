@@ -44,7 +44,6 @@ export class NewsService {
   }
 
   async create(createNewsDTO: CreateNewsDTO): Promise<NewsDTO> {
-  
     const newsList = await this.newsRepo.findAll();
     // Check if there are already news for this period
     if (
@@ -73,6 +72,13 @@ export class NewsService {
     if (!news) {
       throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
     }
+
+    if (updateNewsDTO.endDate < news.startDate) {
+      throw new BadRequestException(
+        HttpErrors.ENDDATE_CANNOT_START_BEFORE_STARTDATE,
+      );
+    }
+
     wrap(news).assign(updateNewsDTO);
     await this.newsRepo.flush();
     this.deleteNewsInPast();

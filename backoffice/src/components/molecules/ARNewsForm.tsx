@@ -14,7 +14,7 @@ import {
   SxProps,
   TextareaAutosize,
   TextField,
-  Theme,
+  Theme
 } from "@mui/material";
 import { AxiosError } from "axios";
 import frLocale from "date-fns/locale/fr";
@@ -97,7 +97,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
       if (res.statusCode >= 400) {
         setSnackbarStatus?.({
           open: true,
-          message: `${res.error} : ${res.message}`,
+          message: `La date de fin ne peut pas être inférieure à la date de début`,
           severity: "error",
         });
         return;
@@ -134,10 +134,10 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
       };
       try {
         const res = await updateNews(updatedNews);
-        if (res.statusCode >= 400) {
+        if (res.statusCode >= 400) {          
           setSnackbarStatus?.({
             open: true,
-            message: `${res.error} : ${res.message}`,
+            message: `La date de fin ne peut pas être inférieure à la date de début`,
             severity: "error",
           });
           return;
@@ -149,7 +149,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
           message: "L'information a été modifiée",
           severity: "success",
         });
-      } catch (error: any) {
+      } catch (error: any) {      
         setSnackbarStatus?.({
           open: true,
           message: error.message,
@@ -217,12 +217,15 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
         </Grid>
         <Grid item md={6} xs={12} sx={gridItem}>
           <ARTitleChip label={"Rédigez le message"} chip={"3"} />
-          <TextareaAutosize
-            required
-            aria-label="Message (200 caractères maxi)"
-            minRows={3}
-            value={message}
+          <TextField
+            label="Message (200 caractères maxi)"
+            color="primary"
+            focused
             placeholder="Ceci est le début de votre message ..."
+            value={message}
+            minRows={3}
+            multiline
+            inputProps={{ maxLength: 200 }}
             onChange={(e) => setMessage(e.target.value)}
           />
         </Grid>
@@ -245,6 +248,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
             focused
             required={!link ? false : true}
             value={linkTitle}
+            inputProps={{ maxLength: 20 }}
             onChange={(e) => setLinkTitle(e.target.value)}
           />
         </Grid>
