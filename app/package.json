@@ -41,6 +41,7 @@
     "@babel/preset-env": "7.1.6",
     "@babel/runtime": "^7.16.7",
     "@react-native-community/eslint-config": "^3.0.1",
+    "@types/geojson": "^7946.0.8",
     "@types/jest": "^27.4.0",
     "@types/react": "^17.0.38",
     "@types/react-native": "^0.66.15",

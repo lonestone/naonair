@@ -397,6 +397,8 @@ PODS:
   - Sentry (7.9.0):
     - Sentry/Core (= 7.9.0)
   - Sentry/Core (7.9.0)
+  - RNVectorIcons (9.1.0):
+    - React-Core
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -620,6 +622,7 @@ SPEC CHECKSUMS:
   RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
+  RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

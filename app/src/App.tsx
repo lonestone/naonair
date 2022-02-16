@@ -30,7 +30,10 @@ const App = () => {
     <Provider theme={theme}>
       <StatusBar barStyle="dark-content" backgroundColor={theme.colors.white} />
       <NavigationContainer>
-        <Screens />
+        <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
+          <ARMapCrawler />
+        </SafeAreaView>
+        {/* <Screens /> */}
       </NavigationContainer>
     </Provider>
   );

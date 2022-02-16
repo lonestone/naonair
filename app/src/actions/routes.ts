@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BBox, LineString, Position } from 'geojson';
 import { API } from '../config.json';
 import { jsonToUrl } from '../utils/config';
@@ -105,4 +106,8 @@ export const calculateRoute = async (
   }
 
   return json;
+};
+
+export const saveMapSnapshot = async (uuid: string, image: string) => {
+  await AsyncStorage.setItem(uuid, image);
 };
