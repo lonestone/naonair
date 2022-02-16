@@ -20,9 +20,7 @@ export interface ARRouteItemProps extends ViewProps {}
 export default ({style}: ARRouteItemProps) => {
   return (
     <Card style={style}>
-      <View style={styles.mapContainer}>
-        <ARMap />
-      </View>
+      <View style={styles.mapContainer}>{/* <ARMap /> */}</View>
       <View style={styles.container}>
         <Text>Je suis un itinéraire</Text>
       </View>
