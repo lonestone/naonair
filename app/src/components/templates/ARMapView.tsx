@@ -12,6 +12,7 @@ import parkIcon from '../../assets/park-icon.svg';
 import markerBackground from '../../assets/marker-background.svg';
 import ARMap from '../atoms/ARMap';
 import ARLegend from '../molecules/ARLegend';
+import ARAlert from './ARAlert';
 
 export interface ARMapViewProps {
   pois: POI[];
@@ -84,6 +85,7 @@ export default ({pois}: ARMapViewProps) => {
   return (
     <>
       <ARMap>{pois.map(POIMarker)}</ARMap>
+      <ARAlert />
       <ARLegend style={styles.legends} />
     </>
   );
