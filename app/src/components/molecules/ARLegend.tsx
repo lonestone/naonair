@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View, ViewProps} from 'react-native';
 import {Card, Headline, Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {theme} from '../../theme';
 
 export interface ARLegendProps extends ViewProps {}
 
@@ -39,32 +40,32 @@ interface LegendItem {
 const items: LegendItem[] = [
   {
     label: 'extrêm. mauvais',
-    color: '#7D2081',
+    color: theme.colors.quality.purple,
     labelColor: '#FEF0FF',
   },
   {
     label: 'très mauvais',
-    color: '#960032',
+    color: theme.colors.quality.darkRed,
     labelColor: '#FFEAF4',
   },
   {
     label: 'mauvais',
-    color: '#FF5050',
+    color: theme.colors.quality.red,
     labelColor: '#FFEBEB',
   },
   {
     label: 'dégradé',
-    color: '#F0E641',
+    color: theme.colors.quality.yellow,
     labelColor: '#8D8500',
   },
   {
     label: 'moyen',
-    color: '#51CCA9',
+    color: theme.colors.quality.green,
     labelColor: '#E9FAF5',
   },
   {
     label: 'bon',
-    color: '#26D1C7',
+    color: theme.colors.quality.cyan,
     labelColor: '#EEFFFE',
   },
 ];
@@ -84,7 +85,7 @@ export default (props: ViewProps) => {
         {!isDeployed ? (
           <TouchableOpacity onPress={() => setDeployed(true)}>
             <View style={styles.closeContainer}>
-              <Icon name="help" size={20} color="#25244E" />
+              <Icon name="help" size={20} color={theme.colors.blue[500]} />
               <Text>Légende</Text>
             </View>
           </TouchableOpacity>
@@ -99,7 +100,7 @@ export default (props: ViewProps) => {
 
             <TouchableOpacity onPress={() => setDeployed(false)}>
               <View style={styles.closeContainer}>
-                <Icon name="clear" size={20} color="#25244E" />
+                <Icon name="clear" size={20} color={theme.colors.blue[500]} />
                 <Text>Fermer</Text>
               </View>
             </TouchableOpacity>

@@ -1,14 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from 'react';
+import {View} from 'react-native';
+import {POI} from '../../actions/poi';
+import ARListItem from '../molecules/ARListItem';
 
-const styles = StyleSheet.create({})
-
-const ARListView = () => {
-  return (
-    <View>
-      <Text>ARListView</Text>
-    </View>
-  )
+interface ARListViewProps {
+  pois: POI[];
 }
 
-export default ARListView
+const ARListView = ({pois}: ARListViewProps) => {
+  return (
+    <View>
+      {pois.map((poi, idx) => (        
+        <ARListItem key={idx} poiDetails={poi} />
+      ))}
+    </View>
+  );
+};
+
+export default ARListView;
