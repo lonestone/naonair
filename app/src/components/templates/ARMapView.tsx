@@ -84,7 +84,9 @@ const POIMarker = (poi: POI) => {
 export default ({pois}: ARMapViewProps) => {
   return (
     <>
-      <ARMap>{pois.map(POIMarker)}</ARMap>
+      <ARMap userLocationVisible interactionEnabled heatmapVisible>
+        {pois.map(POIMarker)}
+      </ARMap>
       <ARAlert />
       <ARLegend style={styles.legends} />
     </>

@@ -8,24 +8,20 @@
  * @format
  */
 
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import {StatusBar} from 'react-native';
 import {ThemeProvider} from 'react-native-paper';
-import {NewsDialog} from './components/templates/NewsDialog';
 import Screens from './Screens';
 import {theme} from './theme';
 
 const App = () => {
-  const [visible, setVisible] = React.useState(false);
-  const isDarkMode = false; // useColorScheme() === 'dark';
-
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Screens />
-      {visible && (
-        <NewsDialog visible={visible} onClose={() => setVisible(false)} />
-      )}
+      <StatusBar barStyle={'dark-content'} />
+      <NavigationContainer>
+        <Screens />
+      </NavigationContainer>
     </ThemeProvider>
   );
 };
