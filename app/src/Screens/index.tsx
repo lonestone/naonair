@@ -1,21 +1,23 @@
-import React, {useState} from 'react';
-import {BottomNavigation} from 'react-native-paper';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import React from 'react';
 import MapScreen from './MapScreen';
+import RoutesScreen from './RoutesScreen';
+
+const Tab = createMaterialBottomTabNavigator();
 
 export default () => {
-  const [index, setIndex] = useState(0);
-
-  const [routes] = useState([{key: 'map', title: 'Carte', icon: 'album'}]);
-
-  const renderScene = BottomNavigation.SceneMap({
-    map: () => <MapScreen />,
-  });
-
   return (
-    <BottomNavigation
-      navigationState={{index, routes}}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-    />
+    <Tab.Navigator screenOptions={{}}>
+      <Tab.Screen
+        name="Carte"
+        component={MapScreen}
+        options={{tabBarIcon: 'map'}}
+      />
+      <Tab.Screen
+        name="Itinéraires"
+        options={{tabBarIcon: 'run'}}
+        component={RoutesScreen}
+      />
+    </Tab.Navigator>
   );
 };

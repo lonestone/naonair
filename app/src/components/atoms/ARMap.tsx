@@ -29,7 +29,19 @@ const rasterSourceProps: RasterSourceProps = {
   tileSize: 256,
 };
 
-export default (props: ViewProps) => {
+export interface ARMapProps extends ViewProps {
+  userLocationVisible?: boolean;
+  heatmapVisible?: boolean;
+  interactionEnabled?: boolean;
+}
+
+export default ({
+  userLocationVisible,
+  heatmapVisible,
+  interactionEnabled,
+
+  children,
+}: ARMapProps) => {
   const cameraRef = React.createRef<MapboxGL.Camera>();
 
   useEffect(() => {
@@ -47,32 +59,36 @@ export default (props: ViewProps) => {
         logoEnabled={false}
         attributionEnabled={false}
         rotateEnabled={false}
-        zoomEnabled
-        scrollEnabled>
+        zoomEnabled={!!interactionEnabled}
+        scrollEnabled={!!interactionEnabled}>
         <MapboxGL.Camera
           ref={cameraRef}
           defaultSettings={defaultSettingsCamera}
         />
-        <MapboxGL.UserLocation
-          visible
-          renderMode="native"
-          animated
-          showsUserHeadingIndicator
-          onUpdate={location => {
-            cameraRef.current?.moveTo([
-              location.coords.longitude,
-              location.coords.latitude,
-            ]);
-          }}
-        />
-        <MapboxGL.RasterSource {...rasterSourceProps}>
-          <MapboxGL.RasterLayer
-            id="airreel_layer"
-            aboveLayerID="landcover_glacier" // used to force the layer to draw below roads and buildings
-            sourceID="aireel_source"
+        {userLocationVisible ? (
+          <MapboxGL.UserLocation
+            visible
+            renderMode="native"
+            animated
+            showsUserHeadingIndicator
+            onUpdate={location => {
+              cameraRef.current?.moveTo([
+                location.coords.longitude,
+                location.coords.latitude,
+              ]);
+            }}
           />
-        </MapboxGL.RasterSource>
-        {props.children}
+        ) : null}
+        {heatmapVisible ? (
+          <MapboxGL.RasterSource {...rasterSourceProps}>
+            <MapboxGL.RasterLayer
+              id="airreel_layer"
+              aboveLayerID="landcover_glacier" // used to force the layer to draw below roads and buildings
+              sourceID="aireel_source"
+            />
+          </MapboxGL.RasterSource>
+        ) : null}
+        {children || null}
       </MapboxGL.MapView>
     </View>
   );
