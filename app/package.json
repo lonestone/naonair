@@ -19,6 +19,7 @@
     "react-native-vector-icons": "^9.0.0"
   },
   "devDependencies": {
+    "@aireal/dtos": "file:../dtos",
     "@babel/core": "^7.16.7",
     "@babel/preset-env": "7.1.6",
     "@babel/runtime": "^7.16.7",
