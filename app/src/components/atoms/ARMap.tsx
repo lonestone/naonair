@@ -39,7 +39,6 @@ export default ({
   userLocationVisible,
   heatmapVisible,
   interactionEnabled,
-
   children,
 }: ARMapProps) => {
   const cameraRef = React.createRef<MapboxGL.Camera>();

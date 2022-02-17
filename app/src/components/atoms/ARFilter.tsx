@@ -6,6 +6,7 @@ import {theme} from '../../theme';
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    marginTop: 23
   },
   chip: {
     paddingHorizontal: 12,
