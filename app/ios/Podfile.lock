@@ -389,6 +389,8 @@ PODS:
   - RNScreens (3.12.0):
     - React-Core
     - React-RCTImage
+  - RNFS (2.18.0):
+    - React
   - RNSentry (3.2.13):
     - React-Core
     - Sentry (= 7.9.0)
@@ -463,6 +465,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -559,6 +562,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSentry:
@@ -620,6 +625,7 @@ SPEC CHECKSUMS:
   RNReanimated: e8afbe2a9e08e9e778ea72ddb1a8533445812621
   RNScreens: 2559f98b0835103cbef3b26ba77fa61d4bb37ae7
   RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
+  RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
   RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b

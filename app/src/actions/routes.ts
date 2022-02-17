@@ -4,6 +4,8 @@ import { API } from '../config.json';
 import { jsonToUrl } from '../utils/config';
 import { ARInstruction } from './instructions';
 import { QAType } from './qa';
+import RNFS from 'react-native-fs';
+import { Feature } from 'geojson';
 
 export interface ARPath {
   distance: number;
@@ -108,6 +110,47 @@ export const calculateRoute = async (
   return json;
 };
 
-export const saveMapSnapshot = async (uuid: string, image: string) => {
-  await AsyncStorage.setItem(uuid, image);
+const folderPath = `${RNFS.CachesDirectoryPath}/aireal-snapshots`;
+
+export const saveMapSnapshot = async (uuid: string, base64: string) => {
+  const path = `${folderPath}/${uuid}`;
+
+  try {
+    const isFolderExists = await RNFS.exists(folderPath);
+    if (!isFolderExists) {
+      await RNFS.mkdir(folderPath);
+    }
+
+    const isAlreadyExists = await RNFS.exists(path);
+    if (isAlreadyExists) {
+      throw 'FILE_ALREADY_EXISTS';
+    }
+
+    await RNFS.writeFile(path, base64);
+    console.log(`File written in ${path}`);
+  } catch (e) {
+    console.warn(e);
+  }
+};
+
+export const flushSnapshots = async () => {
+  const files = await RNFS.readDir(folderPath);
+  console.info({ files });
+
+  await Promise.all(
+    files.map(file => {
+      return RNFS.unlink(file.path);
+    }),
+  );
+};
+
+export const getMapSnapshot = async (uuid: string): Promise<string> => {
+  const path = `${folderPath}/${uuid}`;
+
+  const isExists = await RNFS.exists(path);
+  if (!isExists) {
+    throw 'FILE_NOT_EXISTING';
+  }
+
+  return await RNFS.readFile(path);
 };
