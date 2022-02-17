@@ -1,28 +1,15 @@
 import {RouteProp, useRoute} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Divider} from 'react-native-paper';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {POI} from '../../actions/poi';
-import {theme} from '../../theme';
 import ARMap from '../atoms/ARMap';
+import ARListItem from '../molecules/ARListItem';
+import ARForecasts from '../molecules/ARForecasts';
 import {POIMarker} from './ARMapView';
+import {Card} from 'react-native-paper';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 15,
-  },
-  map: {height: 300, width: 350, borderRadius: 2},
-  name: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: theme.colors.blue[500],
-  },
-  address: {
-    fontSize: 16,
-    color: theme.colors.blue[300],
-    lineHeight: 24,
-  },
+  map: { height: 300, borderRadius: 5, margin:15, overflow: 'hidden' },
 });
 
 type AppStackParamList = {
@@ -35,20 +22,21 @@ const ARPOIDetails = () => {
   const {params} = useRoute<POIDetailsRouteProp>();
 
   return (
-    <View style={styles.container}>
+    <ScrollView>
       {params && params.poiDetails && (
         <>
-          <View style={styles.map}>
-            <ARMap userLocationVisible interactionEnabled heatmapVisible>
-              <POIMarker {...params.poiDetails} />
-            </ARMap>
-          </View>
-          <Text style={styles.name}>{params.poiDetails.name}</Text>
-          <Text style={styles.address}>{params.poiDetails.adress}</Text>
-          <Divider />
+          <Card style={styles.map}>
+            <View style={{flex: 1}}>
+              <ARMap userLocationVisible interactionEnabled heatmapVisible>
+                <POIMarker {...params.poiDetails} />
+              </ARMap>
+            </View>
+          </Card>
+          <ARListItem poi={params.poiDetails} marginBottom={25} />
+          <ARForecasts poi={params.poiDetails}/>
         </>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

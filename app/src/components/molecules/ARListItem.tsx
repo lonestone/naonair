@@ -1,12 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Divider, List} from 'react-native-paper';
-import {SvgXml} from 'react-native-svg';
-import {POI} from '../../actions/poi';
-import {theme} from '../../theme';
-import {icons} from '../templates/ARMapView';
+import { StyleSheet, View } from 'react-native';
+import { Divider, List } from 'react-native-paper';
+import { SvgXml } from 'react-native-svg';
+import { POI } from '../../actions/poi';
+import { theme } from '../../theme';
+import { icons } from '../templates/ARMapView';
 
 const styles = StyleSheet.create({
   iconContainer: {
@@ -18,47 +18,58 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  description: {
-    fontSize: 12,
+  name: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: theme.colors.blue[500],
+  },
+  address: {
+    fontSize: 16,
     color: theme.colors.blue[300],
+    lineHeight: 24,
   },
 });
 
 interface ARListItemProps {
   poi: POI;
+  withIcon?: boolean;
+  marginBottom?: number;
 }
 
-export type NavigationScreenProp = NativeStackNavigationProp<any, "Details">;
+export type NavigationScreenProp = StackNavigationProp<any, 'Details'>;
 
-const ARListItem = ({poi}: ARListItemProps) => {
-  const navigation = useNavigation<NavigationScreenProp>()
+const ARListItem = ({poi, withIcon, marginBottom}: ARListItemProps) => {
+  const navigation = useNavigation<NavigationScreenProp>();
 
   return (
     <>
-      <Divider />
-      <View>
+      <View style={{marginBottom}}>
         <List.Item
           title={poi.name}
-          descriptionStyle={styles.description}
+          titleStyle={styles.name}
+          descriptionStyle={styles.address}
           description={poi.adress}
           onPress={() =>
             navigation.navigate('Details', {
               poiDetails: poi,
             })
           }
-          left={props => (
-            <List.Icon
-              {...props}
-              style={styles.iconContainer}
-              icon={() => (
-                <SvgXml
-                  width="20"
-                  height="20"
-                  xml={icons[`${poi.category}`]}
-                />
-              )}
-            />
-          )}
+          left={props =>
+            withIcon && (
+              <List.Icon
+                {...props}
+                style={styles.iconContainer}
+                icon={() => (
+                  <SvgXml
+                    width="20"
+                    height="20"
+                    xml={icons[`${poi.category}`]}
+                  />
+                )}
+              />
+            )
+          }
+          // right={props => }
         />
       </View>
       <Divider />

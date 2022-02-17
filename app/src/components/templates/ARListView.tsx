@@ -11,7 +11,7 @@ const ARListView = ({pois}: ARListViewProps) => {
   return (
     <View>
       {pois.map((poi, idx) => (
-        <ARListItem key={idx} poi={poi} />
+        <ARListItem key={idx} poi={poi} withIcon/>
       ))}
     </View>
   );

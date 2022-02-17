@@ -1,7 +1,7 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {Caption, Headline} from 'react-native-paper';
-import ARHeader from '../components/molecules/ARHeader';
+import ARHeader from '../components/atoms/ARHeader';
 import ARRoutesList from '../components/templates/ARRoutesList';
 
 const styles = StyleSheet.create({
