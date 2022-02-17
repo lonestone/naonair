@@ -25,7 +25,7 @@ export default () => {
   const [base64, setBase64] = useState<string[]>([]);
 
   useEffect(() => {
-    getAll().then(setRoutes);
+    setRoutes(getAll());
   }, []);
 
   const retreiveSnapshot = useCallback(() => {
@@ -45,28 +45,25 @@ export default () => {
     retreiveSnapshot();
   }, [retreiveSnapshot]);
 
-  const gatheringSnapshots = async (
-    mapRef: RefObject<MapboxGL.MapView>,
-    index: number,
-  ) => {
+  const gatheringSnapshots = async (mapRef: RefObject<MapboxGL.MapView>) => {
     console.log('Take Snap', index);
-    await new Promise(resolve => setTimeout(resolve, 500)); // need to make sure the map is correctly loaded
+    // await new Promise(resolve => setTimeout(resolve, 500)); // need to make sure the map is correctly loaded
     const img = await mapRef.current?.takeSnap(false);
 
     img && saveMapSnapshot(routes[index].name, img);
 
     if (index + 1 >= routes.length) {
-      // setIndex(0);
+      retreiveSnapshot();
       return;
     }
 
     setIndex(index + 1);
     // await new Promise(resolve => setTimeout(resolve, 500));
-    gatheringSnapshots(mapRef, index + 1);
+    // gatheringSnapshots(mapRef, index + 1);
   };
 
   const onMapLoaded = async (mapRef: RefObject<MapboxGL.MapView>) => {
-    await gatheringSnapshots(mapRef, index);
+    await gatheringSnapshots(mapRef);
     console.log('done');
   };
 
@@ -82,7 +79,7 @@ export default () => {
     return null;
   }
 
-  console.log(routes.length, index);
+  console.log(routes[index], index);
   const {bounds, center, geojson} = routes[index];
 
   return (
@@ -97,7 +94,7 @@ export default () => {
             paddingRight: 20,
           }}
           // center={center}
-          onMapLoaded={onMapLoaded}>
+          onFrameLoaded={onMapLoaded}>
           <MapboxGL.ShapeSource id="source1" lineMetrics={true} shape={geojson}>
             <MapboxGL.LineLayer id="layer1" style={lineStyle} />
           </MapboxGL.ShapeSource>

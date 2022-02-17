@@ -47,6 +47,8 @@ export interface ARMapProps extends ViewProps {
   cameraSettings?: CameraSettings;
   animationMode?: 'flyTo' | 'easeTo' | 'linearTo' | 'moveTo';
   onUserLocationChanged?: (location: MapboxGL.Location) => void;
+  cameraPadding?: CameraPadding;
+  onFrameLoaded?: (mapRef: RefObject<MapboxGL.MapView>) => void;
   onMapLoaded?: (
     mapRef: RefObject<MapboxGL.MapView>,
     cameraRef: RefObject<MapboxGL.Camera>,

@@ -106,6 +106,54 @@ export const calculateRoute = async (
 
   return json;
 };
+export interface Route {
+  name: string;
+  geojson: Turf.Feature;
+  bounds: { ne: Turf.Position; sw: Turf.Position };
+  center: Turf.Position;
+}
+
+export const getAll = (): Route[] => {
+  return (hugeTest as FeatureCollection).features
+    .splice(0, 20)
+    .filter(feature => feature.geometry !== null)
+    .map(feature => {
+      // const center = [0, 0];
+      // const bbox = [0, 0, 0, 0];
+      const center = Turf.centerOfMass(feature).geometry.coordinates;
+      const bbox = Turf.bbox(feature);
+
+      return {
+        name: `${feature.properties!['objectid'] as number}`,
+        geojson: feature,
+        bounds: {
+          ne: [bbox[0], bbox[1]],
+          sw: [bbox[2], bbox[3]],
+        },
+        center,
+      };
+    });
+
+  // return Promise.all(
+  //   routesJson.map(async route => {
+  //     console.info({route});
+
+  //     const routeJson = routes[route.geojson_name];
+  //     const center = Turf.centerOfMass(routeJson).geometry.coordinates;
+  //     const bbox = Turf.bbox(routeJson);
+  //     console.info({center, bbox});
+  //     return {
+  //       name: route.geojson_name,
+  //       geojson: routeJson,
+  //       bounds: {
+  //         ne: [bbox[0], bbox[1]],
+  //         sw: [bbox[2], bbox[3]],
+  //       },
+  //       center,
+  //     };
+  //   }),
+  // );
+};
 
 const folderPath = `${RNFS.CachesDirectoryPath}/aireal-snapshots`;
 
@@ -118,10 +166,10 @@ export const saveMapSnapshot = async (uuid: string, base64: string) => {
       await RNFS.mkdir(folderPath);
     }
 
-    const isAlreadyExists = await RNFS.exists(path);
-    if (isAlreadyExists) {
-      throw 'FILE_ALREADY_EXISTS';
-    }
+    // const isAlreadyExists = await RNFS.exists(path);
+    // if (isAlreadyExists) {
+    //   throw 'FILE_ALREADY_EXISTS';
+    // }
 
     await RNFS.writeFile(path, base64);
     console.log(`File written in ${path}`);
