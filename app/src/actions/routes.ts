@@ -1,11 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BBox, LineString, Position } from 'geojson';
+import RNFS from 'react-native-fs';
 import { API } from '../config.json';
 import { jsonToUrl } from '../utils/config';
 import { ARInstruction } from './instructions';
-import { QAType } from './qa';
-import RNFS from 'react-native-fs';
-import { Feature } from 'geojson';
 
 export interface ARPath {
   distance: number;

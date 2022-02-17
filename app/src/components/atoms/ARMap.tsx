@@ -28,11 +28,6 @@ const styles = StyleSheet.create({
 
 const styleJSON = JSON.stringify(require('../../assets/db/mapViewStyle.json'));
 
-const defaultSettingsCamera: CameraSettings = {
-  zoomLevel: 14,
-  centerCoordinate: [-1.56857384817453, 47.20300691709389],
-};
-
 const rasterSourceProps: RasterSourceProps = {
   id: 'aireel_source',
   tileUrlTemplates: [
@@ -93,6 +88,14 @@ const ARMap = (
   const [bounds, setBounds] = useState<
     CameraPadding & { ne: Position; sw: Position }
   >();
+
+  const defaultSettingsCamera: CameraSettings = {
+    zoomLevel: 14,
+    centerCoordinate: [-1.56857384817453, 47.20300691709389],
+    bounds,
+  };
+
+  // console.log({bbox, center});
 
   useEffect(() => {
     bbox &&
