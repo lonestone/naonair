@@ -1,3 +1,5 @@
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Divider, List} from 'react-native-paper';
@@ -23,19 +25,27 @@ const styles = StyleSheet.create({
 });
 
 interface ARListItemProps {
-  poiDetails: POI;
+  poi: POI;
 }
 
-const ARListItem = ({poiDetails}: ARListItemProps) => {
+export type NavigationScreenProp = NativeStackNavigationProp<any, "Details">;
+
+const ARListItem = ({poi}: ARListItemProps) => {
+  const navigation = useNavigation<NavigationScreenProp>()
+
   return (
     <>
       <Divider />
       <View>
         <List.Item
-          title={poiDetails.name}
+          title={poi.name}
           descriptionStyle={styles.description}
-          description={poiDetails.adress}
-          onPress={() => console.log('POI', poiDetails)}
+          description={poi.adress}
+          onPress={() =>
+            navigation.navigate('Details', {
+              poiDetails: poi,
+            })
+          }
           left={props => (
             <List.Icon
               {...props}
@@ -44,7 +54,7 @@ const ARListItem = ({poiDetails}: ARListItemProps) => {
                 <SvgXml
                   width="20"
                   height="20"
-                  xml={icons[`${poiDetails.category}`]}
+                  xml={icons[`${poi.category}`]}
                 />
               )}
             />

@@ -7,11 +7,11 @@ interface ARListViewProps {
   pois: POI[];
 }
 
-const ARListView = ({pois}: ARListViewProps) => {
+const ARListView = ({pois}: ARListViewProps) => {  
   return (
     <View>
-      {pois.map((poi, idx) => (        
-        <ARListItem key={idx} poiDetails={poi} />
+      {pois.map((poi, idx) => (
+        <ARListItem key={idx} poi={poi} />
       ))}
     </View>
   );

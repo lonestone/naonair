@@ -19,7 +19,6 @@ export const theme = {
     ...DefaultTheme.colors,
     primary: '#4863F1',
     accent: '#EDEFFE',
-    surface: '#EDEFFE',
     white: 'white',
     blue: {
       300: "#8382A6",
