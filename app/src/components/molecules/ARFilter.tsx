@@ -1,7 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Text} from 'react-native-paper';
-import {theme} from '../../theme';
+import React, {ReactElement, useEffect, useState} from 'react';
+import {ScrollView, StyleSheet} from 'react-native';
 import ARFilterItemComponent from '../atoms/ARFilterItemComponent';
 
 const styles = StyleSheet.create({
@@ -15,6 +13,7 @@ export interface ARFilterItem {
   label: string;
   selected?: boolean;
   value: any;
+  icon?: ReactElement | ((selected: boolean) => ReactElement);
 }
 
 export interface ARFilterProps {
@@ -27,7 +26,7 @@ export default ({items, onChange, multiple}: ARFilterProps) => {
   const [propsItems, setPropsItems] = useState<ARFilterItem[]>(items);
 
   useEffect(() => {
-    selectAll();
+    multiple && selectAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -57,17 +56,20 @@ export default ({items, onChange, multiple}: ARFilterProps) => {
       horizontal
       showsHorizontalScrollIndicator={false}>
       <>
-        <ARFilterItemComponent
-          key="arfilter-item-all"
-          label="Tous"
-          selected={filtered.length === propsItems.length}
-          onPress={selectAll}
-        />
+        {multiple && (
+          <ARFilterItemComponent
+            key="arfilter-item-all"
+            label="Tous"
+            selected={filtered.length === propsItems.length}
+            onPress={selectAll}
+          />
+        )}
         {propsItems.map((item, index) => (
           <ARFilterItemComponent
             key={`arfilter-item-${index}`}
             label={item.label}
             selected={!!item.selected && filtered.length !== propsItems.length}
+            icon={item.icon}
             onPress={() => selectOne(index)}
           />
         ))}

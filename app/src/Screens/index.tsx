@@ -2,6 +2,7 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
+import ItineraryScreen from './ItineraryScreen';
 import MapScreen from './MapScreen';
 import RoutesScreen from './RoutesScreen';
 
@@ -17,6 +18,11 @@ const Home = () => (
     />
     <Tab.Screen
       name="Itinéraires"
+      options={{tabBarIcon: 'near-me'}}
+      component={ItineraryScreen}
+    />
+    <Tab.Screen
+      name="Parcours"
       options={{tabBarIcon: 'run'}}
       component={RoutesScreen}
     />

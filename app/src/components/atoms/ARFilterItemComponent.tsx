@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Text} from 'react-native-paper';
 import {theme} from '../../theme';
@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 20,
     backgroundColor: theme.colors.accent,
+    alignItems: 'center',
   },
   selectedChip: {
     backgroundColor: theme.colors.primary,
@@ -27,6 +28,7 @@ const styles = StyleSheet.create({
 interface ARFilterItemProps {
   label: string;
   selected: boolean;
+  icon?: ReactElement | ((selected: boolean) => ReactElement);
   onPress?: () => void;
 }
 
@@ -34,6 +36,7 @@ const ARFilterItemComponent = ({
   label,
   selected,
   onPress,
+  icon,
 }: ARFilterItemProps) => {
   const styleChip = selected
     ? StyleSheet.flatten([styles.chip, styles.selectedChip])
@@ -46,6 +49,7 @@ const ARFilterItemComponent = ({
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styleChip}>
+        {typeof icon === 'function' ? icon(selected) : icon}
         <Text style={styleChipLabel}>{label}</Text>
       </View>
     </TouchableOpacity>
