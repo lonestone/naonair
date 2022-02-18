@@ -1,12 +1,10 @@
-import { createStackNavigator } from '@react-navigation/stack';
-import React, { ReactElement, useState } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
-import { getAll, POICategory } from '../actions/poi';
+import React, {ReactElement, useState} from 'react';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import {getAll, POICategory} from '../actions/poi';
 import ARPOIHeader from '../components/molecules/ARPOIHeader';
-import { SwitchToggleItem } from '../components/molecules/ARSwitchToggle';
+import {SwitchToggleItem} from '../components/molecules/ARSwitchToggle';
 import ARListView from '../components/templates/ARListView';
 import ARMapView from '../components/templates/ARMapView';
-import ARPOIDetails from '../components/templates/ARPOIDetails';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,7 +18,6 @@ export default () => {
   const [selectedCategories, setSelectedCategories] = useState<POICategory[]>(
     [],
   );
-  const Stack = createStackNavigator();
 
   const pois = getAll(selectedCategories);
 
@@ -29,47 +26,25 @@ export default () => {
       {
         key: 'map',
         icon: 'map',
-        render: () => (
-          <Stack.Screen name="Map">
-            {() => <ARMapView pois={pois} />}
-          </Stack.Screen>
-        ),
+        render: () => <ARMapView pois={pois} />,
       },
       {
         key: 'list',
         icon: 'list',
-        render: () => (
-          <Stack.Screen name="List">
-            {() => <ARListView pois={pois} />}
-          </Stack.Screen>
-        ),
+        render: () => <ARListView pois={pois} />,
       },
     ];
 
   return (
     <>
+      <ARPOIHeader
+        displayTypeIndex={displayTypeIndex}
+        displayTypeItems={displayTypeItems}
+        setDisplayTypeIndex={setDisplayTypeIndex}
+        setSelectedCategories={setSelectedCategories}
+      />
       <SafeAreaView style={styles.container}>
-        <Stack.Navigator
-          screenOptions={{cardStyle: {backgroundColor: 'white'}}}>
-          <Stack.Group
-            screenOptions={{
-              header: () => (
-                <ARPOIHeader
-                  displayTypeIndex={displayTypeIndex}
-                  displayTypeItems={displayTypeItems}
-                  setDisplayTypeIndex={setDisplayTypeIndex}
-                  setSelectedCategories={setSelectedCategories}
-                />
-              ),
-            }}>
-            {displayTypeItems[displayTypeIndex].render()}
-          </Stack.Group>
-          <Stack.Screen
-            name="Details"
-            component={ARPOIDetails}
-            options={{headerTitle: 'Détail'}}
-          />
-        </Stack.Navigator>
+        {displayTypeItems[displayTypeIndex].render()}
       </SafeAreaView>
     </>
   );

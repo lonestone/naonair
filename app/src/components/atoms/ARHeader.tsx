@@ -1,5 +1,6 @@
 import React, {ReactElement} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export interface HeaderProps {
   children: ReactElement;
@@ -20,5 +21,9 @@ const styles = StyleSheet.create({
 });
 
 export default ({children}: HeaderProps) => {
-  return <View style={styles.container}>{children}</View>;
+  return (
+    <View style={styles.container}>
+      <SafeAreaView edges={['top', 'left', 'right']}>{children}</SafeAreaView>
+    </View>
+  );
 };
