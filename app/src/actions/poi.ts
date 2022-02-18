@@ -58,7 +58,7 @@ export const getOne = (id: number) => {
 };
 
 export const geocoding = async (query: string): Promise<FeatureCollection> => {
-  const API_ENDPOINT = 'https://api-adresse.data.gouv.fr/search/?q=';
+  const API_ENDPOINT = 'https://api-adresse.data.gouv.fr/search/?limit=20&q=';
   const response = await fetch(`${API_ENDPOINT}${encodeURIComponent(query)}`);
   return await response.json();
 };
