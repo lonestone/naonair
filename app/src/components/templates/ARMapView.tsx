@@ -56,7 +56,7 @@ export const icons = {
   [`${POICategory.UNDEFINED}`]: null,
 };
 
-export const POIMarker = (poi: POI) => {  
+export const POIMarker = (poi: POI) => {
   return (
     <MapboxGL.MarkerView
       coordinate={[poi.geolocation.lon, poi.geolocation.lat]}

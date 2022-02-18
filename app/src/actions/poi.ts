@@ -1,3 +1,4 @@
+import {FeatureCollection} from 'geojson';
 import poiJson from '../poi.json';
 
 export enum POICategory {
@@ -54,4 +55,10 @@ export const getAll = (categories: POICategory[]) => {
 
 export const getOne = (id: number) => {
   return POIs[id];
+};
+
+export const geocoding = async (query: string): Promise<FeatureCollection> => {
+  const API_ENDPOINT = 'https://api-adresse.data.gouv.fr/search/?q=';
+  const response = await fetch(`${API_ENDPOINT}${encodeURIComponent(query)}`);
+  return await response.json();
 };
