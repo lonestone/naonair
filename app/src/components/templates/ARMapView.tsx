@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const icons = {
+export const icons = {
   [`${POICategory.CULTURE}`]: cultureIcon,
   [`${POICategory.MARKET}`]: marketIcon,
   [`${POICategory.SPORT}`]: sportIcon,
@@ -56,7 +56,7 @@ const icons = {
   [`${POICategory.UNDEFINED}`]: null,
 };
 
-const POIMarker = (poi: POI) => {
+export const POIMarker = (poi: POI) => {  
   return (
     <MapboxGL.MarkerView
       coordinate={[poi.geolocation.lon, poi.geolocation.lat]}
