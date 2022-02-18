@@ -22,14 +22,18 @@ export interface ARGeocodingProps {
   value?: string;
   label: string;
   placeholder?: string;
+  onResults?: (results: Feature[]) => void;
 }
 
-export default ({label, value, placeholder}: ARGeocodingProps) => {
+export default ({label, value, placeholder, onResults}: ARGeocodingProps) => {
   const [text, setText] = useState<string>(value || '');
   const [results, setResults] = useState<Feature[]>([]);
-  const [showResults, setShowResults] = useState<boolean>(false);
 
   const searchTimeout = useRef<number | null>(null);
+
+  useEffect(() => {
+    onResults && onResults(results);
+  }, [results, onResults]);
 
   useEffect(() => {
     console.info('new text', text);
@@ -43,7 +47,7 @@ export default ({label, value, placeholder}: ARGeocodingProps) => {
         console.info(features);
         setResults(features);
       });
-    }, 200) as unknown as number;
+    }, 500) as unknown as number;
   }, [text]);
 
   return (
@@ -53,13 +57,11 @@ export default ({label, value, placeholder}: ARGeocodingProps) => {
         placeholder={placeholder}
         label={label}
         style={{position: 'relative', zIndex: -1}}
-        onFocus={() => setShowResults(true)}
-        onBlur={() => setShowResults(false)}
         value={text}
         onChangeText={setText}
       />
-      <View>
-        {showResults && (
+      {/* <View> */}
+      {/* {showResults && (
           <Surface style={styles.resultsContainer}>
             <ScrollView>
               {(results || []).map(result => (
@@ -67,8 +69,8 @@ export default ({label, value, placeholder}: ARGeocodingProps) => {
               ))}
             </ScrollView>
           </Surface>
-        )}
-      </View>
+        )} */}
+      {/* </View> */}
     </>
   );
 };
