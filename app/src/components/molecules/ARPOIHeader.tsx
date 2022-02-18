@@ -1,11 +1,10 @@
 import React, {Dispatch, ReactElement, SetStateAction} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Caption, Headline} from 'react-native-paper';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {POICategory} from '../../actions/poi';
 import {theme} from '../../theme';
-import ARFilter, {ARFilterItem} from './ARFilter';
 import ARHeader from '../atoms/ARHeader';
+import ARFilter, {ARFilterItem} from './ARFilter';
 import ARSwitchToggle, {SwitchToggleItem} from './ARSwitchToggle';
 
 const styles = StyleSheet.create({
@@ -43,7 +42,7 @@ const ARPOIHeader = ({
 }: Props) => {
   return (
     <ARHeader>
-      <SafeAreaView>
+      <>
         <View style={styles.headlineContainer}>
           <Headline style={styles.headline}>Les points d'intérêts</Headline>
           <ARSwitchToggle
@@ -63,7 +62,7 @@ const ARPOIHeader = ({
             setSelectedCategories(items.map(item => item.value));
           }}
         />
-      </SafeAreaView>
+      </>
     </ARHeader>
   );
 };
