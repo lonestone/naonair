@@ -3,25 +3,14 @@ import { StyleSheet, TouchableOpacity, View, ViewProps } from 'react-native';
 import { Card, Headline, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { theme } from '../../theme';
+import { legendItems } from '../../types/legends';
+import ARQAChip from '../atoms/ARQAChip';
 
 export interface ARLegendProps extends ViewProps {}
 
 const styles = StyleSheet.create({
   container: {
     borderRadius: 16,
-  },
-  chip: {
-    flex: 0,
-    alignSelf: 'flex-start',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginVertical: 5,
-  },
-  chipLabel: {
-    color: 'white',
-    fontSize: 10,
-    fontWeight: 'bold',
   },
   closeContainer: {
     flexDirection: 'row',
@@ -31,51 +20,8 @@ const styles = StyleSheet.create({
   },
 });
 
-interface LegendItem {
-  label: string;
-  color: string;
-  labelColor: string;
-}
-
-const items: LegendItem[] = [
-  {
-    label: 'extrêm. mauvais',
-    color: theme.colors.quality.purple,
-    labelColor: '#FEF0FF',
-  },
-  {
-    label: 'très mauvais',
-    color: theme.colors.quality.darkRed,
-    labelColor: '#FFEAF4',
-  },
-  {
-    label: 'mauvais',
-    color: theme.colors.quality.red,
-    labelColor: '#FFEBEB',
-  },
-  {
-    label: 'dégradé',
-    color: theme.colors.quality.yellow,
-    labelColor: '#8D8500',
-  },
-  {
-    label: 'moyen',
-    color: theme.colors.quality.green,
-    labelColor: '#E9FAF5',
-  },
-  {
-    label: 'bon',
-    color: theme.colors.quality.cyan,
-    labelColor: '#EEFFFE',
-  },
-];
-
 export default (props: ViewProps) => {
   const [isDeployed, setDeployed] = useState(false);
-
-  const styleChip = (item: LegendItem) => {
-    return StyleSheet.flatten([styles.chip, { backgroundColor: item.color }]);
-  };
 
   return (
     <Card
@@ -92,10 +38,8 @@ export default (props: ViewProps) => {
         ) : (
           <View>
             <Headline>Qualité de l'air</Headline>
-            {items.map((item, index) => (
-              <View key={`legend-${index}`} style={styleChip(item)}>
-                <Text style={styles.chipLabel}>{item.label}</Text>
-              </View>
+            {legendItems.map((item, index) => (
+              <ARQAChip key={`legend-${index}`} item={item} />
             ))}
 
             <TouchableOpacity onPress={() => setDeployed(false)}>
