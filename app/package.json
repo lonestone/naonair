@@ -16,6 +16,7 @@
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "@react-navigation/stack": "^6.1.1",
+    "@types/geojson": "^7946.0.8",
     "babel-plugin-inline-import": "^3.0.0",
     "react": "17.0.2",
     "react-native": "0.66.4",

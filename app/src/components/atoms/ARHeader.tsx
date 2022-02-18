@@ -8,7 +8,8 @@ export interface HeaderProps {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 18,
+    paddingTop: 10,
+    paddingBottom: 18,
     paddingHorizontal: 16,
     shadowColor: 'black',
     shadowOffset: {height: 8, width: 0},
