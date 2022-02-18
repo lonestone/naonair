@@ -1,12 +1,16 @@
-import React from 'react';
+import {Feature} from 'geojson';
+import React, {useState} from 'react';
 import {Keyboard, KeyboardAvoidingView, StyleSheet, View} from 'react-native';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {
+  ScrollView,
+  TouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
+import {Divider, List} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {theme} from '../../theme';
 import ARHeader from '../atoms/ARHeader';
 import ARFilter, {ARFilterItem} from '../molecules/ARFilter';
 import ARGeocoding from '../molecules/ARGeocoding';
-import {theme} from '../../theme';
 
 const styles = StyleSheet.create({
   container: {
@@ -60,24 +64,39 @@ const filterItems: ARFilterItem[] = [
 ];
 
 export default () => {
+  const [results, setResults] = useState<Feature[]>([]);
+
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="height"
+      contentContainerStyle={styles.container}>
       <TouchableWithoutFeedback
         onPress={Keyboard.dismiss}
+        style={styles.container}
         containerStyle={styles.container}>
-        <View>
+        <View style={styles.container}>
           <ARHeader>
-            <SafeAreaView edges={['left', 'right', 'top']}>
+            <>
               <View style={styles.row}>
                 <View style={styles.icons}></View>
                 <View style={styles.inputs}>
-                  <ARGeocoding label="Depuis" />
-                  <ARGeocoding label="Vers" />
+                  <ARGeocoding label="Depuis" onResults={setResults} />
+                  <ARGeocoding label="Vers" onResults={setResults} />
                 </View>
               </View>
               <ARFilter items={filterItems} onChange={() => {}} />
-            </SafeAreaView>
+            </>
           </ARHeader>
+
+          <ScrollView style={styles.container} indicatorStyle="black">
+            {(results || []).map(result => (
+              <React.Fragment key={result.properties?.id}>
+                <List.Item title={result.properties?.label} />
+                <Divider />
+              </React.Fragment>
+            ))}
+          </ScrollView>
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
