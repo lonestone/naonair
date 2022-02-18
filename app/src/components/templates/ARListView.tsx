@@ -17,7 +17,9 @@ const ARListView = ({ pois }: ARListViewProps) => {
         <ARListItem
           key={idx}
           poi={poi}
-          withIcon
+          isList
+          fontSizeDescription={12}
+          fontSizeTitle={16}
           onPress={() => {
             navigation.navigate('Details', {
               poiDetails: poi,

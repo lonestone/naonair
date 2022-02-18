@@ -4,8 +4,8 @@ import { Caption, Headline } from 'react-native-paper';
 import { POICategory } from '../../actions/poi';
 import { theme } from '../../theme';
 import ARHeader from '../atoms/ARHeader';
-import ARFilter, { ARFilterItem } from './ARFilter';
-import ARSwitchToggle, { SwitchToggleItem } from './ARSwitchToggle';
+import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
+import ARSwitchToggle, { SwitchToggleItem } from '../molecules/ARSwitchToggle';
 
 const styles = StyleSheet.create({
   headlineContainer: {

@@ -1,12 +1,14 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { POI } from '../../actions/poi';
-import ARMap from '../atoms/ARMap';
-import ARListItem from '../molecules/ARListItem';
-import ARForecasts from '../molecules/ARForecasts';
-import { POIMarker } from './ARMapView';
 import { Card } from 'react-native-paper';
+import { POI } from '../../actions/poi';
+import { theme } from '../../theme';
+import ARMap from '../atoms/ARMap';
+import ARQAChip from '../atoms/ARQAChip';
+import ARListItem from '../molecules/ARListItem';
+import ARForecasts from '../organisms/ARForecasts';
+import { POIMarker } from './ARMapView';
 
 const styles = StyleSheet.create({
   map: { height: 300, borderRadius: 5, margin: 15, overflow: 'hidden' },
@@ -32,8 +34,22 @@ const ARPOIDetails = () => {
               </ARMap>
             </View>
           </Card>
-          <ARListItem poi={params.poiDetails} marginBottom={25} />
-          <ARForecasts poi={params.poiDetails} />
+          <View>
+            <ARQAChip
+              item={{
+                label: 'dégradé',
+                color: theme.colors.quality.yellow,
+                labelColor: '#8D8500',
+              }}
+            />
+          </View>
+          <ARListItem
+            poi={params.poiDetails}
+            marginBottom={25}
+            fontSizeDescription={16}
+            fontSizeTitle={18}
+          />
+          <ARForecasts poi={params.poiDetails} forecastQA />
         </>
       )}
     </ScrollView>
