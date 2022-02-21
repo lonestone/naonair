@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
 import {Button} from 'react-native-paper';
 import {theme} from '../../theme';
 
@@ -17,6 +17,7 @@ type ARButtonType = {
   loading?: boolean;
   size?: ARButtonSize;
   onPress: any;
+  styleContainer?: StyleProp<ViewStyle>;
 };
 
 const styles = StyleSheet.create({
@@ -52,6 +53,7 @@ export const ARButton = ({
   disabled,
   size,
   onPress,
+  styleContainer,
 }: ARButtonType) => {
   return (
     <Button
@@ -60,11 +62,16 @@ export const ARButton = ({
       icon={icon ? icon : undefined}
       mode={mode || 'contained'}
       onPress={onPress}
-      contentStyle={reverse ? styles.contentStyle : undefined}
+      contentStyle={StyleSheet.flatten([
+        reverse ? styles.contentStyle : undefined,
+      ])}
       labelStyle={styles.labelStyle}
-      style={
-        size && size === ARButtonSize.Medium ? styles.mdButton : styles.smButton
-      }>
+      style={StyleSheet.flatten([
+        size && size === ARButtonSize.Medium
+          ? styles.mdButton
+          : styles.smButton,
+        styleContainer,
+      ])}>
       {label}
     </Button>
   );

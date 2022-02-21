@@ -1,12 +1,11 @@
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import {StackNavigationProp} from '@react-navigation/stack';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Divider, List } from 'react-native-paper';
-import { SvgXml } from 'react-native-svg';
-import { POI } from '../../actions/poi';
-import { theme } from '../../theme';
-import { icons } from '../templates/ARMapView';
+import {StyleSheet, View} from 'react-native';
+import {Divider, List} from 'react-native-paper';
+import {SvgXml} from 'react-native-svg';
+import {POI} from '../../actions/poi';
+import {theme} from '../../theme';
+import {icons} from '../templates/ARMapView';
 
 const styles = StyleSheet.create({
   iconContainer: {
@@ -34,13 +33,17 @@ interface ARListItemProps {
   poi: POI;
   withIcon?: boolean;
   marginBottom?: number;
+  onPress?: (poi: POI) => void;
 }
 
 export type NavigationScreenProp = StackNavigationProp<any, 'Details'>;
 
-const ARListItem = ({poi, withIcon, marginBottom}: ARListItemProps) => {
-  const navigation = useNavigation<NavigationScreenProp>();
-
+const ARListItem = ({
+  poi,
+  withIcon,
+  marginBottom,
+  onPress,
+}: ARListItemProps) => {
   return (
     <>
       <View style={{marginBottom}}>
@@ -49,11 +52,7 @@ const ARListItem = ({poi, withIcon, marginBottom}: ARListItemProps) => {
           titleStyle={styles.name}
           descriptionStyle={styles.address}
           description={poi.adress}
-          onPress={() =>
-            navigation.navigate('Details', {
-              poiDetails: poi,
-            })
-          }
+          onPress={() => onPress && onPress(poi)}
           left={props =>
             withIcon && (
               <List.Icon
