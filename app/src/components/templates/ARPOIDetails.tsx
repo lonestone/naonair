@@ -35,6 +35,16 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  description: {
+    color: theme.colors.blue[300],
+    lineHeight: 24,
+    fontSize: 16,
+  },
+  title: {
+    fontWeight: 'bold',
+    color: theme.colors.blue[500],
+    fontSize: 18,
+  },
 });
 
 type AppStackParamList = {
@@ -71,8 +81,8 @@ const ARPOIDetails = () => {
           <ARListItem
             poi={params.poiDetails}
             marginBottom={25}
-            fontSizeDescription={16}
-            fontSizeTitle={18}
+            titleStyle={styles.title}
+            descriptionStyle={styles.description}
           />
           <ARForecasts forecastQA />
         </>

@@ -1,3 +1,4 @@
+import { eachHourOfInterval, format, startOfTomorrow } from 'date-fns';
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {theme} from '../../theme';
@@ -16,15 +17,15 @@ const styles = StyleSheet.create({
 // TODO : exemple de tableau avec pour les heures le type de qa
 
 const ARForecastChart = () => {
-  const hours = Array.from(
-    Array(24 - new Date().getHours()),
-    (x, i) => ('0' + (23 - i)).slice(-2) + ':00',
-  ).reverse();
+  const intervalOfHours = eachHourOfInterval({
+    start: new Date(),
+    end: startOfTomorrow()
+  })
 
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
-        {hours.map((hour, i) => (
+        {intervalOfHours.map((hour, i) => (
           <ARChartPie key={i}  qa={{hour, color: ForecastColor.GOOD}} />
         ))}
       </ScrollView>
