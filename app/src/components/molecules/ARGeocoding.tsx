@@ -1,9 +1,9 @@
-import {Feature} from 'geojson';
+import {Feature, Point, Position} from 'geojson';
 import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Surface, Text, TextInput} from 'react-native-paper';
-import {geocoding} from '../../actions/poi';
+import {geocoding, reverse} from '../../actions/poi';
 
 // Gouv API usage
 // https://adresse.data.gouv.fr/api-doc/adresse
@@ -19,36 +19,54 @@ const styles = StyleSheet.create({
 });
 
 export interface ARGeocodingProps {
-  value?: string;
+  value?: Position;
   label: string;
   placeholder?: string;
   onResults?: (results: Feature[]) => void;
+  onFocus?: () => void;
 }
 
 export default ({label, value, placeholder, onResults}: ARGeocodingProps) => {
-  const [text, setText] = useState<string>(value || '');
+  const [didMount, setDidMount] = useState(false);
+  const [text, setText] = useState<string>('');
   const [results, setResults] = useState<Feature[]>([]);
 
   const searchTimeout = useRef<number | null>(null);
 
   useEffect(() => {
+    setDidMount(true);
+  }, []);
+
+  useEffect(() => {
+    if (value) {
+      reverse(value!).then(({features}) => {
+        if (features.length > 0) {
+          setText(features[0].properties?.label);
+        }
+      });
+    }
+  }, [value]);
+
+  useEffect(() => {
     onResults && onResults(results);
   }, [results, onResults]);
 
-  useEffect(() => {
-    console.info('new text', text);
+  const onChangeText = (newValue: string) => {
+    console.info('new text', newValue);
+
+    setText(newValue);
 
     if (searchTimeout.current) {
       clearTimeout(searchTimeout.current);
     }
 
     searchTimeout.current = setTimeout(() => {
-      geocoding(text).then(({features}) => {
+      geocoding(newValue).then(({features}) => {
         console.info(features);
         setResults(features);
       });
     }, 500) as unknown as number;
-  }, [text]);
+  };
 
   return (
     <>
@@ -58,7 +76,7 @@ export default ({label, value, placeholder, onResults}: ARGeocodingProps) => {
         label={label}
         style={{position: 'relative', zIndex: -1}}
         value={text}
-        onChangeText={setText}
+        onChangeText={onChangeText}
       />
       {/* <View> */}
       {/* {showResults && (

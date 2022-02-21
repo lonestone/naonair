@@ -1,4 +1,4 @@
-import {FeatureCollection} from 'geojson';
+import {FeatureCollection, Position} from 'geojson';
 import poiJson from '../poi.json';
 
 export enum POICategory {
@@ -55,6 +55,17 @@ export const getAll = (categories: POICategory[]) => {
 
 export const getOne = (id: number) => {
   return POIs[id];
+};
+
+export const reverse = async ([
+  lon,
+  lat,
+]: Position): Promise<FeatureCollection> => {
+  const API_ENDPOINT = `https://api-adresse.data.gouv.fr/reverse/?lon=${encodeURIComponent(
+    lon,
+  )}&lat=${encodeURIComponent(lat)}`;
+  const response = await fetch(API_ENDPOINT);
+  return await response.json();
 };
 
 export const geocoding = async (query: string): Promise<FeatureCollection> => {
