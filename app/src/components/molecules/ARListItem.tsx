@@ -1,11 +1,11 @@
-import {StackNavigationProp} from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Divider, List} from 'react-native-paper';
-import {SvgXml} from 'react-native-svg';
-import {POI} from '../../actions/poi';
-import {theme} from '../../theme';
-import {icons} from '../templates/ARMapView';
+import { StyleSheet, View } from 'react-native';
+import { Divider, List } from 'react-native-paper';
+import { SvgXml } from 'react-native-svg';
+import { POI } from '../../actions/poi';
+import { theme } from '../../theme';
+import { icons } from '../templates/ARMapView';
 
 const styles = StyleSheet.create({
   iconContainer: {
@@ -46,7 +46,7 @@ const ARListItem = ({
 }: ARListItemProps) => {
   return (
     <>
-      <View style={{marginBottom}}>
+      <View style={{ marginBottom }}>
         <List.Item
           title={poi.name}
           titleStyle={styles.name}

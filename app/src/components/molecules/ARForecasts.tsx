@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {List, Text} from 'react-native-paper';
-import {POI} from '../../actions/poi';
-import {theme} from '../../theme';
-import {Forecasts} from '../../types/forecasts';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { List, Text } from 'react-native-paper';
+import { POI } from '../../actions/poi';
+import { theme } from '../../theme';
+import { Forecasts } from '../../types/forecasts';
 import ARFilterItemComponent from '../atoms/ARFilterItemComponent';
-import {ARFilterItem} from './ARFilter';
+import { ARFilterItem } from './ARFilter';
 
 const styles = StyleSheet.create({
-  container: {paddingTop: 25},
+  container: { paddingTop: 25 },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -30,15 +30,15 @@ const styles = StyleSheet.create({
 });
 
 const filters: ARFilterItem[] = [
-  {label: "aujourd'hui", value: Forecasts.TODAY},
-  {label: 'demain', value: Forecasts.TOMORROW},
+  { label: "aujourd'hui", value: Forecasts.TODAY },
+  { label: 'demain', value: Forecasts.TOMORROW },
 ];
 
 interface Props {
   poi: POI;
 }
 
-const ARForecasts = ({poi}: Props) => {
+const ARForecasts = ({ poi }: Props) => {
   const [selectedFilter, setSelectedFilter] = useState(0);
   return (
     <View style={styles.container}>

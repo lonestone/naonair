@@ -1,10 +1,16 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Caption, Dialog, Paragraph, Portal, Provider} from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import {
+  Caption,
+  Dialog,
+  Paragraph,
+  Portal,
+  Provider,
+} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {theme} from '../../theme';
-import {ARButton, ARButtonSize} from '../atoms/ARButton';
-import {ARLink} from '../atoms/ARLink';
+import { theme } from '../../theme';
+import { ARButton, ARButtonSize } from '../atoms/ARButton';
+import { ARLink } from '../atoms/ARLink';
 
 type NewsDialogType = {
   visible: boolean;
@@ -33,7 +39,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const NewsDialog = ({onClose}: NewsDialogType) => {
+export const NewsDialog = ({ onClose }: NewsDialogType) => {
   return (
     <Provider>
       <View>
