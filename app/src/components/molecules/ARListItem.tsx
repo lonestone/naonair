@@ -47,6 +47,12 @@ const ARListItem = ({
   fontSizeTitle,
   fontSizeDescription,
 }: ARListItemProps) => {
+  const poiQA = {
+    label: 'dégradé',
+    color: theme.colors.quality.yellow,
+    labelColor: '#8D8500',
+  };
+
   return (
     <>
       <View style={{ marginBottom }}>
@@ -79,13 +85,9 @@ const ARListItem = ({
           }
           right={() =>
             isList && (
-              <ARQAChip
-                item={{
-                  label: 'dégradé',
-                  color: theme.colors.quality.yellow,
-                  labelColor: '#8D8500',
-                }}
-              />
+              <View style={{ justifyContent: 'center' }}>
+                <ARQAChip size="sm" item={poiQA} />
+              </View>
             )
           }
         />

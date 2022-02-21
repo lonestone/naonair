@@ -11,7 +11,30 @@ import ARForecasts from '../organisms/ARForecasts';
 import { POIMarker } from './ARMapView';
 
 const styles = StyleSheet.create({
-  map: { height: 300, borderRadius: 5, margin: 15, overflow: 'hidden' },
+  map: {
+    height: 300,
+    borderRadius: 16,
+    margin: 15,
+  },
+  chipWrapper: {
+    position: 'absolute',
+    bottom: -20,
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
 });
 
 type AppStackParamList = {
@@ -23,25 +46,27 @@ type POIDetailsRouteProp = RouteProp<AppStackParamList>;
 const ARPOIDetails = () => {
   const { params } = useRoute<POIDetailsRouteProp>();
 
+  const poiQA = {
+    label: 'dégradé',
+    color: theme.colors.quality.yellow,
+    labelColor: '#8D8500',
+  };
+
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: 'white' }}>
       {params && params.poiDetails && (
         <>
-          <Card style={styles.map}>
-            <View style={{ flex: 1 }}>
-              <ARMap userLocationVisible interactionEnabled heatmapVisible>
-                <POIMarker {...params.poiDetails} />
-              </ARMap>
-            </View>
-          </Card>
           <View>
-            <ARQAChip
-              item={{
-                label: 'dégradé',
-                color: theme.colors.quality.yellow,
-                labelColor: '#8D8500',
-              }}
-            />
+            <Card style={styles.map}>
+              <View style={{ flex: 1, borderRadius: 16, overflow: 'hidden' }}>
+                <ARMap userLocationVisible interactionEnabled heatmapVisible>
+                  <POIMarker {...params.poiDetails} />
+                </ARMap>
+              </View>
+              <View style={styles.chipWrapper}>
+                <ARQAChip size="md" shadowStyle={styles.shadow} item={poiQA} />
+              </View>
+            </Card>
           </View>
           <ARListItem
             poi={params.poiDetails}
@@ -49,7 +74,7 @@ const ARPOIDetails = () => {
             fontSizeDescription={16}
             fontSizeTitle={18}
           />
-          <ARForecasts poi={params.poiDetails} forecastQA />
+          <ARForecasts forecastQA />
         </>
       )}
     </ScrollView>

@@ -38,9 +38,11 @@ export default (props: ViewProps) => {
         ) : (
           <View>
             <Headline>Qualité de l'air</Headline>
-            {legendItems.map((item, index) => (
-              <ARQAChip key={`legend-${index}`} item={item} />
-            ))}
+            <View style={{ alignItems: 'flex-start' }}>
+              {legendItems.map((item, index) => (
+                <ARQAChip size="sm" key={`legend-${index}`} item={item} />
+              ))}
+            </View>
 
             <TouchableOpacity onPress={() => setDeployed(false)}>
               <View style={styles.closeContainer}>
