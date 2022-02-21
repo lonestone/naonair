@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
 import { POI } from '../../actions/poi';
@@ -18,14 +18,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  name: {
-    fontWeight: 'bold',
-    color: theme.colors.blue[500],
-  },
-  address: {
-    color: theme.colors.blue[300],
-    lineHeight: 24,
-  },
 });
 
 interface ARListItemProps {
@@ -33,8 +25,8 @@ interface ARListItemProps {
   isList?: boolean;
   marginBottom?: number;
   onPress?: (poi: POI) => void;
-  fontSizeTitle?: any;
-  fontSizeDescription?: any;
+  titleStyle?: StyleProp<TextStyle>;
+  descriptionStyle?: StyleProp<TextStyle>;
 }
 
 export type NavigationScreenProp = StackNavigationProp<any, 'Details'>;
@@ -44,8 +36,8 @@ const ARListItem = ({
   onPress,
   poi,
   marginBottom,
-  fontSizeTitle,
-  fontSizeDescription,
+  titleStyle,
+  descriptionStyle,
 }: ARListItemProps) => {
   const poiQA = {
     label: 'dégradé',
@@ -58,16 +50,10 @@ const ARListItem = ({
       <View style={{ marginBottom }}>
         <List.Item
           title={poi.name}
-          titleStyle={[
-            styles.name,
-            fontSizeTitle && { fontSize: fontSizeTitle },
-          ]}
+          titleStyle={titleStyle}
           description={poi.adress}
           onPress={() => onPress && onPress(poi)}
-          descriptionStyle={[
-            styles.address,
-            fontSizeDescription && { fontSize: fontSizeDescription },
-          ]}
+          descriptionStyle={descriptionStyle}
           left={props =>
             isList && (
               <List.Icon

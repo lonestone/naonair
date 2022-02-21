@@ -16,5 +16,5 @@ export const ForecastColor = {
 
 export type ForecastType = {
   color: string;
-  hour: string;
+  hour: Date;
 };
