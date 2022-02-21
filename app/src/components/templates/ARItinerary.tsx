@@ -5,7 +5,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {POICategory} from '../../actions/poi';
 import {theme} from '../../theme';
 import {ARButton, ARButtonSize} from '../atoms/ARButton';
@@ -22,8 +22,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 0,
   },
+  input: {
+    flex: 0,
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   inputs: {
-    flex: 1,
+    flex: 0,
   },
   icons: {},
   calculateButton: {
@@ -32,6 +39,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     alignSelf: 'center',
+  },
+  iconInputs: {
+    position: 'absolute',
+    top: 70,
+    left: -6,
+  },
+  geocodingIcon: {
+    marginRight: 11,
+  },
+  geocodingInput: {
+    marginVertical: 8,
+    flex: 1,
   },
 });
 
@@ -87,6 +106,26 @@ export default () => {
 
   const [selectedField, setSelectedField] = useState<Field>(Field.START);
 
+  const renderInput = (label: string, field: Field, iconName: string) => {
+    return (
+      <View style={styles.input}>
+        <Icon
+          style={styles.geocodingIcon}
+          name={iconName}
+          size={10}
+          color={theme.colors.black[500]}
+        />
+        <ARGeocoding
+          label={label}
+          style={styles.geocodingInput}
+          onResults={setResults}
+          value={values[field]}
+          onFocus={() => setSelectedField(field)}
+        />
+      </View>
+    );
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -99,22 +138,15 @@ export default () => {
         <View style={styles.container}>
           <ARHeader>
             <>
-              <View style={styles.row}>
-                <View style={styles.icons}></View>
-                <View style={styles.inputs}>
-                  <ARGeocoding
-                    label="Depuis"
-                    onResults={setResults}
-                    value={values[Field.START]}
-                    onFocus={() => setSelectedField(Field.START)}
-                  />
-                  <ARGeocoding
-                    label="Vers"
-                    onResults={setResults}
-                    value={values[Field.END]}
-                    onFocus={() => setSelectedField(Field.END)}
-                  />
-                </View>
+              <View style={styles.inputs}>
+                {renderInput('Depuis', Field.START, 'circle-outline')}
+                {renderInput('Vers', Field.END, 'circle')}
+                <Icon
+                  name="arrow-down"
+                  style={styles.iconInputs}
+                  size={21}
+                  color={theme.colors.black[500]}
+                />
               </View>
               <ARFilter items={filterItems} onChange={() => {}} />
             </>
