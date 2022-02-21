@@ -13,7 +13,7 @@ import { theme } from '../../theme';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARHeader from '../atoms/ARHeader';
 import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
-import ARGeocoding from '../molecules/ARGeocoding';
+import ARAddressInput from '../molecules/ARAddressInput';
 import ARListItem, { NavigationScreenProp } from '../molecules/ARListItem';
 
 const styles = StyleSheet.create({
@@ -121,7 +121,7 @@ export default () => {
           size={10}
           color={theme.colors.black[500]}
         />
-        <ARGeocoding
+        <ARAddressInput
           label={label}
           style={styles.geocodingInput}
           onResults={setResults}
