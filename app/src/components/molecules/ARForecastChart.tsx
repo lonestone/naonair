@@ -25,7 +25,7 @@ const ARForecastChart = () => {
     <View style={styles.container}>
       <ScrollView horizontal>
         {hours.map((hour, i) => (
-          <ARChartPie key={i}  qa={{hour, color: ForecastColor.DEGRADED}} />
+          <ARChartPie key={i}  qa={{hour, color: ForecastColor.GOOD}} />
         ))}
       </ScrollView>
     </View>
