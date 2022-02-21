@@ -1,4 +1,4 @@
-import {Feature} from 'geojson';
+import {Feature, Point, Position} from 'geojson';
 import React, {useState} from 'react';
 import {Keyboard, KeyboardAvoidingView, StyleSheet, View} from 'react-native';
 import {
@@ -63,8 +63,16 @@ const filterItems: ARFilterItem[] = [
   },
 ];
 
+enum Field {
+  START = 'start',
+  END = 'end',
+}
+
 export default () => {
   const [results, setResults] = useState<Feature[]>([]);
+  const [value, setValue] = useState<Position>([-1.525139, 47.22919]);
+
+  const [selectedField, setSelectedField] = useState<Field | undefined>();
 
   return (
     <KeyboardAvoidingView
@@ -81,7 +89,12 @@ export default () => {
               <View style={styles.row}>
                 <View style={styles.icons}></View>
                 <View style={styles.inputs}>
-                  <ARGeocoding label="Depuis" onResults={setResults} />
+                  <ARGeocoding
+                    label="Depuis"
+                    onResults={setResults}
+                    value={value}
+                    onFocus={() => setSelectedField(Field.START)}
+                  />
                   <ARGeocoding label="Vers" onResults={setResults} />
                 </View>
               </View>
@@ -90,9 +103,14 @@ export default () => {
           </ARHeader>
 
           <ScrollView style={styles.container} indicatorStyle="black">
-            {(results || []).map(result => (
-              <React.Fragment key={result.properties?.id}>
-                <List.Item title={result.properties?.label} />
+            {(results || []).map(({properties, geometry}) => (
+              <React.Fragment key={properties?.id}>
+                <List.Item
+                  title={properties?.label}
+                  onPress={() => {
+                    setValue((geometry as Point).coordinates);
+                  }}
+                />
                 <Divider />
               </React.Fragment>
             ))}
