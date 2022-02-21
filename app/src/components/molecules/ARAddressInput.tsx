@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export interface ARGeocodingProps {
+export interface ARAddressInputProps {
   value?: Position;
   label: string;
   placeholder?: string;
@@ -31,7 +31,7 @@ export default ({
   style,
   onResults,
   onFocus,
-}: ARGeocodingProps) => {
+}: ARAddressInputProps) => {
   const [text, setText] = useState<string>('');
   const [results, setResults] = useState<Feature[]>([]);
   const [isFocused, setIsFocused] = useState<boolean>(false);
