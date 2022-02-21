@@ -1,7 +1,6 @@
 import React from 'react';
-import {StyleSheet, View, ViewProps} from 'react-native';
-import {Card, Text} from 'react-native-paper';
-import ARMap from '../atoms/ARMap';
+import { StyleSheet, View, ViewProps } from 'react-native';
+import { Card, Text } from 'react-native-paper';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,7 +16,7 @@ const styles = StyleSheet.create({
 
 export interface ARRouteItemProps extends ViewProps {}
 
-export default ({style}: ARRouteItemProps) => {
+export default ({ style }: ARRouteItemProps) => {
   return (
     <Card style={style}>
       <View style={styles.mapContainer}>{/* <ARMap /> */}</View>

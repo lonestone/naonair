@@ -2,9 +2,9 @@
 
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {SvgXml} from 'react-native-svg';
-import {POI, POICategory} from '../../actions/poi';
+import { StyleSheet, View } from 'react-native';
+import { SvgXml } from 'react-native-svg';
+import { POI, POICategory } from '../../actions/poi';
 import cultureIcon from '../../assets/culture-icon.svg';
 import marketIcon from '../../assets/market-icon.svg';
 import sportIcon from '../../assets/sport-icon.svg';
@@ -60,7 +60,7 @@ export const POIMarker = (poi: POI) => {
   return (
     <MapboxGL.MarkerView
       coordinate={[poi.geolocation.lon, poi.geolocation.lat]}
-      anchor={{x: 0.5, y: 1}}
+      anchor={{ x: 0.5, y: 1 }}
       id={`${poi.id}`}
       key={`poi-${poi.id}`}>
       <View style={styles.markerContainer}>
@@ -81,7 +81,7 @@ export const POIMarker = (poi: POI) => {
   );
 };
 
-export default ({pois}: ARMapViewProps) => {
+export default ({ pois }: ARMapViewProps) => {
   return (
     <>
       <ARMap userLocationVisible interactionEnabled heatmapVisible>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, VirtualizedList} from 'react-native';
+import { StyleSheet, View, VirtualizedList } from 'react-native';
 import ARRouteItem from '../molecules/ARRouteItem';
 
 const styles = StyleSheet.create({
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 
 export interface ARRoutesListProps {}
 
-const mockedData: number[] = Array.from({length: 200}, (_, i) => i);
+const mockedData: number[] = Array.from({ length: 200 }, (_, i) => i);
 
 export default () => {
   return (

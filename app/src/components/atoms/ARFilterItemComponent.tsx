@@ -1,7 +1,7 @@
-import React, {ReactElement} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Text} from 'react-native-paper';
-import {theme} from '../../theme';
+import React, { ReactElement } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Text } from 'react-native-paper';
+import { theme } from '../../theme';
 
 const styles = StyleSheet.create({
   chip: {

@@ -10,10 +10,10 @@
 
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import {StatusBar} from 'react-native';
-import {ThemeProvider} from 'react-native-paper';
-import Screens from './Screens';
-import {theme} from './theme';
+import { StatusBar } from 'react-native';
+import { ThemeProvider } from 'react-native-paper';
+import Screens from './screens/NavigatorScreen';
+import { theme } from './theme';
 
 const App = () => {
   return (

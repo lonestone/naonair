@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Text} from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {AlertDTO} from '@aireal/dtos';
-import {getLastOne} from '../../actions/alerts';
-import {theme} from '../../theme';
+import { AlertDTO } from '@aireal/dtos';
+import { getLastOne } from '../../actions/alerts';
+import { theme } from '../../theme';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +29,7 @@ export default () => {
     return {
       container: StyleSheet.flatten([
         styles.container,
-        {backgroundColor: _alert.color},
+        { backgroundColor: _alert.color },
       ]),
     };
   };

@@ -1,14 +1,14 @@
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import {View} from 'react-native';
-import {POI} from '../../actions/poi';
-import ARListItem, {NavigationScreenProp} from '../molecules/ARListItem';
+import { View } from 'react-native';
+import { POI } from '../../actions/poi';
+import ARListItem, { NavigationScreenProp } from '../molecules/ARListItem';
 
 interface ARListViewProps {
   pois: POI[];
 }
 
-const ARListView = ({pois}: ARListViewProps) => {
+const ARListView = ({ pois }: ARListViewProps) => {
   const navigation = useNavigation<NavigationScreenProp>();
 
   return (

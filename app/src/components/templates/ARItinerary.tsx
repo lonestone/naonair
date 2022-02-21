@@ -1,18 +1,20 @@
-import {Feature, Point, Position} from 'geojson';
-import React, {useState} from 'react';
-import {Keyboard, KeyboardAvoidingView, StyleSheet, View} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Feature, Point, Position } from 'geojson';
+import React, { useState } from 'react';
+import { Keyboard, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {POICategory} from '../../actions/poi';
-import {theme} from '../../theme';
-import {ARButton, ARButtonSize} from '../atoms/ARButton';
+import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { POICategory } from '../../actions/poi';
+import { theme } from '../../theme';
+import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARHeader from '../atoms/ARHeader';
-import ARFilter, {ARFilterItem} from '../molecules/ARFilter';
+import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
 import ARGeocoding from '../molecules/ARGeocoding';
-import ARListItem from '../molecules/ARListItem';
+import ARListItem, { NavigationScreenProp } from '../molecules/ARListItem';
 
 const styles = StyleSheet.create({
   container: {
@@ -99,17 +101,21 @@ enum Field {
 //   -1.525139, 47.22919,
 // ]
 export default () => {
+  const navigation = useNavigation<NavigationScreenProp>();
   const [results, setResults] = useState<Feature[]>([]);
-  const [values, setValues] = useState<{[key: string]: Position | undefined}>({
-    [Field.START]: [-1.525139, 47.22919],
-  });
+  const [values, setValues] = useState<{ [key: string]: Position | undefined }>(
+    {
+      [Field.START]: [-1.525139, 47.22919],
+      [Field.END]: [-1.560007, 47.206019],
+    },
+  );
 
   const [selectedField, setSelectedField] = useState<Field>(Field.START);
 
   const renderInput = (label: string, field: Field, iconName: string) => {
     return (
       <View style={styles.input}>
-        <Icon
+        <CommunityIcon
           style={styles.geocodingIcon}
           name={iconName}
           size={10}
@@ -141,7 +147,7 @@ export default () => {
               <View style={styles.inputs}>
                 {renderInput('Depuis', Field.START, 'circle-outline')}
                 {renderInput('Vers', Field.END, 'circle')}
-                <Icon
+                <CommunityIcon
                   name="arrow-down"
                   style={styles.iconInputs}
                   size={21}
@@ -152,8 +158,11 @@ export default () => {
             </>
           </ARHeader>
 
-          <ScrollView style={styles.container} indicatorStyle="black">
-            {(results || []).map(({properties, geometry}) => (
+          <ScrollView
+            style={styles.container}
+            contentInset={{ bottom: 70, top: -50 }}
+            indicatorStyle="black">
+            {(results || []).map(({ properties, geometry }) => (
               <React.Fragment key={properties?.id}>
                 <ARListItem
                   poi={{
@@ -177,17 +186,21 @@ export default () => {
               </React.Fragment>
             ))}
           </ScrollView>
-
-          {values[Field.START] && values[Field.END] && (
-            <ARButton
-              label="Calculer mon itinéraire"
-              size={ARButtonSize.Medium}
-              styleContainer={styles.calculateButton}
-              onPress={() => {}}
-            />
-          )}
         </View>
       </TouchableWithoutFeedback>
+      {values[Field.START] && values[Field.END] && (
+        <ARButton
+          label="Calculer mon itinéraire"
+          size={ARButtonSize.Medium}
+          styleContainer={styles.calculateButton}
+          onPress={() => {
+            navigation.navigate('ChooseItinerary', {
+              start: values[Field.START],
+              end: values[Field.END],
+            });
+          }}
+        />
+      )}
     </KeyboardAvoidingView>
   );
 };

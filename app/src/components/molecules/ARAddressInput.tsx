@@ -1,15 +1,18 @@
-import {Feature, Position} from 'geojson';
-import React, {useEffect, useRef, useState} from 'react';
-import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
-import {TextInput} from 'react-native-paper';
-import {geocoding, reverse} from '../../actions/poi';
-import {theme} from '../../theme';
+import { Feature, Position } from 'geojson';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { TextInput } from 'react-native-paper';
+import { geocoding, reverse } from '../../actions/poi';
+import { theme } from '../../theme';
 
 // Gouv API usage
 // https://adresse.data.gouv.fr/api-doc/adresse
 
 const styles = StyleSheet.create({
-  inputContainer: {},
+  inputContainer: {
+    flexWrap: 'nowrap',
+    textAlign: 'auto',
+  },
 });
 
 export interface ARGeocodingProps {
@@ -37,11 +40,7 @@ export default ({
 
   useEffect(() => {
     if (value) {
-      reverse(value!).then(({features}) => {
-        if (features.length > 0) {
-          setText(features[0].properties?.label);
-        }
-      });
+      reverseValue(value);
     }
   }, [value]);
 
@@ -49,20 +48,23 @@ export default ({
     onResults && onResults(results);
   }, [results, onResults]);
 
-  const onChangeText = (newValue: string) => {
-    console.info('new text', newValue);
+  const reverseValue = async (position: Position) => {
+    const { features } = await reverse(position);
+    if (features.length > 0) {
+      setText(features[0].properties?.label);
+    }
+  };
 
+  const onChangeText = (newValue: string) => {
     setText(newValue);
 
     if (searchTimeout.current) {
       clearTimeout(searchTimeout.current);
     }
 
-    searchTimeout.current = setTimeout(() => {
-      geocoding(newValue).then(({features}) => {
-        console.info(features);
-        setResults(features);
-      });
+    searchTimeout.current = setTimeout(async () => {
+      const { features } = await geocoding(newValue);
+      setResults(features);
     }, 500) as unknown as number;
   };
 
@@ -73,7 +75,9 @@ export default ({
         outlineColor={
           isFocused ? theme.colors.outlineFocused : theme.colors.outlineDisabled
         }
+        multiline={false}
         placeholder={placeholder}
+        textContentType="addressCity"
         label={label}
         style={StyleSheet.flatten([styles.inputContainer, style])}
         value={text}
