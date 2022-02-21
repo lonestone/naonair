@@ -5,12 +5,14 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
-import {Divider, List} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {POICategory} from '../../actions/poi';
 import {theme} from '../../theme';
+import {ARButton, ARButtonSize} from '../atoms/ARButton';
 import ARHeader from '../atoms/ARHeader';
 import ARFilter, {ARFilterItem} from '../molecules/ARFilter';
 import ARGeocoding from '../molecules/ARGeocoding';
+import ARListItem from '../molecules/ARListItem';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,6 +26,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   icons: {},
+  calculateButton: {
+    margin: 40,
+    flex: 0,
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'center',
+  },
 });
 
 const filterItems: ARFilterItem[] = [
@@ -67,12 +76,16 @@ enum Field {
   START = 'start',
   END = 'end',
 }
-
+// [
+//   -1.525139, 47.22919,
+// ]
 export default () => {
   const [results, setResults] = useState<Feature[]>([]);
-  const [value, setValue] = useState<Position>([-1.525139, 47.22919]);
+  const [values, setValues] = useState<{[key: string]: Position | undefined}>({
+    [Field.START]: [-1.525139, 47.22919],
+  });
 
-  const [selectedField, setSelectedField] = useState<Field | undefined>();
+  const [selectedField, setSelectedField] = useState<Field>(Field.START);
 
   return (
     <KeyboardAvoidingView
@@ -92,10 +105,15 @@ export default () => {
                   <ARGeocoding
                     label="Depuis"
                     onResults={setResults}
-                    value={value}
+                    value={values[Field.START]}
                     onFocus={() => setSelectedField(Field.START)}
                   />
-                  <ARGeocoding label="Vers" onResults={setResults} />
+                  <ARGeocoding
+                    label="Vers"
+                    onResults={setResults}
+                    value={values[Field.END]}
+                    onFocus={() => setSelectedField(Field.END)}
+                  />
                 </View>
               </View>
               <ARFilter items={filterItems} onChange={() => {}} />
@@ -105,16 +123,37 @@ export default () => {
           <ScrollView style={styles.container} indicatorStyle="black">
             {(results || []).map(({properties, geometry}) => (
               <React.Fragment key={properties?.id}>
-                <List.Item
-                  title={properties?.label}
+                <ARListItem
+                  poi={{
+                    id: properties?.id,
+                    name: properties?.name,
+                    adress: properties?.label,
+                    category: POICategory.CULTURE,
+                    geolocation: {
+                      lat: (geometry as Point).coordinates[0],
+                      lon: (geometry as Point).coordinates[1],
+                    },
+                  }}
                   onPress={() => {
-                    setValue((geometry as Point).coordinates);
+                    setValues({
+                      ...values,
+                      [selectedField.toString()]: (geometry as Point)
+                        .coordinates,
+                    });
                   }}
                 />
-                <Divider />
               </React.Fragment>
             ))}
           </ScrollView>
+
+          {values[Field.START] && values[Field.END] && (
+            <ARButton
+              label="Calculer mon itinéraire"
+              size={ARButtonSize.Medium}
+              styleContainer={styles.calculateButton}
+              onPress={() => {}}
+            />
+          )}
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

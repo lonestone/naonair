@@ -26,7 +26,13 @@ export interface ARGeocodingProps {
   onFocus?: () => void;
 }
 
-export default ({label, value, placeholder, onResults}: ARGeocodingProps) => {
+export default ({
+  label,
+  value,
+  placeholder,
+  onResults,
+  onFocus,
+}: ARGeocodingProps) => {
   const [didMount, setDidMount] = useState(false);
   const [text, setText] = useState<string>('');
   const [results, setResults] = useState<Feature[]>([]);
@@ -77,6 +83,7 @@ export default ({label, value, placeholder, onResults}: ARGeocodingProps) => {
         style={{position: 'relative', zIndex: -1}}
         value={text}
         onChangeText={onChangeText}
+        onFocus={onFocus}
       />
       {/* <View> */}
       {/* {showResults && (

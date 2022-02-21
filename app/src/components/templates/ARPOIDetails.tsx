@@ -9,7 +9,7 @@ import {POIMarker} from './ARMapView';
 import {Card} from 'react-native-paper';
 
 const styles = StyleSheet.create({
-  map: { height: 300, borderRadius: 5, margin:15, overflow: 'hidden' },
+  map: {height: 300, borderRadius: 5, margin: 15, overflow: 'hidden'},
 });
 
 type AppStackParamList = {
@@ -33,7 +33,7 @@ const ARPOIDetails = () => {
             </View>
           </Card>
           <ARListItem poi={params.poiDetails} marginBottom={25} />
-          <ARForecasts poi={params.poiDetails}/>
+          <ARForecasts poi={params.poiDetails} />
         </>
       )}
     </ScrollView>

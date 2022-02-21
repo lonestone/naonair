@@ -11,7 +11,7 @@ export enum POICategory {
 }
 
 export interface POI {
-  id: number;
+  id: number | string;
   category: POICategory;
   name: string;
   adress: string;
