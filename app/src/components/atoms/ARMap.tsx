@@ -2,8 +2,8 @@ import MapboxGL, {
   CameraSettings,
   RasterSourceProps,
 } from '@react-native-mapbox-gl/maps';
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, ViewProps} from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, View, ViewProps } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'stretch',
   },
-  map: {flex: 1},
+  map: { flex: 1 },
 });
 
 const styleJSON = JSON.stringify(require('../../mapViewStyle.json'));

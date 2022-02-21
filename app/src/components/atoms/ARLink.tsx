@@ -1,6 +1,12 @@
 import React from 'react';
-import {Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {theme} from '../../theme';
+import {
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { theme } from '../../theme';
 
 type ARLinkType = {
   label: string;
@@ -16,7 +22,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ARLink = ({label, url}: ARLinkType) => {
+export const ARLink = ({ label, url }: ARLinkType) => {
   const handlePress = async () => {
     try {
       Linking.openURL(url);

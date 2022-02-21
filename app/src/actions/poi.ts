@@ -1,4 +1,4 @@
-import {FeatureCollection, Position} from 'geojson';
+import { FeatureCollection, Position } from 'geojson';
 import poiJson from '../poi.json';
 
 export enum POICategory {
@@ -11,14 +11,14 @@ export enum POICategory {
 }
 
 export interface POI {
-  id: number | string;
+  id: number | string; // TODO: need to be complianted with POI from json file and api-adresse.data.gouv.fr
   category: POICategory;
   name: string;
   adress: string;
-  geolocation: {lat: number; lon: number};
+  geolocation: { lat: number; lon: number };
 }
 
-const POIs = poiJson.map<POI>(({id, nom, categorie, adresse, gps}) => {
+const POIs = poiJson.map<POI>(({ id, nom, categorie, adresse, gps }) => {
   const [lat, lon] = gps.split(',').map(t => +t);
 
   const getCategory = (): POICategory => {

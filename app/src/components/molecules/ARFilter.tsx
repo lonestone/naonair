@@ -1,5 +1,5 @@
-import React, {ReactElement, useEffect, useState} from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
 import ARFilterItemComponent from '../atoms/ARFilterItemComponent';
 
 const styles = StyleSheet.create({
@@ -22,10 +22,11 @@ export interface ARFilterProps {
   onChange: (selectedItems: ARFilterItem[]) => void;
 }
 
-export default ({items, onChange, multiple}: ARFilterProps) => {
+export default ({ items, onChange, multiple }: ARFilterProps) => {
   const [propsItems, setPropsItems] = useState<ARFilterItem[]>(items);
 
   useEffect(() => {
+    //HACK : remove deps to call `selectAll` only once
     multiple && selectAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -33,7 +34,7 @@ export default ({items, onChange, multiple}: ARFilterProps) => {
   const filtered = propsItems.filter(item => item.selected);
 
   const selectAll = () => {
-    setPropsItems(propsItems.map(item => ({...item, selected: true})));
+    setPropsItems(propsItems.map(item => ({ ...item, selected: true })));
     onChange(propsItems);
   };
 

@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {StyleSheet, TouchableOpacity, View, ViewProps} from 'react-native';
-import {Card, Headline, Text} from 'react-native-paper';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, View, ViewProps } from 'react-native';
+import { Card, Headline, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {theme} from '../../theme';
+import { theme } from '../../theme';
 
 export interface ARLegendProps extends ViewProps {}
 
@@ -74,7 +74,7 @@ export default (props: ViewProps) => {
   const [isDeployed, setDeployed] = useState(false);
 
   const styleChip = (item: LegendItem) => {
-    return StyleSheet.flatten([styles.chip, {backgroundColor: item.color}]);
+    return StyleSheet.flatten([styles.chip, { backgroundColor: item.color }]);
   };
 
   return (

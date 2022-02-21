@@ -1,4 +1,4 @@
-import {AlertDTO} from '@aireal/dtos';
+import { AlertDTO } from '@aireal/dtos';
 
 const ALERTS_URL = 'https://naonair-api-staging.onrender.com/alerts';
 

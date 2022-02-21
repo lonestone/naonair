@@ -1,11 +1,11 @@
-import React, {Dispatch, ReactElement, SetStateAction} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Caption, Headline} from 'react-native-paper';
-import {POICategory} from '../../actions/poi';
-import {theme} from '../../theme';
+import React, { Dispatch, ReactElement, SetStateAction } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Caption, Headline } from 'react-native-paper';
+import { POICategory } from '../../actions/poi';
+import { theme } from '../../theme';
 import ARHeader from '../atoms/ARHeader';
-import ARFilter, {ARFilterItem} from './ARFilter';
-import ARSwitchToggle, {SwitchToggleItem} from './ARSwitchToggle';
+import ARFilter, { ARFilterItem } from './ARFilter';
+import ARSwitchToggle, { SwitchToggleItem } from './ARSwitchToggle';
 
 const styles = StyleSheet.create({
   headlineContainer: {
@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
 });
 
 const filters: ARFilterItem[] = [
-  {label: 'Mes favoris', value: POICategory.FAVORITE},
-  {label: 'Parcs', value: POICategory.PARK},
-  {label: 'Sport', value: POICategory.SPORT},
-  {label: 'Culture', value: POICategory.CULTURE},
-  {label: 'Marché', value: POICategory.MARKET},
+  { label: 'Mes favoris', value: POICategory.FAVORITE },
+  { label: 'Parcs', value: POICategory.PARK },
+  { label: 'Sport', value: POICategory.SPORT },
+  { label: 'Culture', value: POICategory.CULTURE },
+  { label: 'Marché', value: POICategory.MARKET },
 ];
 
 interface Props {
