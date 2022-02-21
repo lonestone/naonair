@@ -1,21 +1,15 @@
-import {Feature, Point, Position} from 'geojson';
+import {Feature, Position} from 'geojson';
 import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
-import {Surface, Text, TextInput} from 'react-native-paper';
+import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
+import {TextInput} from 'react-native-paper';
 import {geocoding, reverse} from '../../actions/poi';
+import {theme} from '../../theme';
 
 // Gouv API usage
 // https://adresse.data.gouv.fr/api-doc/adresse
 
 const styles = StyleSheet.create({
-  resultsContainer: {
-    height: 150,
-    left: 0,
-    right: 0,
-    zIndex: 420000,
-    position: 'absolute',
-  },
+  inputContainer: {},
 });
 
 export interface ARGeocodingProps {
@@ -24,24 +18,22 @@ export interface ARGeocodingProps {
   placeholder?: string;
   onResults?: (results: Feature[]) => void;
   onFocus?: () => void;
+  style?: StyleProp<ViewStyle>;
 }
 
 export default ({
   label,
   value,
   placeholder,
+  style,
   onResults,
   onFocus,
 }: ARGeocodingProps) => {
-  const [didMount, setDidMount] = useState(false);
   const [text, setText] = useState<string>('');
   const [results, setResults] = useState<Feature[]>([]);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const searchTimeout = useRef<number | null>(null);
-
-  useEffect(() => {
-    setDidMount(true);
-  }, []);
 
   useEffect(() => {
     if (value) {
@@ -78,24 +70,20 @@ export default ({
     <>
       <TextInput
         mode="outlined"
+        outlineColor={
+          isFocused ? theme.colors.outlineFocused : theme.colors.outlineDisabled
+        }
         placeholder={placeholder}
         label={label}
-        style={{position: 'relative', zIndex: -1}}
+        style={StyleSheet.flatten([styles.inputContainer, style])}
         value={text}
         onChangeText={onChangeText}
-        onFocus={onFocus}
+        onFocus={() => {
+          setIsFocused(true);
+          onFocus && onFocus();
+        }}
+        onBlur={() => setIsFocused(false)}
       />
-      {/* <View> */}
-      {/* {showResults && (
-          <Surface style={styles.resultsContainer}>
-            <ScrollView>
-              {(results || []).map(result => (
-                <Text>{result.properties?.label}</Text>
-              ))}
-            </ScrollView>
-          </Surface>
-        )} */}
-      {/* </View> */}
     </>
   );
 };
