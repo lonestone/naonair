@@ -3,7 +3,7 @@ import {DefaultTheme} from 'react-native-paper';
 declare global {
   namespace ReactNativePaper {
     interface ThemeColors {
-      myOwnColor: string;
+      outlineDisabled: string;
     }
 
     interface Theme {}
@@ -20,6 +20,11 @@ export const theme = {
     primary: '#4863F1',
     accent: '#EDEFFE',
     white: 'white',
+    outlineDisabled: '#9BA4D1',
+    outlineFocused: '#4863F1',
+    black: {
+      500: '#13395F',
+    },
     blue: {
       300: '#8382A6',
       400: '#9BA4D1',
