@@ -1,11 +1,12 @@
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Position } from 'geojson';
 import { POI } from '../actions/poi';
 
 export type StackParamList = {
   Home: undefined;
-  ChooseItinerary: undefined;
   POIDetails: { poiDetails: POI };
   Favorites: undefined;
+  ChooseItinerary: { start: Position; end: Position };
 };
 
 export type TabParamList = {

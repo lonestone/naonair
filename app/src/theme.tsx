@@ -1,4 +1,4 @@
-import {DefaultTheme} from 'react-native-paper';
+import { DefaultTheme } from 'react-native-paper';
 
 declare global {
   namespace ReactNativePaper {
@@ -26,7 +26,8 @@ export const theme = {
       500: '#13395F',
     },
     blue: {
-      50: "#F1F0F9",
+      50: '#F1F0F9',
+      100: '#EDEFFE',
       300: '#8382A6',
       400: '#9BA4D1',
       500: '#25244E',
