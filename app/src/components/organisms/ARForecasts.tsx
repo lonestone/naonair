@@ -27,7 +27,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: theme.colors.blue[400],
   },
-  subtext: { textAlign: 'center', color: theme.colors.blue[400] },
+  subtext: {
+    textAlign: 'center',
+    color: theme.colors.blue[400],
+    marginTop: 30,
+  },
 });
 
 const filters: ARFilterItem[] = [
