@@ -61,7 +61,7 @@ export const icons = {
 export const POIMarker = (poi: POI) => {
   return (
     <MapboxGL.MarkerView
-      coordinate={[poi.geolocation.lon, poi.geolocation.lat]}
+      coordinate={poi.geolocation}
       anchor={{ x: 0.5, y: 1 }}
       id={`${poi.id}`}
       key={`poi-${poi.id}`}>

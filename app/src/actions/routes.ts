@@ -21,7 +21,7 @@ export enum RouteProfile {
 }
 
 const API_ENDPOINT =
-  'https://graphhopper.com/api/1//route?type=json&locale=fr&key=78ef7e51-7067-4081-8eb5-2fb03c1b8c8d&points_encoded=false';
+  'https://graphhopper.com/api/1//route?type=json&locale=fr&key=1381920f-a973-435c-955c-d74ee25cf1aa&points_encoded=false';
 
 export const calculateRoute = async (
   start: Position,
@@ -40,6 +40,5 @@ export const calculateRoute = async (
   const response = await fetch(url);
   const json = await response.json();
 
-  console.info(json.paths);
   return json;
 };

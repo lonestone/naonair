@@ -21,7 +21,7 @@ interface ARListItemProps {
   description?: string;
   titleStyle?: StyleProp<TextStyle>;
   descriptionStyle?: StyleProp<TextStyle>;
-  leftIcon: Element | IconSource;
+  leftIcon: IconSource;
   rightIcon?: any;
   rightChip?: any;
   onPress?: () => void;
@@ -57,10 +57,7 @@ const ARListItem = ({
           right={() => (
             <>
               {rightIcon && (
-                <List.Icon
-                  icon={rightIcon}
-                  color={theme.colors.blue[500]}
-                />
+                <List.Icon icon={rightIcon} color={theme.colors.blue[500]} />
               )}
               {rightChip && rightChip}
             </>

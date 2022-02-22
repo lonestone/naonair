@@ -119,7 +119,6 @@ export default () => {
   const [selectedField, setSelectedField] = useState<Field>(Field.START);
 
   const renderInput = (label: string, field: Field, iconName: string) => {
-    console.info(values[field]);
     return (
       <View style={styles.input}>
         <CommunityIcon
@@ -179,10 +178,7 @@ export default () => {
                     name: text_fr,
                     adress: properties?.address,
                     category: POICategory.CULTURE,
-                    geolocation: {
-                      lat: geometry.coordinates[0],
-                      lon: geometry.coordinates[1],
-                    },
+                    geolocation: geometry.coordinates,
                   }}
                   onPress={() => {
                     setValues({
