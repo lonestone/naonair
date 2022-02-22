@@ -1,8 +1,8 @@
 import React, { ReactElement, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { getAll, POICategory } from '../actions/poi';
-import ARPOIHeader from '../components/molecules/ARPOIHeader';
 import { SwitchToggleItem } from '../components/molecules/ARSwitchToggle';
+import ARPOIHeader from '../components/organisms/ARPOIHeader';
 import ARListView from '../components/templates/ARListView';
 import ARMapView from '../components/templates/ARMapView';
 
