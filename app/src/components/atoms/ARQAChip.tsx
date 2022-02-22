@@ -1,4 +1,5 @@
-import React from 'react';
+import { Position } from 'geojson';
+import React, { useEffect } from 'react';
 import {
   StyleProp,
   StyleSheet,
@@ -7,6 +8,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import { getQAFromPosition } from '../../actions/poi';
 import { LegendItem } from '../../types/legends';
 
 const styles = StyleSheet.create({
@@ -19,12 +21,17 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
+  coord: Position;
   item: LegendItem;
   size: 'sm' | 'md';
   shadowStyle?: StyleProp<ViewStyle>;
 }
 
-const ARQAChip = ({ item, size, shadowStyle }: Props) => {
+const ARQAChip = ({ item, size, shadowStyle, coord }: Props) => {
+  useEffect(() => {
+    getQAFromPosition(coord).then(() => {});
+  }, [coord]);
+
   const styleChip = (item: LegendItem) => {
     return StyleSheet.flatten([
       { backgroundColor: item.color },

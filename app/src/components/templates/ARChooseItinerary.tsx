@@ -1,8 +1,10 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import * as turf from '@turf/turf';
+import { BBox } from '@turf/turf';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Headline, List, Surface } from 'react-native-paper';
+import { ActivityIndicator, Headline, List, Surface } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
@@ -58,7 +60,7 @@ const BackButton = () => {
   );
 };
 
-const ItineraryItem = ({ path }: { path: ARPath }) => {
+const ItineraryItem = ({}: { path: ARPath }) => {
   return (
     <List.Item
       left={() => (
@@ -68,7 +70,7 @@ const ItineraryItem = ({ path }: { path: ARPath }) => {
       )}
       title="le plus sain"
       onPress={() => {
-        console.info(path);
+        // console.info(path);
       }}
     />
   );
@@ -79,10 +81,19 @@ const ItineraryList = ({ paths }: { paths: ARPath[] }) => {
     <Surface style={styles.listContainer}>
       <SafeAreaView edges={['bottom', 'left', 'right']}>
         <Headline>Choisissez votre itinéraire</Headline>
-        {paths.map((path, index) => (
+        {(paths || []).map((path, index) => (
           <ItineraryItem key={`path-${index}`} path={path} />
         ))}
       </SafeAreaView>
+    </Surface>
+  );
+};
+
+const LoadingView = () => {
+  return (
+    <Surface style={styles.listContainer}>
+      <Headline>Calcul de l'itinéraire en cours...</Headline>
+      <ActivityIndicator animating />
     </Surface>
   );
 };
@@ -91,29 +102,38 @@ export default () => {
   // const navigation = useNavigation<NavigationScreenProp>();
   const { params } = useRoute<ARChooseItineraryProp>();
   const [route, setRoute] = useState<ARRoute | undefined>();
+  const [bbox, setBbox] = useState<BBox | undefined>();
 
   const { start, end } = params;
 
+  useEffect(() => {
+    const bbox = turf.bbox(
+      turf.featureCollection([turf.point(start), turf.point(end)]),
+    );
+    setBbox(bbox);
+  }, [setBbox, start, end]);
+
   const getRoute = useCallback(async () => {
     const routes = await calculateRoute(start, end, RouteProfile.Bike);
+
     setRoute(routes);
   }, [end, start]);
 
   useEffect(() => {
-    getRoute();
+    setTimeout(getRoute, 500);
+    // getRoute();
   }, [getRoute]);
+
+  const paths = route?.paths || [];
 
   return (
     <>
       <View style={styles.mapContainer}>
-        <ARRouteMapView
-          points={route?.paths[0].points}
-          bbox={route?.paths[0].bbox}
-          start={start}
-          end={end}
-        />
+        {bbox && (
+          <ARRouteMapView paths={paths} bbox={bbox} start={start} end={end} />
+        )}
       </View>
-      {route && <ItineraryList paths={route?.paths} />}
+      {route?.paths ? <ItineraryList paths={route?.paths} /> : <LoadingView />}
       <BackButton />
     </>
   );

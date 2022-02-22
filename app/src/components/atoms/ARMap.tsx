@@ -86,6 +86,8 @@ export default ({
         logoEnabled={false}
         attributionEnabled={false}
         rotateEnabled={false}
+        pitchEnabled={false}
+        surfaceView
         onDidFinishRenderingMapFully={() =>
           onMapLoaded && onMapLoaded(mapRef, cameraRef)
         }
@@ -95,10 +97,10 @@ export default ({
           ref={cameraRef}
           bounds={bounds}
           padding={{
-            paddingBottom: 20,
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 20,
+            paddingBottom: 25,
+            paddingLeft: 25,
+            paddingRight: 25,
+            paddingTop: 25,
           }}
           animationMode="moveTo"
           defaultSettings={{
@@ -120,7 +122,7 @@ export default ({
             }}
           />
         ) : null}
-        {heatmapVisible ? (
+        {heatmapVisible && (
           <MapboxGL.RasterSource {...rasterSourceProps}>
             <MapboxGL.RasterLayer
               id="airreel_layer"
@@ -128,7 +130,7 @@ export default ({
               sourceID="aireel_source"
             />
           </MapboxGL.RasterSource>
-        ) : null}
+        )}
         {children || null}
       </MapboxGL.MapView>
     </View>
