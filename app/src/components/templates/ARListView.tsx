@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { SvgXml } from 'react-native-svg';
 import { POI } from '../../actions/poi';
 import { theme } from '../../theme';
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
   },
   chipWrapper: {
     justifyContent: 'center',
-  }
+  },
 });
 
 interface ARListViewProps {
@@ -39,7 +40,7 @@ const ARListView = ({ pois }: ARListViewProps) => {
   };
 
   return (
-    <View>
+    <ScrollView>
       {pois.map((poi, idx) => (
         <ARListItem
           key={idx}
@@ -48,7 +49,7 @@ const ARListView = ({ pois }: ARListViewProps) => {
           descriptionStyle={styles.description}
           titleStyle={styles.title}
           onPress={() =>
-            navigation.navigate('POIDetails', {
+            navigation.navigate('Details', {
               poiDetails: poi,
             })
           }
@@ -57,12 +58,12 @@ const ARListView = ({ pois }: ARListViewProps) => {
           )}
           rightChip={
             <View style={styles.chipWrapper}>
-              <ARQAChip size="sm" item={poiQA} />
+              <ARQAChip coord={poi.geolocation} size="sm" item={poiQA} />
             </View>
           }
         />
       ))}
-    </View>
+    </ScrollView>
   );
 };
 

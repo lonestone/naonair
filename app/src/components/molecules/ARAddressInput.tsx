@@ -52,7 +52,7 @@ export default ({
 
   const reverseValue = async (position: Position) => {
     const features = await reverse(position);
-    console.info(features);
+    // console.info(features);
     if (features.length > 0) {
       const { text_fr = 'Ma position' } = features[0];
       setText(text_fr);
@@ -100,7 +100,6 @@ export default ({
               text !== ''
                 ? setText('')
                 : Geolocation.getCurrentPosition(({ coords }) => {
-                    console.info(coords);
                     reverseValue([coords.longitude, coords.latitude]);
                   });
             }}

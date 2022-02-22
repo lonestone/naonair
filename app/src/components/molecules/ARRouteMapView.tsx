@@ -1,13 +1,14 @@
 import MapboxGL, { LineLayerStyle } from '@react-native-mapbox-gl/maps';
-import { BBox, Feature, Geometry, LineString, Position } from 'geojson';
-import React from 'react';
+import { BBox, Feature, Geometry, Position } from 'geojson';
+import React, { createRef, forwardRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ARPath } from '../../actions/routes';
 import { theme } from '../../theme';
 import ARMap from '../atoms/ARMap';
 
 export interface ARRouteMapViewProps {
-  points?: LineString;
+  paths: ARPath[];
   bbox?: BBox;
   start: Position;
   end: Position;
@@ -21,6 +22,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.blue[100],
     borderColor: theme.colors.blue[500],
     borderWidth: 5,
+    flex: 0,
+    position: 'relative',
   },
   endMarker: {
     borderRadius: 12,
@@ -29,6 +32,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: theme.colors.blue[500],
+    flex: 0,
   },
   endMarkerIcon: {},
 });
@@ -40,43 +44,69 @@ const lineStyle: LineLayerStyle = {
   lineCap: 'round',
 };
 
-const StartMarker = ({ position }: { position: Position }) => (
-  <MapboxGL.MarkerView id="start" coordinate={[position[0], position[1]]}>
-    <View style={styles.startMarker} />
-  </MapboxGL.MarkerView>
-);
-
-const EndMarker = ({ position }: { position: Position }) => (
-  <MapboxGL.MarkerView id="end" coordinate={[position[0], position[1]]}>
-    <View style={styles.endMarker}>
-      <Icon
-        name="flag"
-        color={theme.colors.white}
-        size={12}
-        style={styles.endMarkerIcon}
-      />
-    </View>
-  </MapboxGL.MarkerView>
-);
-
-export default ({ points, bbox, start, end }: ARRouteMapViewProps) => {
+const StartMarker = ({ position }: { position: Position }) => {
   return (
-    <ARMap interactionEnabled bbox={bbox}>
-      {points && (
+    <MapboxGL.MarkerView
+      id="start-marker-1"
+      title="Start"
+      coordinate={position}>
+      <View style={styles.startMarker} />
+    </MapboxGL.MarkerView>
+  );
+};
+
+const EndMarker = forwardRef<MapboxGL.MarkerView, { position: Position }>(
+  ({ position }, ref) => {
+    console.info(position);
+    return (
+      <MapboxGL.MarkerView ref={ref} id="end-marker-1" coordinate={position}>
+        <View
+          style={styles.endMarker}
+          onLayout={() => console.info('ONLAYOUT')}>
+          <Icon
+            name="flag"
+            color={theme.colors.white}
+            size={12}
+            style={styles.endMarkerIcon}
+          />
+        </View>
+      </MapboxGL.MarkerView>
+    );
+  },
+);
+
+export default ({ paths, bbox, start, end }: ARRouteMapViewProps) => {
+  const endMarkerRef = createRef<MapboxGL.MarkerView>();
+
+  // HACK to prevent draw PointAnnotation before the map is loaded
+  // If not, PointAnnotation will be render outside the bbox and has incorrect values
+  const [isMapLoaded, setMapLoaded] = useState<boolean>();
+
+  return (
+    <ARMap
+      // interactionEnabled
+      bbox={bbox}
+      onMapLoaded={() => {
+        console.info('refresh');
+        setMapLoaded(true);
+      }}>
+      {isMapLoaded && (
         <>
-          <MapboxGL.ShapeSource
-            id="souce"
-            lineMetrics
-            shape={
-              {
-                type: 'Feature',
-                geometry: points,
-              } as Feature<Geometry>
-            }>
-            <MapboxGL.LineLayer id="route" style={lineStyle} />
-          </MapboxGL.ShapeSource>
           <StartMarker position={start} />
-          <EndMarker position={end} />
+          <EndMarker ref={endMarkerRef} position={end} />
+          {paths.length > 0 && (
+            <MapboxGL.ShapeSource
+              id="source"
+              lineMetrics
+              shape={
+                {
+                  type: 'Feature',
+                  geometry: paths[0].points,
+                } as Feature<Geometry>
+              }>
+              <MapboxGL.LineLayer id="route" style={lineStyle} />
+            </MapboxGL.ShapeSource>
+          )}
         </>
       )}
     </ARMap>
