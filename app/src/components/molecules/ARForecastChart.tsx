@@ -1,7 +1,7 @@
-import { eachHourOfInterval, format, startOfTomorrow } from 'date-fns';
+import { eachHourOfInterval, startOfTomorrow } from 'date-fns';
 import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {theme} from '../../theme';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { theme } from '../../theme';
 import { ForecastColor } from '../../types/forecasts';
 import ARChartPie from '../atoms/ARChartPie';
 
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     minWidth: 350,
     borderColor: theme.colors.accent,
     borderWidth: 1,
-    margin: 15,
+    marginTop: 15,
   },
 });
 

@@ -45,6 +45,7 @@ const ARForecasts = ({ forecastQA }: Props) => {
   return (
     <View style={styles.container}>
       <List.Item
+        style={{ padding: 0 }}
         titleStyle={styles.title}
         title="Prévisions"
         right={() => (

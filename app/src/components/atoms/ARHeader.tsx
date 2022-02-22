@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { theme } from '../../theme';
 
 export interface HeaderProps {
   children: ReactElement;
@@ -8,15 +9,17 @@ export interface HeaderProps {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10,
-    paddingBottom: 18,
+    paddingTop: 18,
+    paddingBottom: 20,
     paddingHorizontal: 16,
-    shadowColor: 'black',
+    borderColor: theme.colors.accent,
+    borderWidth: 1,
+    shadowColor: theme.colors.accent,
     shadowOffset: { height: 8, width: 0 },
     shadowRadius: 10,
     zIndex: 42,
     backgroundColor: 'white',
-    // elevation: 3,
+    elevation: 1,
     shadowOpacity: 0.1,
   },
 });

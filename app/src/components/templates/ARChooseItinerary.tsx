@@ -4,8 +4,8 @@ import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { NavigationScreenProp } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
-import { NavigationScreenProp } from '../molecules/ARListItem';
 
 export default () => {
   const navigation = useNavigation<NavigationScreenProp>();
@@ -24,7 +24,5 @@ export default () => {
         </TouchableOpacity>
       </SafeAreaView>
     </>
-
-    // </View>
   );
 };
