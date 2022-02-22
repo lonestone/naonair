@@ -4,12 +4,14 @@ import React from 'react';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
 import { theme } from '../theme';
+import { StackParamList, TabParamList } from '../types/routes';
 import ItineraryScreen from './ItineraryScreen';
 import MapScreen from './MapScreen';
+import ProfileScreen from './ProfileScreen';
 import RoutesScreen from './RoutesScreen';
 
-const Tab = createMaterialBottomTabNavigator();
-const Stack = createStackNavigator();
+const Tab = createMaterialBottomTabNavigator<TabParamList>();
+const Stack = createStackNavigator<StackParamList>();
 
 const Home = () => (
   <Tab.Navigator barStyle={{ backgroundColor: theme.colors.primary }}>
@@ -27,6 +29,11 @@ const Home = () => (
       name="Parcours"
       options={{ tabBarIcon: 'run' }}
       component={RoutesScreen}
+    />
+    <Tab.Screen
+      name="Profil"
+      options={{ tabBarIcon: 'account-circle' }}
+      component={ProfileScreen}
     />
   </Tab.Navigator>
 );
