@@ -1,9 +1,11 @@
 import MapboxGL, {
+  CameraPadding,
   CameraSettings,
   RasterSourceProps,
 } from '@react-native-mapbox-gl/maps';
-import React, { useEffect } from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { BBox, Position } from 'geojson';
+import React, { RefObject, useEffect, useState } from 'react';
+import { Platform, StyleSheet, View, ViewProps } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,6 +35,11 @@ export interface ARMapProps extends ViewProps {
   userLocationVisible?: boolean;
   heatmapVisible?: boolean;
   interactionEnabled?: boolean;
+  bbox?: BBox;
+  onMapLoaded?: (
+    mapRef: RefObject<MapboxGL.MapView>,
+    cameraRef: RefObject<MapboxGL.Camera>,
+  ) => void;
 }
 
 export default ({
@@ -40,12 +47,32 @@ export default ({
   heatmapVisible,
   interactionEnabled,
   children,
+  bbox,
+  onMapLoaded,
 }: ARMapProps) => {
   const cameraRef = React.createRef<MapboxGL.Camera>();
+  const mapRef = React.createRef<MapboxGL.MapView>();
+
+  const [bounds, setBounds] = useState<
+    CameraPadding & { ne: Position; sw: Position }
+  >();
+
+  useEffect(() => {
+    bbox &&
+      setBounds({
+        ne: [bbox[0], bbox[1]],
+        sw: [bbox[2], bbox[3]],
+      });
+  }, [bbox]);
 
   useEffect(() => {
     // if we don't call this methods, MapboxGL crash on Android
     MapboxGL.setAccessToken('');
+
+    if (Platform.OS === 'android') {
+      // we have to call this method if we want the user location
+      MapboxGL.requestAndroidLocationPermissions();
+    }
   });
 
   return (
@@ -53,16 +80,31 @@ export default ({
       <MapboxGL.MapView
         // styleURL="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json" // leave it for now if we need to use this style
         // styleURL="https://geoserveis.icgc.cat/contextmaps/positron.json" // same as `styleJSON`, but I prefer to keep the URL to prevent finding it if we decided to use it
+        ref={mapRef}
         styleJSON={styleJSON}
         style={styles.map}
         logoEnabled={false}
         attributionEnabled={false}
         rotateEnabled={false}
+        onDidFinishRenderingMapFully={() =>
+          onMapLoaded && onMapLoaded(mapRef, cameraRef)
+        }
         zoomEnabled={!!interactionEnabled}
         scrollEnabled={!!interactionEnabled}>
         <MapboxGL.Camera
           ref={cameraRef}
-          defaultSettings={defaultSettingsCamera}
+          bounds={bounds}
+          padding={{
+            paddingBottom: 20,
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 20,
+          }}
+          animationMode="moveTo"
+          defaultSettings={{
+            ...defaultSettingsCamera,
+            bounds,
+          }}
         />
         {userLocationVisible ? (
           <MapboxGL.UserLocation
