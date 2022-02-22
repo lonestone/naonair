@@ -1,8 +1,9 @@
-import { Feature, Position } from 'geojson';
+import Geolocation from '@react-native-community/geolocation';
+import { Position } from 'geojson';
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import { geocoding, reverse } from '../../actions/poi';
+import { geocoding, MapboxFeature, reverse } from '../../actions/poi';
 import { theme } from '../../theme';
 
 // Gouv API usage
@@ -16,10 +17,11 @@ const styles = StyleSheet.create({
 });
 
 export interface ARAddressInputProps {
-  value?: Position;
+  value?: { coord: Position; text: string };
+
   label: string;
   placeholder?: string;
-  onResults?: (results: Feature[]) => void;
+  onResults?: (results: MapboxFeature[]) => void;
   onFocus?: () => void;
   style?: StyleProp<ViewStyle>;
 }
@@ -32,16 +34,14 @@ export default ({
   onResults,
   onFocus,
 }: ARAddressInputProps) => {
-  const [text, setText] = useState<string>('');
-  const [results, setResults] = useState<Feature[]>([]);
+  const [text, setText] = useState<string>(value?.text || '');
+  const [results, setResults] = useState<MapboxFeature[]>([]);
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const searchTimeout = useRef<number | null>(null);
 
   useEffect(() => {
-    if (value) {
-      reverseValue(value);
-    }
+    setText(value?.text || '');
   }, [value]);
 
   useEffect(() => {
@@ -49,9 +49,10 @@ export default ({
   }, [results, onResults]);
 
   const reverseValue = async (position: Position) => {
-    const { features } = await reverse(position);
+    const features = await reverse(position);
+    console.info(features);
     if (features.length > 0) {
-      setText(features[0].properties?.label);
+      setText(features[0].properties?.text_fr);
     }
   };
 
@@ -63,7 +64,7 @@ export default ({
     }
 
     searchTimeout.current = setTimeout(async () => {
-      const { features } = await geocoding(newValue);
+      const features = await geocoding(newValue);
       setResults(features);
     }, 500) as unknown as number;
   };
@@ -87,6 +88,20 @@ export default ({
           onFocus && onFocus();
         }}
         onBlur={() => setIsFocused(false)}
+        right={
+          <TextInput.Icon
+            name={text !== '' ? 'close' : 'target'}
+            forceTextInputFocus={text !== ''}
+            onPress={() => {
+              text !== ''
+                ? setText('')
+                : Geolocation.getCurrentPosition(({ coords }) => {
+                    console.info(coords);
+                    reverseValue([coords.longitude, coords.latitude]);
+                  });
+            }}
+          />
+        }
       />
     </>
   );

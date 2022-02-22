@@ -2,8 +2,8 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Card, Divider } from 'react-native-paper';
-import { POI } from '../../actions/poi';
 import { theme } from '../../theme';
+import { StackParamList } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
 import ARQAChip from '../atoms/ARQAChip';
 import ARHeadingGroup from '../molecules/ARHeadingGroup';
@@ -53,11 +53,7 @@ const styles = StyleSheet.create({
   mapView: { flex: 1, borderRadius: 16, overflow: 'hidden' },
 });
 
-type AppStackParamList = {
-  Details: { poiDetails: POI };
-};
-
-type POIDetailsRouteProp = RouteProp<AppStackParamList>;
+type POIDetailsRouteProp = RouteProp<StackParamList, 'Details'>;
 
 const ARPOIDetails = () => {
   const { params } = useRoute<POIDetailsRouteProp>();
