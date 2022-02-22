@@ -23,6 +23,7 @@ export interface ARAddressInputProps {
   placeholder?: string;
   onResults?: (results: MapboxFeature[]) => void;
   onFocus?: () => void;
+  onUserLocation?: (coord: Position, text: string) => void;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -33,6 +34,7 @@ export default ({
   style,
   onResults,
   onFocus,
+  onUserLocation,
 }: ARAddressInputProps) => {
   const [text, setText] = useState<string>(value?.text || '');
   const [results, setResults] = useState<MapboxFeature[]>([]);
@@ -52,7 +54,9 @@ export default ({
     const features = await reverse(position);
     console.info(features);
     if (features.length > 0) {
-      setText(features[0].properties?.text_fr);
+      const { text_fr = 'Ma position' } = features[0];
+      setText(text_fr);
+      onUserLocation && onUserLocation(position, text_fr);
     }
   };
 

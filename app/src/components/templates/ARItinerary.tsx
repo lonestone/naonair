@@ -133,6 +133,9 @@ export default () => {
           style={styles.geocodingInput}
           onResults={setResults}
           value={values[field]}
+          onUserLocation={(coord, text) =>
+            setValues({ ...values, [field]: { coord, text } })
+          }
           onFocus={() => setSelectedField(field)}
         />
       </View>
