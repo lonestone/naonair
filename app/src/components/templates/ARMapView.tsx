@@ -1,7 +1,7 @@
 /// <reference path="../../custom.d.ts" />
 
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { POI, POICategory } from '../../actions/poi';
@@ -82,10 +82,18 @@ export const POIMarker = (poi: POI) => {
 };
 
 export default ({ pois }: ARMapViewProps) => {
+  const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
+
+  console.info(pois);
+
   return (
     <>
-      <ARMap userLocationVisible interactionEnabled heatmapVisible>
-        {pois.map(POIMarker)}
+      <ARMap
+        userLocationVisible
+        interactionEnabled
+        heatmapVisible
+        onMapLoaded={() => setMapLoaded(true)}>
+        {isMapLoaded && pois.map(POIMarker)}
       </ARMap>
       <ARAlert />
       <ARLegend style={styles.legends} />
