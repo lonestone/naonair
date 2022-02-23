@@ -1,5 +1,5 @@
 import { Feature, FeatureCollection, Point, Position } from 'geojson';
-import poiJson from '../poi.json';
+import poiJson from '../assets/db/poi.json';
 
 export enum POICategory {
   UNDEFINED = -1,
@@ -75,7 +75,7 @@ export const reverse = async ([lon, lat]: Position): Promise<
     )},${encodeURIComponent(
       lat,
     )}.json?country=fr&bbox=-1.7%2C47.1%2C-1.4%2C47.3&types=poi%2Cplace%2Cpostcode%2Caddress&language=fr&autocomplete=true&access_token=${MAPBOX_API_TOKEN}`;
-    // console.info(URL);
+
     const response = await fetch(URL);
     const { features } = (await response.json()) as FeatureCollection;
     return features as MapboxFeature[];

@@ -65,7 +65,6 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
 
   const getQA = useCallback(async () => {
     const temp = await getQAFromPosition(poi.geolocation);
-    console.info(temp);
     setQA(temp);
     annotationRef.current?.refresh();
   }, [poi, annotationRef]);
@@ -87,14 +86,14 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
         <SvgXml
           width="40"
           height="46"
-          fill={qa?.accent || 'white'}
+          fill={qa?.light || 'white'}
           xml={markerBackground}
           style={styles.markerBackground}
         />
         <SvgXml
           width="20"
           height="20"
-          fill={qa?.primary || '#25244E'}
+          fill={qa?.main || '#25244E'}
           style={styles.markerIcon}
           xml={icons[`${poi.category}`]}
         />
@@ -106,15 +105,13 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
 export default ({ pois }: ARMapViewProps) => {
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
 
-  console.info(pois);
-
   return (
     <>
       <ARMap
         userLocationVisible
         interactionEnabled
         heatmapVisible
-        onMapLoaded={() => setTimeout(() => setMapLoaded(true), 500)}>
+        onMapLoaded={() => setMapLoaded(true)}>
         {isMapLoaded &&
           pois.map(poi => <POIMarker key={`poi-${poi.id}`} poi={poi} />)}
       </ARMap>

@@ -1,9 +1,4 @@
 import { BBox, LineString, Position } from 'geojson';
-// import routesJson from '../parcours.json';
-
-// export const getAll = () => {
-//   return routesJson;
-// };
 
 export interface ARPath {
   distance: number;

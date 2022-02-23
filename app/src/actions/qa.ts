@@ -1,5 +1,3 @@
-// https://data.airpl.org/geoserver/aireel/wms?SERVICE=WMS&VERSION=1.1.1&TRANSPARENT=true&QUERY_LAYERS=aireel%3Aaireel_indic_7m_atmo_deg&LAYERS=aireel%3Aaireel_indic_7m_atmo_deg&BBOX=-1.555848,47.212598,-1.555648,47.212798&SRS=EPSG%3A4326&INFO_FORMAT=application%2Fjson&REQUEST=GetFeatureInfo&FEATURE_COUNT=50&X=50&Y=50&WIDTH=101&HEIGHT=101
-
 import { BBox, Position } from 'geojson';
 import { theme } from '../theme';
 
@@ -13,38 +11,38 @@ export enum QATypes {
 }
 
 export type QAType = {
-  primary: string;
-  accent: string;
+  main: string; // main color
+  light: string; // light color
   label: string;
 };
 
-const { primary, accent } = theme.colors.quality;
+const { main, light } = theme.colors.quality;
 
 export const QAValues: { [key: number]: QAType } = {
-  [QATypes.GOOD]: { primary: primary.cyan, accent: accent.cyan, label: 'bon' },
+  [QATypes.GOOD]: { main: main.cyan, light: light.cyan, label: 'bon' },
   [QATypes.MEDIUM]: {
-    primary: primary.green,
-    accent: accent.green,
+    main: main.green,
+    light: light.green,
     label: 'moyen',
   },
   [QATypes.DEGRADED]: {
-    primary: primary.yellow,
-    accent: accent.yellow,
+    main: main.yellow,
+    light: light.yellow,
     label: 'dégradé',
   },
   [QATypes.BAD]: {
-    primary: primary.red,
-    accent: accent.orange,
+    main: main.red,
+    light: light.orange,
     label: 'mauvais',
   },
   [QATypes.XBAD]: {
-    primary: primary.darkRed,
-    accent: accent.red,
+    main: main.darkRed,
+    light: light.red,
     label: 'très mauvais',
   },
   [QATypes.XXBAD]: {
-    primary: primary.purple,
-    accent: accent.purple,
+    main: main.purple,
+    light: light.purple,
     label: 'extrêm. mauvais',
   },
 };
