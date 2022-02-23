@@ -7,6 +7,7 @@ export type StackParamList = {
   POIDetails: { poi: POI };
   ChooseItinerary: { start?: Position; end?: Position };
   Favorites: undefined;
+  CreatePlace: undefined;
 };
 
 export type TabParamList = {

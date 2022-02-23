@@ -6,6 +6,7 @@ import {
 import React from 'react';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
+import ARCreatePlace from '../components/templates/ARCreatePlace';
 import ARListFavorites from '../components/templates/ARListFavorites';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
 import { theme } from '../theme';
@@ -78,6 +79,12 @@ export default () => {
         name="Favorites"
         component={ARListFavorites}
         options={{ headerTitle: 'Mes favoris' }}
+      />
+
+      <Stack.Screen
+        name="CreatePlace"
+        component={ARCreatePlace}
+        options={{ headerTitle: 'Créer une nouvelle adresse' }}
       />
     </Stack.Navigator>
   );
