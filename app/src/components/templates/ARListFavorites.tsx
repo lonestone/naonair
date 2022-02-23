@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { SvgXml } from 'react-native-svg';
+import { getAllPlaces, getPlaceById } from '../../actions/myplaces';
 import { POI, POICategory } from '../../actions/poi';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
@@ -32,13 +33,6 @@ const styles = StyleSheet.create({
 const favorites: POI[] = [
   {
     id: 1,
-    adress: 'Rue Stanislas Baudry, 44000 Nantes',
-    category: POICategory.MY_PLACES,
-    name: 'Ici la',
-    geolocation: [0, 0],
-  },
-  {
-    id: 2,
     adress: 'Rue Général de Gaulle, 44000 Nantes',
     category: POICategory.CULTURE,
     name: 'Le musée',
@@ -48,28 +42,41 @@ const favorites: POI[] = [
 
 const ARListFavorites = () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
+  const [items, setItems] = useState<POI[]>([]);
+
+  const readItemFromStorage = async () => {
+    const values = await getAllPlaces();
+    setItems(values?.concat(favorites) || favorites);
+  };
+
+  useEffect(() => {
+    //TODO refresh list after create new address
+    readItemFromStorage();
+  }, []);
 
   return (
     <>
       <ScrollView style={styles.container}>
-        {favorites.map((fav, idx) => (
-          <ARListItem
-            key={idx}
-            title={fav.name}
-            description={fav.adress}
-            descriptionStyle={styles.description}
-            titleStyle={styles.title}
-            onPress={() =>
-              fav.category === POICategory.MY_PLACES && console.log('TODO', fav)
-            }
-            leftIcon={() => (
-              <SvgXml width="20" height="20" xml={icons[`${fav.category}`]} />
-            )}
-            rightIcon={
-              fav.category === POICategory.MY_PLACES ? 'pencil' : 'star'
-            }
-          />
-        ))}
+        {items &&
+          items.map((fav, idx) => (
+            <ARListItem
+              key={idx}
+              title={fav.name}
+              description={fav.adress}
+              descriptionStyle={styles.description}
+              titleStyle={styles.title}
+              onPress={() =>
+                fav.category === POICategory.MY_PLACES &&
+                console.log('TODO', fav)
+              }
+              leftIcon={() => (
+                <SvgXml width="20" height="20" xml={icons[`${fav.category}`]} />
+              )}
+              rightIcon={
+                fav.category === POICategory.MY_PLACES ? 'pencil' : 'star'
+              }
+            />
+          ))}
       </ScrollView>
       <ARButton
         icon="plus"

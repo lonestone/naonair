@@ -1,9 +1,12 @@
+import { useNavigation } from '@react-navigation/native';
 import { Feature, Point, Position } from 'geojson';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
-import { POICategory } from '../../actions/poi';
+import { setPlaceStorage } from '../../actions/myplaces';
+import { POI, POICategory } from '../../actions/poi';
+import { NavigationScreenProp } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARAddressInput from '../molecules/ARAddressInput';
 import ARListItem from '../molecules/ARListItem';
@@ -14,9 +17,20 @@ const styles = StyleSheet.create({
 });
 
 const ARCreatePlace = () => {
+  const navigation = useNavigation<NavigationScreenProp>();
+
   const [name, setName] = useState('');
+  const [place, setPlace] = useState<POI>();
   const [results, setResults] = useState<Feature[]>([]);
   const [values, setValues] = useState<Position | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleOnsubmit = async () => {
+    setIsLoading(true);
+    await setPlaceStorage(place!);
+    navigation.goBack();
+    setIsLoading(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -40,13 +54,24 @@ const ARCreatePlace = () => {
         {(results || []).map(({ properties, geometry }) => (
           <React.Fragment key={properties?.id}>
             <ARListItem
-              title={properties?.name}
-              description={properties?.adress}
+              title={properties?.label}
               leftIcon={() => (
-                <SvgXml width="20" height="20" xml={icons[`${POICategory.MY_PLACES}`]} />
+                <SvgXml
+                  width="20"
+                  height="20"
+                  xml={icons[`${POICategory.MY_PLACES}`]}
+                />
               )}
               onPress={() => {
                 setValues((geometry as Point).coordinates);
+                setPlace({
+                  id: new Date().getTime(),
+                  adress: properties?.label,
+                  category: POICategory.MY_PLACES,
+                  name,
+                  geolocation: { lat: properties?.x, lon: properties?.y },
+                });
+                setResults([]);
               }}
             />
           </React.Fragment>
@@ -62,20 +87,12 @@ const ARCreatePlace = () => {
           bottom: 0,
           alignSelf: 'center',
         }}
-        onPress={() => console.log(name, values)}
+        onPress={handleOnsubmit}
+        disabled={!place}
+        loading={isLoading}
       />
     </View>
   );
 };
 
 export default ARCreatePlace;
-// poi={{
-//     id: properties?.id,
-//     name: properties?.name,
-//     adress: properties?.label,
-//     category: POICategory.CULTURE,
-//     geolocation: {
-//       lat: (geometry as Point).coordinates[0],
-//       lon: (geometry as Point).coordinates[1],
-//     },
-//   }}
