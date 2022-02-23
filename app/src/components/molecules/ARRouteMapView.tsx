@@ -10,8 +10,8 @@ import ARMap from '../atoms/ARMap';
 export interface ARRouteMapViewProps {
   paths: ARPath[];
   bbox?: BBox;
-  start: Position;
-  end: Position;
+  start?: Position;
+  end?: Position;
 }
 
 const styles = StyleSheet.create({
@@ -75,8 +75,8 @@ export default ({ paths, bbox, start, end }: ARRouteMapViewProps) => {
       onMapLoaded={() => setMapLoaded(true)}>
       {isMapLoaded && (
         <>
-          <StartMarker position={start} />
-          <EndMarker position={end} />
+          {start && <StartMarker position={start} />}
+          {end && <EndMarker position={end} />}
           {paths.length > 0 && (
             <MapboxGL.ShapeSource
               id="source"

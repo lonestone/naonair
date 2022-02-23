@@ -14,8 +14,7 @@ import {
   RouteProfile,
 } from '../../actions/routes';
 import { theme } from '../../theme';
-import { NavigationScreenProp, StackParamList } from '../../types/routes';
-
+import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
 import ARRouteMapView from '../molecules/ARRouteMapView';
 
 type ARChooseItineraryProp = RouteProp<StackParamList, 'ChooseItinerary'>;
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
 });
 
 const BackButton = () => {
-  const navigation = useNavigation<NavigationScreenProp>();
+  const navigation = useNavigation<StackNavigationScreenProp>();
 
   return (
     <SafeAreaView style={styles.backButtonSafeArea}>
@@ -104,16 +103,20 @@ export default () => {
   const { start, end } = params;
 
   useEffect(() => {
-    const bbox = turf.bbox(
-      turf.featureCollection([turf.point(start), turf.point(end)]),
-    );
-    setBbox(bbox);
+    if (start && end) {
+      const bbox = turf.bbox(
+        turf.featureCollection([turf.point(start), turf.point(end)]),
+      );
+      setBbox(bbox);
+    }
   }, [setBbox, start, end]);
 
   const getRoute = useCallback(async () => {
-    const routes = await calculateRoute(start, end, RouteProfile.Bike);
+    if (start && end) {
+      const routes = await calculateRoute(start, end, RouteProfile.Bike);
 
-    setRoute(routes);
+      setRoute(routes);
+    }
   }, [end, start]);
 
   useEffect(() => {

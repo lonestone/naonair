@@ -15,10 +15,11 @@ const styles = StyleSheet.create({
 interface Props {
   coord?: Position;
   size: 'sm' | 'md';
+  value?: QAType;
   shadowStyle?: StyleProp<ViewStyle>;
 }
 
-const ARQAChip = ({ size, shadowStyle, coord }: Props) => {
+const ARQAChip = ({ size, shadowStyle, coord, value }: Props) => {
   const [qa, setQA] = useState<QAType | undefined>();
 
   const getQA = useCallback(async () => {
@@ -35,12 +36,14 @@ const ARQAChip = ({ size, shadowStyle, coord }: Props) => {
   }, [coord]);
 
   useEffect(() => {
-    getQA();
-  }, [getQA]);
+    if (!value) {
+      getQA();
+    }
+  }, [getQA, value]);
 
   const styleChip = () => {
     return StyleSheet.flatten([
-      { backgroundColor: qa?.primary },
+      { backgroundColor: qa?.primary || value?.primary },
       styles.chip,
       shadowStyle,
     ]);
@@ -52,10 +55,10 @@ const ARQAChip = ({ size, shadowStyle, coord }: Props) => {
         style={[
           { fontWeight: 'bold', fontSize: size === 'sm' ? 12 : 16 },
           {
-            color: qa?.accent,
+            color: qa?.accent || value?.accent,
           },
         ]}>
-        {qa?.label || ''}
+        {qa?.label || value?.label || ''}
       </Text>
     </View>
   );

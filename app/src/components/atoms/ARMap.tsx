@@ -117,12 +117,12 @@ export default ({
             renderMode="native"
             animated
             showsUserHeadingIndicator
-            onUpdate={location => {
-              // cameraRef.current?.moveTo([
-              //   location.coords.longitude,
-              //   location.coords.latitude,
-              // ]);
-            }}
+            // onUpdate={location => {
+            // cameraRef.current?.moveTo([
+            //   location.coords.longitude,
+            //   location.coords.latitude,
+            // ]);
+            // }}
           />
         ) : null}
         {heatmapVisible && (

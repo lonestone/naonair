@@ -11,13 +11,14 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { MapboxFeature, POICategory } from '../../actions/poi';
+import { MapboxFeature } from '../../actions/poi';
 import { theme } from '../../theme';
+import { StackNavigationScreenProp } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARHeader from '../atoms/ARHeader';
 import ARAddressInput from '../molecules/ARAddressInput';
 import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
-import ARListItem, { NavigationScreenProp } from '../molecules/ARListItem';
+import ARListItem from '../molecules/ARListItem';
 
 const styles = StyleSheet.create({
   container: {
@@ -104,7 +105,7 @@ enum Field {
 //   -1.525139, 47.22919,
 // ]
 export default () => {
-  const navigation = useNavigation<NavigationScreenProp>();
+  const navigation = useNavigation<StackNavigationScreenProp>();
   const [results, setResults] = useState<MapboxFeature[]>([]);
   const [values, setValues] = useState<{
     [key: string]: { coord: Position; text: string } | undefined;

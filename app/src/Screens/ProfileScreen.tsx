@@ -6,7 +6,7 @@ import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARListItem from '../components/molecules/ARListItem';
 import { theme } from '../theme';
 import { ProfileItemType } from '../types/profile';
-import { NavigationScreenProp, StackParamList } from '../types/routes';
+import { StackNavigationScreenProp, StackParamList } from '../types/routes';
 
 const styles = StyleSheet.create({
   container: {
@@ -64,7 +64,7 @@ const profileItems: ProfileItemType[] = [
 ];
 
 const ProfileScreen = () => {
-  const navigation = useNavigation<NavigationScreenProp>();
+  const navigation = useNavigation<StackNavigationScreenProp>();
 
   const handlePress = async (url?: any, link?: keyof StackParamList) => {
     // Checking if the link is supported for links with custom URL scheme.
