@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 48,
     padding: 0,
-    backgroundColor: theme.colors.primary,
   },
   labelStyle: {
     fontWeight: '600',

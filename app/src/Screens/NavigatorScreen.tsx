@@ -6,6 +6,7 @@ import {
 import React from 'react';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
+import ARCreatePlace from '../components/templates/ARCreatePlace';
 import ARListFavorites from '../components/templates/ARListFavorites';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
 import ARRouteDetail from '../components/templates/ARRouteDetail';
@@ -91,7 +92,12 @@ export default () => {
       <Stack.Screen
         name="RouteDetail"
         component={ARRouteDetail}
-        options={{ headerTitle: 'Détail' }}
+        options={{ headerTitle: 'Détail' }}/>
+        
+      <Stack.Screen
+        name="CreatePlace"
+        component={ARCreatePlace}
+        options={{ headerTitle: 'Créer une nouvelle adresse' }}
       />
     </Stack.Navigator>
   );
