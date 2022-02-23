@@ -43,6 +43,13 @@ export interface ARMapProps extends ViewProps {
   ) => void;
 }
 
+MapboxGL.setAccessToken('');
+
+if (Platform.OS === 'android') {
+  // we have to call this method if we want the user location
+  MapboxGL.requestAndroidLocationPermissions();
+}
+
 export default ({
   userLocationVisible,
   heatmapVisible,
@@ -69,12 +76,6 @@ export default ({
 
   useEffect(() => {
     // if we don't call this methods, MapboxGL crash on Android
-    MapboxGL.setAccessToken('');
-
-    if (Platform.OS === 'android') {
-      // we have to call this method if we want the user location
-      MapboxGL.requestAndroidLocationPermissions();
-    }
   });
 
   return (
@@ -89,7 +90,7 @@ export default ({
         attributionEnabled={false}
         rotateEnabled={false}
         pitchEnabled={false}
-        surfaceView
+        // surfaceView
         onDidFinishRenderingMapFully={() =>
           onMapLoaded && onMapLoaded(mapRef, cameraRef)
         }
