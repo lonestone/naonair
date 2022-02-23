@@ -66,7 +66,7 @@ const ARPOIDetails = () => {
             <Card style={styles.map}>
               <View style={styles.mapView}>
                 <ARMap userLocationVisible interactionEnabled heatmapVisible>
-                  <POIMarker {...poiDetails} />
+                  <POIMarker poi={poiDetails} />
                 </ARMap>
               </View>
               <View style={styles.chipWrapper}>
