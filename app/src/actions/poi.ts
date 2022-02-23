@@ -31,13 +31,13 @@ const POIs = poiJson.map<POI>(({ id, nom, categorie, adresse, gps }) => {
 
   const getCategory = (): POICategory => {
     switch (categorie) {
-      case 'parc':
+      case 'Parc':
         return POICategory.PARK;
-      case 'sport':
+      case 'Sport':
         return POICategory.SPORT;
-      case 'culture':
+      case 'Culture':
         return POICategory.CULTURE;
-      case 'marche':
+      case 'Marche':
         return POICategory.MARKET;
       case 'favoris':
         return POICategory.FAVORITE;
