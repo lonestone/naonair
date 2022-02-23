@@ -26,5 +26,19 @@
     "nom": "galeries lafayette nantes",
     "adresse": "2-20 rue de la marne, 44000 nantes",
     "gps": "47.216465461747696, -1.5538489302768206"
+  },
+  {
+    "id": 5,
+    "nom": "Parc de procé",
+    "categorie": "parc",
+    "adresse": "44 Rue des Dervallières, 44000 Nantes, France",
+    "gps": "47.22434,-1.586527"
+  },
+  {
+    "id": 6,
+    "nom": "Parc de La Gaudinière",
+    "categorie": "sport",
+    "adresse": "Bd Robert Schuman, 44300 Nantes",
+    "gps": "47.2336992,-1.5631984"
   }
 ]
