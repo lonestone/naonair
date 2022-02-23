@@ -48,7 +48,12 @@ const ARListView = ({ pois }: ARListViewProps) => {
             })
           }
           leftIcon={() => (
-            <SvgXml width="20" height="20" xml={icons[`${poi.category}`]} />
+            <SvgXml
+              width="20"
+              height="20"
+              xml={icons[`${poi.category}`]}
+              fill="#25244E"
+            />
           )}
           rightChip={
             <View style={styles.chipWrapper}>
