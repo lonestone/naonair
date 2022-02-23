@@ -2,6 +2,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
+import ARListFavorites from '../components/templates/ARListFavorites';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
 import { theme } from '../theme';
 import { StackParamList, TabParamList } from '../types/routes';
@@ -54,9 +55,15 @@ export default () => {
       />
 
       <Stack.Screen
-        name="Details"
+        name="POIDetails"
         component={ARPOIDetails}
         options={{ headerTitle: 'Détails' }}
+      />
+      
+      <Stack.Screen
+        name="Favorites"
+        component={ARListFavorites}
+        options={{ headerTitle: 'Mes favoris' }}
       />
     </Stack.Navigator>
   );

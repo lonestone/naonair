@@ -8,6 +8,7 @@ export enum POICategory {
   SPORT = 2,
   CULTURE = 4,
   MARKET = 8,
+  MY_PLACES = 10
 }
 
 export interface POI {
@@ -31,6 +32,10 @@ const POIs = poiJson.map<POI>(({ id, nom, categorie, adresse, gps }) => {
         return POICategory.CULTURE;
       case 'marche':
         return POICategory.MARKET;
+      case 'favoris':
+        return POICategory.FAVORITE;
+      case 'my_places':
+        return POICategory.MY_PLACES;
     }
     return POICategory.UNDEFINED;
   };
