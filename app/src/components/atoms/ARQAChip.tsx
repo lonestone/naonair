@@ -1,5 +1,5 @@
 import { Position } from 'geojson';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   StyleProp,
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import { getQAFromPosition } from '../../actions/poi';
+import { getQAFromPosition } from '../../actions/qa';
 import { LegendItem } from '../../types/legends';
 
 const styles = StyleSheet.create({
@@ -28,9 +28,18 @@ interface Props {
 }
 
 const ARQAChip = ({ item, size, shadowStyle, coord }: Props) => {
-  useEffect(() => {
-    getQAFromPosition(coord).then(() => {});
+  const getQA = useCallback(async () => {
+    try {
+      const temp = getQAFromPosition(coord);
+      console.info(temp);
+    } catch (e) {
+      console.info(e);
+    }
   }, [coord]);
+
+  useEffect(() => {
+    getQA();
+  }, [getQA]);
 
   const styleChip = (item: LegendItem) => {
     return StyleSheet.flatten([
