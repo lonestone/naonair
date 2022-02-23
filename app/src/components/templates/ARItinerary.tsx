@@ -170,27 +170,21 @@ export default () => {
             style={styles.container}
             contentInset={{ bottom: 70, top: 0 }}
             indicatorStyle="black">
-            {(results || []).map(({ properties, geometry, text_fr, id }) => (
-              <React.Fragment key={properties?.id}>
-                <ARListItem
-                  poi={{
-                    id,
-                    name: text_fr,
-                    adress: properties?.address,
-                    category: POICategory.CULTURE,
-                    geolocation: geometry.coordinates,
-                  }}
-                  onPress={() => {
-                    setValues({
-                      ...values,
-                      [selectedField.toString()]: {
-                        coord: geometry.coordinates,
-                        text: text_fr,
-                      },
-                    });
-                  }}
-                />
-              </React.Fragment>
+            {(results || []).map(({ properties, geometry, text_fr }) => (
+              <ARListItem
+                key={properties?.id}
+                leftIcon="navigation"
+                title={text_fr}
+                onPress={() => {
+                  setValues({
+                    ...values,
+                    [selectedField.toString()]: {
+                      coord: geometry.coordinates,
+                      text: text_fr,
+                    },
+                  });
+                }}
+              />
             ))}
           </ScrollView>
         </View>
