@@ -12,16 +12,26 @@ const styles = StyleSheet.create({
     flex: 0,
     overflow: 'hidden',
   },
+  chipShadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
 });
 
 interface Props {
   coord?: Position;
   size: 'sm' | 'md';
   value?: QAType;
-  shadowStyle?: StyleProp<ViewStyle>;
+  shadow?: boolean;
 }
 
-const ARQAChip = ({ size, shadowStyle, coord, value }: Props) => {
+const ARQAChip = ({ size, shadow, coord, value }: Props) => {
   const [qa, setQA] = useState<QAType | undefined>();
 
   const getQA = useCallback(async () => {
@@ -47,7 +57,7 @@ const ARQAChip = ({ size, shadowStyle, coord, value }: Props) => {
     return StyleSheet.flatten([
       { backgroundColor: qa?.main || value?.main },
       styles.chip,
-      shadowStyle,
+      shadow ? styles.chipShadow : {},
     ]);
   };
 

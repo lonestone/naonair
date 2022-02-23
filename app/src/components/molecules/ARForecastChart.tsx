@@ -19,14 +19,14 @@ const styles = StyleSheet.create({
 const ARForecastChart = () => {
   const intervalOfHours = eachHourOfInterval({
     start: new Date(),
-    end: startOfTomorrow()
-  })
+    end: startOfTomorrow(),
+  });
 
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
         {intervalOfHours.map((hour, i) => (
-          <ARChartPie key={i}  qa={{hour, color: ForecastColor.GOOD}} />
+          <ARChartPie key={i} qa={{ hour, color: ForecastColor.GOOD }} />
         ))}
       </ScrollView>
     </View>

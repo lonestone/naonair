@@ -4,7 +4,6 @@ import { Card, Headline, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { QAValues } from '../../actions/qa';
 import { theme } from '../../theme';
-import { legendItems } from '../../types/legends';
 import ARQAChip from '../atoms/ARQAChip';
 
 export interface ARLegendProps extends ViewProps {}
