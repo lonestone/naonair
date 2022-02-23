@@ -33,7 +33,7 @@ export const theme = {
       500: '#25244E',
     },
     quality: {
-      primary: {
+      main: {
         purple: '#7D2081',
         darkRed: '#960032',
         red: '#FF5050',
@@ -41,7 +41,7 @@ export const theme = {
         green: '#51CCA9',
         cyan: '#26D1C7',
       },
-      accent: {
+      light: {
         purple: '#FEF0FF',
         red: '#FFEAF4',
         orange: '#FFEBEB',

@@ -45,7 +45,7 @@ const ARQAChip = ({ size, shadowStyle, coord, value }: Props) => {
 
   const styleChip = () => {
     return StyleSheet.flatten([
-      { backgroundColor: qa?.primary || value?.primary },
+      { backgroundColor: qa?.main || value?.main },
       styles.chip,
       shadowStyle,
     ]);
@@ -57,7 +57,7 @@ const ARQAChip = ({ size, shadowStyle, coord, value }: Props) => {
         style={[
           { fontWeight: 'bold', fontSize: size === 'sm' ? 12 : 16 },
           {
-            color: qa?.accent || value?.accent,
+            color: qa?.light || value?.light,
           },
         ]}>
         {qa?.label || value?.label || ''}
