@@ -65,7 +65,11 @@ const ARPOIDetails = () => {
           <View>
             <Card style={styles.map}>
               <View style={styles.mapView}>
-                <ARMap userLocationVisible interactionEnabled heatmapVisible>
+                <ARMap
+                  userLocationVisible
+                  interactionEnabled
+                  heatmapVisible
+                  center={poiDetails.geolocation}>
                   <POIMarker poi={poiDetails} />
                 </ARMap>
               </View>

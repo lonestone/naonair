@@ -36,6 +36,7 @@ export interface ARMapProps extends ViewProps {
   heatmapVisible?: boolean;
   interactionEnabled?: boolean;
   bbox?: BBox;
+  center?: Position;
   onMapLoaded?: (
     mapRef: RefObject<MapboxGL.MapView>,
     cameraRef: RefObject<MapboxGL.Camera>,
@@ -48,6 +49,7 @@ export default ({
   interactionEnabled,
   children,
   bbox,
+  center,
   onMapLoaded,
 }: ARMapProps) => {
   const cameraRef = React.createRef<MapboxGL.Camera>();
@@ -96,6 +98,7 @@ export default ({
         <MapboxGL.Camera
           ref={cameraRef}
           bounds={bounds}
+          centerCoordinate={center}
           padding={{
             paddingBottom: 25,
             paddingLeft: 25,
@@ -115,10 +118,10 @@ export default ({
             animated
             showsUserHeadingIndicator
             onUpdate={location => {
-              cameraRef.current?.moveTo([
-                location.coords.longitude,
-                location.coords.latitude,
-              ]);
+              // cameraRef.current?.moveTo([
+              //   location.coords.longitude,
+              //   location.coords.latitude,
+              // ]);
             }}
           />
         ) : null}
