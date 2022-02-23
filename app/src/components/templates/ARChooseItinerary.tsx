@@ -117,7 +117,8 @@ export default () => {
   }, [end, start]);
 
   useEffect(() => {
-    getRoute();
+    // HACK : prevent setting route to map before it is loaded
+    setTimeout(getRoute, 200);
   }, [getRoute]);
 
   return (
