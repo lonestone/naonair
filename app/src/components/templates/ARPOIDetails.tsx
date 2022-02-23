@@ -56,34 +56,29 @@ const styles = StyleSheet.create({
 type POIDetailsRouteProp = RouteProp<StackParamList, 'Details'>;
 
 const ARPOIDetails = () => {
-  const { params } = useRoute<POIDetailsRouteProp>();
-
-  const poiQA = {
-    label: 'dégradé',
-    color: theme.colors.quality.yellow,
-    labelColor: '#8D8500',
-  };
+  const { poiDetails } = useRoute<POIDetailsRouteProp>().params || {};
 
   return (
     <ScrollView style={styles.scrollView}>
-      {params && params.poiDetails && (
+      {poiDetails && (
         <View style={styles.detailView}>
           <View>
             <Card style={styles.map}>
               <View style={styles.mapView}>
                 <ARMap userLocationVisible interactionEnabled heatmapVisible>
-                  <POIMarker {...params.poiDetails} />
+                  <POIMarker {...poiDetails} />
                 </ARMap>
               </View>
               <View style={styles.chipWrapper}>
-                <ARQAChip size="md" shadowStyle={styles.shadow} item={poiQA} />
+                <ARQAChip
+                  size="md"
+                  shadowStyle={styles.shadow}
+                  coord={poiDetails.geolocation}
+                />
               </View>
             </Card>
           </View>
-          <ARHeadingGroup
-            title={params.poiDetails.name}
-            caption={params.poiDetails.adress}
-          />
+          <ARHeadingGroup title={poiDetails.name} caption={poiDetails.adress} />
           <Divider />
           <ARForecasts forecastQA />
         </View>

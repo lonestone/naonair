@@ -1,15 +1,7 @@
 import { Position } from 'geojson';
-import React, { useCallback, useEffect } from 'react';
-import {
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextStyle,
-  View,
-  ViewStyle,
-} from 'react-native';
-import { getQAFromPosition } from '../../actions/qa';
-import { LegendItem } from '../../types/legends';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { getQAFromPosition, QAType } from '../../actions/qa';
 
 const styles = StyleSheet.create({
   chip: {
@@ -21,17 +13,22 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  coord: Position;
-  item: LegendItem;
+  coord?: Position;
   size: 'sm' | 'md';
   shadowStyle?: StyleProp<ViewStyle>;
 }
 
-const ARQAChip = ({ item, size, shadowStyle, coord }: Props) => {
+const ARQAChip = ({ size, shadowStyle, coord }: Props) => {
+  const [qa, setQA] = useState<QAType | undefined>();
+
   const getQA = useCallback(async () => {
+    if (!coord) {
+      return;
+    }
+
     try {
-      const temp = getQAFromPosition(coord);
-      console.info(temp);
+      const qa = await getQAFromPosition(coord);
+      setQA(qa);
     } catch (e) {
       console.info(e);
     }
@@ -41,23 +38,24 @@ const ARQAChip = ({ item, size, shadowStyle, coord }: Props) => {
     getQA();
   }, [getQA]);
 
-  const styleChip = (item: LegendItem) => {
+  const styleChip = () => {
     return StyleSheet.flatten([
-      { backgroundColor: item.color },
+      { backgroundColor: qa?.primary },
       styles.chip,
       shadowStyle,
     ]);
   };
+
   return (
-    <View style={styleChip(item)}>
+    <View style={styleChip()}>
       <Text
         style={[
           { fontWeight: 'bold', fontSize: size === 'sm' ? 12 : 16 },
-          (item.labelColor as TextStyle) && {
-            color: item.labelColor,
+          {
+            color: qa?.accent,
           },
         ]}>
-        {item.label}
+        {qa?.label || ''}
       </Text>
     </View>
   );
