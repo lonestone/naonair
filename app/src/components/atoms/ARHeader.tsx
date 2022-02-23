@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 18,
     paddingBottom: 20,
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     borderColor: theme.colors.accent,
     borderWidth: 1,
     shadowColor: theme.colors.accent,

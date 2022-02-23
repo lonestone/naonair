@@ -44,6 +44,13 @@ const styles = StyleSheet.create({
     color: theme.colors.blue[500],
     fontSize: 18,
   },
+  scrollView: {
+    backgroundColor: 'white',
+  },
+  detailView: {
+    margin: 15,
+  },
+  mapView: { flex: 1, borderRadius: 16, overflow: 'hidden' },
 });
 
 type AppStackParamList = {
@@ -62,12 +69,12 @@ const ARPOIDetails = () => {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: 'white' }}>
+    <ScrollView style={styles.scrollView}>
       {params && params.poiDetails && (
-        <View style={{ margin: 15 }}>
+        <View style={styles.detailView}>
           <View>
             <Card style={styles.map}>
-              <View style={{ flex: 1, borderRadius: 16, overflow: 'hidden' }}>
+              <View style={styles.mapView}>
                 <ARMap userLocationVisible interactionEnabled heatmapVisible>
                   <POIMarker {...params.poiDetails} />
                 </ARMap>

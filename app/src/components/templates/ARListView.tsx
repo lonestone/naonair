@@ -20,6 +20,9 @@ const styles = StyleSheet.create({
     color: theme.colors.blue[500],
     fontSize: 16,
   },
+  chipWrapper: {
+    justifyContent: 'center',
+  }
 });
 
 interface ARListViewProps {
@@ -44,16 +47,16 @@ const ARListView = ({ pois }: ARListViewProps) => {
           description={poi.adress}
           descriptionStyle={styles.description}
           titleStyle={styles.title}
-          onPress={() => {
-            navigation.navigate('Details', {
+          onPress={() =>
+            navigation.navigate('POIDetails', {
               poiDetails: poi,
-            });
-          }}
-          leftIcon={
-            <SvgXml width="20" height="20" xml={icons[`${poi.category}`]} />
+            })
           }
+          leftIcon={() => (
+            <SvgXml width="20" height="20" xml={icons[`${poi.category}`]} />
+          )}
           rightChip={
-            <View style={{ justifyContent: 'center' }}>
+            <View style={styles.chipWrapper}>
               <ARQAChip size="sm" item={poiQA} />
             </View>
           }

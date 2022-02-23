@@ -1,9 +1,12 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
-import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
+import { Linking, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { List } from 'react-native-paper';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARListItem from '../components/molecules/ARListItem';
 import { theme } from '../theme';
+import { ProfileItemType } from '../types/profile';
+import { NavigationScreenProp, StackParamList } from '../types/routes';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,34 +34,50 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
+  iconContainer: {
+    width: 40,
+    height: 40,
+    backgroundColor: theme.colors.accent,
+    borderRadius: 100,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
-type ProfilItemType = {
-  icon: IconSource;
-  title: string;
-  linkIcon?: IconSource;
-  link?: string;
-};
-
-const profilItem: ProfilItemType[] = [
-  { icon: 'star', title: 'Mes favoris' },
+const profileItems: ProfileItemType[] = [
+  { icon: 'star', title: 'Mes favoris', link: 'Favorites' },
   { icon: 'book-open-blank-variant', title: 'CGU' },
   { icon: 'clipboard-check', title: 'Mentions légales' },
   {
     icon: 'information',
     linkIcon: 'launch',
     title: 'En savoir plus sur Naonair',
-    link: 'url:naonair.fr',
+    url: 'https://www.airpl.org',
   },
   {
     icon: 'information',
     linkIcon: 'launch',
     title: 'En savoir plus sur AirPDL',
-    link: 'url:airpdl.fr',
+    url: 'https://www.airpl.org',
   },
 ];
 
 const ProfileScreen = () => {
+  const navigation = useNavigation<NavigationScreenProp>();
+
+  const handlePress = async (url?: any, link?: keyof StackParamList) => {
+    // Checking if the link is supported for links with custom URL scheme.
+    if (url) {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      }
+    } else if (link) {
+      return navigation.navigate('Favorites');
+    }
+  };
+
   return (
     <>
       <ARCommonHeader
@@ -66,16 +85,25 @@ const ProfileScreen = () => {
         caption="Retrouvez ici vos informations personnelles"
       />
       <SafeAreaView style={styles.container}>
-        {profilItem.map((item, index) => (
-          <ARListItem
-            key={index}
-            title={item.title}
-            titleStyle={styles.item}
-            leftIcon={item.icon}
-            rightIcon={item.linkIcon}
-            onPress={() => console.log(item.link)}
-          />
-        ))}
+        <ScrollView>
+          {profileItems.map(({ title, icon, linkIcon, url, link }, index) => (
+            <ARListItem
+              key={index}
+              title={title}
+              titleStyle={styles.item}
+              leftIcon={props => (
+                <List.Icon
+                  {...props}
+                  style={styles.iconContainer}
+                  color={theme.colors.blue[500]}
+                  icon={icon}
+                />
+              )}
+              rightIcon={linkIcon}
+              onPress={() => handlePress(url, link)}
+            />
+          ))}
+        </ScrollView>
       </SafeAreaView>
     </>
   );
