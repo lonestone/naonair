@@ -5,8 +5,8 @@ import { POI } from '../actions/poi';
 export type StackParamList = {
   Home: undefined;
   POIDetails: { poiDetails: POI };
+  ChooseItinerary: { start?: Position; end?: Position };
   Favorites: undefined;
-  ChooseItinerary: { start: Position; end: Position };
 };
 
 export type TabParamList = {
@@ -16,7 +16,4 @@ export type TabParamList = {
   Profil: undefined;
 };
 
-export type NavigationScreenProp = StackNavigationProp<
-  StackParamList,
-  'POIDetails'
->;
+export type StackNavigationScreenProp = StackNavigationProp<StackParamList>;
