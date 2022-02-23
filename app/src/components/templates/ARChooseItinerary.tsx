@@ -76,12 +76,12 @@ const ItineraryItem = ({}: { path: ARPath }) => {
   );
 };
 
-const ItineraryList = ({ paths }: { paths: ARPath[] }) => {
+const ItineraryList = ({ paths = [] }: { paths: ARPath[] }) => {
   return (
     <Surface style={styles.listContainer}>
       <SafeAreaView edges={['bottom', 'left', 'right']}>
         <Headline>Choisissez votre itinéraire</Headline>
-        {(paths || []).map((path, index) => (
+        {paths.map((path, index) => (
           <ItineraryItem key={`path-${index}`} path={path} />
         ))}
       </SafeAreaView>
@@ -89,17 +89,14 @@ const ItineraryList = ({ paths }: { paths: ARPath[] }) => {
   );
 };
 
-const LoadingView = () => {
-  return (
-    <Surface style={styles.listContainer}>
-      <Headline>Calcul de l'itinéraire en cours...</Headline>
-      <ActivityIndicator animating />
-    </Surface>
-  );
-};
+const LoadingView = () => (
+  <Surface style={styles.listContainer}>
+    <Headline>Calcul de l'itinéraire en cours...</Headline>
+    <ActivityIndicator animating />
+  </Surface>
+);
 
 export default () => {
-  // const navigation = useNavigation<NavigationScreenProp>();
   const { params } = useRoute<ARChooseItineraryProp>();
   const [route, setRoute] = useState<ARRoute | undefined>();
   const [bbox, setBbox] = useState<BBox | undefined>();
@@ -120,17 +117,19 @@ export default () => {
   }, [end, start]);
 
   useEffect(() => {
-    setTimeout(getRoute, 500);
-    // getRoute();
+    getRoute();
   }, [getRoute]);
-
-  const paths = route?.paths || [];
 
   return (
     <>
       <View style={styles.mapContainer}>
         {bbox && (
-          <ARRouteMapView paths={paths} bbox={bbox} start={start} end={end} />
+          <ARRouteMapView
+            paths={route?.paths || []}
+            bbox={bbox}
+            start={start}
+            end={end}
+          />
         )}
       </View>
       {route?.paths ? <ItineraryList paths={route?.paths} /> : <LoadingView />}

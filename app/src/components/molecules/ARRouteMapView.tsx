@@ -44,40 +44,26 @@ const lineStyle: LineLayerStyle = {
   lineCap: 'round',
 };
 
-const StartMarker = ({ position }: { position: Position }) => {
-  return (
-    <MapboxGL.MarkerView
-      id="start-marker-1"
-      title="Start"
-      coordinate={position}>
-      <View style={styles.startMarker} />
-    </MapboxGL.MarkerView>
-  );
-};
+const StartMarker = ({ position }: { position: Position }) => (
+  <MapboxGL.MarkerView id="start-marker-1" title="Start" coordinate={position}>
+    <View style={styles.startMarker} />
+  </MapboxGL.MarkerView>
+);
 
-const EndMarker = forwardRef<MapboxGL.MarkerView, { position: Position }>(
-  ({ position }, ref) => {
-    console.info(position);
-    return (
-      <MapboxGL.MarkerView ref={ref} id="end-marker-1" coordinate={position}>
-        <View
-          style={styles.endMarker}
-          onLayout={() => console.info('ONLAYOUT')}>
-          <Icon
-            name="flag"
-            color={theme.colors.white}
-            size={12}
-            style={styles.endMarkerIcon}
-          />
-        </View>
-      </MapboxGL.MarkerView>
-    );
-  },
+const EndMarker = ({ position }: { position: Position }) => (
+  <MapboxGL.MarkerView id="end-marker-1" coordinate={position}>
+    <View style={styles.endMarker}>
+      <Icon
+        name="flag"
+        color={theme.colors.white}
+        size={12}
+        style={styles.endMarkerIcon}
+      />
+    </View>
+  </MapboxGL.MarkerView>
 );
 
 export default ({ paths, bbox, start, end }: ARRouteMapViewProps) => {
-  const endMarkerRef = createRef<MapboxGL.MarkerView>();
-
   // HACK to prevent draw PointAnnotation before the map is loaded
   // If not, PointAnnotation will be render outside the bbox and has incorrect values
   const [isMapLoaded, setMapLoaded] = useState<boolean>();
@@ -86,14 +72,11 @@ export default ({ paths, bbox, start, end }: ARRouteMapViewProps) => {
     <ARMap
       // interactionEnabled
       bbox={bbox}
-      onMapLoaded={() => {
-        console.info('refresh');
-        setMapLoaded(true);
-      }}>
+      onMapLoaded={() => setMapLoaded(true)}>
       {isMapLoaded && (
         <>
           <StartMarker position={start} />
-          <EndMarker ref={endMarkerRef} position={end} />
+          <EndMarker position={end} />
           {paths.length > 0 && (
             <MapboxGL.ShapeSource
               id="source"
