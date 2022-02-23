@@ -1,4 +1,4 @@
-import {theme} from '../theme';
+import { theme } from '../theme';
 
 export enum Forecasts {
   TODAY = 0,
@@ -6,12 +6,12 @@ export enum Forecasts {
 }
 
 export const ForecastColor = {
-  XXBAD: theme.colors.quality.purple,
-  XBAD: theme.colors.quality.darkRed,
-  BAD: theme.colors.quality.red,
-  DEGRADED: theme.colors.quality.yellow,
-  MEDIUM: theme.colors.quality.green,
-  GOOD: theme.colors.quality.cyan,
+  XXBAD: theme.colors.quality.primary.purple,
+  XBAD: theme.colors.quality.primary.darkRed,
+  BAD: theme.colors.quality.primary.red,
+  DEGRADED: theme.colors.quality.primary.yellow,
+  MEDIUM: theme.colors.quality.primary.green,
+  GOOD: theme.colors.quality.primary.cyan,
 };
 
 export type ForecastType = {
