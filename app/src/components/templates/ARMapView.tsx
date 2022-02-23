@@ -1,7 +1,7 @@
 /// <reference path="../../custom.d.ts" />
 
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import React, { useState } from 'react';
+import React, { createRef, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { POI, POICategory } from '../../actions/poi';
@@ -14,6 +14,7 @@ import markerBackground from '../../assets/marker-background.svg';
 import ARMap from '../atoms/ARMap';
 import ARLegend from '../molecules/ARLegend';
 import ARAlert from './ARAlert';
+import { getQAFromPosition, QAType } from '../../actions/qa';
 
 export interface ARMapViewProps {
   pois: POI[];
@@ -58,28 +59,47 @@ export const icons = {
   [`${POICategory.UNDEFINED}`]: null,
 };
 
-export const POIMarker = (poi: POI) => {
+export const POIMarker = ({ poi }: { poi: POI }) => {
+  const annotationRef = createRef<MapboxGL.PointAnnotation>();
+  const [qa, setQA] = useState<QAType | undefined>();
+
+  const getQA = useCallback(async () => {
+    const temp = await getQAFromPosition(poi.geolocation);
+    console.info(temp);
+    setQA(temp);
+    annotationRef.current?.refresh();
+  }, [poi, annotationRef]);
+
+  useEffect(() => {
+    getQA();
+  }, [getQA]);
+
   return (
-    <MapboxGL.MarkerView
+    <MapboxGL.PointAnnotation
+      ref={annotationRef}
       coordinate={poi.geolocation}
       anchor={{ x: 0.5, y: 1 }}
-      id={`${poi.id}`}
-      key={`poi-${poi.id}`}>
-      <View style={styles.markerContainer}>
+      title={poi.name}
+      id={`${poi.id}`}>
+      <View
+        style={styles.markerContainer}
+        onLayout={() => annotationRef.current?.refresh()}>
         <SvgXml
           width="40"
           height="46"
+          fill={qa?.accent || 'white'}
           xml={markerBackground}
           style={styles.markerBackground}
         />
         <SvgXml
           width="20"
           height="20"
+          fill={qa?.primary || '#25244E'}
           style={styles.markerIcon}
           xml={icons[`${poi.category}`]}
         />
       </View>
-    </MapboxGL.MarkerView>
+    </MapboxGL.PointAnnotation>
   );
 };
 
@@ -94,8 +114,9 @@ export default ({ pois }: ARMapViewProps) => {
         userLocationVisible
         interactionEnabled
         heatmapVisible
-        onMapLoaded={() => setMapLoaded(true)}>
-        {isMapLoaded && pois.map(POIMarker)}
+        onMapLoaded={() => setTimeout(() => setMapLoaded(true), 500)}>
+        {isMapLoaded &&
+          pois.map(poi => <POIMarker key={`poi-${poi.id}`} poi={poi} />)}
       </ARMap>
       <ARAlert />
       <ARLegend style={styles.legends} />
