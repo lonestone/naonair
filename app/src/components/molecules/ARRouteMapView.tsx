@@ -1,6 +1,6 @@
 import MapboxGL, { LineLayerStyle } from '@react-native-mapbox-gl/maps';
 import { BBox, Feature, Geometry, Position } from 'geojson';
-import React, { createRef, forwardRef, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ARPath } from '../../actions/routes';
