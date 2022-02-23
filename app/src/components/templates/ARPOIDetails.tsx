@@ -1,12 +1,12 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Card } from 'react-native-paper';
+import { Card, Divider } from 'react-native-paper';
 import { POI } from '../../actions/poi';
 import { theme } from '../../theme';
 import ARMap from '../atoms/ARMap';
 import ARQAChip from '../atoms/ARQAChip';
-import ARListItem from '../molecules/ARListItem';
+import ARHeadingGroup from '../molecules/ARHeadingGroup';
 import ARForecasts from '../organisms/ARForecasts';
 import { POIMarker } from './ARMapView';
 
@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
   map: {
     height: 300,
     borderRadius: 16,
-    margin: 15,
   },
   chipWrapper: {
     position: 'absolute',
@@ -45,6 +44,13 @@ const styles = StyleSheet.create({
     color: theme.colors.blue[500],
     fontSize: 18,
   },
+  scrollView: {
+    backgroundColor: 'white',
+  },
+  detailView: {
+    margin: 15,
+  },
+  mapView: { flex: 1, borderRadius: 16, overflow: 'hidden' },
 });
 
 type AppStackParamList = {
@@ -63,12 +69,12 @@ const ARPOIDetails = () => {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: 'white' }}>
+    <ScrollView style={styles.scrollView}>
       {params && params.poiDetails && (
-        <>
+        <View style={styles.detailView}>
           <View>
             <Card style={styles.map}>
-              <View style={{ flex: 1, borderRadius: 16, overflow: 'hidden' }}>
+              <View style={styles.mapView}>
                 <ARMap userLocationVisible interactionEnabled heatmapVisible>
                   <POIMarker {...params.poiDetails} />
                 </ARMap>
@@ -78,14 +84,13 @@ const ARPOIDetails = () => {
               </View>
             </Card>
           </View>
-          <ARListItem
-            poi={params.poiDetails}
-            marginBottom={25}
-            titleStyle={styles.title}
-            descriptionStyle={styles.description}
+          <ARHeadingGroup
+            title={params.poiDetails.name}
+            caption={params.poiDetails.adress}
           />
+          <Divider />
           <ARForecasts forecastQA />
-        </>
+        </View>
       )}
     </ScrollView>
   );

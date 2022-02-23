@@ -27,7 +27,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: theme.colors.blue[400],
   },
-  subtext: { textAlign: 'center', color: theme.colors.blue[400] },
+  subtext: {
+    textAlign: 'center',
+    color: theme.colors.blue[400],
+    marginTop: 30,
+  },
+  listItem: { padding: 0 },
 });
 
 const filters: ARFilterItem[] = [
@@ -45,6 +50,7 @@ const ARForecasts = ({ forecastQA }: Props) => {
   return (
     <View style={styles.container}>
       <List.Item
+        style={styles.listItem}
         titleStyle={styles.title}
         title="Prévisions"
         right={() => (

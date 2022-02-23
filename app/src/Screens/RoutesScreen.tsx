@@ -1,7 +1,6 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { Caption, Headline } from 'react-native-paper';
-import ARHeader from '../components/atoms/ARHeader';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARRoutesList from '../components/templates/ARRoutesList';
 
 const styles = StyleSheet.create({
@@ -21,17 +20,11 @@ const styles = StyleSheet.create({
 export default () => {
   return (
     <>
-      <ARHeader>
-        <>
-          <View style={styles.headlineContainer}>
-            <Headline style={styles.headline}>Les parcours</Headline>
-          </View>
-          <Caption>
-            Retrouvez des suggestions de promenades et d’itinéraires sportifs
-            basés sur la qualité de l’air
-          </Caption>
-        </>
-      </ARHeader>
+      <ARCommonHeader
+        headline="Les parcours"
+        caption="Retrouvez des suggestions de promenades et d’itinéraires sportifs basés sur la qualité de l’air"
+      />
+
       <SafeAreaView style={styles.container}>
         <ARRoutesList />
       </SafeAreaView>

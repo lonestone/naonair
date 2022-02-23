@@ -36,8 +36,7 @@ const ARQAChip = ({ item, size, shadowStyle }: Props) => {
     <View style={styleChip(item)}>
       <Text
         style={[
-          { fontWeight: 'bold' },
-          size === 'sm' ? { fontSize: 12 } : { fontSize: 16 },
+          { fontWeight: 'bold', fontSize: size === 'sm' ? 12 : 16 },
           (item.labelColor as TextStyle) && {
             color: item.labelColor,
           },

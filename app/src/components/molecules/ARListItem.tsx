@@ -1,12 +1,8 @@
-import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
 import { Divider, List } from 'react-native-paper';
-import { SvgXml } from 'react-native-svg';
-import { POI } from '../../actions/poi';
+import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { theme } from '../../theme';
-import ARQAChip from '../atoms/ARQAChip';
-import { icons } from '../templates/ARMapView';
 
 const styles = StyleSheet.create({
   iconContainer: {
@@ -21,61 +17,54 @@ const styles = StyleSheet.create({
 });
 
 interface ARListItemProps {
-  poi: POI;
-  isList?: boolean;
-  marginBottom?: number;
-  onPress?: (poi: POI) => void;
+  title: string;
+  description?: string;
   titleStyle?: StyleProp<TextStyle>;
   descriptionStyle?: StyleProp<TextStyle>;
+  leftIcon: Element | IconSource;
+  rightIcon?: any;
+  rightChip?: any;
+  onPress?: () => void;
 }
 
-export type NavigationScreenProp = StackNavigationProp<any, 'Details'>;
-
 const ARListItem = ({
-  isList,
-  onPress,
-  poi,
-  marginBottom,
+  title,
+  description,
   titleStyle,
   descriptionStyle,
+  leftIcon,
+  rightIcon,
+  rightChip,
+  onPress,
 }: ARListItemProps) => {
-  const poiQA = {
-    label: 'dégradé',
-    color: theme.colors.quality.yellow,
-    labelColor: '#8D8500',
-  };
-
   return (
     <>
-      <View style={{ marginBottom }}>
+      <View>
         <List.Item
-          title={poi.name}
+          title={title}
           titleStyle={titleStyle}
-          description={poi.adress}
-          onPress={() => onPress && onPress(poi)}
+          description={description}
+          onPress={onPress}
           descriptionStyle={descriptionStyle}
-          left={props =>
-            isList && (
-              <List.Icon
-                {...props}
-                style={styles.iconContainer}
-                icon={() => (
-                  <SvgXml
-                    width="20"
-                    height="20"
-                    xml={icons[`${poi.category}`]}
-                  />
-                )}
-              />
-            )
-          }
-          right={() =>
-            isList && (
-              <View style={{ justifyContent: 'center' }}>
-                <ARQAChip size="sm" item={poiQA} />
-              </View>
-            )
-          }
+          left={props => (
+            <List.Icon
+              {...props}
+              style={styles.iconContainer}
+              icon={leftIcon}
+              color={theme.colors.blue[500]}
+            />
+          )}
+          right={() => (
+            <>
+              {rightIcon && (
+                <List.Icon
+                  icon={rightIcon}
+                  color={theme.colors.blue[500]}
+                />
+              )}
+              {rightChip && rightChip}
+            </>
+          )}
         />
       </View>
       <Divider />
