@@ -6,6 +6,7 @@ import { StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { POI, POICategory } from '../../actions/poi';
 import cultureIcon from '../../assets/culture-icon.svg';
+import favoriteIcon from '../../assets/favorite-icon.svg';
 import marketIcon from '../../assets/market-icon.svg';
 import sportIcon from '../../assets/sport-icon.svg';
 import parkIcon from '../../assets/park-icon.svg';
@@ -53,6 +54,7 @@ export const icons = {
   [`${POICategory.MARKET}`]: marketIcon,
   [`${POICategory.SPORT}`]: sportIcon,
   [`${POICategory.PARK}`]: parkIcon,
+  [`${POICategory.MY_PLACES}`]: favoriteIcon,
   [`${POICategory.UNDEFINED}`]: null,
 };
 
