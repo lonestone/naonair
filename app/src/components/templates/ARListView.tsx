@@ -33,12 +33,6 @@ interface ARListViewProps {
 const ARListView = ({ pois }: ARListViewProps) => {
   const navigation = useNavigation<NavigationScreenProp>();
 
-  const poiQA = {
-    label: 'dégradé',
-    color: theme.colors.quality.yellow,
-    labelColor: '#8D8500',
-  };
-
   return (
     <ScrollView>
       {pois.map((poi, idx) => (
@@ -58,7 +52,7 @@ const ARListView = ({ pois }: ARListViewProps) => {
           )}
           rightChip={
             <View style={styles.chipWrapper}>
-              <ARQAChip coord={poi.geolocation} size="sm" item={poiQA} />
+              <ARQAChip coord={poi.geolocation} size="sm" />
             </View>
           }
         />
