@@ -1,6 +1,8 @@
 import { BBox, Position } from 'geojson';
 import { theme } from '../theme';
 
+import { GEOSERVER } from '../config.json';
+
 export enum QATypes {
   GOOD = 0,
   MEDIUM = 1,
@@ -51,7 +53,14 @@ export const getQAFromBBox = async (bbox: BBox): Promise<QAType> => {
   // [0,2,5,6] => "0,2,5,6"
   const bboxUrl = `BBOX=${bbox.map(encodeURIComponent).join(',')}`;
 
-  const URL = `https://data.airpl.org/geoserver/aireel/wms?SERVICE=WMS&VERSION=1.1.1&TRANSPARENT=true&QUERY_LAYERS=aireel%3Aaireel_indic_7m_atmo_deg&LAYERS=aireel%3Aaireel_indic_7m_atmo_deg&${bboxUrl}&SRS=EPSG%3A4326&INFO_FORMAT=application/json&REQUEST=GetFeatureInfo&FEATURE_COUNT=50&X=50&Y=50&WIDTH=101&HEIGHT=101`;
+  const paramsUrl = Object.entries(GEOSERVER.params)
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+    )
+    .join('&');
+
+  const URL = `${GEOSERVER.baseUrl}?${paramsUrl}&${bboxUrl}`;
 
   console.info(URL);
   const json = await (await fetch(URL)).json();

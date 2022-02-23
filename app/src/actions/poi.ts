@@ -1,6 +1,8 @@
 import { Feature, FeatureCollection, Point, Position } from 'geojson';
 import poiJson from '../assets/db/poi.json';
 
+import { MAPBOX } from '../config.json';
+
 export enum POICategory {
   UNDEFINED = -1,
   FAVORITE = 0,
@@ -8,7 +10,7 @@ export enum POICategory {
   SPORT = 2,
   CULTURE = 4,
   MARKET = 8,
-  MY_PLACES = 10
+  MY_PLACES = 10,
 }
 
 export interface POI {
@@ -70,11 +72,16 @@ export const reverse = async ([lon, lat]: Position): Promise<
   MapboxFeature[]
 > => {
   try {
-    const URL = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+    const paramsUrl = Object.entries(MAPBOX.params)
+      .map(
+        ([key, value]) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+      )
+      .join('&');
+
+    const URL = `${MAPBOX.baseUrl}${encodeURIComponent(
       lon,
-    )},${encodeURIComponent(
-      lat,
-    )}.json?country=fr&bbox=-1.7%2C47.1%2C-1.4%2C47.3&types=poi%2Cplace%2Cpostcode%2Caddress&language=fr&autocomplete=true&access_token=${MAPBOX_API_TOKEN}`;
+    )},${encodeURIComponent(lat)}.json?${paramsUrl}`;
 
     const response = await fetch(URL);
     const { features } = (await response.json()) as FeatureCollection;
@@ -86,13 +93,16 @@ export const reverse = async ([lon, lat]: Position): Promise<
   return [];
 };
 
-const MAPBOX_API_TOKEN =
-  'pk.eyJ1Ijoiam9obHMiLCJhIjoiY2t5anlxMDh6MDhydjJ3cG5tb2ZyN3NpMiJ9.NnDn9gsdYR8c0MpGxlpqkA';
-
 export const geocoding = async (query: string): Promise<MapboxFeature[]> => {
-  const URL = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-    query,
-  )}.json?country=fr&bbox=-1.7%2C47.1%2C-1.4%2C47.3&limit=8&types=poi%2Cplace%2Cpostcode%2Caddress&language=fr&autocomplete=true&access_token=${MAPBOX_API_TOKEN}`;
+  const paramsUrl = Object.entries(MAPBOX.params)
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+    )
+    .join('&');
+
+  const URL = `${MAPBOX.baseUrl}${encodeURIComponent(query)}.json?${paramsUrl}`;
+
   const response = await fetch(URL);
 
   const { features } = (await response.json()) as FeatureCollection;

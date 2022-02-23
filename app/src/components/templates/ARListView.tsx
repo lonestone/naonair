@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { SvgXml } from 'react-native-svg';
 import { POI } from '../../actions/poi';
 import { theme } from '../../theme';
-import { NavigationScreenProp } from '../../types/routes';
+import { StackNavigationScreenProp } from '../../types/routes';
 import ARQAChip from '../atoms/ARQAChip';
 import ARListItem from '../molecules/ARListItem';
 import { icons } from './ARMapView';
@@ -31,7 +31,7 @@ interface ARListViewProps {
 }
 
 const ARListView = ({ pois }: ARListViewProps) => {
-  const navigation = useNavigation<NavigationScreenProp>();
+  const navigation = useNavigation<StackNavigationScreenProp>();
 
   return (
     <ScrollView>
@@ -43,7 +43,7 @@ const ARListView = ({ pois }: ARListViewProps) => {
           descriptionStyle={styles.description}
           titleStyle={styles.title}
           onPress={() =>
-            navigation.navigate('Details', {
+            navigation.navigate('POIDetails', {
               poiDetails: poi,
             })
           }

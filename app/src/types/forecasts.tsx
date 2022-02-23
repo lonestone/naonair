@@ -6,12 +6,12 @@ export enum Forecasts {
 }
 
 export const ForecastColor = {
-  XXBAD: theme.colors.quality.primary.purple,
-  XBAD: theme.colors.quality.primary.darkRed,
-  BAD: theme.colors.quality.primary.red,
-  DEGRADED: theme.colors.quality.primary.yellow,
-  MEDIUM: theme.colors.quality.primary.green,
-  GOOD: theme.colors.quality.primary.cyan,
+  XXBAD: theme.colors.quality.main.purple,
+  XBAD: theme.colors.quality.main.darkRed,
+  BAD: theme.colors.quality.main.red,
+  DEGRADED: theme.colors.quality.main.yellow,
+  MEDIUM: theme.colors.quality.main.green,
+  GOOD: theme.colors.quality.main.cyan,
 };
 
 export type ForecastType = {

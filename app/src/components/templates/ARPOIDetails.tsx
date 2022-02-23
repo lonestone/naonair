@@ -24,16 +24,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
   description: {
     color: theme.colors.blue[300],
     lineHeight: 24,
@@ -53,7 +43,7 @@ const styles = StyleSheet.create({
   mapView: { flex: 1, borderRadius: 16, overflow: 'hidden' },
 });
 
-type POIDetailsRouteProp = RouteProp<StackParamList, 'Details'>;
+type POIDetailsRouteProp = RouteProp<StackParamList, 'POIDetails'>;
 
 const ARPOIDetails = () => {
   const { poiDetails } = useRoute<POIDetailsRouteProp>().params || {};
@@ -74,11 +64,7 @@ const ARPOIDetails = () => {
                 </ARMap>
               </View>
               <View style={styles.chipWrapper}>
-                <ARQAChip
-                  size="md"
-                  shadowStyle={styles.shadow}
-                  coord={poiDetails.geolocation}
-                />
+                <ARQAChip size="md" shadow coord={poiDetails.geolocation} />
               </View>
             </Card>
           </View>
