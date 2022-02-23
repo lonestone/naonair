@@ -3,7 +3,14 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '11.0'
 
-$RNMBGL_Use_SPM = true
+$RNMBGL_Use_SPM = {
+  url: "https://github.com/maplibre/maplibre-gl-native-distribution",
+  requirement: {
+    kind: "upToNextMajorVersion",
+    minimumVersion: "5.12.2"
+  },
+  product_name: "Mapbox"
+}
 $RNMGL_USE_MAPLIBRE = true
 
 target 'aireal' do
