@@ -6,12 +6,10 @@ const URL_ENDPOINT = `${API.baseUrl}news`;
 
 const getSeenNews = async (): Promise<string[]> => {
   const news = (await AsyncStorage.getItem('@seen_news'))?.split('|') ?? [];
-  console.info('get_seen', news);
   return news;
 };
 
 const setSeenNews = async (news: string[]) => {
-  console.info('set_seen', news);
   await AsyncStorage.setItem('@seen_news', news.join('|'));
 };
 
