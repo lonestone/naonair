@@ -4,7 +4,7 @@ import { jsonToUrl } from '../utils/config';
 
 export interface ARPath {
   distance: number;
-  time: string;
+  time: number;
   bbox: BBox;
   points: LineString;
 }
@@ -16,6 +16,41 @@ export interface ARRoute {
 export enum RouteProfile {
   Bike = 'bike',
 }
+
+// value in meters
+export const getDistanceLabel = (value: number): string => {
+  if (value < 1000) {
+    return `${Math.round(value * 10) / 10} M`;
+  }
+
+  return `${Math.round(value / 100) / 10} Km`;
+};
+
+// duration in milliseconds
+export const getDurationLabel = (duration: number): string => {
+  const portions: string[] = [];
+
+  const msInHour = 1000 * 60 * 60;
+  const hours = Math.trunc(duration / msInHour);
+  if (hours > 0) {
+    portions.push(hours + 'h');
+    duration = duration - hours * msInHour;
+  }
+
+  const msInMinute = 1000 * 60;
+  const minutes = Math.trunc(duration / msInMinute);
+  if (minutes > 0) {
+    portions.push(minutes + 'm');
+    duration = duration - minutes * msInMinute;
+  }
+
+  const seconds = Math.trunc(duration / 1000);
+  if (seconds > 0) {
+    portions.push(seconds + 's');
+  }
+
+  return portions.join(' ');
+};
 
 export const calculateRoute = async (
   start: Position,
