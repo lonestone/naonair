@@ -1,6 +1,6 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { getAll, POICategory } from '../actions/poi';
+import { getAll, POI, POICategory } from '../actions/poi';
 import { SwitchToggleItem } from '../components/molecules/ARSwitchToggle';
 import ARPOIHeader from '../components/organisms/ARPOIHeader';
 import ARListView from '../components/templates/ARListView';
@@ -18,8 +18,11 @@ export default () => {
   const [selectedCategories, setSelectedCategories] = useState<POICategory[]>(
     [],
   );
+  const [pois, setPois] = useState<POI[]>([]);
 
-  const pois = getAll(selectedCategories);
+  useEffect(() => {
+    setPois(getAll(selectedCategories));
+  }, [selectedCategories]);
 
   const displayTypeItems: (SwitchToggleItem & {
     render: () => ReactElement;

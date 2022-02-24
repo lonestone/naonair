@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { theme } from '../../theme';
@@ -39,31 +39,30 @@ const ARListItem = ({
 }: ARListItemProps) => {
   return (
     <>
-      <View>
-        <List.Item
-          title={title}
-          titleStyle={titleStyle}
-          description={description}
-          onPress={onPress}
-          descriptionStyle={descriptionStyle}
-          left={props => (
-            <List.Icon
-              {...props}
-              style={styles.iconContainer}
-              icon={leftIcon}
-              color={theme.colors.blue[500]}
-            />
-          )}
-          right={() => (
-            <>
-              {rightIcon && (
-                <List.Icon icon={rightIcon} color={theme.colors.blue[500]} />
-              )}
-              {rightChip && rightChip}
-            </>
-          )}
-        />
-      </View>
+      <List.Item
+        title={title}
+        titleStyle={titleStyle}
+        description={description}
+        onPress={onPress}
+        descriptionStyle={descriptionStyle}
+        left={props => (
+          <List.Icon
+            {...props}
+            style={styles.iconContainer}
+            icon={leftIcon}
+            color={theme.colors.blue[500]}
+          />
+        )}
+        right={() => (
+          <>
+            {rightIcon && (
+              <List.Icon icon={rightIcon} color={theme.colors.blue[500]} />
+            )}
+            {rightChip && rightChip}
+          </>
+        )}
+      />
+
       <Divider />
     </>
   );
