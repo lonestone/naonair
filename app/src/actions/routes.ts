@@ -1,4 +1,6 @@
 import { BBox, LineString, Position } from 'geojson';
+import { GRAPHHOPPER } from '../config.json';
+import { jsonToUrl } from '../utils/config';
 
 export interface ARPath {
   distance: number;
@@ -15,23 +17,24 @@ export enum RouteProfile {
   Bike = 'bike',
 }
 
-const API_ENDPOINT =
-  'https://graphhopper.com/api/1//route?type=json&locale=fr&key=1381920f-a973-435c-955c-d74ee25cf1aa&points_encoded=false';
-
 export const calculateRoute = async (
   start: Position,
   end: Position,
   profile: RouteProfile,
 ): Promise<ARRoute> => {
-  // https://graphhopper.com/api/1//route?point=47.218637,-1.554136&point=47.473988,-0.551559&type=json&locale=fr&key=78ef7e51-7067-4081-8eb5-2fb03c1b8c8d&elevation=true&points_encoded=false&profile=bike
   const startUrl = `point=${encodeURIComponent(start[1])},${encodeURIComponent(
     start[0],
   )}`;
+
   const endUrl = `point=${encodeURIComponent(end[1])},${encodeURIComponent(
     end[0],
   )}`;
 
-  const url = `${API_ENDPOINT}&${startUrl}&${endUrl}&profile=${profile}`;
+  const url = `${GRAPHHOPPER.baseUrl}/route?${jsonToUrl(
+    GRAPHHOPPER.params,
+  )}&${startUrl}&${endUrl}&profile=${profile}`;
+
+  console.info({ url });
   const response = await fetch(url);
   const json = await response.json();
 
