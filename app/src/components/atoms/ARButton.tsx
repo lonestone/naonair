@@ -26,14 +26,9 @@ type ARButtonType = {
 };
 
 const styles = StyleSheet.create({
-  smButton: {
-    borderRadius: 20,
-    padding: 0,
-    height: 40,
-    backgroundColor: theme.colors.primary,
-  },
-  mdButton: {
+  button: {
     borderRadius: 48,
+    padding: 0,
     backgroundColor: theme.colors.primary,
   },
   labelStyle: {
@@ -42,10 +37,16 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: 'white',
     textTransform: 'none',
+    letterSpacing: 0.01,
   },
-  contentStyle: {
+
+  mdContentStyle: {
     paddingHorizontal: 24,
     paddingVertical: 14,
+  },
+  smContentStyle: {
+    paddingHorizontal: 7,
+    paddingVertical: 3,
   },
 });
 
@@ -66,14 +67,13 @@ export const ARButton = ({
       icon={icon ? icon : undefined}
       mode={mode || 'contained'}
       onPress={onPress}
-      contentStyle={styles.contentStyle}
+      contentStyle={
+        size === ARButtonSize.Medium
+          ? styles.mdContentStyle
+          : styles.smContentStyle
+      }
       labelStyle={styles.labelStyle}
-      style={StyleSheet.flatten([
-        size && size === ARButtonSize.Medium
-          ? styles.mdButton
-          : styles.smButton,
-        styleContainer,
-      ])}>
+      style={StyleSheet.flatten([styles.button, styleContainer])}>
       {label}
     </Button>
   );

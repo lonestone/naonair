@@ -27,5 +27,8 @@
       "autocomplete": true,
       "access_token": "pk.eyJ1Ijoiam9obHMiLCJhIjoiY2t5anlxMDh6MDhydjJ3cG5tb2ZyN3NpMiJ9.NnDn9gsdYR8c0MpGxlpqkA"
     }
+  },
+  "API": {
+    "baseUrl": "https://naonair-api-staging.onrender.com/"
   }
 }
