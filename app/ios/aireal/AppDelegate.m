@@ -39,6 +39,7 @@ static void InitializeFlipper(UIApplication *application) {
   
 #if RCT_DEV
   [bridge moduleForClass:[RNGestureHandlerModule self]];
+  
 #endif
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"aireal"
