@@ -66,6 +66,7 @@ export default ({}: NewsDialogType) => {
 
   const getLastNews = useCallback(async () => {
     const news = await getLast();
+    console.info(news);
     setNews(news);
   }, [setNews]);
 
