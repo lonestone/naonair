@@ -1,7 +1,6 @@
 import { BBox, Position } from 'geojson';
 import { theme } from '../theme';
-
-import { GEOSERVER } from '../config.json';
+import { buildGeoserverUrl } from '../utils/config';
 
 export enum QATypes {
   GOOD = 0,
@@ -52,17 +51,8 @@ export const QAValues: { [key: number]: QAType } = {
 export const getQAFromBBox = async (bbox: BBox): Promise<QAType> => {
   // [0,2,5,6] => "0,2,5,6"
   const bboxUrl = `BBOX=${bbox.map(encodeURIComponent).join(',')}`;
+  const URL = buildGeoserverUrl(bboxUrl);
 
-  const paramsUrl = Object.entries(GEOSERVER.params)
-    .map(
-      ([key, value]) =>
-        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
-    )
-    .join('&');
-
-  const URL = `${GEOSERVER.baseUrl}?${paramsUrl}&${bboxUrl}`;
-
-  console.info(URL);
   const json = await (await fetch(URL)).json();
 
   const { GRAY_INDEX } = json.features[0].properties;
