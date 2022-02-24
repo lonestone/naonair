@@ -1,6 +1,10 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  StackNavigationOptions,
+} from '@react-navigation/stack';
 import React from 'react';
+import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
 import ARListFavorites from '../components/templates/ARListFavorites';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
@@ -39,9 +43,19 @@ const Home = () => (
   </Tab.Navigator>
 );
 
+const options: StackNavigationOptions = {
+  header: ({ options, navigation }) => (
+    <ARCommonHeader
+      headline={options.headerTitle as string}
+      back={navigation.canGoBack()}
+      onBack={navigation.goBack}
+    />
+  ),
+};
+
 export default () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={options}>
       <Stack.Screen
         name="Home"
         options={{ headerShown: false }}

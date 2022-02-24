@@ -12,7 +12,6 @@ type ARButtonType = {
   label: string;
   mode?: 'text' | 'outlined' | 'contained' | undefined;
   icon?: string;
-  reverse?: boolean;
   disabled?: boolean;
   loading?: boolean;
   size?: ARButtonSize;
@@ -28,19 +27,22 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
   },
   mdButton: {
-    borderRadius: 20,
-    padding: 12,
-    height: 60,
+    borderRadius: 48,
+    // paddingHorizontal: 24,
+    // paddingVertical: 14,
+    // height: 60,
     backgroundColor: theme.colors.primary,
   },
   labelStyle: {
     fontWeight: '600',
     fontSize: 14,
+    lineHeight: 20,
     color: 'white',
     textTransform: 'none',
   },
   contentStyle: {
-    flexDirection: 'row-reverse',
+    paddingHorizontal: 24,
+    paddingVertical: 14,
   },
 });
 
@@ -49,7 +51,6 @@ export const ARButton = ({
   mode,
   icon,
   loading,
-  reverse,
   disabled,
   size,
   onPress,
@@ -62,9 +63,7 @@ export const ARButton = ({
       icon={icon ? icon : undefined}
       mode={mode || 'contained'}
       onPress={onPress}
-      contentStyle={StyleSheet.flatten([
-        reverse ? styles.contentStyle : undefined,
-      ])}
+      contentStyle={styles.contentStyle}
       labelStyle={styles.labelStyle}
       style={StyleSheet.flatten([
         size && size === ARButtonSize.Medium
