@@ -39,11 +39,7 @@ const Item = ({ poi }: { poi: POI }) => {
       description={poi.adress}
       descriptionStyle={styles.description}
       titleStyle={styles.title}
-      onPress={() =>
-        navigation.navigate('POIDetails', {
-          poiDetails: poi,
-        })
-      }
+      onPress={() => navigation.navigate('POIDetails', { poi })}
       leftIcon={() => (
         <View style={styles.chipWrapper}>
           <SvgXml

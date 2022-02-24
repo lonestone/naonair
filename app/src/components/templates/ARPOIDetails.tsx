@@ -46,11 +46,11 @@ const styles = StyleSheet.create({
 type POIDetailsRouteProp = RouteProp<StackParamList, 'POIDetails'>;
 
 const ARPOIDetails = () => {
-  const { poiDetails } = useRoute<POIDetailsRouteProp>().params || {};
+  const { poi } = useRoute<POIDetailsRouteProp>().params || {};
 
   return (
     <ScrollView style={styles.scrollView}>
-      {poiDetails && (
+      {poi && (
         <View style={styles.detailView}>
           <View>
             <Card style={styles.map}>
@@ -59,16 +59,16 @@ const ARPOIDetails = () => {
                   userLocationVisible
                   interactionEnabled
                   heatmapVisible
-                  center={poiDetails.geolocation}>
-                  <POIMarker poi={poiDetails} />
+                  center={poi.geolocation}>
+                  <POIMarker poi={poi} />
                 </ARMap>
               </View>
               <View style={styles.chipWrapper}>
-                <ARQAChip size="md" shadow coord={poiDetails.geolocation} />
+                <ARQAChip size="md" shadow coord={poi.geolocation} />
               </View>
             </Card>
           </View>
-          <ARHeadingGroup title={poiDetails.name} caption={poiDetails.adress} />
+          <ARHeadingGroup title={poi.name} caption={poi.adress} />
           <Divider />
           <ARForecasts forecastQA />
         </View>
