@@ -1,9 +1,12 @@
-import { RouteProp, useRoute } from '@react-navigation/native';
+import Geolocation from '@react-native-community/geolocation';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Card, Divider } from 'react-native-paper';
 import { theme } from '../../theme';
-import { StackParamList } from '../../types/routes';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
+import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARMap from '../atoms/ARMap';
 import ARQAChip from '../atoms/ARQAChip';
 import ARHeadingGroup from '../molecules/ARHeadingGroup';
@@ -40,40 +43,71 @@ const styles = StyleSheet.create({
   detailView: {
     margin: 15,
   },
+  button: {
+    position: 'absolute',
+    bottom: 30,
+    alignSelf: 'center',
+    flex: 1,
+  },
   mapView: { flex: 1, borderRadius: 16, overflow: 'hidden' },
 });
 
 type POIDetailsRouteProp = RouteProp<StackParamList, 'POIDetails'>;
 
 const ARPOIDetails = () => {
+  const navigation = useNavigation<StackNavigationScreenProp>();
   const { poi } = useRoute<POIDetailsRouteProp>().params || {};
 
+  const goTo = () => {
+    Geolocation.getCurrentPosition(({ coords }) => {
+      navigation.navigate('ChooseItinerary', {
+        start: [coords.longitude, coords.latitude],
+        end: poi.geolocation,
+      });
+    });
+  };
+
   return (
-    <ScrollView style={styles.scrollView}>
-      {poi && (
-        <View style={styles.detailView}>
-          <View>
-            <Card style={styles.map}>
-              <View style={styles.mapView}>
-                <ARMap
-                  userLocationVisible
-                  interactionEnabled
-                  heatmapVisible
-                  center={poi.geolocation}>
-                  <POIMarker poi={poi} />
-                </ARMap>
-              </View>
-              <View style={styles.chipWrapper}>
-                <ARQAChip size="md" shadow coord={poi.geolocation} />
-              </View>
-            </Card>
+    <>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={{ paddingBottom: 100 }}>
+        {poi && (
+          <View style={styles.detailView}>
+            <View>
+              <Card style={styles.map}>
+                <View style={styles.mapView}>
+                  <ARMap
+                    userLocationVisible
+                    interactionEnabled
+                    heatmapVisible
+                    center={poi.geolocation}>
+                    <POIMarker poi={poi} />
+                  </ARMap>
+                </View>
+                <View style={styles.chipWrapper}>
+                  <ARQAChip size="md" shadow coord={poi.geolocation} />
+                </View>
+              </Card>
+            </View>
+            <ARHeadingGroup title={poi.name} caption={poi.adress} />
+            <Divider />
+            <ARForecasts forecastQA />
           </View>
-          <ARHeadingGroup title={poi.name} caption={poi.adress} />
-          <Divider />
-          <ARForecasts forecastQA />
-        </View>
+        )}
+      </ScrollView>
+      {poi && (
+        <ARButton
+          size={ARButtonSize.Medium}
+          styleContainer={styles.button}
+          onPress={goTo}
+          icon={({ color }) => (
+            <Icon name="navigation-variant" size={18} color={color} />
+          )}
+          label="Me rendre à cet endroit"
+        />
       )}
-    </ScrollView>
+    </>
   );
 };
 
