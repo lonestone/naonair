@@ -1,6 +1,6 @@
 import { Position } from 'geojson';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { getQAFromPosition, QAType } from '../../actions/qa';
 
 const styles = StyleSheet.create({

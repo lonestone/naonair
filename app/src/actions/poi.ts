@@ -2,6 +2,7 @@ import { Feature, FeatureCollection, Point, Position } from 'geojson';
 import poiJson from '../assets/db/poi.json';
 
 import { MAPBOX } from '../config.json';
+import { buildMapboxUrl } from '../utils/config';
 
 export enum POICategory {
   UNDEFINED = -1,
@@ -72,16 +73,9 @@ export const reverse = async ([lon, lat]: Position): Promise<
   MapboxFeature[]
 > => {
   try {
-    const paramsUrl = Object.entries(MAPBOX.params)
-      .map(
-        ([key, value]) =>
-          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
-      )
-      .join('&');
+    const locationUrl = `${encodeURIComponent(lon)},${encodeURIComponent(lat)}`;
 
-    const URL = `${MAPBOX.baseUrl}${encodeURIComponent(
-      lon,
-    )},${encodeURIComponent(lat)}.json?${paramsUrl}`;
+    const URL = buildMapboxUrl(locationUrl);
 
     const response = await fetch(URL);
     const { features } = (await response.json()) as FeatureCollection;
@@ -94,14 +88,9 @@ export const reverse = async ([lon, lat]: Position): Promise<
 };
 
 export const geocoding = async (query: string): Promise<MapboxFeature[]> => {
-  const paramsUrl = Object.entries(MAPBOX.params)
-    .map(
-      ([key, value]) =>
-        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
-    )
-    .join('&');
+  const queryUrl = encodeURIComponent(query);
 
-  const URL = `${MAPBOX.baseUrl}${encodeURIComponent(query)}.json?${paramsUrl}`;
+  const URL = buildMapboxUrl(queryUrl);
 
   const response = await fetch(URL);
 
