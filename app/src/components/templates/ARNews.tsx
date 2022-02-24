@@ -66,7 +66,6 @@ export default ({}: NewsDialogType) => {
 
   const getLastNews = useCallback(async () => {
     const news = await getLast();
-    console.info(news);
     setNews(news);
   }, [setNews]);
 
@@ -75,8 +74,6 @@ export default ({}: NewsDialogType) => {
   }, [getLastNews]);
 
   return (
-    // <Provider>
-    //   <Portal>
     <Modal visible={!!news} dismissable onDismiss={() => {}}>
       <View style={styles.dialog}>
         <Icon
@@ -111,7 +108,5 @@ export default ({}: NewsDialogType) => {
         </View>
       </View>
     </Modal>
-    //   </Portal>
-    // </Provider>
   );
 };
