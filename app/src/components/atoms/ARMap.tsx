@@ -6,6 +6,7 @@ import MapboxGL, {
 import { BBox, Position } from 'geojson';
 import React, { RefObject, useEffect, useState } from 'react';
 import { Platform, StyleSheet, View, ViewProps } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
   container: {
@@ -80,6 +81,8 @@ export default ({
     // if we don't call this methods, MapboxGL crash on Android
   });
 
+  const insets = useSafeAreaInsets();
+
   return (
     <View style={styles.container}>
       <MapboxGL.MapView
@@ -104,10 +107,10 @@ export default ({
           bounds={bounds}
           centerCoordinate={center}
           padding={{
-            paddingBottom: 25,
-            paddingLeft: 25,
-            paddingRight: 25,
-            paddingTop: 25,
+            paddingBottom: 25 + insets.bottom,
+            paddingLeft: 25 + insets.left,
+            paddingRight: 25 + insets.right,
+            paddingTop: 25 + insets.top,
           }}
           animationMode="moveTo"
           defaultSettings={{

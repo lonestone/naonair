@@ -71,7 +71,7 @@ export default ({ paths, bbox, start, end }: ARRouteMapViewProps) => {
   return (
     <ARMap
       interactionEnabled
-      bbox={bbox}
+      bbox={paths.length > 0 ? paths[0].bbox : bbox}
       onMapLoaded={() => setMapLoaded(true)}>
       {isMapLoaded && (
         <>
