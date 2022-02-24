@@ -15,6 +15,9 @@ import ARMap from '../atoms/ARMap';
 import ARLegend from '../molecules/ARLegend';
 import ARAlert from './ARAlert';
 import { getQAFromPosition, QAType } from '../../actions/qa';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationScreenProp } from '../../types/routes';
 
 export interface ARMapViewProps {
   pois: POI[];
@@ -60,29 +63,28 @@ export const icons = {
 };
 
 export const POIMarker = ({ poi }: { poi: POI }) => {
+  const navigation = useNavigation<StackNavigationScreenProp>();
   const annotationRef = createRef<MapboxGL.PointAnnotation>();
   const [qa, setQA] = useState<QAType | undefined>();
 
   const getQA = useCallback(async () => {
     const temp = await getQAFromPosition(poi.geolocation);
     setQA(temp);
-    annotationRef.current?.refresh();
-  }, [poi, annotationRef]);
+  }, [poi]);
 
   useEffect(() => {
     getQA();
   }, [getQA]);
 
   return (
-    <MapboxGL.PointAnnotation
+    <MapboxGL.MarkerView
       ref={annotationRef}
       coordinate={poi.geolocation}
       anchor={{ x: 0.5, y: 1 }}
       title={poi.name}
+      onSelected={() => navigation.navigate('POIDetails', { poi })}
       id={`${poi.id}`}>
-      <View
-        style={styles.markerContainer}
-        onLayout={() => annotationRef.current?.refresh()}>
+      <View style={styles.markerContainer}>
         <SvgXml
           width="40"
           height="46"
@@ -98,7 +100,7 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
           xml={icons[`${poi.category}`]}
         />
       </View>
-    </MapboxGL.PointAnnotation>
+    </MapboxGL.MarkerView>
   );
 };
 
