@@ -11,7 +11,12 @@ export enum ARButtonSize {
 type ARButtonType = {
   label: string;
   mode?: 'text' | 'outlined' | 'contained' | undefined;
-  icon?: string;
+  icon?:
+    | string
+    | ((props: {
+        size: number;
+        allowFontScaling?: boolean | undefined;
+      }) => React.ReactNode);
   disabled?: boolean;
   loading?: boolean;
   size?: ARButtonSize;
@@ -28,9 +33,6 @@ const styles = StyleSheet.create({
   },
   mdButton: {
     borderRadius: 48,
-    // paddingHorizontal: 24,
-    // paddingVertical: 14,
-    // height: 60,
     backgroundColor: theme.colors.primary,
   },
   labelStyle: {
