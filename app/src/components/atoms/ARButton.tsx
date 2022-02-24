@@ -15,6 +15,7 @@ type ARButtonType = {
     | string
     | ((props: {
         size: number;
+        color: string;
         allowFontScaling?: boolean | undefined;
       }) => React.ReactNode);
   disabled?: boolean;

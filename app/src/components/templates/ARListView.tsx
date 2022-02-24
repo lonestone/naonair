@@ -30,9 +30,13 @@ interface ARListViewProps {
   pois: POI[];
 }
 
-const Item = ({ poi }: { poi: POI }) => {
-  const navigation = useNavigation<StackNavigationScreenProp>();
-
+const Item = ({
+  poi,
+  navigation,
+}: {
+  poi: POI;
+  navigation: StackNavigationScreenProp;
+}) => {
   return (
     <ARListItem
       title={poi.name}
@@ -60,11 +64,13 @@ const Item = ({ poi }: { poi: POI }) => {
 };
 
 const ARListView = ({ pois }: ARListViewProps) => {
+  const navigation = useNavigation<StackNavigationScreenProp>();
+
   return (
     <FlatList
       data={pois}
       keyExtractor={item => `poi-${item.id}`}
-      renderItem={({ item }) => <Item poi={item} />}
+      renderItem={({ item }) => <Item poi={item} navigation={navigation} />}
     />
   );
 };
