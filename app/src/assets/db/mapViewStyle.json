@@ -84,7 +84,7 @@
       "filter": ["all", ["==", "class", "residential"]],
       "layout": {"visibility": "visible"},
       "paint": {
-        "fill-color": "rgb(234, 234, 230)",
+        "fill-color": "transparent",
         "fill-opacity": {
           "base": 0.6,
           "stops": [

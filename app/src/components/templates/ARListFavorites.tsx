@@ -26,19 +26,18 @@ const favorites: POI[] = [
     adress: 'Rue Stanislas Baudry, 44000 Nantes',
     category: POICategory.MY_PLACES,
     name: 'Ici la',
-    geolocation: { lat: 0, lon: 0 },
+    geolocation: [0, 0],
   },
   {
     id: 2,
     adress: 'Rue Général de Gaulle, 44000 Nantes',
     category: POICategory.CULTURE,
     name: 'Le musée',
-    geolocation: { lat: 0, lon: 0 },
+    geolocation: [0, 0],
   },
 ];
 
 const ARListFavorites = () => {
-
   return (
     <ScrollView style={styles.container}>
       {favorites.map((fav, idx) => (
@@ -48,7 +47,7 @@ const ARListFavorites = () => {
           description={fav.adress}
           descriptionStyle={styles.description}
           titleStyle={styles.title}
-          onPress={() => console.log("TODO",fav)}
+          onPress={() => console.log('TODO', fav)}
           leftIcon={() => (
             <SvgXml width="20" height="20" xml={icons[`${fav.category}`]} />
           )}

@@ -1,0 +1,442 @@
+[
+  {
+    "id": "1",
+    "categorie": "Parc",
+    "nom": "Parc et Roseraie de la Beaujoire",
+    "adresse": "344 Rte de Saint-Joseph, 44300 Nantes",
+    "gps": "47.26270610250951, -1.52675527771137",
+    "Commentaire": ""
+  },
+  {
+    "id": "2",
+    "categorie": "Parc",
+    "nom": "Parc de la Gaudinière",
+    "adresse": "Bd Robert Schuman, 44300 Nantes",
+    "gps": "47.244639836160204, -1.5788769283429889",
+    "Commentaire": ""
+  },
+  {
+    "id": "3",
+    "categorie": "Parc",
+    "nom": "Parc de Procé",
+    "adresse": "44 Rue des Dervallières, 44000 Nantes",
+    "gps": "47.22345722272416, -1.5820969135764815",
+    "Commentaire": ""
+  },
+  {
+    "id": "4",
+    "categorie": "Parc",
+    "nom": "Jardin des Plantes",
+    "adresse": "Rue Stanislas Baudry, 44000 Nantes",
+    "gps": "47.219361620468774, -1.542475013579503",
+    "Commentaire": ""
+  },
+  {
+    "id": "5",
+    "categorie": "Parc",
+    "nom": "Ile de Versailles",
+    "adresse": "Ile de Versailles",
+    "gps": "47.228403929119345, -1.5541616006565966",
+    "Commentaire": ""
+  },
+  {
+    "id": "6",
+    "categorie": "Parc",
+    "nom": "Parc du Grand Blottereau",
+    "adresse": "Bd Auguste Peneau, 44300 Nantes",
+    "gps": "47.22954952185305, -1.5088682289137036",
+    "Commentaire": ""
+  },
+  {
+    "id": "7",
+    "categorie": "Parc",
+    "nom": "Parc CRAPA",
+    "adresse": "Rue du Pré Salé, 44200 Nantes",
+    "gps": "47.21300917639779, -1.516016723213326",
+    "Commentaire": ""
+  },
+  {
+    "id": "8",
+    "categorie": "Parc",
+    "nom": "Parc du Loiry",
+    "adresse": "Bd Guichet Serex, 44120 Vertou",
+    "gps": "47.16453249557879, -1.4757138079080008",
+    "Commentaire": ""
+  },
+  {
+    "id": "9",
+    "categorie": "Parc",
+    "nom": "Cours Cambronne",
+    "adresse": "3 Cr Cambronne, 44000 Nantes",
+    "gps": "47.212736611553076, -1.56231925277818",
+    "Commentaire": ""
+  },
+  {
+    "id": "10",
+    "categorie": "Parc",
+    "nom": "Ile forget",
+    "adresse": "Saint Sébastien sur Loire",
+    "gps": "47.213149512356665, -1.5137350235689915",
+    "Commentaire": ""
+  },
+  {
+    "id": "11",
+    "categorie": "Parc",
+    "nom": "Jardin Extraordinaire",
+    "adresse": "1 Quai Marquis d'Aiguillon, 44100 Nantes",
+    "gps": "47.201029978836786, -1.5769441635347117",
+    "Commentaire": ""
+  },
+  {
+    "id": "12",
+    "categorie": "Parc",
+    "nom": "Parc de la Chantrerie",
+    "adresse": "Rte de Gachet, 44300 Nantes",
+    "gps": "47.286046623923845, -1.52448716694567",
+    "Commentaire": ""
+  },
+  {
+    "id": "13",
+    "categorie": "Parc",
+    "nom": "La Roche Ballue",
+    "adresse": "Rue de la Guérinière, 44340 Bouguenais",
+    "gps": "47.184861478723505, -1.6510648237942585",
+    "Commentaire": ""
+  },
+  {
+    "id": "14",
+    "categorie": "Culture",
+    "nom": "Musée d'Arts de Nantes",
+    "adresse": "10 Rue Georges Clemenceau, 44000 Nantes",
+    "gps": "47.21954543038696, -1.5467017306815172",
+    "Commentaire": ""
+  },
+  {
+    "id": "15",
+    "categorie": "Culture",
+    "nom": "Tour de Bretagne",
+    "adresse": "Tour de Bretagne",
+    "gps": "47.21787723265701, -1.555906393086614",
+    "Commentaire": ""
+  },
+  {
+    "id": "16",
+    "categorie": "Culture",
+    "nom": "Passage Pommeraye",
+    "adresse": "Passage Pommeraye",
+    "gps": "47.21439189396446, -1.5576851385544086",
+    "Commentaire": ""
+  },
+  {
+    "id": "17",
+    "categorie": "Culture",
+    "nom": "Château de la Frémoire",
+    "adresse": "Rte de la Fremoire, 44120 Vertou",
+    "gps": "47.15474297251011, -1.4736111607716345",
+    "Commentaire": ""
+  },
+  {
+    "id": "18",
+    "categorie": "Culture",
+    "nom": "Machines de l'île",
+    "adresse": "Parc des chantiers",
+    "gps": "47.20642327421642, -1.5637278036932503",
+    "Commentaire": ""
+  },
+  {
+    "id": "19",
+    "categorie": "Culture",
+    "nom": "Château des Ducs de Bretagne",
+    "adresse": "4 Pl. Marc Elder, 44000 Nantes",
+    "gps": "47.21640755112021, -1.5480682837186788",
+    "Commentaire": ""
+  },
+  {
+    "id": "20",
+    "categorie": "Culture",
+    "nom": "Musée d'Histoire Naturelle",
+    "adresse": "12 Rue Voltaire, 44000 Nantes",
+    "gps": "47.213066293819416, -1.5629654999214333",
+    "Commentaire": ""
+  },
+  {
+    "id": "21",
+    "categorie": "Culture",
+    "nom": "Cité des Congrès de Nantes",
+    "adresse": "5 Rue de Valmy, 44000 Nantes",
+    "gps": "47.213429487530576, -1.5401552544557586",
+    "Commentaire": ""
+  },
+  {
+    "id": "22",
+    "categorie": "Culture",
+    "nom": "Tour LU",
+    "adresse": "1 Rue de la Biscuiterie, 44000 Nantes",
+    "gps": "47.21542122755948, -1.5461384423591367",
+    "Commentaire": ""
+  },
+  {
+    "id": "23",
+    "categorie": "Culture",
+    "nom": "Cathédrale Saint-Pierre-et-Saint-Paul de Nantes",
+    "adresse": "7 Imp. Saint-Laurent, 44000 Nantes",
+    "gps": "47.218612451339844, -1.5483623311597134",
+    "Commentaire": ""
+  },
+  {
+    "id": "24",
+    "categorie": "Culture",
+    "nom": "Trentemoult",
+    "adresse": "Trentemoult, 44400 Rezé",
+    "gps": "47.194884, -1.582204",
+    "Commentaire": ""
+  },
+  {
+    "id": "25",
+    "categorie": "Culture",
+    "nom": "Place Royale",
+    "adresse": "Place Royale, 44000 Nantes",
+    "gps": "47.215166076832574, -1.5561399697962697",
+    "Commentaire": ""
+  },
+  {
+    "id": "26",
+    "categorie": "Culture",
+    "nom": "Place Bouffay",
+    "adresse": "Place Bouffay, 44000 Nantes",
+    "gps": "47.214634766747025, -1.5528397135829013",
+    "Commentaire": ""
+  },
+  {
+    "id": "27",
+    "categorie": "Culture",
+    "nom": "Place Graslin",
+    "adresse": "Place Graslin, 44000 Nantes",
+    "gps": "47.21342175646578, -1.5622737164401095",
+    "Commentaire": ""
+  },
+  {
+    "id": "28",
+    "categorie": "Culture",
+    "nom": "Château de La Ravelonnière",
+    "adresse": "5432B La Ravelonniere, 44115 Basse-Goulaine",
+    "gps": "47.21031390287859, -1.4511662084332773",
+    "Commentaire": ""
+  },
+  {
+    "id": "29",
+    "categorie": "Culture",
+    "nom": "Anneaux de Buren",
+    "adresse": "Quai des Antilles, 44200 Nantes",
+    "gps": "47.20180312078271, -1.5715887385634768",
+    "Commentaire": ""
+  },
+  {
+    "id": "30",
+    "categorie": "Culture",
+    "nom": "Château de la Tour",
+    "adresse": "Chem. du Château de la Tour, 44700 Orvault",
+    "gps": "47.28868928518898, -1.624222430548475",
+    "Commentaire": ""
+  },
+  {
+    "id": "31",
+    "categorie": "Culture",
+    "nom": "Musée Jules Verne",
+    "adresse": "3 Rue de l'Hermitage, 44100 Nantes",
+    "gps": "47.2023773595841, -1.5759980993700617",
+    "Commentaire": ""
+  },
+  {
+    "id": "32",
+    "categorie": "Culture",
+    "nom": "Médiathèque",
+    "adresse": "15 Rue de l'Héronnière, 44000 Nantes",
+    "gps": "47.212293585523476, -1.5620966112490702",
+    "Commentaire": ""
+  },
+  {
+    "id": "33",
+    "categorie": "Culture",
+    "nom": "Théâtre Graslin",
+    "adresse": "Place Graslin, 44000 Nantes",
+    "gps": "47.21342175646578, -1.5622737164401095",
+    "Commentaire": ""
+  },
+  {
+    "id": "34",
+    "categorie": "Culture",
+    "nom": "Place commerce",
+    "adresse": "Place du commerce, 44000 Nantes",
+    "gps": "47.214117994071124, -1.5583442902919642",
+    "Commentaire": ""
+  },
+  {
+    "id": "35",
+    "categorie": "Culture",
+    "nom": "Gare de Nantes",
+    "adresse": "27 Bd de Stalingrad, 44000 Nantes",
+    "gps": "47.217982745176556, -1.5405821925267653",
+    "Commentaire": ""
+  },
+  {
+    "id": "36",
+    "categorie": "Culture",
+    "nom": "Place Viarme",
+    "adresse": "Place Viarme, 44000 Nantes",
+    "gps": "47.222017572483175, -1.5618329215287063",
+    "Commentaire": ""
+  },
+  {
+    "id": "37",
+    "categorie": "Culture",
+    "nom": "Cours des 50 Otages",
+    "adresse": "Cours des 50 Otages",
+    "gps": "47.21782823521047, -1.5569004596060145",
+    "Commentaire": ""
+  },
+  {
+    "id": "38",
+    "categorie": "Culture",
+    "nom": "Maison radieuse",
+    "adresse": "Bd le Corbusier, 44400 Rezé",
+    "gps": "47.189409415504244, -1.5682562289438806",
+    "Commentaire": ""
+  },
+  {
+    "id": "39",
+    "categorie": "Culture",
+    "nom": "Musée Départemental Thomas-Dobrée",
+    "adresse": "18 Rue Voltaire, 44000 Nantes",
+    "gps": "47.213522036332414, -1.5686412234129286",
+    "Commentaire": ""
+  },
+  {
+    "id": "40",
+    "categorie": "Culture",
+    "nom": "Musée Naval Maillé-Brézé",
+    "adresse": "Quai de la Fosse, 44000 Nantes",
+    "gps": "47.207717937911454, -1.5704503993660937",
+    "Commentaire": ""
+  },
+  {
+    "id": "41",
+    "categorie": "Culture",
+    "nom": "Musée de l'Imprimerie",
+    "adresse": "24 Quai de la Fosse, 44000 Nantes",
+    "gps": "47.21133330596424, -1.565406225570702",
+    "Commentaire": ""
+  },
+  {
+    "id": "42",
+    "categorie": "Culture",
+    "nom": "Mémorial de l'Abolition de l'Esclavage",
+    "adresse": "Passerelle Victor-Schoelcher, Quai de la Fosse, 44000 Nantes",
+    "gps": "47.21055260744036, -1.5652595601712715",
+    "Commentaire": ""
+  },
+  {
+    "id": "43",
+    "categorie": "Culture",
+    "nom": "Maison du Lac",
+    "adresse": "Rue du Lac, 44830 Bouaye",
+    "gps": "47.13911903280319, -1.6934397397288454",
+    "Commentaire": ""
+  },
+  {
+    "id": "44",
+    "categorie": "Marché",
+    "nom": "Marché de la petite Hollande",
+    "adresse": "Place de la petite Hollande, 44000 Nantes",
+    "gps": "47.21152380907973, -1.5581126925315183",
+    "Commentaire": ""
+  },
+  {
+    "id": "45",
+    "categorie": "Marché",
+    "nom": "Marché de Basse-Indre",
+    "adresse": "1 Quai Besnard, 44610 Indre",
+    "gps": "47.19891615251208, -1.6695997095608617",
+    "Commentaire": ""
+  },
+  {
+    "id": "46",
+    "categorie": "Marché",
+    "nom": "Marché de Vertou",
+    "adresse": "Place du Marché, 44120 Vertou",
+    "gps": "47.16991114653192, -1.4671783846119615",
+    "Commentaire": ""
+  },
+  {
+    "id": "47",
+    "categorie": "Marché",
+    "nom": "Marché de Trentemoult",
+    "adresse": "7 Quai Robert Surcouf, 44400 Rezé",
+    "gps": "47.19543660696931, -1.575670445959196",
+    "Commentaire": ""
+  },
+  {
+    "id": "48",
+    "categorie": "Marché",
+    "nom": "Marché de Talensac",
+    "adresse": "Rue de Talensac, 44000 Nantes",
+    "gps": "47.221929186564985, -1.5552623777417167",
+    "Commentaire": ""
+  },
+  {
+    "id": "49",
+    "categorie": "Sport",
+    "nom": "Stade de la Beaujoire",
+    "adresse": "Route de Saint-Joseph, 44300 Nantes",
+    "gps": "47.25666377282336, -1.5252329436760168",
+    "Commentaire": ""
+  },
+  {
+    "id": "50",
+    "categorie": "Sport",
+    "nom": "Skatepark île de Nantes",
+    "adresse": "23 Bd Gaston Doumergue, 44200 Nantes",
+    "gps": "47.20784459992, -1.5463813539005926",
+    "Commentaire": ""
+  },
+  {
+    "id": "51",
+    "categorie": "Sport",
+    "nom": "Hippodrome du Petit Port",
+    "adresse": "Bd des Tribunes, 44300 Nantes",
+    "gps": "47.24606943380564, -1.559671785674279",
+    "Commentaire": ""
+  },
+  {
+    "id": "52",
+    "categorie": "Sport",
+    "nom": "Base Nautique",
+    "adresse": "44240 La Chapelle-sur-Erdre",
+    "gps": "47.25918270657353, -1.5372662618127675",
+    "Commentaire": ""
+  },
+  {
+    "id": "53",
+    "categorie": "Sport",
+    "nom": "Skatepark de Rezé",
+    "adresse": "Rd point de la Brière, 44400 Rezé",
+    "gps": "47.18521094134919, -1.562733144288808",
+    "Commentaire": ""
+  },
+  {
+    "id": "54",
+    "categorie": "Sport",
+    "nom": "Skatepark Ricordeau",
+    "adresse": "2 Chau. de la Madeleine, 44000 Nantes",
+    "gps": "47.21285489930278, -1.5538700130253786",
+    "Commentaire": ""
+  },
+  {
+    "id": "55",
+    "categorie": "Sport",
+    "nom": "Hippodrome du Portillon",
+    "adresse": "3 All. de l'Hippodrome, 44120 Vertou",
+    "gps": "47.15488786913973, -1.470159711389921",
+    "Commentaire": ""
+  }
+]

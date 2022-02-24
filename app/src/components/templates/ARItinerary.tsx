@@ -1,20 +1,24 @@
 import { useNavigation } from '@react-navigation/native';
-import { Feature, Point, Position } from 'geojson';
+import { Position } from 'geojson';
 import React, { useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import {
-  ScrollView,
+  Keyboard,
+  KeyboardAvoidingView,
+  StyleSheet,
   TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+  View,
+} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { POICategory } from '../../actions/poi';
+import { MapboxFeature } from '../../actions/poi';
 import { theme } from '../../theme';
+import { StackNavigationScreenProp } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARHeader from '../atoms/ARHeader';
-import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
 import ARAddressInput from '../molecules/ARAddressInput';
-import ARListItem, { NavigationScreenProp } from '../molecules/ARListItem';
+import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
+import ARListItem from '../molecules/ARListItem';
 
 const styles = StyleSheet.create({
   container: {
@@ -101,14 +105,17 @@ enum Field {
 //   -1.525139, 47.22919,
 // ]
 export default () => {
-  const navigation = useNavigation<NavigationScreenProp>();
-  const [results, setResults] = useState<Feature[]>([]);
-  const [values, setValues] = useState<{ [key: string]: Position | undefined }>(
-    {
-      [Field.START]: [-1.525139, 47.22919],
-      [Field.END]: [-1.560007, 47.206019],
+  const navigation = useNavigation<StackNavigationScreenProp>();
+  const [results, setResults] = useState<MapboxFeature[]>([]);
+  const [values, setValues] = useState<{
+    [key: string]: { coord: Position; text: string } | undefined;
+  }>({
+    [Field.START]: {
+      coord: [-1.525139, 47.22919],
+      text: '20 route de sainte luce',
     },
-  );
+    [Field.END]: { coord: [-1.560007, 47.206019], text: 'test' },
+  });
 
   const [selectedField, setSelectedField] = useState<Field>(Field.START);
 
@@ -126,6 +133,9 @@ export default () => {
           style={styles.geocodingInput}
           onResults={setResults}
           value={values[field]}
+          onUserLocation={(coord, text) =>
+            setValues({ ...values, [field]: { coord, text } })
+          }
           onFocus={() => setSelectedField(field)}
         />
       </View>
@@ -139,8 +149,7 @@ export default () => {
       contentContainerStyle={styles.container}>
       <TouchableWithoutFeedback
         onPress={Keyboard.dismiss}
-        style={styles.container}
-        containerStyle={styles.container}>
+        style={styles.container}>
         <View style={styles.container}>
           <ARHeader>
             <>
@@ -160,30 +169,23 @@ export default () => {
 
           <ScrollView
             style={styles.container}
-            contentInset={{ bottom: 70, top: -50 }}
+            contentInset={{ bottom: 70, top: 0 }}
             indicatorStyle="black">
-            {(results || []).map(({ properties, geometry }) => (
-              <React.Fragment key={properties?.id}>
-                <ARListItem
-                  poi={{
-                    id: properties?.id,
-                    name: properties?.name,
-                    adress: properties?.label,
-                    category: POICategory.CULTURE,
-                    geolocation: {
-                      lat: (geometry as Point).coordinates[0],
-                      lon: (geometry as Point).coordinates[1],
+            {(results || []).map(({ properties, geometry, text_fr }) => (
+              <ARListItem
+                key={properties?.id}
+                leftIcon="navigation"
+                title={text_fr}
+                onPress={() => {
+                  setValues({
+                    ...values,
+                    [selectedField.toString()]: {
+                      coord: geometry.coordinates,
+                      text: text_fr,
                     },
-                  }}
-                  onPress={() => {
-                    setValues({
-                      ...values,
-                      [selectedField.toString()]: (geometry as Point)
-                        .coordinates,
-                    });
-                  }}
-                />
-              </React.Fragment>
+                  });
+                }}
+              />
             ))}
           </ScrollView>
         </View>
@@ -195,8 +197,8 @@ export default () => {
           styleContainer={styles.calculateButton}
           onPress={() => {
             navigation.navigate('ChooseItinerary', {
-              start: values[Field.START],
-              end: values[Field.END],
+              start: values[Field.START]?.coord,
+              end: values[Field.END]?.coord,
             });
           }}
         />

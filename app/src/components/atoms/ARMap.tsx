@@ -1,9 +1,11 @@
 import MapboxGL, {
+  CameraPadding,
   CameraSettings,
   RasterSourceProps,
 } from '@react-native-mapbox-gl/maps';
-import React, { useEffect } from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { BBox, Position } from 'geojson';
+import React, { RefObject, useEffect, useState } from 'react';
+import { Platform, StyleSheet, View, ViewProps } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,7 +16,7 @@ const styles = StyleSheet.create({
   map: { flex: 1 },
 });
 
-const styleJSON = JSON.stringify(require('../../mapViewStyle.json'));
+const styleJSON = JSON.stringify(require('../../assets/db/mapViewStyle.json'));
 
 const defaultSettingsCamera: CameraSettings = {
   zoomLevel: 14,
@@ -33,6 +35,19 @@ export interface ARMapProps extends ViewProps {
   userLocationVisible?: boolean;
   heatmapVisible?: boolean;
   interactionEnabled?: boolean;
+  bbox?: BBox;
+  center?: Position;
+  onMapLoaded?: (
+    mapRef: RefObject<MapboxGL.MapView>,
+    cameraRef: RefObject<MapboxGL.Camera>,
+  ) => void;
+}
+
+MapboxGL.setAccessToken('');
+
+if (Platform.OS === 'android') {
+  // we have to call this method if we want the user location
+  MapboxGL.requestAndroidLocationPermissions();
 }
 
 export default ({
@@ -40,12 +55,27 @@ export default ({
   heatmapVisible,
   interactionEnabled,
   children,
+  bbox,
+  center,
+  onMapLoaded,
 }: ARMapProps) => {
   const cameraRef = React.createRef<MapboxGL.Camera>();
+  const mapRef = React.createRef<MapboxGL.MapView>();
+
+  const [bounds, setBounds] = useState<
+    CameraPadding & { ne: Position; sw: Position }
+  >();
+
+  useEffect(() => {
+    bbox &&
+      setBounds({
+        ne: [bbox[0], bbox[1]],
+        sw: [bbox[2], bbox[3]],
+      });
+  }, [bbox]);
 
   useEffect(() => {
     // if we don't call this methods, MapboxGL crash on Android
-    MapboxGL.setAccessToken('');
   });
 
   return (
@@ -53,16 +83,34 @@ export default ({
       <MapboxGL.MapView
         // styleURL="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json" // leave it for now if we need to use this style
         // styleURL="https://geoserveis.icgc.cat/contextmaps/positron.json" // same as `styleJSON`, but I prefer to keep the URL to prevent finding it if we decided to use it
+        ref={mapRef}
         styleJSON={styleJSON}
         style={styles.map}
         logoEnabled={false}
         attributionEnabled={false}
         rotateEnabled={false}
+        pitchEnabled={false}
+        // surfaceView
+        onDidFinishRenderingMapFully={() =>
+          onMapLoaded && onMapLoaded(mapRef, cameraRef)
+        }
         zoomEnabled={!!interactionEnabled}
         scrollEnabled={!!interactionEnabled}>
         <MapboxGL.Camera
           ref={cameraRef}
-          defaultSettings={defaultSettingsCamera}
+          bounds={bounds}
+          centerCoordinate={center}
+          padding={{
+            paddingBottom: 25,
+            paddingLeft: 25,
+            paddingRight: 25,
+            paddingTop: 25,
+          }}
+          animationMode="moveTo"
+          defaultSettings={{
+            ...defaultSettingsCamera,
+            bounds,
+          }}
         />
         {userLocationVisible ? (
           <MapboxGL.UserLocation
@@ -70,15 +118,15 @@ export default ({
             renderMode="native"
             animated
             showsUserHeadingIndicator
-            onUpdate={location => {
-              cameraRef.current?.moveTo([
-                location.coords.longitude,
-                location.coords.latitude,
-              ]);
-            }}
+            // onUpdate={location => {
+            // cameraRef.current?.moveTo([
+            //   location.coords.longitude,
+            //   location.coords.latitude,
+            // ]);
+            // }}
           />
         ) : null}
-        {heatmapVisible ? (
+        {heatmapVisible && (
           <MapboxGL.RasterSource {...rasterSourceProps}>
             <MapboxGL.RasterLayer
               id="airreel_layer"
@@ -86,7 +134,7 @@ export default ({
               sourceID="aireel_source"
             />
           </MapboxGL.RasterSource>
-        ) : null}
+        )}
         {children || null}
       </MapboxGL.MapView>
     </View>

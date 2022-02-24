@@ -1,4 +1,4 @@
-import {DefaultTheme} from 'react-native-paper';
+import { DefaultTheme } from 'react-native-paper';
 
 declare global {
   namespace ReactNativePaper {
@@ -26,18 +26,29 @@ export const theme = {
       500: '#13395F',
     },
     blue: {
-      50: "#F1F0F9",
+      50: '#F1F0F9',
+      100: '#EDEFFE',
       300: '#8382A6',
       400: '#9BA4D1',
       500: '#25244E',
     },
     quality: {
-      purple: '#7D2081',
-      darkRed: '#960032',
-      red: '#FF5050',
-      yellow: '#F0E641',
-      green: '#51CCA9',
-      cyan: '#26D1C7',
+      main: {
+        purple: '#7D2081',
+        darkRed: '#960032',
+        red: '#FF5050',
+        yellow: '#F0E641',
+        green: '#51CCA9',
+        cyan: '#26D1C7',
+      },
+      light: {
+        purple: '#FEF0FF',
+        red: '#FFEAF4',
+        orange: '#FFEBEB',
+        yellow: '#8D8500',
+        green: '#E9FAF5',
+        cyan: '#EEFFFE',
+      },
     },
   },
 };

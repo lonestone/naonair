@@ -59,7 +59,7 @@ export default () => {
         component={ARPOIDetails}
         options={{ headerTitle: 'Détails' }}
       />
-      
+
       <Stack.Screen
         name="Favorites"
         component={ARListFavorites}

@@ -2,8 +2,8 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Card, Divider } from 'react-native-paper';
-import { POI } from '../../actions/poi';
 import { theme } from '../../theme';
+import { StackParamList } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
 import ARQAChip from '../atoms/ARQAChip';
 import ARHeadingGroup from '../molecules/ARHeadingGroup';
@@ -24,16 +24,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
   description: {
     color: theme.colors.blue[300],
     lineHeight: 24,
@@ -53,41 +43,32 @@ const styles = StyleSheet.create({
   mapView: { flex: 1, borderRadius: 16, overflow: 'hidden' },
 });
 
-type AppStackParamList = {
-  Details: { poiDetails: POI };
-};
-
-type POIDetailsRouteProp = RouteProp<AppStackParamList>;
+type POIDetailsRouteProp = RouteProp<StackParamList, 'POIDetails'>;
 
 const ARPOIDetails = () => {
-  const { params } = useRoute<POIDetailsRouteProp>();
-
-  const poiQA = {
-    label: 'dégradé',
-    color: theme.colors.quality.yellow,
-    labelColor: '#8D8500',
-  };
+  const { poiDetails } = useRoute<POIDetailsRouteProp>().params || {};
 
   return (
     <ScrollView style={styles.scrollView}>
-      {params && params.poiDetails && (
+      {poiDetails && (
         <View style={styles.detailView}>
           <View>
             <Card style={styles.map}>
               <View style={styles.mapView}>
-                <ARMap userLocationVisible interactionEnabled heatmapVisible>
-                  <POIMarker {...params.poiDetails} />
+                <ARMap
+                  userLocationVisible
+                  interactionEnabled
+                  heatmapVisible
+                  center={poiDetails.geolocation}>
+                  <POIMarker poi={poiDetails} />
                 </ARMap>
               </View>
               <View style={styles.chipWrapper}>
-                <ARQAChip size="md" shadowStyle={styles.shadow} item={poiQA} />
+                <ARQAChip size="md" shadow coord={poiDetails.geolocation} />
               </View>
             </Card>
           </View>
-          <ARHeadingGroup
-            title={params.poiDetails.name}
-            caption={params.poiDetails.adress}
-          />
+          <ARHeadingGroup title={poiDetails.name} caption={poiDetails.adress} />
           <Divider />
           <ARForecasts forecastQA />
         </View>

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewProps } from 'react-native';
 import { Card, Headline, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { QAValues } from '../../actions/qa';
 import { theme } from '../../theme';
-import { legendItems } from '../../types/legends';
 import ARQAChip from '../atoms/ARQAChip';
 
 export interface ARLegendProps extends ViewProps {}
@@ -39,9 +39,11 @@ export default (props: ViewProps) => {
           <View>
             <Headline>Qualité de l'air</Headline>
             <View style={{ alignItems: 'flex-start' }}>
-              {legendItems.map((item, index) => (
-                <ARQAChip size="sm" key={`legend-${index}`} item={item} />
-              ))}
+              {Object.values(QAValues)
+                .reverse()
+                .map((value, index) => (
+                  <ARQAChip size="sm" key={`legend-${index}`} value={value} />
+                ))}
             </View>
 
             <TouchableOpacity onPress={() => setDeployed(false)}>

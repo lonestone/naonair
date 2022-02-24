@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { SvgXml } from 'react-native-svg';
 import { POI } from '../../actions/poi';
 import { theme } from '../../theme';
-import { NavigationScreenProp } from '../../types/routes';
+import { StackNavigationScreenProp } from '../../types/routes';
 import ARQAChip from '../atoms/ARQAChip';
 import ARListItem from '../molecules/ARListItem';
 import { icons } from './ARMapView';
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
   },
   chipWrapper: {
     justifyContent: 'center',
-  }
+  },
 });
 
 interface ARListViewProps {
@@ -30,16 +31,10 @@ interface ARListViewProps {
 }
 
 const ARListView = ({ pois }: ARListViewProps) => {
-  const navigation = useNavigation<NavigationScreenProp>();
-
-  const poiQA = {
-    label: 'dégradé',
-    color: theme.colors.quality.yellow,
-    labelColor: '#8D8500',
-  };
+  const navigation = useNavigation<StackNavigationScreenProp>();
 
   return (
-    <View>
+    <ScrollView>
       {pois.map((poi, idx) => (
         <ARListItem
           key={idx}
@@ -53,16 +48,21 @@ const ARListView = ({ pois }: ARListViewProps) => {
             })
           }
           leftIcon={() => (
-            <SvgXml width="20" height="20" xml={icons[`${poi.category}`]} />
+            <SvgXml
+              width="20"
+              height="20"
+              xml={icons[`${poi.category}`]}
+              fill="#25244E"
+            />
           )}
           rightChip={
             <View style={styles.chipWrapper}>
-              <ARQAChip size="sm" item={poiQA} />
+              <ARQAChip coord={poi.geolocation} size="sm" />
             </View>
           }
         />
       ))}
-    </View>
+    </ScrollView>
   );
 };
 

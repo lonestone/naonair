@@ -1,5 +1,8 @@
-import { FeatureCollection, Position } from 'geojson';
-import poiJson from '../poi.json';
+import { Feature, FeatureCollection, Point, Position } from 'geojson';
+import poiJson from '../assets/db/poi.json';
+
+import { MAPBOX } from '../config.json';
+import { buildMapboxUrl } from '../utils/config';
 
 export enum POICategory {
   UNDEFINED = -1,
@@ -8,7 +11,7 @@ export enum POICategory {
   SPORT = 2,
   CULTURE = 4,
   MARKET = 8,
-  MY_PLACES = 10
+  MY_PLACES = 10,
 }
 
 export interface POI {
@@ -16,7 +19,14 @@ export interface POI {
   category: POICategory;
   name: string;
   adress: string;
-  geolocation: { lat: number; lon: number };
+  geolocation: Position;
+}
+
+export interface MapboxFeature extends Feature {
+  id: string;
+  text_fr: string;
+  text: string;
+  geometry: Point;
 }
 
 const POIs = poiJson.map<POI>(({ id, nom, categorie, adresse, gps }) => {
@@ -24,13 +34,13 @@ const POIs = poiJson.map<POI>(({ id, nom, categorie, adresse, gps }) => {
 
   const getCategory = (): POICategory => {
     switch (categorie) {
-      case 'parc':
+      case 'Parc':
         return POICategory.PARK;
-      case 'sport':
+      case 'Sport':
         return POICategory.SPORT;
-      case 'culture':
+      case 'Culture':
         return POICategory.CULTURE;
-      case 'marche':
+      case 'Marche':
         return POICategory.MARKET;
       case 'favoris':
         return POICategory.FAVORITE;
@@ -45,10 +55,7 @@ const POIs = poiJson.map<POI>(({ id, nom, categorie, adresse, gps }) => {
     category: getCategory(),
     name: nom,
     adress: adresse,
-    geolocation: {
-      lat,
-      lon,
-    },
+    geolocation: [lon, lat],
   };
 });
 
@@ -62,19 +69,31 @@ export const getOne = (id: number) => {
   return POIs[id];
 };
 
-export const reverse = async ([
-  lon,
-  lat,
-]: Position): Promise<FeatureCollection> => {
-  const API_ENDPOINT = `https://api-adresse.data.gouv.fr/reverse/?lon=${encodeURIComponent(
-    lon,
-  )}&lat=${encodeURIComponent(lat)}`;
-  const response = await fetch(API_ENDPOINT);
-  return await response.json();
+export const reverse = async ([lon, lat]: Position): Promise<
+  MapboxFeature[]
+> => {
+  try {
+    const locationUrl = `${encodeURIComponent(lon)},${encodeURIComponent(lat)}`;
+
+    const URL = buildMapboxUrl(locationUrl);
+
+    const response = await fetch(URL);
+    const { features } = (await response.json()) as FeatureCollection;
+    return features as MapboxFeature[];
+  } catch (e) {
+    console.warn(e);
+  }
+
+  return [];
 };
 
-export const geocoding = async (query: string): Promise<FeatureCollection> => {
-  const API_ENDPOINT = 'https://api-adresse.data.gouv.fr/search/?limit=20&q=';
-  const response = await fetch(`${API_ENDPOINT}${encodeURIComponent(query)}`);
-  return await response.json();
+export const geocoding = async (query: string): Promise<MapboxFeature[]> => {
+  const queryUrl = encodeURIComponent(query);
+
+  const URL = buildMapboxUrl(queryUrl);
+
+  const response = await fetch(URL);
+
+  const { features } = (await response.json()) as FeatureCollection;
+  return features as MapboxFeature[];
 };
