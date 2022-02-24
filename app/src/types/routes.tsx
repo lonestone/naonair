@@ -4,7 +4,7 @@ import { POI } from '../actions/poi';
 
 export type StackParamList = {
   Home: undefined;
-  POIDetails: { poiDetails: POI };
+  POIDetails: { poi: POI };
   ChooseItinerary: { start?: Position; end?: Position };
   Favorites: undefined;
 };
