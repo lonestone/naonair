@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import { SvgXml } from 'react-native-svg';
 import { POI } from '../../actions/poi';
 import { theme } from '../../theme';
@@ -30,39 +30,46 @@ interface ARListViewProps {
   pois: POI[];
 }
 
-const ARListView = ({ pois }: ARListViewProps) => {
+const Item = ({ poi }: { poi: POI }) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
 
   return (
-    <ScrollView>
-      {pois.map((poi, idx) => (
-        <ARListItem
-          key={idx}
-          title={poi.name}
-          description={poi.adress}
-          descriptionStyle={styles.description}
-          titleStyle={styles.title}
-          onPress={() =>
-            navigation.navigate('POIDetails', {
-              poiDetails: poi,
-            })
-          }
-          leftIcon={() => (
-            <SvgXml
-              width="20"
-              height="20"
-              xml={icons[`${poi.category}`]}
-              fill="#25244E"
-            />
-          )}
-          rightChip={
-            <View style={styles.chipWrapper}>
-              <ARQAChip coord={poi.geolocation} size="sm" />
-            </View>
-          }
-        />
-      ))}
-    </ScrollView>
+    <ARListItem
+      title={poi.name}
+      description={poi.adress}
+      descriptionStyle={styles.description}
+      titleStyle={styles.title}
+      onPress={() =>
+        navigation.navigate('POIDetails', {
+          poiDetails: poi,
+        })
+      }
+      leftIcon={() => (
+        <View style={styles.chipWrapper}>
+          <SvgXml
+            width="20"
+            height="20"
+            xml={icons[`${poi.category}`]}
+            fill="#25244E"
+          />
+        </View>
+      )}
+      rightChip={
+        <View style={styles.chipWrapper}>
+          <ARQAChip coord={poi.geolocation} size="sm" />
+        </View>
+      }
+    />
+  );
+};
+
+const ARListView = ({ pois }: ARListViewProps) => {
+  return (
+    <FlatList
+      data={pois}
+      keyExtractor={item => `poi-${item.id}`}
+      renderItem={({ item }) => <Item poi={item} />}
+    />
   );
 };
 

@@ -1,7 +1,5 @@
 import { Feature, FeatureCollection, Point, Position } from 'geojson';
 import poiJson from '../assets/db/poi.json';
-
-import { MAPBOX } from '../config.json';
 import { buildMapboxUrl } from '../utils/config';
 
 export enum POICategory {
