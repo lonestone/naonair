@@ -17,6 +17,7 @@ import { StackNavigationScreenProp } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
 import ARLegend from '../molecules/ARLegend';
 import ARAlert from './ARAlert';
+import ARNews from './ARNews';
 
 export interface ARMapViewProps {
   pois: POI[];
@@ -116,8 +117,9 @@ export default ({ pois }: ARMapViewProps) => {
         {isMapLoaded &&
           pois.map(poi => <POIMarker key={`poi-${poi.id}`} poi={poi} />)}
       </ARMap>
-      <ARAlert />
       <ARLegend style={styles.legends} />
+      <ARAlert />
+      <ARNews />
     </>
   );
 };
