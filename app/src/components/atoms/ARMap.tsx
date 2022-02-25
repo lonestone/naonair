@@ -46,6 +46,8 @@ export interface ARMapProps extends ViewProps {
   bbox?: BBox;
   center?: Position;
   onMapPress?: () => void;
+  cameraSettings?: CameraSettings;
+  animationMode?: 'flyTo' | 'easeTo' | 'linearTo' | 'moveTo';
   onUserLocationChanged?: (location: MapboxGL.Location) => void;
   onMapLoaded?: (
     mapRef: RefObject<MapboxGL.MapView>,
@@ -73,6 +75,8 @@ const ARMap = (
     bbox,
     center,
     onMapPress,
+    cameraSettings,
+    animationMode,
     onUserLocationChanged,
     onMapLoaded,
   }: ARMapProps,
@@ -138,9 +142,10 @@ const ARMap = (
             paddingRight: 25 + insets.right,
             paddingTop: 25 + insets.top,
           }}
-          animationMode="moveTo"
+          animationMode={animationMode || 'moveTo'}
           defaultSettings={{
             ...defaultSettingsCamera,
+            ...cameraSettings,
             bounds,
           }}
         />

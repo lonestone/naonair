@@ -61,6 +61,10 @@ export const theme = {
     primary: '#4863F1',
     accent: '#EDEFFE',
     white: 'white',
+    grey: {
+      50: '#F0F0F0',
+      300: '#737373',
+    },
     outlineDisabled: '#9BA4D1',
     outlineFocused: '#4863F1',
     black: {
