@@ -2,6 +2,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { Position } from '@turf/turf';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
+import ARElasticView from '../components/atoms/ARElasticView';
 import ARNavigationMapView from '../components/organisms/ARNavigationMapView';
 import ARPathInstructions from '../components/organisms/ARPathInstructions';
 import { StackParamList } from '../types/routes';
@@ -30,11 +31,13 @@ export default ({}: NavigationScreenProp) => {
         style={styles.map}
         onUserMoved={setUserPosition}
       />
+      <ARElasticView>
         <ARPathInstructions
           style={styles.instructions}
           path={path}
           userPosition={userPosition}
         />
+      </ARElasticView>
     </>
   );
 };
