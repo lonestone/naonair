@@ -18,7 +18,8 @@ import {
 } from '../../actions/routes';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
-import ARRouteMapView from '../molecules/ARRouteMapView';
+import { ARButton, ARButtonSize } from '../atoms/ARButton';
+import ARRouteMapView from '../organisms/ARRouteMapView';
 
 type ARChooseItineraryProp = RouteProp<StackParamList, 'ChooseItinerary'>;
 
@@ -78,6 +79,11 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: 'bold',
   },
+  letsGoButton: {
+    flex: 0,
+    alignSelf: 'flex-end',
+    marginRight: 24,
+  },
 });
 
 const BackButton = () => {
@@ -97,7 +103,15 @@ const BackButton = () => {
   );
 };
 
-const ItineraryItem = ({ path }: { path: ARPath }) => {
+const ItineraryItem = ({
+  path,
+  onPress,
+  index,
+}: {
+  path: ARPath;
+  index: number;
+  onPress: (index: number) => void;
+}) => {
   return (
     <List.Item
       left={() => (
@@ -116,20 +130,45 @@ const ItineraryItem = ({ path }: { path: ARPath }) => {
       title="Le plus sain"
       description={getDistanceLabel(path.distance)}
       onPress={() => {
-        // console.info(path);
+        onPress(index);
       }}
     />
   );
 };
 
 const ItineraryList = ({ paths = [] }: { paths: ARPath[] }) => {
+  const [pathIndex, setPathIndex] = useState<number>(0);
+  const navigation = useNavigation<StackNavigationScreenProp>();
+
+  console.info(pathIndex, paths[pathIndex]);
+
   return (
     <Surface style={styles.listContainer}>
       <SafeAreaView edges={['bottom', 'left', 'right']}>
         <Headline style={styles.title}>Choisissez votre itinéraire</Headline>
         {paths.map((path, index) => (
-          <ItineraryItem key={`path-${index}`} path={path} />
+          <ItineraryItem
+            key={`path-${index}`}
+            path={path}
+            index={index}
+            onPress={setPathIndex}
+          />
         ))}
+        <ARButton
+          label="C'est parti"
+          size={ARButtonSize.Medium}
+          onPress={() =>
+            navigation.navigate('Navigation', { path: paths[pathIndex] })
+          }
+          styleContainer={styles.letsGoButton}
+          icon={() => (
+            <Icon
+              name="navigation-variant"
+              size={36}
+              color={theme.colors.white}
+            />
+          )}
+        />
       </SafeAreaView>
     </Surface>
   );
