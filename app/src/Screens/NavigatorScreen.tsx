@@ -12,6 +12,7 @@ import { theme } from '../theme';
 import { StackParamList, TabParamList } from '../types/routes';
 import ItineraryScreen from './ItineraryScreen';
 import MapScreen from './MapScreen';
+import NavigationScreen from './NavigationScreen';
 import ProfileScreen from './ProfileScreen';
 import RoutesScreen from './RoutesScreen';
 
@@ -78,6 +79,12 @@ export default () => {
         name="Favorites"
         component={ARListFavorites}
         options={{ headerTitle: 'Mes favoris' }}
+      />
+
+      <Stack.Screen
+        name="Navigation"
+        component={NavigationScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
