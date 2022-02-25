@@ -55,8 +55,10 @@ const EndMarker = () => (
 export default ({ id, title, type, coordinate }: ARPathMarkerProp) => {
   return (
     <MapboxGL.MarkerView id={id} title={title} coordinate={coordinate}>
-      {type === ARPathMarkerType.START && <StartMarker />}
-      {type === ARPathMarkerType.END && <EndMarker />}
+      <>
+        {type === ARPathMarkerType.START && <StartMarker />}
+        {type === ARPathMarkerType.END && <EndMarker />}
+      </>
     </MapboxGL.MarkerView>
   );
 };
