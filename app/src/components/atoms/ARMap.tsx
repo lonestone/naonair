@@ -4,7 +4,14 @@ import MapboxGL, {
   RasterSourceProps,
 } from '@react-native-mapbox-gl/maps';
 import { BBox, Position } from 'geojson';
-import React, { RefObject, useEffect, useState } from 'react';
+import React, {
+  forwardRef,
+  Ref,
+  RefObject,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
 import { Platform, StyleSheet, View, ViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -39,10 +46,15 @@ export interface ARMapProps extends ViewProps {
   bbox?: BBox;
   center?: Position;
   onMapPress?: () => void;
+  onUserLocationChanged?: (location: MapboxGL.Location) => void;
   onMapLoaded?: (
     mapRef: RefObject<MapboxGL.MapView>,
     cameraRef: RefObject<MapboxGL.Camera>,
   ) => void;
+}
+
+export interface ARMapHandle {
+  setCamera: (settings: CameraSettings) => void;
 }
 
 MapboxGL.setAccessToken('');
@@ -52,16 +64,20 @@ if (Platform.OS === 'android') {
   MapboxGL.requestAndroidLocationPermissions();
 }
 
-export default ({
-  userLocationVisible,
-  heatmapVisible,
-  interactionEnabled,
-  children,
-  bbox,
-  center,
-  onMapPress,
-  onMapLoaded,
-}: ARMapProps) => {
+const ARMap = (
+  {
+    userLocationVisible,
+    heatmapVisible,
+    interactionEnabled,
+    children,
+    bbox,
+    center,
+    onMapPress,
+    onUserLocationChanged,
+    onMapLoaded,
+  }: ARMapProps,
+  ref: Ref<ARMapHandle>,
+) => {
   const cameraRef = React.createRef<MapboxGL.Camera>();
   const mapRef = React.createRef<MapboxGL.MapView>();
 
@@ -76,6 +92,16 @@ export default ({
         sw: [bbox[2], bbox[3]],
       });
   }, [bbox]);
+
+  useImperativeHandle(ref, () => ({
+    setCamera: (settings: CameraSettings) => {
+      cameraRef.current?.setCamera(settings);
+    },
+  }));
+
+  // useEffect(() => {
+  //   onMapLoaded && onMapLoaded(mapRef, cameraRef);
+  // }, [cameraRef, mapRef, onMapLoaded]);
 
   useEffect(() => {
     // if we don't call this methods, MapboxGL crash on Android
@@ -124,6 +150,7 @@ export default ({
             renderMode="native"
             animated
             showsUserHeadingIndicator
+            onUpdate={onUserLocationChanged}
             // onUpdate={location => {
             // cameraRef.current?.moveTo([
             //   location.coords.longitude,
@@ -146,3 +173,5 @@ export default ({
     </View>
   );
 };
+
+export default forwardRef<ARMapHandle, ARMapProps>(ARMap);
