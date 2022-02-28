@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native';
 import ARElasticView from '../components/atoms/ARElasticView';
 import ARNavigationMapView from '../components/organisms/ARNavigationMapView';
 import ARPathInstructions from '../components/organisms/ARPathInstructions';
+import { BackButton } from '../components/templates/ARChooseItinerary';
 import { StackParamList } from '../types/routes';
 
 export interface NavigationScreenProp {}
@@ -31,6 +32,7 @@ export default ({}: NavigationScreenProp) => {
         style={styles.map}
         onUserMoved={setUserPosition}
       />
+      <BackButton />
       <ARElasticView>
         <ARPathInstructions
           style={styles.instructions}

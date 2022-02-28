@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const BackButton = () => {
+export const BackButton = () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
 
   return (
