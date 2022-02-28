@@ -57,9 +57,18 @@ const POIs = poiJson.map<POI>(({ id, nom, categorie, adresse, gps }) => {
   };
 });
 
-export const getAll = (categories: POICategory[]) => {
+export const getAll = ({
+  categories = [],
+  query,
+}: {
+  categories?: POICategory[];
+  query?: string;
+}) => {
   return POIs.filter(pois => {
-    return categories.includes(pois.category);
+    return (
+      categories.includes(pois.category) ||
+      (query && (pois.adress.includes(query) || pois.name.includes(query)))
+    );
   });
 };
 
@@ -85,7 +94,10 @@ export const reverse = async ([lon, lat]: Position): Promise<
   return [];
 };
 
-export const geocoding = async (query: string): Promise<MapboxFeature[]> => {
+export const geocoding = async (
+  query: string,
+  userLocation?: Position,
+): Promise<MapboxFeature[]> => {
   const queryUrl = encodeURIComponent(query);
 
   const URL = buildMapboxUrl(queryUrl);
@@ -93,5 +105,6 @@ export const geocoding = async (query: string): Promise<MapboxFeature[]> => {
   const response = await fetch(URL);
 
   const { features } = (await response.json()) as FeatureCollection;
+
   return features as MapboxFeature[];
 };

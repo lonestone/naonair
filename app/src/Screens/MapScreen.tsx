@@ -21,7 +21,7 @@ export default () => {
   const [pois, setPois] = useState<POI[]>([]);
 
   useEffect(() => {
-    setPois(getAll(selectedCategories));
+    setPois(getAll({ categories: selectedCategories }));
   }, [selectedCategories]);
 
   const displayTypeItems: (SwitchToggleItem & {
