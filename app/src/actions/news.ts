@@ -43,7 +43,6 @@ export const getLast = async (): Promise<NewsDTO | undefined> => {
     const startDate = new Date(item.startDate);
     const seen = viewedNewsUuid.includes(item.uuid);
 
-    console.info(viewedNewsUuid, item, seen);
     if (!seen && startDate < now && now < endDate) {
       unseens.push({ ...item, endDate, startDate });
     } else if (seen && now > endDate) {
