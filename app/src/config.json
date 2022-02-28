@@ -17,6 +17,9 @@
       "HEIGHT": 101
     }
   },
+  "SENTRY": {
+    "dsn": "https://a78899e62f4f4819889f55f1f00c4197@o297372.ingest.sentry.io/6235219"
+  },
   "MAPBOX": {
     "baseUrl": "https://api.mapbox.com/geocoding/v5/mapbox.places/",
     "params": {
