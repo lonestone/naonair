@@ -24,7 +24,7 @@ if (!__DEV__) {
 }
 
 const App = () => {
-  const jsx = (
+  return (
     <ThemeProvider theme={theme}>
       <StatusBar barStyle={'dark-content'} />
       <NavigationContainer>
@@ -32,12 +32,8 @@ const App = () => {
       </NavigationContainer>
     </ThemeProvider>
   );
-
-  if (__DEV__) {
-    return jsx;
-  }
-
-  return Sentry.wrap(() => jsx);
 };
 
-export default App;
+const Wrapper = __DEV__ ? App : Sentry.wrap(App);
+
+export default Wrapper;

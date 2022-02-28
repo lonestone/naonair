@@ -3,7 +3,8 @@
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import { useNavigation } from '@react-navigation/native';
 import React, { createRef, useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+
 import { SvgXml } from 'react-native-svg';
 import { POI, POICategory } from '../../actions/poi';
 import { getQAFromPosition, QAType } from '../../actions/qa';
@@ -82,9 +83,11 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
       coordinate={poi.geolocation}
       anchor={{ x: 0.5, y: 1 }}
       title={poi.name}
-      onSelected={() => navigation.navigate('POIDetails', { poi })}
+      // onSelected={}
       id={`${poi.id}`}>
-      <View style={styles.markerContainer}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('POIDetails', { poi })}
+        style={styles.markerContainer}>
         <SvgXml
           width="40"
           height="46"
@@ -99,7 +102,7 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
           style={styles.markerIcon}
           xml={icons[`${poi.category}`]}
         />
-      </View>
+      </TouchableOpacity>
     </MapboxGL.MarkerView>
   );
 };
