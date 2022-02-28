@@ -3,7 +3,7 @@ import { SxProps } from "@mui/lab/node_modules/@mui/system";
 import { AppBar, IconButton } from "@mui/material";
 import { Theme } from "@mui/system";
 import { useCallback } from "react";
-import { ReactComponent as ARLogo } from "../../assets/logo.svg";
+import { ReactComponent as ARLogo } from "../../assets/logo-small.svg";
 import useAuth from "../../contexts/auth.context";
 
 const logoStyle: SxProps<Theme> = {
