@@ -1,4 +1,3 @@
-import Geolocation from '@react-native-community/geolocation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -12,6 +11,7 @@ import ARQAChip from '../atoms/ARQAChip';
 import ARHeadingGroup from '../molecules/ARHeadingGroup';
 import ARForecasts from '../organisms/ARForecasts';
 import { POIMarker } from './ARMapView';
+import Geolocation from '@react-native-community/geolocation';
 
 const styles = StyleSheet.create({
   map: {

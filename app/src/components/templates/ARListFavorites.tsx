@@ -1,12 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import React, {
+  useEffect, useState
+} from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import { getAllPlaces, getPlaceById } from '../../actions/myplaces';
+import { getAllPlaces } from '../../actions/myplaces';
 import { POI, POICategory } from '../../actions/poi';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
+import ARSnackbar from '../atoms/ARSnackbar';
 import ARListItem from '../molecules/ARListItem';
 import { icons } from './ARMapView';
 
@@ -28,6 +31,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignSelf: 'center',
   },
+  iconWrapper: {
+    justifyContent: 'center',
+  },
 });
 
 const favorites: POI[] = [
@@ -41,6 +47,7 @@ const favorites: POI[] = [
 ];
 
 const ARListFavorites = () => {
+
   const navigation = useNavigation<StackNavigationScreenProp>();
   const [items, setItems] = useState<POI[]>([]);
 
@@ -50,17 +57,18 @@ const ARListFavorites = () => {
   };
 
   useEffect(() => {
-    //TODO refresh list after create new address
-    readItemFromStorage();
+    navigation.addListener('focus', readItemFromStorage);
+    return () => navigation.removeListener('focus', readItemFromStorage);
   }, []);
 
   return (
     <>
+      <ARSnackbar />
       <ScrollView style={styles.container}>
         {items &&
           items.map((fav, idx) => (
             <ARListItem
-              key={idx}
+              key={`fav-${idx}`}
               title={fav.name}
               description={fav.adress}
               descriptionStyle={styles.description}
@@ -70,7 +78,14 @@ const ARListFavorites = () => {
                 console.log('TODO', fav)
               }
               leftIcon={() => (
-                <SvgXml width="20" height="20" xml={icons[`${fav.category}`]} />
+                <View style={styles.iconWrapper}>
+                  <SvgXml
+                    width="20"
+                    height="20"
+                    xml={icons[`${fav.category}`]}
+                    fill={theme.colors.blue[500]}
+                  />
+                </View>
               )}
               rightIcon={
                 fav.category === POICategory.MY_PLACES ? 'pencil' : 'star'

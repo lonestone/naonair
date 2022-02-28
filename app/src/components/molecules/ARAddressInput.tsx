@@ -82,6 +82,7 @@ export default ({
         }
         multiline={false}
         placeholder={placeholder}
+        placeholderTextColor={theme.colors.blue[400]}
         textContentType="addressCity"
         label={label}
         style={StyleSheet.flatten([styles.inputContainer, style])}
