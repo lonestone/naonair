@@ -4,24 +4,24 @@ import { API } from '../config.json';
 
 const URL_ENDPOINT = `${API.baseUrl}news`;
 
-const getSeenNews = async (): Promise<string[]> => {
+const getSeenNewsUuids = async (): Promise<string[]> => {
   const news = (await AsyncStorage.getItem('@seen_news'))?.split('|') ?? [];
   return news;
 };
 
-const setSeenNews = async (news: string[]) => {
+const setSeenNewsUuids = async (news: string[]) => {
   await AsyncStorage.setItem('@seen_news', news.join('|'));
 };
 
 export const markNewAsSeen = async (item: NewsDTO) => {
-  const seens = await getSeenNews();
-  await setSeenNews([...seens, item.uuid]);
+  const seens = await getSeenNewsUuids();
+  await setSeenNewsUuids([...seens, item.uuid]);
 };
 
 export const removeNew = async (uuid: string) => {
-  const news = await getSeenNews();
+  const news = await getSeenNewsUuids();
 
-  await setSeenNews(news.filter(n => n !== uuid));
+  await setSeenNewsUuids(news.filter(n => n !== uuid));
 };
 
 export const getLast = async (): Promise<NewsDTO | undefined> => {
@@ -31,7 +31,7 @@ export const getLast = async (): Promise<NewsDTO | undefined> => {
   // USED TO DEBUG : It wipe every items inside AsyncStorage
   // await AsyncStorage.clear();
 
-  const viewedNewsUuid: string[] = await getSeenNews();
+  const viewedNewsUuid: string[] = await getSeenNewsUuids();
 
   let unseens: NewsDTO[] = [];
 
