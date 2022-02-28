@@ -10,6 +10,7 @@ import ARCreatePlace from '../components/templates/ARCreatePlace';
 import ARListFavorites from '../components/templates/ARListFavorites';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
 import ARRouteDetail from '../components/templates/ARRouteDetail';
+import { SnackbarProvider } from '../contexts/snackbar.context';
 import { theme } from '../theme';
 import { StackParamList, TabParamList } from '../types/routes';
 import ItineraryScreen from './ItineraryScreen';
@@ -58,47 +59,50 @@ const options: StackNavigationOptions = {
 
 export default () => {
   return (
-    <Stack.Navigator screenOptions={options}>
-      <Stack.Screen
-        name="Home"
-        options={{ headerShown: false }}
-        component={Home}
-      />
+    <SnackbarProvider>
+      <Stack.Navigator screenOptions={options}>
+        <Stack.Screen
+          name="Home"
+          options={{ headerShown: false }}
+          component={Home}
+        />
 
-      <Stack.Screen
-        name="ChooseItinerary"
-        component={ARChooseItinerary}
-        options={{ headerShown: false }}
-      />
+        <Stack.Screen
+          name="ChooseItinerary"
+          component={ARChooseItinerary}
+          options={{ headerShown: false }}
+        />
 
-      <Stack.Screen
-        name="POIDetails"
-        component={ARPOIDetails}
-        options={{ headerTitle: 'Détails' }}
-      />
+        <Stack.Screen
+          name="POIDetails"
+          component={ARPOIDetails}
+          options={{ headerTitle: 'Détails' }}
+        />
 
-      <Stack.Screen
-        name="Favorites"
-        component={ARListFavorites}
-        options={{ headerTitle: 'Mes favoris' }}
-      />
+        <Stack.Screen
+          name="Favorites"
+          component={ARListFavorites}
+          options={{ headerTitle: 'Mes favoris' }}
+        />
 
-      <Stack.Screen
-        name="Navigation"
-        component={NavigationScreen}
-        options={{ headerShown: false }}
-      />
+        <Stack.Screen
+          name="Navigation"
+          component={NavigationScreen}
+          options={{ headerShown: false }}
+        />
 
-      <Stack.Screen
-        name="RouteDetail"
-        component={ARRouteDetail}
-        options={{ headerTitle: 'Détail' }}/>
-        
-      <Stack.Screen
-        name="CreatePlace"
-        component={ARCreatePlace}
-        options={{ headerTitle: 'Créer une nouvelle adresse' }}
-      />
-    </Stack.Navigator>
+        <Stack.Screen
+          name="RouteDetail"
+          component={ARRouteDetail}
+          options={{ headerTitle: 'Détail' }}
+        />
+
+        <Stack.Screen
+          name="CreatePlace"
+          component={ARCreatePlace}
+          options={{ headerTitle: 'Créer une nouvelle adresse' }}
+        />
+      </Stack.Navigator>
+    </SnackbarProvider>
   );
 };

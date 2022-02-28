@@ -27,8 +27,7 @@ type ARButtonType = {
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 48,
-    padding: 0,
+    borderRadius: 35,
   },
   labelStyle: {
     fontWeight: '600',
