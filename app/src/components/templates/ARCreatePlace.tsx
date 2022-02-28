@@ -20,6 +20,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginVertical: 5,
     color: theme.colors.blue[400],
+    backgroundColor: 'white',
+  },
+  button: {
+    margin: 40,
+    flex: 0,
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'center',
   },
 });
 
@@ -29,7 +37,6 @@ const ARCreatePlace = () => {
   const { setSnackbarStatus } = useSnackbar();
 
   const [name, setName] = useState('');
-  const [place, setPlace] = useState<POI>();
   const [results, setResults] = useState<MapboxFeature[]>([]);
   const [values, setValues] = useState<
     { coord: Position; text: string } | undefined
@@ -37,17 +44,28 @@ const ARCreatePlace = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOnsubmit = async () => {
-    setIsLoading(true);
-    await setPlaceStorage(place!);
-    navigation.goBack();
-    setSnackbarStatus?.({
-      isVisible: true,
-      label: "L'adresse a été enregistrée",
-      icon: 'check-circle',
-      backgroundColor: theme.colors.quality.main.green,
-    });
-    setIsLoading(false);
-  };
+    if (values) {
+      setIsLoading(true);
+
+      await setPlaceStorage({
+        id: new Date().getTime(),
+        adress: values?.text,
+        category: POICategory.MY_PLACES,
+        name,
+        geolocation: values?.coord,
+      });
+
+      navigation.goBack();
+
+      setSnackbarStatus?.({
+        isVisible: true,
+        label: "L'adresse a été enregistrée",
+        icon: 'check-circle',
+        backgroundColor: theme.colors.quality.main.green,
+      });
+      setIsLoading(false);
+    }
+  };  
 
   return (
     <View style={styles.container}>
@@ -65,6 +83,9 @@ const ARCreatePlace = () => {
         label="Adresse"
         placeholder="Adresse"
         onResults={setResults}
+        onUserLocation={(coord, text) => {
+          setValues({ coord, text });
+        }}
         value={values}
         style={styles.input}
       />
@@ -72,10 +93,10 @@ const ARCreatePlace = () => {
         style={styles.container}
         contentInset={{ bottom: 70, top: -50 }}
         indicatorStyle="black">
-        {(results || []).map(({ properties, geometry, text_fr }, index) => (
+        {(results || []).map(({ geometry, text_fr }, index) => (
           <React.Fragment key={index}>
             <ARListItem
-              key={properties?.id}
+              key={`item-${index}`}
               title={text_fr}
               leftIcon={() => (
                 <SvgXml
@@ -89,13 +110,6 @@ const ARCreatePlace = () => {
                   coord: geometry.coordinates,
                   text: text_fr,
                 });
-                setPlace({
-                  id: new Date().getTime(),
-                  adress: text_fr,
-                  category: POICategory.MY_PLACES,
-                  name,
-                  geolocation: properties?.geolocation,
-                });
                 setResults([]);
               }}
             />
@@ -105,15 +119,11 @@ const ARCreatePlace = () => {
       <ARButton
         label="Enregistrer"
         size={ARButtonSize.Medium}
-        styleContainer={{
-          margin: 40,
-          flex: 0,
-          position: 'absolute',
-          bottom: 0,
-          alignSelf: 'center',
-        }}
+        styleContainer={styles.button}
         onPress={handleOnsubmit}
-        disabled={!place}
+        disabled={
+          !values || values.coord.length === 0 || !name || name.length === 0
+        }
         loading={isLoading}
       />
     </View>
