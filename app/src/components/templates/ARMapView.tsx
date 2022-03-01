@@ -4,7 +4,7 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import { useNavigation } from '@react-navigation/native';
 import React, { createRef, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Svg, { SvgXml } from 'react-native-svg';
+import { SvgXml } from 'react-native-svg';
 import { POI, POICategory } from '../../actions/poi';
 import { getQAFromPosition, QAType } from '../../actions/qa';
 import cultureIcon from '../../assets/culture-icon.svg';
@@ -16,8 +16,6 @@ import sportIcon from '../../assets/sport-icon.svg';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
 import ARLegend from '../molecules/ARLegend';
-import ARAlert from './ARAlert';
-import ARNews from './ARNews';
 
 export interface ARMapViewProps {
   pois: POI[];
@@ -132,8 +130,6 @@ export default ({ pois }: ARMapViewProps) => {
           pois.map(poi => <POIMarker key={`poi-${poi.id}`} poi={poi} />)}
       </ARMap>
       <ARLegend style={styles.legends} />
-      <ARAlert />
-      <ARNews />
     </>
   );
 };
