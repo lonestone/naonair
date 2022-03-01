@@ -48,7 +48,7 @@ const ARPlaceForm = ({
         placeholder="Titre"
         value={name}
         mode="outlined"
-        onChangeText={text => setName(text)}
+        onChangeText={setName}
         style={styles.input}
         outlineColor={theme.colors.blue[400]}
         placeholderTextColor={theme.colors.blue[400]}

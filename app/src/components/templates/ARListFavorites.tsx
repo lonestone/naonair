@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { getAllPlaces } from '../../actions/myplaces';
 import { POI, POICategory } from '../../actions/poi';
@@ -34,31 +34,27 @@ const styles = StyleSheet.create({
   },
 });
 
-const favorites: POI[] = [
-  {
-    id: 1,
-    adress: 'Rue Stanislas Baudry, 44000 Nantes',
-    category: POICategory.MY_PLACES,
-    name: 'Ici la',
-    geolocation: [0, 0],
-  },
-  {
-    id: 2,
-    adress: 'Rue Général de Gaulle, 44000 Nantes',
-    category: POICategory.CULTURE,
-    name: 'Le musée',
-    geolocation: [0, 0],
-  },
-];
-
 const ARListFavorites = () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
   const [items, setItems] = useState<POI[]>([]);
 
   const readItemFromStorage = async () => {
     const values = await getAllPlaces();
-    setItems(values?.concat(favorites) || favorites);
+    console.log('values', values);
+
+    if (values) {
+      try {
+        const j = JSON.parse(values);
+        console.log('json', j);
+
+        setItems(Array.isArray(j) ? j : [j]);
+      } catch (e) {
+        console.error(e);
+        console.error(values);
+      }
+    }
   };
+  console.log('items', items, typeof items);
 
   useEffect(() => {
     navigation.addListener('focus', readItemFromStorage);
