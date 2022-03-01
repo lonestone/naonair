@@ -3,9 +3,8 @@
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import { useNavigation } from '@react-navigation/native';
 import React, { createRef, useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-
-import { SvgXml } from 'react-native-svg';
+import { StyleSheet, View } from 'react-native';
+import Svg, { SvgXml } from 'react-native-svg';
 import { POI, POICategory } from '../../actions/poi';
 import { getQAFromPosition, QAType } from '../../actions/qa';
 import cultureIcon from '../../assets/culture-icon.svg';
@@ -67,27 +66,39 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
   const annotationRef = createRef<MapboxGL.PointAnnotation>();
   const [qa, setQA] = useState<QAType | undefined>();
+  const [selected, setSelected] = useState<boolean>(false);
 
   const getQA = useCallback(async () => {
     const temp = await getQAFromPosition(poi.geolocation);
+
     setQA(temp);
   }, [poi]);
+
+  useEffect(() => {
+    annotationRef.current?.refresh();
+  }, [qa, annotationRef]);
 
   useEffect(() => {
     getQA();
   }, [getQA]);
 
   return (
-    <MapboxGL.MarkerView
+    <MapboxGL.PointAnnotation
       ref={annotationRef}
       coordinate={poi.geolocation}
       anchor={{ x: 0.5, y: 1 }}
       title={poi.name}
-      // onSelected={}
+      selected={selected}
+      onSelected={() => {
+        navigation.navigate('POIDetails', { poi });
+
+        // HACK to be sure the user can press on annotation twice in a row
+        // For any complaint create an issue here : https://github.com/rnmapbox/maps/issues
+        setSelected(true);
+        setTimeout(() => setSelected(false));
+      }}
       id={`${poi.id}`}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('POIDetails', { poi })}
-        style={styles.markerContainer}>
+      <View style={styles.markerContainer}>
         <SvgXml
           width="40"
           height="46"
@@ -102,8 +113,8 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
           style={styles.markerIcon}
           xml={icons[`${poi.category}`]}
         />
-      </TouchableOpacity>
-    </MapboxGL.MarkerView>
+      </View>
+    </MapboxGL.PointAnnotation>
   );
 };
 
