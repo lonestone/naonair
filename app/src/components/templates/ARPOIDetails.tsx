@@ -1,6 +1,6 @@
 import Geolocation from '@react-native-community/geolocation';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Card, Divider } from 'react-native-paper';
 import { theme } from '../../theme';
@@ -67,6 +67,8 @@ const ARPOIDetails = () => {
     });
   };
 
+  const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
+
   return (
     <>
       <ScrollView
@@ -81,8 +83,9 @@ const ARPOIDetails = () => {
                     userLocationVisible
                     interactionEnabled
                     heatmapVisible
+                    onMapLoaded={() => setMapLoaded(true)}
                     center={poi.geolocation}>
-                    <POIMarker poi={poi} />
+                    {isMapLoaded && <POIMarker poi={poi} />}
                   </ARMap>
                 </View>
                 <View style={styles.chipWrapper}>
