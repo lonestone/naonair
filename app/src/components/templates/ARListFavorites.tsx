@@ -1,7 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, {
-  useEffect, useState
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { getAllPlaces } from '../../actions/myplaces';
@@ -54,7 +52,6 @@ const favorites: POI[] = [
 ];
 
 const ARListFavorites = () => {
-
   const navigation = useNavigation<StackNavigationScreenProp>();
   const [items, setItems] = useState<POI[]>([]);
 
@@ -82,7 +79,7 @@ const ARListFavorites = () => {
               titleStyle={styles.title}
               onPress={() =>
                 fav.category === POICategory.MY_PLACES &&
-                console.log('TODO', fav)
+                navigation.navigate('PlaceForm', { poi: fav })
               }
               leftIcon={() => (
                 <View style={styles.iconWrapper}>
@@ -106,7 +103,7 @@ const ARListFavorites = () => {
         size={ARButtonSize.Medium}
         styleContainer={styles.button}
         onPress={() => {
-          navigation.navigate('CreatePlace');
+          navigation.navigate('PlaceForm');
         }}
       />
     </>

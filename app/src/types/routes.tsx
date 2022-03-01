@@ -15,7 +15,7 @@ export type StackParamList = {
   Favorites: undefined;
   Navigation: { path: ARPath };
   RouteDetail: { parcours: ARParcours };
-  CreatePlace: undefined;
+  PlaceForm: undefined | { poi: POI };
 };
 
 export type TabParamList = {

@@ -29,3 +29,12 @@ export const setPlaceStorage = async (place: POI) => {
     console.error(e)
   }
 };
+
+export const updatePlaceStorage = async (key: string | number, place: POI) => {
+  try {
+    const jsonValue = JSON.stringify(place);
+    await AsyncStorage.mergeItem?.(`${key}`, jsonValue);
+  } catch (e) {
+    console.error(e)
+  }
+}

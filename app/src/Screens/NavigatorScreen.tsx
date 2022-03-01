@@ -6,7 +6,7 @@ import {
 import React from 'react';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
-import ARCreatePlace from '../components/templates/ARCreatePlace';
+import ARPlaceFormLayout from '../components/templates/ARPlaceFormLayout';
 import ARListFavorites from '../components/templates/ARListFavorites';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
 import ARRouteDetail from '../components/templates/ARRouteDetail';
@@ -98,9 +98,13 @@ export default () => {
         />
 
         <Stack.Screen
-          name="CreatePlace"
-          component={ARCreatePlace}
-          options={{ headerTitle: 'Créer une nouvelle adresse' }}
+          name="PlaceForm"
+          component={ARPlaceFormLayout}
+          options={({ route }) => ({
+            headerTitle: route.params?.poi
+              ? "Modifier l'adresse"
+              : 'Créer une nouvelle adresse',
+          })}
         />
       </Stack.Navigator>
     </SnackbarProvider>
