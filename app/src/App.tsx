@@ -16,6 +16,8 @@ import { ThemeProvider } from 'react-native-paper';
 import Screens from './screens/NavigatorScreen';
 import { theme } from './theme';
 import { SENTRY } from './config.json';
+import ARAlert from './components/templates/ARAlert';
+import ARNews from './components/templates/ARNews';
 
 if (!__DEV__) {
   Sentry.init({
@@ -30,6 +32,8 @@ const App = () => {
       <NavigationContainer>
         <Screens />
       </NavigationContainer>
+      <ARAlert />
+      <ARNews />
     </ThemeProvider>
   );
 };
