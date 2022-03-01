@@ -74,7 +74,7 @@ const ARPlaceFormLayout = () => {
       setIsLoading(true);
 
       await updatePlaceStorage(params.poi.id, {
-        id: Date.now(),
+        id: params.poi.id,
         adress: values.text,
         category: POICategory.MY_PLACES,
         name,
