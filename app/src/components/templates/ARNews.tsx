@@ -1,13 +1,7 @@
 import { NewsDTO } from '@aireal/dtos/dist';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import {
-  Caption,
-  Dialog,
-  Headline,
-  Modal,
-  Paragraph,
-} from 'react-native-paper';
+import { Caption, Headline, Modal, Paragraph } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { getLast, markNewAsSeen } from '../../actions/news';
 import { theme } from '../../theme';
@@ -43,6 +37,7 @@ const styles = StyleSheet.create({
   },
   container: {
     marginLeft: 13,
+    flex: 1,
   },
   dates: {
     color: theme.colors.blue[300],
@@ -65,8 +60,9 @@ export default ({}: NewsDialogType) => {
   const [news, setNews] = useState<NewsDTO | undefined>();
 
   const getLastNews = useCallback(async () => {
-    const news = await getLast();
-    setNews(news);
+    const lastNews = await getLast();
+
+    setNews(lastNews);
   }, [setNews]);
 
   useEffect(() => {
@@ -91,7 +87,7 @@ export default ({}: NewsDialogType) => {
             </Caption>
             <Paragraph style={styles.paragraph}>{news?.message}</Paragraph>
             <View style={styles.link}>
-              {news && news.link! && news.linkTitle! && (
+              {!!news && !!news.link && !!news.linkTitle && (
                 <ARLink label={news.linkTitle!} url={news.link!} />
               )}
             </View>
