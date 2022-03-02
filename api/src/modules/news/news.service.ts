@@ -103,7 +103,7 @@ export class NewsService {
     const isCurrent = [-1, 0].includes(
       compareAsc(createNewsDTO.startDate, new Date()),
     );
-    
+
     // RULE 1 : cannot start in past
     if (
       compareAsc(createNewsDTO.startDate, now) == -1 &&
@@ -121,8 +121,10 @@ export class NewsService {
     }
 
     // RULE 5 : current news cannot start the same day as planned news
-    if(isSameDay(createNewsDTO.endDate, plannedNews.startDate)){
-      throw new BadRequestException(HttpErrors.NEWS_CANNOT_START_SAME_AS_PLANNED);
+    if (isSameDay(createNewsDTO.endDate, plannedNews.startDate)) {
+      throw new BadRequestException(
+        HttpErrors.NEWS_CANNOT_START_SAME_AS_PLANNED,
+      );
     }
 
     // RULE 4 : It could be have only 1 current new
