@@ -14,6 +14,7 @@ import React, {
 } from 'react';
 import { Platform, StyleSheet, View, ViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import ARUserLocationAlert from '../templates/ARUserLocationAlert';
 
 const styles = StyleSheet.create({
   container: {
@@ -59,12 +60,8 @@ export interface ARMapHandle {
   setCamera: (settings: CameraSettings) => void;
 }
 
+// if we don't call this methods, MapboxGL crash on Android
 MapboxGL.setAccessToken('');
-
-if (Platform.OS === 'android') {
-  // we have to call this method if we want the user location
-  MapboxGL.requestAndroidLocationPermissions();
-}
 
 const ARMap = (
   {
@@ -103,79 +100,75 @@ const ARMap = (
     },
   }));
 
-  // useEffect(() => {
-  //   onMapLoaded && onMapLoaded(mapRef, cameraRef);
-  // }, [cameraRef, mapRef, onMapLoaded]);
-
-  useEffect(() => {
-    // if we don't call this methods, MapboxGL crash on Android
-  });
-
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={styles.container}>
-      <MapboxGL.MapView
-        // styleURL="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json" // leave it for now if we need to use this style
-        // styleURL="https://geoserveis.icgc.cat/contextmaps/positron.json" // same as `styleJSON`, but I prefer to keep the URL to prevent finding it if we decided to use it
-        ref={mapRef}
-        styleJSON={styleJSON}
-        style={styles.map}
-        logoEnabled={false}
-        attributionEnabled={false}
-        rotateEnabled={false}
-        pitchEnabled={false}
-        onPress={() => onMapPress && onMapPress()}
-        // surfaceView
-        onDidFinishRenderingMapFully={() =>
-          onMapLoaded && onMapLoaded(mapRef, cameraRef)
-        }
-        zoomEnabled={!!interactionEnabled}
-        scrollEnabled={!!interactionEnabled}>
-        <MapboxGL.Camera
-          ref={cameraRef}
-          bounds={bounds}
-          centerCoordinate={center}
-          padding={{
-            paddingBottom: 25 + insets.bottom,
-            paddingLeft: 25 + insets.left,
-            paddingRight: 25 + insets.right,
-            paddingTop: 25 + insets.top,
-          }}
-          animationMode={animationMode || 'moveTo'}
-          defaultSettings={{
-            ...defaultSettingsCamera,
-            ...cameraSettings,
-            bounds,
-          }}
-        />
-        {userLocationVisible ? (
-          <MapboxGL.UserLocation
-            visible
-            renderMode="native"
-            animated
-            showsUserHeadingIndicator
-            onUpdate={onUserLocationChanged}
-            // onUpdate={location => {
-            // cameraRef.current?.moveTo([
-            //   location.coords.longitude,
-            //   location.coords.latitude,
-            // ]);
-            // }}
+    <>
+      <View style={styles.container}>
+        <MapboxGL.MapView
+          // styleURL="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json" // leave it for now if we need to use this style
+          // styleURL="https://geoserveis.icgc.cat/contextmaps/positron.json" // same as `styleJSON`, but I prefer to keep the URL to prevent finding it if we decided to use it
+          ref={mapRef}
+          styleJSON={styleJSON}
+          style={styles.map}
+          logoEnabled={false}
+          attributionEnabled={false}
+          rotateEnabled={false}
+          pitchEnabled={false}
+          surfaceView
+          onPress={() => onMapPress && onMapPress()}
+          onDidFinishRenderingMapFully={() =>
+            onMapLoaded && onMapLoaded(mapRef, cameraRef)
+          }
+          zoomEnabled={!!interactionEnabled}
+          scrollEnabled={!!interactionEnabled}>
+          <MapboxGL.Camera
+            ref={cameraRef}
+            bounds={bounds}
+            centerCoordinate={center}
+            padding={{
+              paddingBottom: 25 + insets.bottom,
+              paddingLeft: 25 + insets.left,
+              paddingRight: 25 + insets.right,
+              paddingTop: 25 + insets.top,
+            }}
+            animationMode={animationMode || 'moveTo'}
+            defaultSettings={{
+              ...defaultSettingsCamera,
+              ...cameraSettings,
+              bounds,
+            }}
           />
-        ) : null}
-        {heatmapVisible && (
-          <MapboxGL.RasterSource {...rasterSourceProps}>
-            <MapboxGL.RasterLayer
-              id="airreel_layer"
-              aboveLayerID="landcover_glacier" // used to force the layer to draw below roads and buildings
-              sourceID="aireel_source"
+          {userLocationVisible ? (
+            <MapboxGL.UserLocation
+              visible
+              renderMode="native"
+              androidRenderMode="normal"
+              animated
+              showsUserHeadingIndicator
+              onUpdate={onUserLocationChanged}
+              // onUpdate={location => {
+              //   cameraRef.current?.moveTo([
+              //     location.coords.longitude,
+              //     location.coords.latitude,
+              //   ]);
+              // }}
             />
-          </MapboxGL.RasterSource>
-        )}
-        {children || null}
-      </MapboxGL.MapView>
-    </View>
+          ) : null}
+          {heatmapVisible && (
+            <MapboxGL.RasterSource {...rasterSourceProps}>
+              <MapboxGL.RasterLayer
+                id="airreel_layer"
+                aboveLayerID="landcover_glacier" // used to force the layer to draw below roads and buildings
+                sourceID="aireel_source"
+              />
+            </MapboxGL.RasterSource>
+          )}
+          {children || null}
+        </MapboxGL.MapView>
+      </View>
+      {/* {<ARUserLocationAlert />} */}
+    </>
   );
 };
 

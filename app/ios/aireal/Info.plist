@@ -49,12 +49,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Utilisé pour placer votre position sur les cartes</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Utilisé pour placer votre position sur les cartes</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Utilisé pour placer votre position sur les cartes</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

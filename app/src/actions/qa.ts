@@ -53,15 +53,27 @@ export const getQAFromBBox = async (bbox: BBox): Promise<QAType> => {
   const bboxUrl = `BBOX=${bbox.map(encodeURIComponent).join(',')}`;
   const URL = buildGeoserverUrl(bboxUrl);
 
-  const json = await (await fetch(URL)).json();
+  try {
+    const json = await (
+      await fetch(URL, {
+        headers: {
+          Accept: 'application/json',
+        },
+      })
+    ).json();
 
-  const { GRAY_INDEX } = json.features[0].properties;
+    const { GRAY_INDEX } = json.features[0].properties;
 
-  const index = Math.round(
-    (GRAY_INDEX / 100) * Object.entries(QAValues).length,
-  );
+    const index = Math.round(
+      (GRAY_INDEX / 100) * Object.entries(QAValues).length,
+    );
 
-  return QAValues[index];
+    return QAValues[index];
+  } catch (e) {
+    console.info({ e, URL });
+  }
+
+  return QAValues[QATypes.GOOD];
 };
 
 export const getQAFromPosition = async (coord: Position) => {
