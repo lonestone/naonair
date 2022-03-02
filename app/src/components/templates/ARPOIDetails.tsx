@@ -1,4 +1,4 @@
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -59,12 +59,18 @@ const ARPOIDetails = () => {
   const { poi } = useRoute<POIDetailsRouteProp>().params || {};
 
   const goTo = () => {
-    Geolocation.getCurrentPosition(({ coords }) => {
-      navigation.navigate('ChooseItinerary', {
-        start: [coords.longitude, coords.latitude],
-        end: poi.geolocation,
-      });
-    });
+    Geolocation.getCurrentPosition(
+      ({ coords }) => {
+        navigation.navigate('ChooseItinerary', {
+          start: [coords.longitude, coords.latitude],
+          end: poi.geolocation,
+        });
+      },
+      error => {
+        console.log(error);
+      },
+      { timeout: 20000, enableHighAccuracy: true, maximumAge: 1000 },
+    );
   };
 
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);

@@ -11,6 +11,7 @@ import markerBackground from '../../assets/marker-background.svg';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
 import ARLegend from '../molecules/ARLegend';
+import ARUserLocationAlert from './ARUserLocationAlert';
 
 export interface ARMapViewProps {
   pois: POI[];
@@ -123,6 +124,7 @@ export default ({ pois }: ARMapViewProps) => {
         isDeployed={isLegendDeployed}
         style={styles.legends}
       />
+      <ARUserLocationAlert />
     </>
   );
 };
