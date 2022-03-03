@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import { DefaultTheme } from 'react-native-paper';
 import { Font } from 'react-native-paper/lib/typescript/types';
 
@@ -12,9 +11,17 @@ declare global {
   }
 }
 
+type ARFont = {
+  light?: Font;
+  regular?: Font;
+  bold?: Font;
+  medium?: Font;
+  semibold?: Font;
+};
+
 export const fonts: {
-  Raleway: { regular?: Font; bold?: Font; medium?: Font };
-  Lato: { regular?: Font; bold?: Font; medium?: Font };
+  Raleway: ARFont;
+  Lato: ARFont;
 } = {
   Raleway: {
     bold: {
@@ -25,11 +32,19 @@ export const fonts: {
   Lato: {
     regular: {
       fontFamily: 'lato',
-      fontWeight: 'normal',
+      fontWeight: '400',
     },
     medium: {
       fontFamily: 'lato',
+      fontWeight: '500',
+    },
+    semibold: {
+      fontFamily: 'lato',
       fontWeight: '600',
+    },
+    bold: {
+      fontFamily: 'lato',
+      fontWeight: '700',
     },
   },
 };

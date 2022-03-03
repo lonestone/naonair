@@ -3,18 +3,11 @@ import { StyleSheet, View } from 'react-native';
 import { Caption, Headline } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
 import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { POICategory } from '../../actions/poi';
+import { POICategory, poiIcons } from '../../actions/poi';
 import { fonts, theme } from '../../theme';
 import ARHeader from '../atoms/ARHeader';
 import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
 import ARSwitchToggle, { SwitchToggleItem } from '../molecules/ARSwitchToggle';
-
-import cultureIcon from '../../assets/culture-icon.svg';
-import favoriteIcon from '../../assets/favorite-icon.svg';
-import markerBackground from '../../assets/marker-background.svg';
-import marketIcon from '../../assets/market-icon.svg';
-import parkIcon from '../../assets/park-icon.svg';
-import sportIcon from '../../assets/sport-icon.svg';
 
 const styles = StyleSheet.create({
   headlineContainer: {
@@ -53,7 +46,7 @@ const filters: ARFilterItem[] = [
         width={20}
         height={20}
         fill={selected ? 'white' : theme.colors.blue[500]}
-        xml={parkIcon}
+        xml={poiIcons[POICategory.PARK] || null}
       />
     ),
   },
@@ -65,7 +58,7 @@ const filters: ARFilterItem[] = [
         width={20}
         height={20}
         fill={selected ? 'white' : theme.colors.blue[500]}
-        xml={sportIcon}
+        xml={poiIcons[POICategory.SPORT] || null}
       />
     ),
   },
@@ -77,7 +70,7 @@ const filters: ARFilterItem[] = [
         width={20}
         height={20}
         fill={selected ? 'white' : theme.colors.blue[500]}
-        xml={cultureIcon}
+        xml={poiIcons[POICategory.CULTURE] || null}
       />
     ),
   },
@@ -89,7 +82,7 @@ const filters: ARFilterItem[] = [
         width={20}
         height={20}
         fill={selected ? 'white' : theme.colors.blue[500]}
-        xml={marketIcon}
+        xml={poiIcons[POICategory.MARKET] || null}
       />
     ),
   },

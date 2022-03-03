@@ -37,6 +37,7 @@ export interface ARMapProps extends ViewProps {
   interactionEnabled?: boolean;
   bbox?: BBox;
   center?: Position;
+  onMapPress?: () => void;
   onMapLoaded?: (
     mapRef: RefObject<MapboxGL.MapView>,
     cameraRef: RefObject<MapboxGL.Camera>,
@@ -57,6 +58,7 @@ export default ({
   children,
   bbox,
   center,
+  onMapPress,
   onMapLoaded,
 }: ARMapProps) => {
   const cameraRef = React.createRef<MapboxGL.Camera>();
@@ -90,6 +92,7 @@ export default ({
         attributionEnabled={false}
         rotateEnabled={false}
         pitchEnabled={false}
+        onPress={() => onMapPress && onMapPress()}
         // surfaceView
         onDidFinishRenderingMapFully={() =>
           onMapLoaded && onMapLoaded(mapRef, cameraRef)
