@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
-import { theme } from '../../theme';
+import { fonts, theme } from '../../theme';
 import { ForecastType } from '../../types/forecasts';
 
 const styles = StyleSheet.create({
@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
   hour: {
     marginBottom: 10,
     color: theme.colors.blue[400],
+    ...fonts.Lato.regular,
+    fontSize: 10,
+    lineHeight: 16,
   },
 });
 

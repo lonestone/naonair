@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { Button } from 'react-native-paper';
-import { theme } from '../../theme';
+import { fonts, theme } from '../../theme';
 
 export enum ARButtonSize {
   Small = 'small',
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textTransform: 'none',
     letterSpacing: 0.01,
+    ...fonts.Lato.semibold,
   },
 
   mdContentStyle: {
