@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
   },
   chipLabel: {
-    color: theme.colors.primary,
+    color: theme.colors.blue[500],
     paddingHorizontal: 12,
     paddingVertical: 6,
     ...fonts.Lato.regular,

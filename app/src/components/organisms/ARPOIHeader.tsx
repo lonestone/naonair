@@ -1,11 +1,20 @@
 import React, { Dispatch, ReactElement, SetStateAction } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Caption, Headline } from 'react-native-paper';
+import { SvgXml } from 'react-native-svg';
+import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { POICategory } from '../../actions/poi';
 import { fonts, theme } from '../../theme';
 import ARHeader from '../atoms/ARHeader';
 import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
 import ARSwitchToggle, { SwitchToggleItem } from '../molecules/ARSwitchToggle';
+
+import cultureIcon from '../../assets/culture-icon.svg';
+import favoriteIcon from '../../assets/favorite-icon.svg';
+import markerBackground from '../../assets/marker-background.svg';
+import marketIcon from '../../assets/market-icon.svg';
+import parkIcon from '../../assets/park-icon.svg';
+import sportIcon from '../../assets/sport-icon.svg';
 
 const styles = StyleSheet.create({
   headlineContainer: {
@@ -25,11 +34,65 @@ const styles = StyleSheet.create({
 });
 
 const filters: ARFilterItem[] = [
-  { label: 'Mes favoris', value: POICategory.FAVORITE },
-  { label: 'Parcs', value: POICategory.PARK },
-  { label: 'Sport', value: POICategory.SPORT },
-  { label: 'Culture', value: POICategory.CULTURE },
-  { label: 'Marché', value: POICategory.MARKET },
+  {
+    label: 'Mes favoris',
+    value: POICategory.FAVORITE,
+    icon: selected => (
+      <CommunityIcon
+        size={20}
+        color={selected ? 'white' : theme.colors.blue[500]}
+        name="star"
+      />
+    ),
+  },
+  {
+    label: 'Parcs',
+    value: POICategory.PARK,
+    icon: selected => (
+      <SvgXml
+        width={20}
+        height={20}
+        fill={selected ? 'white' : theme.colors.blue[500]}
+        xml={parkIcon}
+      />
+    ),
+  },
+  {
+    label: 'Sport',
+    value: POICategory.SPORT,
+    icon: selected => (
+      <SvgXml
+        width={20}
+        height={20}
+        fill={selected ? 'white' : theme.colors.blue[500]}
+        xml={sportIcon}
+      />
+    ),
+  },
+  {
+    label: 'Culture',
+    value: POICategory.CULTURE,
+    icon: selected => (
+      <SvgXml
+        width={20}
+        height={20}
+        fill={selected ? 'white' : theme.colors.blue[500]}
+        xml={cultureIcon}
+      />
+    ),
+  },
+  {
+    label: 'Marché',
+    value: POICategory.MARKET,
+    icon: selected => (
+      <SvgXml
+        width={20}
+        height={20}
+        fill={selected ? 'white' : theme.colors.blue[500]}
+        xml={marketIcon}
+      />
+    ),
+  },
 ];
 
 interface Props {
