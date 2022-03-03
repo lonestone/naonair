@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, StyleSheet, TextStyle } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
-import { theme } from '../../theme';
+import { fonts, theme } from '../../theme';
 
 const styles = StyleSheet.create({
   iconContainer: {
@@ -13,6 +13,18 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  title: {
+    ...fonts.Lato.medium,
+    fontSize: 16,
+    lineHeight: 24,
+    color: theme.colors.blue[500],
+  },
+  description: {
+    ...fonts.Lato.regular,
+    fontSize: 12,
+    lineHeight: 16,
+    color: theme.colors.blue[300],
   },
 });
 
@@ -41,10 +53,10 @@ const ARListItem = ({
     <>
       <List.Item
         title={title}
-        titleStyle={titleStyle}
+        titleStyle={[styles.title, titleStyle]}
         description={description}
         onPress={onPress}
-        descriptionStyle={descriptionStyle}
+        descriptionStyle={[styles.description, descriptionStyle]}
         left={props => (
           <List.Icon
             {...props}

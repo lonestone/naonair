@@ -33,6 +33,7 @@ export interface MapboxFeature extends Feature {
   text_fr: string;
   text: string;
   geometry: Point;
+  place_name_fr: string;
 }
 
 const POIs = poiJson.map<POI>(({ id, nom, categorie, adresse, gps }) => {

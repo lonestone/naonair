@@ -4,7 +4,7 @@ import { Linking, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { List } from 'react-native-paper';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARListItem from '../components/molecules/ARListItem';
-import { theme } from '../theme';
+import { fonts, theme } from '../theme';
 import { ProfileItemType } from '../types/profile';
 import { StackNavigationScreenProp, StackParamList } from '../types/routes';
 
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   item: {
     color: theme.colors.blue[500],
     fontSize: 16,
-    fontWeight: '500',
+    ...fonts.Lato.regular,
   },
   iconContainer: {
     width: 40,

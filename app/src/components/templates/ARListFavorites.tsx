@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import { POI, POICategory } from '../../actions/poi';
+import { POI, POICategory, poiIcons } from '../../actions/poi';
 import { theme } from '../../theme';
 import ARListItem from '../molecules/ARListItem';
 import { icons } from './ARMapView';
@@ -49,7 +49,11 @@ const ARListFavorites = () => {
           titleStyle={styles.title}
           onPress={() => console.log('TODO', fav)}
           leftIcon={() => (
-            <SvgXml width="20" height="20" xml={icons[`${fav.category}`]} />
+            <SvgXml
+              width="20"
+              height="20"
+              xml={poiIcons[fav.category] || null}
+            />
           )}
           rightIcon={fav.category === POICategory.MY_PLACES ? 'pencil' : 'star'}
         />

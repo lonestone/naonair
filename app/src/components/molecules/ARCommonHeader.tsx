@@ -9,13 +9,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 0,
     flexDirection: 'row',
+    padding: 0,
+    margin: 0,
   },
   backButton: {
     padding: 0,
-    paddingRight: 24,
     margin: 0,
-    width: 50,
-    height: 32,
+    marginTop: 3,
+    marginRight: 10,
     flex: 0,
   },
   headlineContainer: {
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     color: theme.colors.blue[500],
     fontSize: 20,
-    lineHeight: 24,
+    textAlignVertical: 'top',
     ...fonts.Raleway.bold,
   },
   caption: {
@@ -57,7 +58,7 @@ const ARCommonHeader = ({ caption, headline, back, onBack }: Props) => {
         <View>
           <Headline style={styles.headline}>{headline}</Headline>
 
-          {caption && <Caption style={styles.caption}>{caption}</Caption>}
+          {!!caption && <Caption style={styles.caption}>{caption}</Caption>}
         </View>
       </View>
     </ARHeader>
