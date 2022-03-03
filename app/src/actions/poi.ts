@@ -2,14 +2,22 @@ import { Feature, FeatureCollection, Point, Position } from 'geojson';
 import poiJson from '../assets/db/poi.json';
 import { buildMapboxUrl } from '../utils/config';
 
+import cultureIcon from '../assets/culture-icon.svg';
+import favoriteIcon from '../assets/favorite-icon.svg';
+
+import marketIcon from '../assets/market-icon.svg';
+import parkIcon from '../assets/park-icon.svg';
+import sportIcon from '../assets/sport-icon.svg';
+
+// eslint-disable-next-line no-shadow
 export enum POICategory {
-  UNDEFINED = -1,
-  FAVORITE = 0,
-  PARK = 1,
-  SPORT = 2,
-  CULTURE = 4,
-  MARKET = 8,
-  MY_PLACES = 10,
+  UNDEFINED = 'undefined',
+  FAVORITE = 'favorite',
+  PARK = 'park',
+  SPORT = 'sport',
+  CULTURE = 'culture',
+  MARKET = 'market',
+  MY_PLACES = 'my_places',
 }
 
 export interface POI {
@@ -56,6 +64,18 @@ const POIs = poiJson.map<POI>(({ id, nom, categorie, adresse, gps }) => {
     geolocation: [lon, lat],
   };
 });
+
+export const poiIcons: {
+  [key in POICategory]?: string | null;
+} = {
+  [POICategory.CULTURE]: cultureIcon,
+  [POICategory.FAVORITE]: favoriteIcon,
+  [POICategory.UNDEFINED]: null,
+  [POICategory.MARKET]: marketIcon,
+  [POICategory.MY_PLACES]: null,
+  [POICategory.PARK]: parkIcon,
+  [POICategory.SPORT]: sportIcon,
+};
 
 export const getAll = (categories: POICategory[]) => {
   return POIs.filter(pois => {

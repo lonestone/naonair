@@ -5,14 +5,9 @@ import { useNavigation } from '@react-navigation/native';
 import React, { createRef, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import { POI, POICategory } from '../../actions/poi';
+import { POI, poiIcons } from '../../actions/poi';
 import { getQAFromPosition, QAType } from '../../actions/qa';
-import cultureIcon from '../../assets/culture-icon.svg';
-import favoriteIcon from '../../assets/favorite-icon.svg';
 import markerBackground from '../../assets/marker-background.svg';
-import marketIcon from '../../assets/market-icon.svg';
-import parkIcon from '../../assets/park-icon.svg';
-import sportIcon from '../../assets/sport-icon.svg';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
 import ARLegend from '../molecules/ARLegend';
@@ -50,15 +45,6 @@ const styles = StyleSheet.create({
     top: -2,
   },
 });
-
-export const icons = {
-  [`${POICategory.CULTURE}`]: cultureIcon,
-  [`${POICategory.MARKET}`]: marketIcon,
-  [`${POICategory.SPORT}`]: sportIcon,
-  [`${POICategory.PARK}`]: parkIcon,
-  [`${POICategory.MY_PLACES}`]: favoriteIcon,
-  [`${POICategory.UNDEFINED}`]: null,
-};
 
 export const POIMarker = ({ poi }: { poi: POI }) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
@@ -104,12 +90,13 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
           xml={markerBackground}
           style={styles.markerBackground}
         />
+
         <SvgXml
           width="20"
           height="20"
           fill={qa?.main || '#25244E'}
           style={styles.markerIcon}
-          xml={icons[`${poi.category}`]}
+          xml={poiIcons[poi.category] || null}
         />
       </View>
     </MapboxGL.PointAnnotation>
