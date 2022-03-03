@@ -3,21 +3,20 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SvgXml } from 'react-native-svg';
-import { POI } from '../../actions/poi';
-import { theme } from '../../theme';
+import { POI, poiIcons } from '../../actions/poi';
+import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARQAChip from '../atoms/ARQAChip';
 import ARListItem from '../molecules/ARListItem';
-import { icons } from './ARMapView';
 
 const styles = StyleSheet.create({
   description: {
     color: theme.colors.blue[300],
-    lineHeight: 24,
+    ...fonts.Lato.regular,
     fontSize: 12,
   },
   title: {
-    fontWeight: 'bold',
+    ...fonts.Lato.medium,
     color: theme.colors.blue[500],
     fontSize: 16,
   },
@@ -56,7 +55,7 @@ const Item = ({
       )}
       rightChip={
         <View style={styles.chipWrapper}>
-          <ARQAChip coord={poi.geolocation} size="sm" />
+          <ARQAChip coord={poi.geolocation} size="xs" />
         </View>
       }
     />

@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: 'black',
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.2,
     shadowRadius: 10,
     elevation: 2,
     shadowOffset: {
@@ -105,6 +105,7 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
 
 export default ({ pois }: ARMapViewProps) => {
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
+  const [isLegendDeployed, setIsLegendDeployed] = useState<boolean>(false);
 
   return (
     <>
@@ -112,11 +113,16 @@ export default ({ pois }: ARMapViewProps) => {
         userLocationVisible
         interactionEnabled
         heatmapVisible
+        onMapPress={() => setIsLegendDeployed(false)}
         onMapLoaded={() => setMapLoaded(true)}>
         {isMapLoaded &&
           pois.map(poi => <POIMarker key={`poi-${poi.id}`} poi={poi} />)}
       </ARMap>
-      <ARLegend style={styles.legends} />
+      <ARLegend
+        onToggle={() => setIsLegendDeployed(!isLegendDeployed)}
+        isDeployed={isLegendDeployed}
+        style={styles.legends}
+      />
     </>
   );
 };

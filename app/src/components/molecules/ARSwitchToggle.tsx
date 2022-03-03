@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, TouchableHighlight, View, ViewProps } from 'react-native';
+import { StyleSheet, View, ViewProps } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { theme } from '../../theme';
 
 export interface SwitchToggleItem {
   label?: string;
@@ -52,15 +54,19 @@ export default ({
   return (
     <View style={styles.container}>
       {items.map((item, index) => (
-        <TouchableHighlight key={item.key} onPress={() => onChange(index)}>
+        <TouchableOpacity key={item.key} onPress={() => onChange(index)}>
           <View style={isSelected(index)}>
             <Icon
               name={item.icon}
               size={15}
-              color={activeIndex !== index ? activeColor : '#EDEFFE'}
+              color={
+                activeIndex !== index
+                  ? theme.colors.blue[400]
+                  : theme.colors.white
+              }
             />
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
       ))}
     </View>
   );

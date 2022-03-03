@@ -2,6 +2,7 @@ import { Position } from 'geojson';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { getQAFromPosition, QAType } from '../../actions/qa';
+import { fonts } from '../../theme';
 
 const styles = StyleSheet.create({
   chip: {
@@ -22,11 +23,23 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  text: {
+    ...fonts.Lato.bold,
+  },
+  xsText: {
+    fontSize: 10,
+  },
+  smText: {
+    fontSize: 12,
+  },
+  mdText: {
+    fontSize: 16,
+  },
 });
 
 interface Props {
   coord?: Position;
-  size: 'sm' | 'md';
+  size: 'xs' | 'sm' | 'md';
   value?: QAType;
   shadow?: boolean;
 }
@@ -65,7 +78,8 @@ const ARQAChip = ({ size, shadow, coord, value }: Props) => {
     <View style={styleChip()}>
       <Text
         style={[
-          { fontWeight: 'bold', fontSize: size === 'sm' ? 12 : 16 },
+          styles.text,
+          styles[`${size}Text`],
           {
             color: qa?.light || value?.light,
           },
