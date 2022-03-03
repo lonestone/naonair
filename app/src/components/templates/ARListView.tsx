@@ -49,7 +49,7 @@ const Item = ({
           <SvgXml
             width="20"
             height="20"
-            xml={icons[`${poi.category}`]}
+            xml={poiIcons[poi.category] || null}
             fill="#25244E"
           />
         </View>
