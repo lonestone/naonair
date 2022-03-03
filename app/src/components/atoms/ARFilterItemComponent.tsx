@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { theme } from '../../theme';
+import { fonts, theme } from '../../theme';
 
 const styles = StyleSheet.create({
   chip: {
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     color: theme.colors.primary,
     paddingHorizontal: 12,
     paddingVertical: 6,
+    ...fonts.Lato.regular,
   },
   selectedChipLabel: {
     color: theme.colors.white,

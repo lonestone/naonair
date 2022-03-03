@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Caption, Headline, IconButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { theme } from '../../theme';
+import { fonts, theme } from '../../theme';
 import ARHeader from '../atoms/ARHeader';
 
 const styles = StyleSheet.create({
@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
     flex: 0,
     alignItems: 'stretch',
     color: theme.colors.blue[500],
-    fontWeight: 'bold',
     fontSize: 20,
     lineHeight: 24,
+    ...fonts.Raleway.bold,
   },
   caption: {
     color: theme.colors.blue[300],
