@@ -5,6 +5,10 @@ const ALERTS_URL = 'https://naonair-api-staging.onrender.com/alerts';
 export const getLastOne = async (): Promise<AlertDTO | null> => {
   const response = await fetch(ALERTS_URL);
   const json = await response.json();
+  if (json.length === 0) {
+    return null;
+  }
+
   const first: AlertDTO = {
     ...json[0],
     startDate: new Date(json[0].startDate),
