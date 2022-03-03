@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     ...fonts.Lato.medium,
     color: theme.colors.blue[500],
     fontSize: 16,
+    lineHeight: 24,
   },
   chipWrapper: {
     justifyContent: 'center',
