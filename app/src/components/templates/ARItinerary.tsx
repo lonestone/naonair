@@ -110,11 +110,8 @@ export default () => {
   const [values, setValues] = useState<{
     [key: string]: { coord: Position; text: string } | undefined;
   }>({
-    [Field.START]: {
-      coord: [-1.525139, 47.22919],
-      text: '20 route de sainte luce',
-    },
-    [Field.END]: { coord: [-1.560007, 47.206019], text: 'test' },
+    [Field.START]: undefined,
+    [Field.END]: undefined,
   });
 
   const [selectedField, setSelectedField] = useState<Field>(Field.START);
