@@ -1,5 +1,5 @@
 import { Position } from 'geojson';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { getQAFromPosition, QAType } from '../../actions/qa';
 import { fonts } from '../../theme';
@@ -46,6 +46,7 @@ interface Props {
 
 const ARQAChip = ({ size, shadow, coord, value }: Props) => {
   const [qa, setQA] = useState<QAType | undefined>();
+  const mounted = useRef(false);
 
   const getQA = useCallback(async () => {
     if (!coord) {
@@ -54,11 +55,21 @@ const ARQAChip = ({ size, shadow, coord, value }: Props) => {
 
     try {
       const qa = await getQAFromPosition(coord);
-      setQA(qa);
+
+      if (mounted.current) {
+        setQA(qa);
+      }
     } catch (e) {
       console.info(e);
     }
   }, [coord]);
+
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (!value) {
