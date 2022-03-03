@@ -20,6 +20,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     ...fonts.Lato.regular,
+    fontSize: 14,
+    lineHeight: 20,
   },
   selectedChipLabel: {
     color: theme.colors.white,

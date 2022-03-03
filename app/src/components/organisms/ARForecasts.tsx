@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { List, Text } from 'react-native-paper';
-import { theme } from '../../theme';
+import { fonts, theme } from '../../theme';
 import { Forecasts } from '../../types/forecasts';
 import ARFilterItemComponent from '../atoms/ARFilterItemComponent';
 import { ARFilterItem } from '../molecules/ARFilter';
@@ -11,8 +11,9 @@ const styles = StyleSheet.create({
   container: { paddingTop: 25 },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
     color: theme.colors.blue[500],
+    ...fonts.Raleway.bold,
+    lineHeight: 24,
   },
   card: {
     minHeight: 150,
@@ -31,8 +32,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: theme.colors.blue[400],
     marginTop: 30,
+    ...fonts.Lato.regular,
+    fontSize: 12,
+    lineHeight: 16,
   },
-  listItem: { padding: 0 },
+  listItem: {
+    padding: 0,
+  },
+  wrapper: {
+    flexDirection: 'row',
+
+    alignItems: 'center',
+  },
 });
 
 const filters: ARFilterItem[] = [
@@ -54,7 +65,7 @@ const ARForecasts = ({ forecastQA }: Props) => {
         titleStyle={styles.title}
         title="Prévisions"
         right={() => (
-          <>
+          <View style={styles.wrapper}>
             {filters.map((f, idx) => (
               <ARFilterItemComponent
                 key={idx}
@@ -63,7 +74,7 @@ const ARForecasts = ({ forecastQA }: Props) => {
                 selected={f.value === selectedFilter}
               />
             ))}
-          </>
+          </View>
         )}
       />
       {forecastQA ? (

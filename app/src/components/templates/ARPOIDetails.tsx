@@ -105,7 +105,7 @@ const ARPOIDetails = () => {
           styleContainer={styles.button}
           onPress={goTo}
           icon={({ color }) => (
-            <Icon name="navigation-variant" size={18} color={color} />
+            <Icon name="navigation-variant" size={36} color={color} />
           )}
           label="Me rendre à cet endroit"
         />
