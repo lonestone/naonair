@@ -168,22 +168,25 @@ export default () => {
             style={styles.container}
             contentInset={{ bottom: 70, top: 0 }}
             indicatorStyle="black">
-            {(results || []).map(({ properties, geometry, text_fr }) => (
-              <ARListItem
-                key={properties?.id}
-                leftIcon="navigation"
-                title={text_fr}
-                onPress={() => {
-                  setValues({
-                    ...values,
-                    [selectedField.toString()]: {
-                      coord: geometry.coordinates,
-                      text: text_fr,
-                    },
-                  });
-                }}
-              />
-            ))}
+            {(results || []).map(
+              ({ properties, geometry, text_fr, place_name_fr }) => (
+                <ARListItem
+                  key={properties?.id}
+                  leftIcon="navigation"
+                  title={text_fr}
+                  description={place_name_fr}
+                  onPress={() => {
+                    setValues({
+                      ...values,
+                      [selectedField.toString()]: {
+                        coord: geometry.coordinates,
+                        text: text_fr,
+                      },
+                    });
+                  }}
+                />
+              ),
+            )}
           </ScrollView>
         </View>
       </TouchableWithoutFeedback>

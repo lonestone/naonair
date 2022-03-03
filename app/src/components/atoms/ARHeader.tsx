@@ -1,10 +1,11 @@
 import React, { ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme } from '../../theme';
 
 export interface HeaderProps {
   children: ReactElement;
+  style?: StyleProp<ViewStyle>;
 }
 
 const styles = StyleSheet.create({
@@ -24,9 +25,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ({ children }: HeaderProps) => {
+export default ({ children, style }: HeaderProps) => {
   return (
-    <View style={styles.container}>
+    <View style={StyleSheet.flatten([styles.container, style])}>
       <SafeAreaView edges={['top', 'left', 'right']}>{children}</SafeAreaView>
     </View>
   );

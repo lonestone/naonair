@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexWrap: 'nowrap',
     textAlign: 'auto',
+    backgroundColor: theme.colors.white,
   },
 });
 
@@ -96,6 +97,7 @@ export default ({
           <TextInput.Icon
             name={text !== '' ? 'close' : 'target'}
             forceTextInputFocus={text !== ''}
+            color={theme.colors.blue[500]}
             onPress={() => {
               text !== ''
                 ? setText('')
