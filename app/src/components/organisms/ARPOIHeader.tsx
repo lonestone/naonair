@@ -2,7 +2,7 @@ import React, { Dispatch, ReactElement, SetStateAction } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Caption, Headline } from 'react-native-paper';
 import { POICategory } from '../../actions/poi';
-import { theme } from '../../theme';
+import { fonts, theme } from '../../theme';
 import ARHeader from '../atoms/ARHeader';
 import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
 import ARSwitchToggle, { SwitchToggleItem } from '../molecules/ARSwitchToggle';
@@ -14,6 +14,13 @@ const styles = StyleSheet.create({
   headline: {
     flex: 1,
     alignItems: 'stretch',
+    fontSize: 20,
+    color: theme.colors.blue[500],
+    ...fonts.Raleway.bold,
+  },
+  caption: {
+    ...fonts.Lato.regular,
+    // letterSpacing: 1
   },
 });
 
@@ -53,7 +60,9 @@ const ARPOIHeader = ({
           />
         </View>
 
-        <Caption>Découvrez la qualité de l'air en temps réel</Caption>
+        <Caption style={styles.caption}>
+          Découvrez la qualité de l'air en temps réel
+        </Caption>
 
         <ARFilter
           items={filters}

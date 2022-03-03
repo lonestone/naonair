@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View, ViewProps } from 'react-native';
 import { Card, Headline, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { QAValues } from '../../actions/qa';
-import { theme } from '../../theme';
+import { fonts, theme } from '../../theme';
 import ARQAChip from '../atoms/ARQAChip';
 
 export interface ARLegendProps extends ViewProps {}
@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  text: {
+    ...fonts.Lato.medium,
   },
 });
 
@@ -32,7 +35,7 @@ export default (props: ViewProps) => {
           <TouchableOpacity onPress={() => setDeployed(true)}>
             <View style={styles.closeContainer}>
               <Icon name="help" size={20} color={theme.colors.blue[500]} />
-              <Text>Légende</Text>
+              <Text style={styles.text}>Légende</Text>
             </View>
           </TouchableOpacity>
         ) : (

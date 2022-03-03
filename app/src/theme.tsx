@@ -1,4 +1,6 @@
+import { Platform } from 'react-native';
 import { DefaultTheme } from 'react-native-paper';
+import { Font } from 'react-native-paper/lib/typescript/types';
 
 declare global {
   namespace ReactNativePaper {
@@ -10,10 +12,34 @@ declare global {
   }
 }
 
+export const fonts: {
+  Raleway: { regular?: Font; bold?: Font; medium?: Font };
+  Lato: { regular?: Font; bold?: Font; medium?: Font };
+} = {
+  Raleway: {
+    bold: {
+      fontFamily: 'raleway',
+      fontWeight: 'bold',
+    },
+  },
+  Lato: {
+    regular: {
+      fontFamily: 'lato',
+      fontWeight: 'normal',
+    },
+    medium: {
+      fontFamily: 'lato',
+      fontWeight: '600',
+    },
+  },
+};
+
 export const theme = {
   ...DefaultTheme,
+
   // Specify custom property
   myOwnProperty: true,
+
   // Specify custom property in nested object
   colors: {
     ...DefaultTheme.colors,
