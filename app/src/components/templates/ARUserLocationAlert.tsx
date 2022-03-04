@@ -1,16 +1,33 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Linking, Platform, StyleSheet } from 'react-native';
-import { Button, Modal, Portal, Text } from 'react-native-paper';
+import { Button, Dialog, Paragraph, Portal } from 'react-native-paper';
 import {
   checkAndroidPermission,
   checkIOSPermission,
 } from '../../actions/location';
+import { fonts, theme } from '../../theme';
 
 const styles = StyleSheet.create({
   modal: {
     backgroundColor: 'white',
-    padding: 20,
-    flex: 0,
+    padding: 0,
+    margin: 0,
+  },
+  title: {
+    ...fonts.Raleway.bold,
+    color: theme.colors.blue[500],
+    margin: 0,
+  },
+  paragraph: {
+    ...fonts.Lato.regular,
+    color: theme.colors.blue[500],
+  },
+  button: {
+    backgroundColor: theme.colors.primary,
+  },
+  buttonLabel: {
+    ...fonts.Lato.bold,
+    color: theme.colors.white,
   },
 });
 
@@ -45,18 +62,42 @@ export default () => {
 
   return Platform.OS === 'ios' ? (
     <Portal>
-      <Modal style={styles.modal} visible={!userLocationEnabled}>
-        <Text>
-          Pour obtenir une meilleure expérience, activez la position de
-          l'appareil et autorisez l'accès à votre position.
-        </Text>
-        <Button
-          onPress={() => {
-            Linking.openSettings();
-          }}>
-          Ouvrir les réglages
-        </Button>
-      </Modal>
+      <Dialog visible={!userLocationEnabled} style={styles.modal}>
+        <Dialog.Title style={styles.title}>
+          Impossible de vous trouver
+        </Dialog.Title>
+        <Dialog.Content>
+          <Paragraph style={styles.paragraph}>
+            Pour obtenir une meilleure expérience, activez le gps de l'appareil
+            et autorisez l'accès à votre position.
+          </Paragraph>
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button
+            style={styles.button}
+            labelStyle={styles.buttonLabel}
+            onPress={() => {
+              Linking.openSettings();
+            }}>
+            Ouvrir les réglages
+          </Button>
+        </Dialog.Actions>
+      </Dialog>
     </Portal>
   ) : null;
 };
+
+{
+  /* <Modal style={styles.modal} visible={!userLocationEnabled}>
+<Text>
+  Pour obtenir une meilleure expérience, activez la position de
+  l'appareil et autorisez l'accès à votre position.
+</Text>
+<Button
+  onPress={() => {
+    
+  }}>
+  Ouvrir les réglages
+</Button>
+</Modal> */
+}
