@@ -1,7 +1,7 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { Position } from '@turf/turf';
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import ARElasticView from '../components/atoms/ARElasticView';
 import ARNavigationMapView from '../components/organisms/ARNavigationMapView';
 import ARPathInstructions from '../components/organisms/ARPathInstructions';
@@ -15,8 +15,7 @@ type NavigationScreenRouteProp = RouteProp<StackParamList, 'Navigation'>;
 const styles = StyleSheet.create({
   map: { flex: 0 },
   instructions: {
-    flex: 0,
-    height: 200,
+    flex: 1,
   },
 });
 
@@ -24,6 +23,7 @@ export default ({}: NavigationScreenProp) => {
   const { path } = useRoute<NavigationScreenRouteProp>().params || {};
 
   const [userPosition, setUserPosition] = useState<Position | undefined>();
+  const [canScroll, setCanScroll] = useState<boolean>(false);
 
   return (
     <>
@@ -33,11 +33,16 @@ export default ({}: NavigationScreenProp) => {
         onUserMoved={setUserPosition}
       />
       <BackButton />
-      <ARElasticView>
+      <ARElasticView
+        maxHeight={Dimensions.get('screen').height - 150}
+        minHeight={130}
+        onFold={() => setCanScroll(false)}
+        onExpanded={() => setCanScroll(true)}>
         <ARPathInstructions
           style={styles.instructions}
           path={path}
           userPosition={userPosition}
+          scrollEnabled={canScroll}
         />
       </ARElasticView>
     </>
