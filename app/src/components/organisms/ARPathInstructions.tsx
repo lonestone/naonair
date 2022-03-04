@@ -14,8 +14,12 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { Headline, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
+import Animated, {
+  scrollTo,
+  useAnimatedRef,
+  useDerivedValue,
+} from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
@@ -36,6 +40,7 @@ export interface ARPathInstructionsProps {
 interface InstructionItemProp {
   instruction: ARInstruction;
   isSelected: boolean;
+  onLayout: (y: number) => void;
 }
 
 const styles = StyleSheet.create({
@@ -46,6 +51,7 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.2,
     padding: 10,
+    flex: 1,
   },
   itemContainer: {
     flexDirection: 'row',
@@ -53,7 +59,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const InstructionItem = ({ instruction, isSelected }: InstructionItemProp) => {
+const InstructionItem = ({
+  instruction,
+  isSelected,
+  onLayout,
+}: InstructionItemProp) => {
   const buildStyle = (): { text: StyleProp<TextStyle> } => {
     return {
       text: {
@@ -64,7 +74,12 @@ const InstructionItem = ({ instruction, isSelected }: InstructionItemProp) => {
 
   return (
     <>
-      <View style={styles.itemContainer}>
+      <View
+        style={styles.itemContainer}
+        onLayout={({ nativeEvent }) => {
+          const { layout } = nativeEvent;
+          onLayout(layout.y);
+        }}>
         <Icon name="navigation" />
         <Text style={buildStyle().text}>{instruction.text}</Text>
       </View>
@@ -79,10 +94,20 @@ export default ({
   userPosition,
   scrollEnabled,
 }: ARPathInstructionsProps) => {
-  const [currentIndex, setCurrentIndex] = useState<number>(4);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [itemsY] = useState<number[]>([]);
+
   const [line] = useState<Feature<LineString>>(
     lineString(path.points.coordinates),
   );
+  const scrollViewRef = useAnimatedRef<Animated.ScrollView>();
+
+  useDerivedValue(() => {
+    console.info(scrollEnabled);
+    if (!scrollEnabled) {
+      scrollTo(scrollViewRef, 0, itemsY[currentIndex] || 0, true);
+    }
+  }, [scrollEnabled, currentIndex]);
 
   useEffect(() => {
     if (!userPosition) {
@@ -102,17 +127,21 @@ export default ({
 
   return (
     <View style={StyleSheet.flatten([styles.container, style])}>
-      <SafeAreaView edges={['bottom', 'left', 'right']}>
-        <ScrollView scrollEnabled={!!scrollEnabled}>
-          {/* <Headline>Étapes</Headline> */}
+      <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1 }}>
+        <Animated.ScrollView
+          ref={scrollViewRef}
+          scrollEnabled={!!scrollEnabled}
+          // canCancelContentTouches
+        >
           {path.instructions.map((instruction, index) => (
             <InstructionItem
               isSelected={index === currentIndex}
               key={`instruction-${index}`}
               instruction={instruction}
+              onLayout={y => (itemsY[index] = y)}
             />
           ))}
-        </ScrollView>
+        </Animated.ScrollView>
       </SafeAreaView>
     </View>
   );
