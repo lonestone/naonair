@@ -16,7 +16,7 @@ import {
   getDurationLabel,
   RouteProfile,
 } from '../../actions/routes';
-import { theme } from '../../theme';
+import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARRouteMapView from '../organisms/ARRouteMapView';
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.blue[100],
   },
   title: {
+    ...fonts.Raleway.bold,
     color: theme.colors.blue[500],
     fontSize: 20,
     lineHeight: 24,
@@ -62,18 +63,21 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   itemTitle: {
+    ...fonts.Lato.medium,
     fontWeight: '500',
     fontSize: 16,
     lineHeight: 24,
     color: theme.colors.blue[500],
   },
   itemDescription: {
+    ...fonts.Lato.medium,
     color: theme.colors.blue[300],
     fontSize: 12,
     lineHeight: 16,
   },
   right: { justifyContent: 'center' },
   rightLabel: {
+    ...fonts.Lato.bold,
     color: theme.colors.blue[500],
     fontSize: 16,
     lineHeight: 24,
