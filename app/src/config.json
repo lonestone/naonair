@@ -1,6 +1,6 @@
 {
   "GEOSERVER": {
-    "baseUrl": "https://data.airpl.org/geoserver/aireel/wms",
+    "baseUrl": "https://api.naonair.org/geoserver/aireel/wms",
     "params": {
       "SERVICE": "WMS",
       "VERSION": "1.1.1",
