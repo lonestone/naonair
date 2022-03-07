@@ -24,7 +24,7 @@ import ARRouteMapView from '../organisms/ARRouteMapView';
 type ARChooseItineraryProp = RouteProp<StackParamList, 'ChooseItinerary'>;
 
 const styles = StyleSheet.create({
-  backButtonSafeArea: { position: 'absolute', paddingLeft: 16 },
+  backButtonSafeArea: { position: 'absolute', paddingLeft: 16, paddingTop: 16 },
   backButtonContainer: {
     backgroundColor: 'white',
     padding: 16,
