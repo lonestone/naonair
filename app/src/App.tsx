@@ -28,7 +28,7 @@ if (!__DEV__) {
 const App = () => {
   return (
     <Provider theme={theme}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.white} />
       <NavigationContainer>
         <Screens />
       </NavigationContainer>
