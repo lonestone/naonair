@@ -2,7 +2,7 @@ import { Position } from 'geojson';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { getQAFromPosition, QAType } from '../../actions/qa';
-import { fonts } from '../../theme';
+import { fonts, theme } from '../../theme';
 
 const styles = StyleSheet.create({
   chip: {
@@ -46,12 +46,16 @@ interface Props {
 
 const ARQAChip = ({ size, shadow, coord, value }: Props) => {
   const [qa, setQA] = useState<QAType | undefined>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const mounted = useRef(false);
 
   const getQA = useCallback(async () => {
     if (!coord) {
       return;
     }
+
+    setIsLoading(true);
 
     try {
       const qa = await getQAFromPosition(coord);
@@ -62,6 +66,8 @@ const ARQAChip = ({ size, shadow, coord, value }: Props) => {
     } catch (e) {
       console.info(e);
     }
+
+    setIsLoading(false);
   }, [coord]);
 
   useEffect(() => {
@@ -79,7 +85,7 @@ const ARQAChip = ({ size, shadow, coord, value }: Props) => {
 
   const styleChip = () => {
     return StyleSheet.flatten([
-      { backgroundColor: qa?.main || value?.main },
+      { backgroundColor: qa?.main || value?.main || theme.colors.accent },
       styles.chip,
       shadow ? styles.chipShadow : {},
     ]);
@@ -92,10 +98,13 @@ const ARQAChip = ({ size, shadow, coord, value }: Props) => {
           styles.text,
           styles[`${size}Text`],
           {
-            color: qa?.light || value?.light,
+            color: qa?.light || value?.light || theme.colors.blue[300],
           },
         ]}>
-        {qa?.label || value?.label || ''}
+        {qa?.label ||
+          value?.label ||
+          (isLoading && 'récupération') ||
+          'non connu'}
       </Text>
     </View>
   );
