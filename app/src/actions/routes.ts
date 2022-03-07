@@ -21,10 +21,6 @@ export enum ARSign {
   rightUTurn = 8,
 }
 
-// export const ARSignIcon: { [key: number]: () => ReactElement } = {
-//   [ARSign.uTurn]:
-// };
-
 export interface ARInstruction {
   text: string; // A description what the user has to do in order to follow the route. The language depends on the locale parameter.
   street_name: string; // The name of the street to turn onto in order to follow the route.

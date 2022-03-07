@@ -15,8 +15,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     borderBottomColor: theme.colors.accent,
     borderBottomWidth: 1,
-    // borderColor: theme.colors.accent,
-    // borderWidth: 1,
     shadowColor: 'black',
     shadowOffset: { height: 8, width: 0 },
     shadowRadius: 10,

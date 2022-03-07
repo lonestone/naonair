@@ -86,18 +86,3 @@ export default () => {
     </Portal>
   ) : null;
 };
-
-{
-  /* <Modal style={styles.modal} visible={!userLocationEnabled}>
-<Text>
-  Pour obtenir une meilleure expérience, activez la position de
-  l'appareil et autorisez l'accès à votre position.
-</Text>
-<Button
-  onPress={() => {
-    
-  }}>
-  Ouvrir les réglages
-</Button>
-</Modal> */
-}

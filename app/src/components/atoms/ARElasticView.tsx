@@ -30,10 +30,6 @@ export default ({
   onExpanded,
   onFold,
 }: ARElasticViewProp) => {
-  // const isPressed = useSharedValue(false);
-  // const offset = useSharedValue(minHeight);
-  // const start = useSharedValue(0);
-
   const isExpanded = useSharedValue<boolean>(false);
 
   const height = useDerivedValue(() => {
@@ -41,27 +37,13 @@ export default ({
     return isExpanded.value ? maxHeight : minHeight;
   });
 
-  // useEffect(() => {
-  //   console.info(height.value);
-  //   setIsExpanded(height.value === maxHeight);
-  // }, [height, setIsExpanded, maxHeight]);
-
   const animatedStyles = useAnimatedStyle(() => {
     return {
       height: withTiming(height.value),
     };
   });
 
-  // const gesture = Gesture.Pan()
-  //   .onBegin(() => (isPressed.value = true))
-  //   .onUpdate(e => (offset.value = -e.translationY + start.value))
-  //   .onEnd(() => (start.value = offset.value))
-  //   .onFinalize(() => (isPressed.value = false));
-
   const tapGesture = Gesture.Tap().onStart(() => {
-    // offset.value = !isExpanded ? maxHeight : minHeight;
-    // console.info({ isExpanded, minHeight, offset });
-    // setIsExpanded(!isExpanded);
     isExpanded.value = !isExpanded.value;
   });
 
