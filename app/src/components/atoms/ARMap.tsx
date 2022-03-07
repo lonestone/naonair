@@ -12,9 +12,9 @@ import React, {
   useImperativeHandle,
   useState,
 } from 'react';
-import { Platform, StyleSheet, View, ViewProps } from 'react-native';
+import { StyleSheet, View, ViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import ARUserLocationAlert from '../templates/ARUserLocationAlert';
+import { GEOSERVER } from '../../config.json';
 
 const styles = StyleSheet.create({
   container: {
@@ -35,7 +35,7 @@ const defaultSettingsCamera: CameraSettings = {
 const rasterSourceProps: RasterSourceProps = {
   id: 'aireel_source',
   tileUrlTemplates: [
-    'https://data.airpl.org/geoserver/aireel/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/jpeg&TRANSPARENT=true&STYLES=&LAYERS=aireel:aireel_indic_7m_atmo_deg&SRS=EPSG:3857&WIDTH=768&HEIGHT=497&BBOX={bbox-epsg-3857}',
+    `${GEOSERVER.baseUrl}?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/jpeg&TRANSPARENT=true&STYLES=&LAYERS=aireel:aireel_indic_7m_atmo_deg&SRS=EPSG:3857&WIDTH=768&HEIGHT=497&BBOX={bbox-epsg-3857}`,
   ],
   tileSize: 256,
 };
