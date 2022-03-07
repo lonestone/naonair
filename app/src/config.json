@@ -1,6 +1,6 @@
 {
   "GEOSERVER": {
-    "baseUrl": "https://data.airpl.org/geoserver/aireel/wms",
+    "baseUrl": "https://api.naonair.org/geoserver/aireel/wms",
     "params": {
       "SERVICE": "WMS",
       "VERSION": "1.1.1",
@@ -19,6 +19,15 @@
   },
   "SENTRY": {
     "dsn": "https://a78899e62f4f4819889f55f1f00c4197@o297372.ingest.sentry.io/6235219"
+  },
+  "GRAPHHOPPER": {
+    "baseUrl": "https://graphhopper.com/api/1/",
+    "params": {
+      "key": "1381920f-a973-435c-955c-d74ee25cf1aa",
+      "locale": "fr",
+      "type": "json",
+      "points_encoded": false
+    }
   },
   "MAPBOX": {
     "baseUrl": "https://api.mapbox.com/geocoding/v5/mapbox.places/",

@@ -9,15 +9,15 @@
  */
 
 import { NavigationContainer } from '@react-navigation/native';
-import React from 'react';
 import * as Sentry from '@sentry/react-native';
+import React from 'react';
 import { StatusBar } from 'react-native';
-import { ThemeProvider } from 'react-native-paper';
-import Screens from './screens/NavigatorScreen';
-import { theme } from './theme';
-import { SENTRY } from './config.json';
+import { Provider } from 'react-native-paper';
 import ARAlert from './components/templates/ARAlert';
 import ARNews from './components/templates/ARNews';
+import { SENTRY } from './config.json';
+import Screens from './screens/NavigatorScreen';
+import { theme } from './theme';
 
 if (!__DEV__) {
   Sentry.init({
@@ -27,14 +27,14 @@ if (!__DEV__) {
 
 const App = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <StatusBar barStyle={'dark-content'} />
+    <Provider theme={theme}>
+      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.white} />
       <NavigationContainer>
         <Screens />
       </NavigationContainer>
       <ARAlert />
       <ARNews />
-    </ThemeProvider>
+    </Provider>
   );
 };
 

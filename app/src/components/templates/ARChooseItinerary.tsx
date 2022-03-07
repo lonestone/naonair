@@ -5,22 +5,26 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ActivityIndicator, Headline, List, Surface } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   ARPath,
   ARRoute,
   calculateRoute,
+  getDistanceLabel,
+  getDurationLabel,
   RouteProfile,
 } from '../../actions/routes';
-import { theme } from '../../theme';
+import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
-import ARRouteMapView from '../molecules/ARRouteMapView';
+import { ARButton, ARButtonSize } from '../atoms/ARButton';
+import ARRouteMapView from '../organisms/ARRouteMapView';
 
 type ARChooseItineraryProp = RouteProp<StackParamList, 'ChooseItinerary'>;
 
 const styles = StyleSheet.create({
-  backButtonSafeArea: { position: 'absolute', paddingLeft: 16 },
+  backButtonSafeArea: { position: 'absolute', paddingLeft: 16, paddingTop: 16 },
   backButtonContainer: {
     backgroundColor: 'white',
     padding: 16,
@@ -31,18 +35,62 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flex: 1,
+    shadowOffset: { width: 0, height: -8 },
+    shadowRadius: 10,
+    shadowOpacity: 0.2,
+    elevation: 3,
   },
   itemLeftContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: theme.colors.blue[100],
   },
+  title: {
+    ...fonts.Raleway.bold,
+    color: theme.colors.blue[500],
+    fontSize: 20,
+    lineHeight: 24,
+    fontWeight: 'bold',
+    marginTop: 30,
+    marginHorizontal: 18,
+    marginBottom: 20,
+  },
+  item: {
+    padding: 16,
+  },
+  itemTitle: {
+    ...fonts.Lato.medium,
+    fontWeight: '500',
+    fontSize: 16,
+    lineHeight: 24,
+    color: theme.colors.blue[500],
+  },
+  itemDescription: {
+    ...fonts.Lato.medium,
+    color: theme.colors.blue[300],
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  right: { justifyContent: 'center' },
+  rightLabel: {
+    ...fonts.Lato.bold,
+    color: theme.colors.blue[500],
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: 'bold',
+  },
+  letsGoButton: {
+    flex: 0,
+    alignSelf: 'flex-end',
+    marginRight: 24,
+  },
 });
 
-const BackButton = () => {
+export const BackButton = () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
 
   return (
@@ -59,7 +107,15 @@ const BackButton = () => {
   );
 };
 
-const ItineraryItem = ({}: { path: ARPath }) => {
+const ItineraryItem = ({
+  path,
+  onPress,
+  index,
+}: {
+  path: ARPath;
+  index: number;
+  onPress: (index: number) => void;
+}) => {
   return (
     <List.Item
       left={() => (
@@ -67,22 +123,54 @@ const ItineraryItem = ({}: { path: ARPath }) => {
           <Icon name="navigation" size={15} color={theme.colors.blue[500]} />
         </View>
       )}
-      title="le plus sain"
+      right={() => (
+        <View style={styles.right}>
+          <Text style={styles.rightLabel}>{getDurationLabel(path.time)}</Text>
+        </View>
+      )}
+      style={styles.item}
+      titleStyle={styles.itemTitle}
+      descriptionStyle={styles.itemDescription}
+      title="Le plus sain"
+      description={getDistanceLabel(path.distance)}
       onPress={() => {
-        // console.info(path);
+        onPress(index);
       }}
     />
   );
 };
 
 const ItineraryList = ({ paths = [] }: { paths: ARPath[] }) => {
+  const [pathIndex, setPathIndex] = useState<number>(0);
+  const navigation = useNavigation<StackNavigationScreenProp>();
+
   return (
     <Surface style={styles.listContainer}>
       <SafeAreaView edges={['bottom', 'left', 'right']}>
-        <Headline>Choisissez votre itinéraire</Headline>
+        <Headline style={styles.title}>Choisissez votre itinéraire</Headline>
         {paths.map((path, index) => (
-          <ItineraryItem key={`path-${index}`} path={path} />
+          <ItineraryItem
+            key={`path-${index}`}
+            path={path}
+            index={index}
+            onPress={setPathIndex}
+          />
         ))}
+        <ARButton
+          label="C'est parti"
+          size={ARButtonSize.Medium}
+          onPress={() =>
+            navigation.navigate('Navigation', { path: paths[pathIndex] })
+          }
+          styleContainer={styles.letsGoButton}
+          icon={() => (
+            <Icon
+              name="navigation-variant"
+              size={36}
+              color={theme.colors.white}
+            />
+          )}
+        />
       </SafeAreaView>
     </Surface>
   );
@@ -90,7 +178,7 @@ const ItineraryList = ({ paths = [] }: { paths: ARPath[] }) => {
 
 const LoadingView = () => (
   <Surface style={styles.listContainer}>
-    <Headline>Calcul de l'itinéraire en cours...</Headline>
+    <Headline style={styles.title}>Calcul de l'itinéraire en cours...</Headline>
     <ActivityIndicator animating />
   </Surface>
 );
@@ -120,8 +208,7 @@ export default () => {
   }, [end, start]);
 
   useEffect(() => {
-    // HACK : prevent setting route to map before it is loaded
-    setTimeout(getRoute, 200);
+    getRoute();
   }, [getRoute]);
 
   return (

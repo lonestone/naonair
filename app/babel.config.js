@@ -7,6 +7,7 @@ module.exports = {
         extensions: ['.svg'],
       },
     ],
+    'react-native-reanimated/plugin',
   ],
   env: {
     production: {
