@@ -147,12 +147,6 @@ const ARMap = (
               animated
               showsUserHeadingIndicator
               onUpdate={onUserLocationChanged}
-              // onUpdate={location => {
-              //   cameraRef.current?.moveTo([
-              //     location.coords.longitude,
-              //     location.coords.latitude,
-              //   ]);
-              // }}
             />
           ) : null}
           {heatmapVisible && (
@@ -167,7 +161,6 @@ const ARMap = (
           {children || null}
         </MapboxGL.MapView>
       </View>
-      {/* {<ARUserLocationAlert />} */}
     </>
   );
 };

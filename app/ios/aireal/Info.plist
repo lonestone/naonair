@@ -53,6 +53,8 @@
 	<string>Utilisé pour placer votre position sur les cartes</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Utilisé pour placer votre position sur les cartes</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Utilisé pour placer votre position sur les cartes</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
