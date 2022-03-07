@@ -60,16 +60,6 @@ export interface ARLegendProps extends ViewProps {
 }
 
 export default (props: ARLegendProps) => {
-  // const [isDeployed, setDeployed] = useState(false);
-
-  // useEffect(() => {
-  //   isDeployed && props.onClose && props.onClose();
-  // }, [isDeployed, props]);
-
-  // useEffect(() => {
-  //   props.isClosed !== null && setDeployed(!props.isClosed);
-  // }, [props.isClosed, setDeployed]);
-
   return (
     <Surface
       {...props}
