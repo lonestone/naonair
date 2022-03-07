@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
   },
   caption: {
     ...fonts.Lato.regular,
-    // letterSpacing: 1
   },
 });
 
