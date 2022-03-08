@@ -4,14 +4,13 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { setPlaceStorage, updatePlaceStorage } from '../../actions/myplaces';
-import { MapboxFeature, POICategory } from '../../actions/poi';
+import { MapboxFeature, POICategory, poiIcons } from '../../actions/poi';
 import useSnackbar from '../../contexts/snackbar.context';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARListItem from '../molecules/ARListItem';
 import ARPlaceForm from '../organisms/ARPlaceForm';
-import { icons } from './ARMapView';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: 'white' },
@@ -52,7 +51,7 @@ const ARPlaceFormLayout = () => {
       await setPlaceStorage({
         id: Date.now(),
         adress: values?.text,
-        category: POICategory.MY_PLACES,
+        category: POICategory.FAVORITE,
         name,
         geolocation: values?.coord,
       });
@@ -76,7 +75,7 @@ const ARPlaceFormLayout = () => {
       await updatePlaceStorage(params.poi.id, {
         id: params.poi.id,
         adress: values.text,
-        category: POICategory.MY_PLACES,
+        category: POICategory.FAVORITE,
         name,
         geolocation: values.coord,
       });
@@ -121,7 +120,7 @@ const ARPlaceFormLayout = () => {
                 <SvgXml
                   width="20"
                   height="20"
-                  xml={icons[`${POICategory.MY_PLACES}`]}
+                  xml={poiIcons[`${POICategory.FAVORITE}`] || null}
                 />
               )}
               onPress={() => {

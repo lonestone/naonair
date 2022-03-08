@@ -1,9 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useState } from 'react';
 import { Linking, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
-import { List } from 'react-native-paper';
+import { List, Portal, Provider } from 'react-native-paper';
+import { ARButton, ARButtonSize } from '../components/atoms/ARButton';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARListItem from '../components/molecules/ARListItem';
+import ARConfirmClearStorage from '../components/templates/ARConfirmClearStorage';
 import { fonts, theme } from '../theme';
 import { ProfileItemType } from '../types/profile';
 import { StackNavigationScreenProp, StackParamList } from '../types/routes';
@@ -43,6 +45,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  button: {
+    margin: 40,
+    position: 'absolute',
+    bottom: 0,
+    elevation: 0,
+    alignSelf: 'center',
+    backgroundColor: '#FFEEEE',
+  },
+  buttonLabel: {
+    color: theme.colors.quality.main.red,
+  },
 });
 
 const profileItems: ProfileItemType[] = [
@@ -65,6 +78,7 @@ const profileItems: ProfileItemType[] = [
 
 const ProfileScreen = () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
+  const [openModal, setOpenModal] = useState(false);
 
   const handlePress = async (url?: any, link?: keyof StackParamList) => {
     // Checking if the link is supported for links with custom URL scheme.
@@ -79,7 +93,7 @@ const ProfileScreen = () => {
   };
 
   return (
-    <>
+    <Provider>
       <ARCommonHeader
         headline="Mon Profil"
         caption="Retrouvez ici vos informations personnelles"
@@ -104,8 +118,19 @@ const ProfileScreen = () => {
             />
           ))}
         </ScrollView>
+        <ARButton
+          label="Supprimer mes données"
+          size={ARButtonSize.Medium}
+          icon="delete"
+          labelStyle={styles.buttonLabel}
+          styleContainer={styles.button}
+          onPress={() => setOpenModal(true)}
+        />
+        <Portal>
+          <ARConfirmClearStorage open={openModal} setOpen={setOpenModal} />
+        </Portal>
       </SafeAreaView>
-    </>
+    </Provider>
   );
 };
 

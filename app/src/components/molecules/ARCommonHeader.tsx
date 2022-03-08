@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     flex: 0,
   },
+  deleteButton: { marginLeft: 'auto', padding: 0, margin: 0 },
   headlineContainer: {
     flexDirection: 'row',
   },
@@ -41,10 +42,19 @@ interface Props {
   headline: string;
   caption?: string;
   back?: boolean;
+  deleteIcon?: boolean;
+  onDelete?: () => void;
   onBack?: () => void;
 }
 
-const ARCommonHeader = ({ caption, headline, back, onBack }: Props) => {
+const ARCommonHeader = ({
+  caption,
+  headline,
+  back,
+  deleteIcon,
+  onDelete,
+  onBack,
+}: Props) => {
   return (
     <ARHeader>
       <View style={styles.container}>
@@ -60,6 +70,13 @@ const ARCommonHeader = ({ caption, headline, back, onBack }: Props) => {
 
           {!!caption && <Caption style={styles.caption}>{caption}</Caption>}
         </View>
+        {!!deleteIcon && (
+          <IconButton
+            onPress={onDelete}
+            icon={() => <Icon name="delete" size={24} color="red" />}
+            style={styles.deleteButton}
+          />
+        )}
       </View>
     </ARHeader>
   );

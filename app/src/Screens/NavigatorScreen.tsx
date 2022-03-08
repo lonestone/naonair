@@ -1,20 +1,20 @@
-import { RouteProp } from '@react-navigation/core';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { ParamListBase, Route } from '@react-navigation/routers';
 import {
   createStackNavigator,
   StackNavigationOptions,
-  StackNavigationProp,
+  StackNavigationProp
 } from '@react-navigation/stack';
 import React from 'react';
-import { Appbar } from 'react-native-paper';
+import { removePlaceStorage } from '../actions/myplaces';
+import { POI } from '../actions/poi';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
 import ARListFavorites from '../components/templates/ARListFavorites';
 import ARPlaceFormLayout from '../components/templates/ARPlaceFormLayout';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
 import ARRouteDetail from '../components/templates/ARRouteDetail';
-import { SnackbarProvider } from '../contexts/snackbar.context';
+import useSnackbar, { SnackbarProvider } from '../contexts/snackbar.context';
 import { theme } from '../theme';
 import { StackParamList, TabParamList } from '../types/routes';
 import ItineraryScreen from './ItineraryScreen';
@@ -112,31 +112,33 @@ export default () => {
 };
 
 interface Props {
-  route: any
+  route: Route<string, undefined | {}>;
   navigation: StackNavigationProp<ParamListBase>;
 }
 
-const CustomNavigationBar = ({ navigation, route }: Props) => {  
+const CustomNavigationBar = ({ navigation, route }: Props) => {
+  const { setSnackbarStatus } = useSnackbar();
+  const param = route.params as { poi: POI };
+  const handleRemove = async (id: string) => {
+    await removePlaceStorage(id);
+
+    navigation.goBack();
+
+    setSnackbarStatus?.({
+      isVisible: true,
+      label: "L'adresse a été bien été suprimée",
+      icon: 'check-circle',
+      backgroundColor: theme.colors.quality.main.green,
+    });
+  };
+
   return (
-    <Appbar.Header
-      style={{
-        backgroundColor: theme.colors.white,
-        borderColor: theme.colors.accent,
-        borderWidth: 1,
-        shadowColor: theme.colors.accent,
-        shadowOffset: { height: 8, width: 0 },
-        shadowRadius: 10,
-        shadowOpacity: 0.1,
-      }}>
-      <Appbar.BackAction onPress={navigation.goBack} />
-      {route.params ? (
-        <>
-          <Appbar.Content title="Modifier l'adresse" />
-          <Appbar.Action icon="delete" color="red" onPress={() => {}} />
-        </>
-      ) : (
-        <Appbar.Content title="Créer une adresse" />
-      )}
-    </Appbar.Header>
+    <ARCommonHeader
+      headline={param && param.poi ? "Modifier l'adresse" : 'Créer une adresse'}
+      back
+      deleteIcon={!!param}
+      onDelete={() => handleRemove(param.poi.id as string)}
+      onBack={navigation.goBack}
+    />
   );
 };
