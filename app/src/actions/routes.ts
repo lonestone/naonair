@@ -46,6 +46,8 @@ export interface ARRoute {
 
 export enum RouteProfile {
   Bike = 'bike',
+  ElecBike = 'scooter', // used by graphhopper
+  Walk = 'foot', // used by graphhopper
 }
 
 export const getInstructionFromPathSection = (

@@ -4,8 +4,13 @@ import { BBox } from '@turf/turf';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ActivityIndicator, Headline, List, Surface } from 'react-native-paper';
-import { Text } from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Headline,
+  List,
+  Surface,
+  Text,
+} from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
@@ -14,7 +19,6 @@ import {
   calculateRoute,
   getDistanceLabel,
   getDurationLabel,
-  RouteProfile,
 } from '../../actions/routes';
 import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
@@ -188,7 +192,7 @@ export default () => {
   const [route, setRoute] = useState<ARRoute | undefined>();
   const [bbox, setBbox] = useState<BBox | undefined>();
 
-  const { start, end } = params;
+  const { start, end, transportMode } = params;
 
   useEffect(() => {
     if (start && end) {
@@ -201,11 +205,11 @@ export default () => {
 
   const getRoute = useCallback(async () => {
     if (start && end) {
-      const routes = await calculateRoute(start, end, RouteProfile.Bike);
+      const routes = await calculateRoute(start, end, transportMode);
 
       setRoute(routes);
     }
-  }, [end, start]);
+  }, [end, start, transportMode]);
 
   useEffect(() => {
     getRoute();

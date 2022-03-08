@@ -12,6 +12,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { MapboxFeature } from '../../actions/poi';
+import { RouteProfile } from '../../actions/routes';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
@@ -65,7 +66,7 @@ const filterItems: ARFilterItem[] = [
   {
     selected: true,
     label: 'Vélo',
-    value: 'bike',
+    value: RouteProfile.Bike,
     icon: selected => (
       <Icon
         size={20}
@@ -76,7 +77,7 @@ const filterItems: ARFilterItem[] = [
   },
   {
     label: 'Vélo élec',
-    value: 'elec-bike',
+    value: RouteProfile.ElecBike,
     icon: selected => (
       <Icon
         size={20}
@@ -87,7 +88,7 @@ const filterItems: ARFilterItem[] = [
   },
   {
     label: 'Marche',
-    value: 'walk',
+    value: RouteProfile.Walk,
     icon: selected => (
       <Icon
         size={20}
@@ -108,6 +109,7 @@ enum Field {
 export default () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
   const [results, setResults] = useState<MapboxFeature[]>([]);
+  const [transportMode, setTransportMode] = useState<RouteProfile[]>([]);
   const [values, setValues] = useState<{
     [key: string]: { coord: Position; text: string } | undefined;
   }>({
@@ -161,7 +163,12 @@ export default () => {
                   color={theme.colors.black[500]}
                 />
               </View>
-              <ARFilter items={filterItems} onChange={() => {}} />
+              <ARFilter
+                items={filterItems}
+                onChange={items => {
+                  setTransportMode(items.map(i => i.value));
+                }}
+              />
             </>
           </ARHeader>
 
@@ -200,6 +207,7 @@ export default () => {
             navigation.navigate('ChooseItinerary', {
               start: values[Field.START]?.coord,
               end: values[Field.END]?.coord,
+              transportMode: transportMode[0],
             });
           }}
         />
