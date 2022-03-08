@@ -54,7 +54,6 @@ export default ({ style, parcours }: ARRouteItemProps) => {
 
   const { properties } = parcours;
 
-  // console.info(parcours);
   const { coureur, marcheur, cycliste } = properties;
 
   return (

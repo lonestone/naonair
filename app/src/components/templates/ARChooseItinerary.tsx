@@ -144,8 +144,6 @@ const ItineraryList = ({ paths = [] }: { paths: ARPath[] }) => {
   const [pathIndex, setPathIndex] = useState<number>(0);
   const navigation = useNavigation<StackNavigationScreenProp>();
 
-  console.info(paths, pathIndex);
-
   return (
     <Surface style={styles.listContainer}>
       <SafeAreaView edges={['bottom', 'left', 'right']}>

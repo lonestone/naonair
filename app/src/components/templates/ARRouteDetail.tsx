@@ -20,9 +20,6 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   mapContainer: {
-    // margin: 16,
-
-    // overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
   },
