@@ -17,7 +17,6 @@ export enum POICategory {
   SPORT = 'sport',
   CULTURE = 'culture',
   MARKET = 'market',
-  MY_PLACES = 'my_places',
 }
 
 export interface POI {
@@ -51,8 +50,6 @@ const POIs = poiJson.map<POI>(({ id, nom, categorie, adresse, gps }) => {
         return POICategory.MARKET;
       case 'favoris':
         return POICategory.FAVORITE;
-      case 'my_places':
-        return POICategory.MY_PLACES;
     }
     return POICategory.UNDEFINED;
   };
@@ -73,7 +70,6 @@ export const poiIcons: {
   [POICategory.FAVORITE]: favoriteIcon,
   [POICategory.UNDEFINED]: null,
   [POICategory.MARKET]: marketIcon,
-  [POICategory.MY_PLACES]: null,
   [POICategory.PARK]: parkIcon,
   [POICategory.SPORT]: sportIcon,
 };

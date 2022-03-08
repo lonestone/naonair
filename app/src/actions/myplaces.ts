@@ -3,58 +3,59 @@ import { POI } from './poi';
 
 export const getAllPlaces = async () => {
   try {
-    const keys = await AsyncStorage.getAllKeys();
-    const matches = keys.find(s => s.includes('@myplaces'));
-    const result = await AsyncStorage.getItem(matches!);
-    return result
+    const result = await AsyncStorage.getItem('@myplaces');
+    return JSON.parse(result || '[]') as POI[];
   } catch (e) {
     console.error(e);
   }
-};
 
-// export const getPlaceById = async (key: string) => {
-//   try {
-//     const jsonValue = await AsyncStorage.getItem(key);
-//     return jsonValue != null ? JSON.parse(jsonValue) : null;
-//   } catch (e) {
-//     console.error(e);
-//   }
-// };
+  return [];
+};
 
 export const setPlaceStorage = async (place: POI) => {
-  console.log('setPlaceStorage');
-
   try {
-    //recupérer les autres et je concat
     const currentPlaces = await getAllPlaces();
-    const jsonValue = JSON.stringify(place);
-    const r = JSON.stringify(currentPlaces);
+    const jsonValue = JSON.stringify([...currentPlaces, place]);
+    await AsyncStorage.setItem('@myplaces', jsonValue);
+  } catch (e) {
+    console.error(e);
+  }
+};
 
-    if (currentPlaces && currentPlaces.length) {
-      await AsyncStorage.mergeItem?.(`@myplaces`, r.concat(jsonValue));
-    } else {
-      await AsyncStorage.setItem(`@myplaces`, jsonValue);
+export const updatePlaceStorage = async (id: string | number, place: POI) => {
+  try {
+    const currentPlaces = await getAllPlaces();
+    const newIndex = currentPlaces.findIndex((place: POI) => place.id === id);
+
+    if (newIndex <= -1) {
+      return;
     }
+
+    currentPlaces[newIndex] = place;
+    await AsyncStorage.setItem('@myplaces', JSON.stringify(currentPlaces));
   } catch (e) {
     console.error(e);
   }
 };
 
-export const updatePlaceStorage = async (key: string | number, place: POI) => {
+export const removePlaceStorage = async (id?: string | number) => {
   try {
-    const jsonValue = JSON.stringify(place);
-    await AsyncStorage.mergeItem?.(`@myplaces`, jsonValue);
+    const currentPlaces = await getAllPlaces();
+    const newIndex = currentPlaces.findIndex((place: POI) => {
+      return place.id === id;
+    });
+
+    if (newIndex <= -1) {
+      return;
+    }
+
+    currentPlaces.splice(newIndex, 1);
+    await AsyncStorage.setItem('@myplaces', JSON.stringify(currentPlaces));
   } catch (e) {
     console.error(e);
   }
 };
 
-export const removePlaceStorage = async (key: string | number) => {
-  console.log('removePlaceStorage', key);
-
-  try {
-    await AsyncStorage.removeItem(`@myplaces`);
-  } catch (e) {
-    console.error(e);
-  }
+export const clearStorage = async () => {
+  await AsyncStorage.clear();
 };

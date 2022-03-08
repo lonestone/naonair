@@ -1,15 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Paragraph } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
 import { getAllPlaces } from '../../actions/myplaces';
-import { POI, POICategory } from '../../actions/poi';
+import { POI, POICategory, poiIcons } from '../../actions/poi';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARSnackbar from '../atoms/ARSnackbar';
 import ARListItem from '../molecules/ARListItem';
-import { icons } from './ARMapView';
 
 const styles = StyleSheet.create({
   container: { backgroundColor: 'white', flex: 1 },
@@ -36,25 +36,19 @@ const styles = StyleSheet.create({
 
 const ARListFavorites = () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
-  const [items, setItems] = useState<POI[]>([]);
+  const [items, setItems] = useState<POI[]>();
 
   const readItemFromStorage = async () => {
     const values = await getAllPlaces();
-    console.log('values', values);
-
     if (values) {
       try {
-        const j = JSON.parse(values);
-        console.log('json', j);
-
-        setItems(Array.isArray(j) ? j : [j]);
+        setItems(Array.isArray(values) ? values : [values]);
       } catch (e) {
         console.error(e);
         console.error(values);
       }
     }
   };
-  console.log('items', items, typeof items);
 
   useEffect(() => {
     navigation.addListener('focus', readItemFromStorage);
@@ -65,7 +59,7 @@ const ARListFavorites = () => {
     <>
       <ARSnackbar />
       <ScrollView style={styles.container}>
-        {items &&
+        {items && items.length > 0 ? (
           items.map((fav, idx) => (
             <ARListItem
               key={`fav-${idx}`}
@@ -74,7 +68,7 @@ const ARListFavorites = () => {
               descriptionStyle={styles.description}
               titleStyle={styles.title}
               onPress={() =>
-                fav.category === POICategory.MY_PLACES &&
+                fav.category === POICategory.FAVORITE &&
                 navigation.navigate('PlaceForm', { poi: fav })
               }
               leftIcon={() => (
@@ -82,16 +76,19 @@ const ARListFavorites = () => {
                   <SvgXml
                     width="20"
                     height="20"
-                    xml={icons[`${fav.category}`]}
+                    xml={poiIcons[`${fav.category}`] || null}
                     fill={theme.colors.blue[500]}
                   />
                 </View>
               )}
               rightIcon={
-                fav.category === POICategory.MY_PLACES ? 'pencil' : 'star'
+                fav.category === POICategory.FAVORITE ? 'pencil' : 'star'
               }
             />
-          ))}
+          ))
+        ) : (
+          <Paragraph>Aucune adresse créée</Paragraph>
+        )}
       </ScrollView>
       <ARButton
         icon="plus"

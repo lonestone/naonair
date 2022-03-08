@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { Button } from 'react-native-paper';
-import { fonts, theme } from '../../theme';
+import { fonts } from '../../theme';
 
 export enum ARButtonSize {
   Small = 'small',
@@ -23,6 +23,7 @@ type ARButtonType = {
   size?: ARButtonSize;
   onPress: any;
   styleContainer?: StyleProp<ViewStyle>;
+  labelStyle?: StyleProp<TextStyle>;
 };
 
 const styles = StyleSheet.create({
@@ -34,7 +35,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 14,
     lineHeight: 20,
-    color: 'white',
     textTransform: 'none',
     letterSpacing: 0.01,
     ...fonts.Lato.semibold,
@@ -59,6 +59,7 @@ export const ARButton = ({
   size,
   onPress,
   styleContainer,
+  labelStyle,
 }: ARButtonType) => {
   return (
     <Button
@@ -72,7 +73,7 @@ export const ARButton = ({
           ? styles.mdContentStyle
           : styles.smContentStyle
       }
-      labelStyle={styles.labelStyle}
+      labelStyle={StyleSheet.flatten([styles.labelStyle, labelStyle])}
       style={StyleSheet.flatten([styles.button, styleContainer])}>
       {label}
     </Button>
