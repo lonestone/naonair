@@ -60,29 +60,29 @@ const ARListFavorites = () => {
       <ARSnackbar />
       <ScrollView style={styles.container}>
         {items && items.length > 0 ? (
-          items.map((fav, idx) => (
+          items.map((poi) => (
             <ARListItem
-              key={`fav-${idx}`}
-              title={fav.name}
-              description={fav.adress}
+              key={`poi-${poi.id}`}
+              title={poi.name}
+              description={poi.adress}
               descriptionStyle={styles.description}
               titleStyle={styles.title}
               onPress={() =>
-                fav.category === POICategory.FAVORITE &&
-                navigation.navigate('PlaceForm', { poi: fav })
+                poi.category === POICategory.FAVORITE &&
+                navigation.navigate('PlaceForm', { poi })
               }
               leftIcon={() => (
                 <View style={styles.iconWrapper}>
                   <SvgXml
                     width="20"
                     height="20"
-                    xml={poiIcons[`${fav.category}`] || null}
+                    xml={poiIcons[`${poi.category}`] || null}
                     fill={theme.colors.blue[500]}
                   />
                 </View>
               )}
               rightIcon={
-                fav.category === POICategory.FAVORITE ? 'pencil' : 'star'
+                poi.category === POICategory.FAVORITE ? 'pencil' : 'star'
               }
             />
           ))
