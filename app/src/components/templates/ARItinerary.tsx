@@ -175,6 +175,7 @@ export default () => {
           <ScrollView
             style={styles.container}
             contentInset={{ bottom: 70, top: 0 }}
+            accessibilityLabel="Resultats de la recheche"
             indicatorStyle="black">
             {(results || []).map(
               ({ properties, geometry, text_fr, place_name_fr }) => (
