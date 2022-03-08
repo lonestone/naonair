@@ -32,6 +32,11 @@ const styles = StyleSheet.create({
   iconWrapper: {
     justifyContent: 'center',
   },
+  paragraph: {
+    marginHorizontal: 20,
+    marginTop: 10,
+    color: theme.colors.blue[500]
+  },
 });
 
 const ARListFavorites = () => {
@@ -54,6 +59,7 @@ const ARListFavorites = () => {
     navigation.addListener('focus', readItemFromStorage);
     return () => navigation.removeListener('focus', readItemFromStorage);
   }, []);
+
 
   return (
     <>
@@ -87,7 +93,9 @@ const ARListFavorites = () => {
             />
           ))
         ) : (
-          <Paragraph>Aucune adresse créée</Paragraph>
+          <View style={styles.paragraph}>
+            <Paragraph>Vous n'avez aucune adresse ici.</Paragraph>
+          </View>
         )}
       </ScrollView>
       <ARButton

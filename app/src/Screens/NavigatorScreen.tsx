@@ -1,20 +1,16 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { ParamListBase, Route } from '@react-navigation/routers';
 import {
   createStackNavigator,
-  StackNavigationOptions,
-  StackNavigationProp
+  StackNavigationOptions
 } from '@react-navigation/stack';
 import React from 'react';
-import { removePlaceStorage } from '../actions/myplaces';
-import { POI } from '../actions/poi';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
 import ARListFavorites from '../components/templates/ARListFavorites';
 import ARPlaceFormLayout from '../components/templates/ARPlaceFormLayout';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
 import ARRouteDetail from '../components/templates/ARRouteDetail';
-import useSnackbar, { SnackbarProvider } from '../contexts/snackbar.context';
+import { SnackbarProvider } from '../contexts/snackbar.context';
 import { theme } from '../theme';
 import { StackParamList, TabParamList } from '../types/routes';
 import ItineraryScreen from './ItineraryScreen';
@@ -104,41 +100,9 @@ export default () => {
         <Stack.Screen
           name="PlaceForm"
           component={ARPlaceFormLayout}
-          options={{ header: props => <CustomNavigationBar {...props} /> }}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </SnackbarProvider>
-  );
-};
-
-interface Props {
-  route: Route<string, undefined | {}>;
-  navigation: StackNavigationProp<ParamListBase>;
-}
-
-const CustomNavigationBar = ({ navigation, route }: Props) => {
-  const { setSnackbarStatus } = useSnackbar();
-  const param = route.params as { poi: POI };
-  const handleRemove = async (id: string) => {
-    await removePlaceStorage(id);
-
-    navigation.goBack();
-
-    setSnackbarStatus?.({
-      isVisible: true,
-      label: "L'adresse a été bien été suprimée",
-      icon: 'check-circle',
-      backgroundColor: theme.colors.quality.main.green,
-    });
-  };
-
-  return (
-    <ARCommonHeader
-      headline={param && param.poi ? "Modifier l'adresse" : 'Créer une adresse'}
-      back
-      deleteIcon={!!param}
-      onDelete={() => handleRemove(param.poi.id as string)}
-      onBack={navigation.goBack}
-    />
   );
 };

@@ -47,32 +47,30 @@ const styles = StyleSheet.create({
 
 interface Props {
   open: boolean;
+  headline: string;
+  caption: string;
   setOpen: (value: boolean) => void;
+  onPress: () => void;
 }
 
-const ARConfirmClearStorage = ({ open, setOpen }: Props) => {
-  const handleRemove = () => {
-    clearStorage();
-    setOpen(false);
-  };
+const ARConfirmClearStorage = ({ open, setOpen, headline, caption, onPress }: Props) => {
 
   return (
     <Modal visible={open} dismissable onDismiss={() => setOpen(false)}>
       <View style={styles.dialog}>
         <Headline style={styles.title}>
-          Souhaitez-vous vraiment supprimer vos données
+          {headline}
         </Headline>
         <View style={styles.content}>
           <Paragraph style={styles.paragraph}>
-            Cet action est irreversible et supprimera vos adresses favorites
-            ainsi que tout votre historique
+            {caption}
           </Paragraph>
         </View>
         <View style={styles.buttonContent}>
           <Button labelStyle={styles.button} onPress={() => setOpen(false)}>
             NON
           </Button>
-          <Button labelStyle={styles.button} onPress={handleRemove}>
+          <Button labelStyle={styles.button} onPress={onPress}>
             OUI
           </Button>
         </View>
