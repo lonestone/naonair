@@ -5,6 +5,7 @@ import MapboxGL, {
 } from '@react-native-mapbox-gl/maps';
 import { BBox, Position } from 'geojson';
 import React, {
+  createRef,
   forwardRef,
   Ref,
   RefObject,
@@ -12,7 +13,7 @@ import React, {
   useImperativeHandle,
   useState,
 } from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { Platform, StyleSheet, View, ViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GEOSERVER } from '../../config.json';
 
@@ -47,6 +48,7 @@ export interface ARMapProps extends ViewProps {
   bbox?: BBox;
   center?: Position;
   onMapPress?: () => void;
+  isGPS?: boolean;
   cameraSettings?: CameraSettings;
   animationMode?: 'flyTo' | 'easeTo' | 'linearTo' | 'moveTo';
   onUserLocationChanged?: (location: MapboxGL.Location) => void;
@@ -63,6 +65,10 @@ export interface ARMapHandle {
 // if we don't call this methods, MapboxGL crash on Android
 MapboxGL.setAccessToken('');
 
+if (Platform.OS == 'android') {
+  MapboxGL.requestAndroidLocationPermissions();
+}
+
 const ARMap = (
   {
     userLocationVisible,
@@ -74,14 +80,16 @@ const ARMap = (
     onMapPress,
     cameraSettings,
     animationMode,
+    isGPS,
     onUserLocationChanged,
     onMapLoaded,
     style,
   }: ARMapProps,
   ref: Ref<ARMapHandle>,
 ) => {
-  const cameraRef = React.createRef<MapboxGL.Camera>();
-  const mapRef = React.createRef<MapboxGL.MapView>();
+  const cameraRef = createRef<MapboxGL.Camera>();
+  const mapRef = createRef<MapboxGL.MapView>();
+  const userLocationRef = createRef<MapboxGL.UserLocation>();
 
   const [bounds, setBounds] = useState<
     CameraPadding & { ne: Position; sw: Position }
@@ -144,7 +152,7 @@ const ARMap = (
             <MapboxGL.UserLocation
               visible
               renderMode="native"
-              androidRenderMode="normal"
+              androidRenderMode={isGPS ? 'gps' : 'normal'}
               animated
               showsUserHeadingIndicator
               onUpdate={onUserLocationChanged}

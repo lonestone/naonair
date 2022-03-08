@@ -17,13 +17,11 @@ export default ({ path, style, onUserMoved }: ARNavigationMapViewProp) => {
   const mapRef = createRef<ARMapHandle>();
 
   const { points } = path;
-  console.info({ path });
 
   const start = points.coordinates[0];
   const end = points.coordinates[points.coordinates.length - 1];
 
   const onUserLocationChanged = ({ coords }: MapboxGL.Location) => {
-    console.info('onUserLocationChanged 2', coords, mapRef);
     const userPosition = [coords.longitude, coords.latitude];
     mapRef.current?.setCamera({
       centerCoordinate: userPosition,
@@ -38,6 +36,7 @@ export default ({ path, style, onUserMoved }: ARNavigationMapViewProp) => {
     <ARMap
       interactionEnabled
       userLocationVisible
+      isGPS
       ref={mapRef}
       cameraSettings={{ pitch: 30, zoomLevel: 17 }}
       onUserLocationChanged={onUserLocationChanged}>
