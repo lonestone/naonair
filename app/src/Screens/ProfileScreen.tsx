@@ -2,10 +2,11 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Linking, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { List, Portal, Provider } from 'react-native-paper';
+import { clearStorage } from '../actions/myplaces';
 import { ARButton, ARButtonSize } from '../components/atoms/ARButton';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARListItem from '../components/molecules/ARListItem';
-import ARConfirmClearStorageModal from '../components/templates/ARConfirmClearStorageModal';
+import ARConfirmModal from '../components/templates/ARConfirmModal';
 import { fonts, theme } from '../theme';
 import { ProfileItemType } from '../types/profile';
 import { StackNavigationScreenProp, StackParamList } from '../types/routes';
@@ -92,6 +93,11 @@ const ProfileScreen = () => {
     }
   };
 
+  const handleRemove = () => {
+    clearStorage();
+    setOpenModal(false);
+  };
+
   return (
     <Provider>
       <ARCommonHeader
@@ -127,7 +133,14 @@ const ProfileScreen = () => {
           onPress={() => setOpenModal(true)}
         />
         <Portal>
-          <ARConfirmClearStorageModal open={openModal} setOpen={setOpenModal} />
+          <ARConfirmModal
+            open={openModal}
+            setOpen={setOpenModal}
+            headline="Souhaitez-vous vraiment supprimer vos données ?"
+            caption="Cet action est irreversible et supprimera vos adresses favorites
+            ainsi que tout votre historique"
+            onPress={handleRemove}
+          />
         </Portal>
       </SafeAreaView>
     </Provider>
