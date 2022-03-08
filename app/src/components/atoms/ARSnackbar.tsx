@@ -3,10 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useSnackbar from '../../contexts/snackbar.context';
+import { fonts } from '../../theme';
 
 const styles = StyleSheet.create({
   wrapper: { position: 'absolute', top: 0 },
-  label: { fontSize: 15, color: 'white' },
+  label: { ...fonts.Lato.semibold, fontSize: 15, color: 'white' },
   content: {
     flex: 1,
     alignItems: 'center',
@@ -28,7 +29,7 @@ const ARSnackbar = () => {
   const handleClose = () => {
     setSnackbarStatus?.({ isVisible: false });
   };
-  
+
   return (
     <>
       {snackbarProps && (

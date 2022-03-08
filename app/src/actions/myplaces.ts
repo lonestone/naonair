@@ -12,6 +12,20 @@ export const getAllPlaces = async () => {
   return [];
 };
 
+export const getOne = async (id: string | number) => {
+  try {
+    const currentPlaces = await getAllPlaces();
+    const newIndex = currentPlaces.findIndex((place: POI) => place.id === id);
+
+    if (newIndex <= -1) {
+      return null;
+    }
+    return { currentPlaces, newIndex };
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const setPlaceStorage = async (place: POI) => {
   try {
     const currentPlaces = await getAllPlaces();
@@ -24,15 +38,14 @@ export const setPlaceStorage = async (place: POI) => {
 
 export const updatePlaceStorage = async (id: string | number, place: POI) => {
   try {
-    const currentPlaces = await getAllPlaces();
-    const newIndex = currentPlaces.findIndex((place: POI) => place.id === id);
-
-    if (newIndex <= -1) {
-      return;
+    const result = await getOne(id);
+    if (result) {
+      result.currentPlaces[result.newIndex] = place;
+      await AsyncStorage.setItem(
+        '@myplaces',
+        JSON.stringify(result.currentPlaces),
+      );
     }
-
-    currentPlaces[newIndex] = place;
-    await AsyncStorage.setItem('@myplaces', JSON.stringify(currentPlaces));
   } catch (e) {
     console.error(e);
   }
@@ -40,22 +53,20 @@ export const updatePlaceStorage = async (id: string | number, place: POI) => {
 
 export const removePlaceStorage = async (id?: string | number) => {
   try {
-    const currentPlaces = await getAllPlaces();
-    const newIndex = currentPlaces.findIndex((place: POI) => {
-      return place.id === id;
-    });
-
-    if (newIndex <= -1) {
-      return;
+    const result = await getOne(id!);
+    if (result) {
+      result.currentPlaces.splice(result.newIndex, 1);
+      await AsyncStorage.setItem(
+        '@myplaces',
+        JSON.stringify(result.currentPlaces),
+      );
     }
-
-    currentPlaces.splice(newIndex, 1);
-    await AsyncStorage.setItem('@myplaces', JSON.stringify(currentPlaces));
   } catch (e) {
     console.error(e);
   }
 };
 
 export const clearStorage = async () => {
+  //TODO : Clear all or clear only @myplaces
   await AsyncStorage.clear();
 };

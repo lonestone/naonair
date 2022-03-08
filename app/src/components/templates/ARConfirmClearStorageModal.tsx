@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Headline, Modal, Paragraph } from 'react-native-paper';
 import { clearStorage } from '../../actions/myplaces';
-import { theme } from '../../theme';
+import { fonts, theme } from '../../theme';
 
 const styles = StyleSheet.create({
   dialog: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   title: {
-    fontWeight: '700',
+    ...fonts.Raleway.bold,
     overflow: 'hidden',
     flex: 0,
     fontSize: 20,

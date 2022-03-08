@@ -5,7 +5,7 @@ import { List, Portal, Provider } from 'react-native-paper';
 import { ARButton, ARButtonSize } from '../components/atoms/ARButton';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARListItem from '../components/molecules/ARListItem';
-import ARConfirmClearStorage from '../components/templates/ARConfirmClearStorage';
+import ARConfirmClearStorageModal from '../components/templates/ARConfirmClearStorageModal';
 import { fonts, theme } from '../theme';
 import { ProfileItemType } from '../types/profile';
 import { StackNavigationScreenProp, StackParamList } from '../types/routes';
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     elevation: 0,
     alignSelf: 'center',
-    backgroundColor: '#FFEEEE',
+    backgroundColor: theme.colors.lightRed,
   },
   buttonLabel: {
     color: theme.colors.quality.main.red,
@@ -127,7 +127,7 @@ const ProfileScreen = () => {
           onPress={() => setOpenModal(true)}
         />
         <Portal>
-          <ARConfirmClearStorage open={openModal} setOpen={setOpenModal} />
+          <ARConfirmClearStorageModal open={openModal} setOpen={setOpenModal} />
         </Portal>
       </SafeAreaView>
     </Provider>
