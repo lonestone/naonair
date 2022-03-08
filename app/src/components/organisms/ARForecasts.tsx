@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { List, Text } from 'react-native-paper';
+import { Forecast, forecast } from '../../actions/qa';
 import { fonts, theme } from '../../theme';
-import { Forecasts } from '../../types/forecasts';
-import ARFilterItemComponent from '../atoms/ARFilterItemComponent';
-import { ARFilterItem } from '../molecules/ARFilter';
 import ARForecastChart from '../molecules/ARForecastChart';
 
 const styles = StyleSheet.create({
@@ -46,39 +44,27 @@ const styles = StyleSheet.create({
   },
 });
 
-const filters: ARFilterItem[] = [
-  { label: "aujourd'hui", value: Forecasts.TODAY },
-  { label: 'demain', value: Forecasts.TOMORROW },
-];
-
 interface Props {
   // TODO: add real type from received datas
   forecastQA?: boolean;
+  id: number;
 }
 
-const ARForecasts = ({ forecastQA }: Props) => {
-  const [selectedFilter, setSelectedFilter] = useState(0);
+const ARForecasts = ({ forecastQA, id }: Props) => {
+  const [indices, setIndices] = useState<Forecast[]>([]);
+  useEffect(() => {
+    forecast(id).then(setIndices);
+  }, [id]);
+
   return (
     <View style={styles.container}>
       <List.Item
         style={styles.listItem}
         titleStyle={styles.title}
         title="Prévisions"
-        right={() => (
-          <View style={styles.wrapper}>
-            {filters.map((f, idx) => (
-              <ARFilterItemComponent
-                key={idx}
-                label={f.label}
-                onPress={() => setSelectedFilter(f.value)}
-                selected={f.value === selectedFilter}
-              />
-            ))}
-          </View>
-        )}
       />
       {forecastQA ? (
-        <ARForecastChart />
+        <ARForecastChart indices={indices} />
       ) : (
         <View style={styles.card}>
           <Text style={styles.text}>non disponible pour ce lieu</Text>

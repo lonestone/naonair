@@ -103,7 +103,7 @@ const ARPOIDetails = () => {
             </View>
             <ARHeadingGroup title={poi.name} caption={poi.adress} />
             <Divider />
-            <ARForecasts forecastQA />
+            <ARForecasts id={+poi.id} forecastQA />
           </View>
         )}
       </ScrollView>
