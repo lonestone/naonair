@@ -54,7 +54,7 @@ export default ({ style, parcours }: ARRouteItemProps) => {
 
   const { properties } = parcours;
 
-  const { coureur, marcheur, cycliste } = properties;
+  const { coureur, marcheur, cycliste, km, denivele, nom } = properties;
 
   return (
     <Card
@@ -66,11 +66,8 @@ export default ({ style, parcours }: ARRouteItemProps) => {
         <Image source={{ uri }} style={{ backgroundColor: 'red', flex: 1 }} />
       </View>
       <View style={styles.container}>
-        <Text style={styles.headline}>{properties.nom}</Text>
-        <Text
-          style={
-            styles.distance
-          }>{`${properties.km}Km - dénivelé ${properties.denivele}m`}</Text>
+        <Text style={styles.headline}>{nom}</Text>
+        <Text style={styles.distance}>{`${km}Km - dénivelé ${denivele}m`}</Text>
 
         <View style={styles.icons}>
           {[coureur && 'run', marcheur && 'walk', cycliste && 'bike'].map(

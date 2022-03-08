@@ -18,21 +18,23 @@ export interface ARParcours {
   };
 }
 
-export const getAll = async (): Promise<ARParcours[]> => {
+export const getAll = async (filters: string[]): Promise<ARParcours[]> => {
   const response = await fetch(
     `${PARCOURS.baseUrl}?${jsonToUrl(PARCOURS.params)}`,
   );
 
   const geojson = (await response.json()) as { features: ARParcours[] };
-  return geojson.features.map<ARParcours>(({ geometry, properties }) => {
-    const bbox = turf.bbox(turf.multiLineString(geometry.coordinates));
+  return geojson.features
+    .map<ARParcours>(({ geometry, properties }) => {
+      const bbox = turf.bbox(turf.multiLineString(geometry.coordinates));
 
-    return {
-      geometry,
-      bbox,
-      properties: {
-        ...properties,
-      },
-    } as ARParcours;
-  });
+      return {
+        geometry,
+        bbox,
+        properties: {
+          ...properties,
+        },
+      } as ARParcours;
+    })
+    .filter(p => filters.some(f => !!p.properties[f]));
 };
