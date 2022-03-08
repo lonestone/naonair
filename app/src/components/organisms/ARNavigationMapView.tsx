@@ -17,6 +17,7 @@ export default ({ path, style, onUserMoved }: ARNavigationMapViewProp) => {
   const mapRef = createRef<ARMapHandle>();
 
   const { points } = path;
+  console.info({ path });
 
   const start = points.coordinates[0];
   const end = points.coordinates[points.coordinates.length - 1];
@@ -24,7 +25,6 @@ export default ({ path, style, onUserMoved }: ARNavigationMapViewProp) => {
   const onUserLocationChanged = ({ coords }: MapboxGL.Location) => {
     console.info('onUserLocationChanged 2', coords, mapRef);
     const userPosition = [coords.longitude, coords.latitude];
-
     mapRef.current?.setCamera({
       centerCoordinate: userPosition,
       heading: coords.heading,
@@ -36,7 +36,6 @@ export default ({ path, style, onUserMoved }: ARNavigationMapViewProp) => {
 
   return (
     <ARMap
-      style={style}
       interactionEnabled
       userLocationVisible
       ref={mapRef}

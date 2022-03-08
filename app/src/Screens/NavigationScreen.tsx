@@ -25,6 +25,8 @@ export default ({}: NavigationScreenProp) => {
   const [userPosition, setUserPosition] = useState<Position | undefined>();
   const [canScroll, setCanScroll] = useState<boolean>(false);
 
+  console.info({ path });
+
   return (
     <>
       <ARNavigationMapView

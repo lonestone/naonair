@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, VirtualizedList } from 'react-native';
+import { ARParcours, getAll } from '../../actions/parcours';
 import ARRouteItem from '../molecules/ARRouteItem';
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
     flex: 1,
     backgroundColor: 'white',
   },
@@ -18,18 +18,35 @@ const styles = StyleSheet.create({
 
 export interface ARRoutesListProps {}
 
-const mockedData: number[] = Array.from({ length: 200 }, (_, i) => i);
-
 export default () => {
+  const [parcours, setParcours] = useState<ARParcours[]>([]);
+
+  const getParcours = useCallback(async () => {
+    try {
+      setParcours(await getAll());
+    } catch (e) {
+      console.info(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    getParcours();
+  }, [getParcours]);
+
   return (
     <View style={styles.container}>
-      <VirtualizedList
-        data={mockedData}
-        renderItem={() => <ARRouteItem style={styles.item} />}
-        keyExtractor={item => `toto-${item}`}
-        getItemCount={data => data.length}
-        getItem={(data, index) => data[index]}
-      />
+      {parcours.length > 0 && (
+        <VirtualizedList<ARParcours>
+          data={parcours}
+          initialNumToRender={5}
+          renderItem={({ item }) => (
+            <ARRouteItem parcours={item} style={styles.item} />
+          )}
+          keyExtractor={item => `toto-${item}`}
+          getItemCount={data => data.length}
+          getItem={(data, index) => data[index]}
+        />
+      )}
     </View>
   );
 };

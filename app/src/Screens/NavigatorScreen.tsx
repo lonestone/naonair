@@ -8,6 +8,7 @@ import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
 import ARListFavorites from '../components/templates/ARListFavorites';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
+import ARRouteDetail from '../components/templates/ARRouteDetail';
 import { theme } from '../theme';
 import { StackParamList, TabParamList } from '../types/routes';
 import ItineraryScreen from './ItineraryScreen';
@@ -85,6 +86,12 @@ export default () => {
         name="Navigation"
         component={NavigationScreen}
         options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="RouteDetail"
+        component={ARRouteDetail}
+        options={{ headerTitle: 'Détail' }}
       />
     </Stack.Navigator>
   );
