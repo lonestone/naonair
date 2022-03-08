@@ -1,8 +1,7 @@
-import { eachHourOfInterval, startOfTomorrow } from 'date-fns';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { Forecast, QATypes, QAValues } from '../../actions/qa';
 import { theme } from '../../theme';
-import { ForecastColor } from '../../types/forecasts';
 import ARChartPie from '../atoms/ARChartPie';
 
 const styles = StyleSheet.create({
@@ -14,19 +13,16 @@ const styles = StyleSheet.create({
   },
 });
 
-// TODO : exemple de tableau avec pour les heures le type de qa
+export interface ARForecastChartProps {
+  indices: Forecast[];
+}
 
-const ARForecastChart = () => {
-  const intervalOfHours = eachHourOfInterval({
-    start: new Date(),
-    end: startOfTomorrow(),
-  });
-
+const ARForecastChart = ({ indices }: ARForecastChartProps) => {
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
-        {intervalOfHours.map((hour, i) => (
-          <ARChartPie key={i} qa={{ hour, color: ForecastColor.GOOD }} />
+        {indices.map(({ hour, value }, i) => (
+          <ARChartPie key={i} qa={{ hour, color: QAValues[value].main }} />
         ))}
       </ScrollView>
     </View>

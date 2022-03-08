@@ -1,6 +1,7 @@
-import { BBox, Position } from 'geojson';
+import { BBox, FeatureCollection, Point, Position } from 'geojson';
 import { theme } from '../theme';
-import { buildGeoserverUrl } from '../utils/config';
+import { buildGeoserverUrl, jsonToUrl } from '../utils/config';
+import { FORECASTS } from '../config.json';
 
 export enum QATypes {
   GOOD = 0,
@@ -86,4 +87,41 @@ export const getQAFromPosition = async (coord: Position) => {
   ];
 
   return await getQAFromBBox(bbox);
+};
+
+export interface Forecast {
+  hour: Date;
+  value: QATypes;
+}
+
+export const forecast = async (id: number): Promise<Forecast[]> => {
+  const queryUrl = `CQL_FILTER=poi_id=${encodeURIComponent(id)}`;
+  const params = jsonToUrl(FORECASTS.params);
+  const URL = `${FORECASTS.baseUrl}?${params}&${queryUrl}`;
+
+  console.info({ URL });
+  const response = await fetch(URL);
+
+  const json = (await response.json()) as FeatureCollection<
+    Point,
+    {
+      id: number;
+      poi_id: number;
+      type: string;
+      lieu: string;
+      adresse: string;
+      commentaire: string | null;
+      date_time_iso_utc: string;
+      date_time_local: string;
+      indice: number;
+    }
+  >;
+
+  return json.features.map<Forecast>(({ properties }) => {
+    let hour = new Date(properties.date_time_iso_utc);
+    return {
+      hour,
+      value: properties.indice - 1,
+    };
+  });
 };
