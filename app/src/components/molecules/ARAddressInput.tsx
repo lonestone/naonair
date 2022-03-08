@@ -85,6 +85,7 @@ export default ({
         placeholder={placeholder}
         textContentType="addressCity"
         label={label}
+        accessibilityLabel={label}
         style={StyleSheet.flatten([styles.inputContainer, style])}
         value={text}
         onChangeText={onChangeText}
@@ -98,6 +99,9 @@ export default ({
             name={text !== '' ? 'close' : 'target'}
             forceTextInputFocus={text !== ''}
             color={theme.colors.blue[500]}
+            accessibilityLabel={
+              text !== '' ? 'Supprimer la recherche' : 'Me localiser'
+            }
             onPress={() => {
               text !== ''
                 ? setText('')
