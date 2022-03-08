@@ -130,9 +130,7 @@ export default ({
       <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1 }}>
         <Animated.ScrollView
           ref={scrollViewRef}
-          scrollEnabled={!!scrollEnabled}
-          // canCancelContentTouches
-        >
+          scrollEnabled={!!scrollEnabled}>
           {path.instructions.map((instruction, index) => (
             <InstructionItem
               isSelected={index === currentIndex}

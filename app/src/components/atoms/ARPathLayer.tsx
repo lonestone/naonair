@@ -1,6 +1,7 @@
 import MapboxGL, { LineLayerStyle } from '@react-native-mapbox-gl/maps';
 import { Feature, Geometry } from 'geojson';
 import React from 'react';
+import { ARParcours } from '../../actions/parcours';
 import { ARPath } from '../../actions/routes';
 import { theme } from '../../theme';
 
@@ -12,19 +13,21 @@ const lineStyle: LineLayerStyle = {
 };
 
 export interface ARPathLayerProp {
-  path: ARPath;
+  path: ARPath | ARParcours;
 }
 
-export default ({ path }: ARPathLayerProp) => (
-  <MapboxGL.ShapeSource
-    id="source"
-    lineMetrics
-    shape={
-      {
-        type: 'Feature',
-        geometry: path.points,
-      } as Feature<Geometry>
-    }>
-    <MapboxGL.LineLayer id="route" style={lineStyle} />
-  </MapboxGL.ShapeSource>
-);
+export default ({ path }: ARPathLayerProp) => {
+  return (
+    <MapboxGL.ShapeSource
+      id="source"
+      lineMetrics
+      shape={
+        {
+          type: 'Feature',
+          geometry: path.points || path.geometry,
+        } as Feature<Geometry>
+      }>
+      <MapboxGL.LineLayer id="route" style={lineStyle} />
+    </MapboxGL.ShapeSource>
+  );
+};

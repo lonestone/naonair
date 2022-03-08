@@ -76,6 +76,7 @@ const ARMap = (
     animationMode,
     onUserLocationChanged,
     onMapLoaded,
+    style,
   }: ARMapProps,
   ref: Ref<ARMapHandle>,
 ) => {
@@ -104,7 +105,7 @@ const ARMap = (
 
   return (
     <>
-      <View style={styles.container}>
+      <View style={StyleSheet.flatten([styles.container, style])}>
         <MapboxGL.MapView
           // styleURL="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json" // leave it for now if we need to use this style
           // styleURL="https://geoserveis.icgc.cat/contextmaps/positron.json" // same as `styleJSON`, but I prefer to keep the URL to prevent finding it if we decided to use it

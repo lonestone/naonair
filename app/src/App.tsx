@@ -16,7 +16,7 @@ import { Provider } from 'react-native-paper';
 import ARAlert from './components/templates/ARAlert';
 import ARNews from './components/templates/ARNews';
 import { SENTRY } from './config.json';
-import Screens from './screens/NavigatorScreen';
+import Screens from './Screens/NavigatorScreen';
 import { theme } from './theme';
 
 if (!__DEV__) {

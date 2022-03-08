@@ -24,9 +24,6 @@ export default ({ paths, bbox, start, end }: ARRouteMapViewProps) => {
       onMapLoaded={() => setMapLoaded(true)}>
       {isMapLoaded && (
         <>
-          {paths.map((path, index) => (
-            <ARPathLayer key={`path-${index}`} path={path} />
-          ))}
           {start && (
             <ARPathMarker
               coordinate={start}
@@ -43,6 +40,9 @@ export default ({ paths, bbox, start, end }: ARRouteMapViewProps) => {
               type={ARPathMarkerType.END}
             />
           )}
+          {paths.map((path, index) => (
+            <ARPathLayer key={`path-${index}`} path={path} />
+          ))}
         </>
       )}
     </ARMap>

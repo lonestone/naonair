@@ -1,5 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Position } from 'geojson';
+import { ARParcours } from '../actions/parcours';
 import { POI } from '../actions/poi';
 import { ARPath } from '../actions/routes';
 
@@ -9,6 +10,7 @@ export type StackParamList = {
   ChooseItinerary: { start?: Position; end?: Position };
   Favorites: undefined;
   Navigation: { path: ARPath };
+  RouteDetail: { parcours: ARParcours };
 };
 
 export type TabParamList = {

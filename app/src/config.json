@@ -4,7 +4,7 @@
     "params": {
       "SERVICE": "WMS",
       "VERSION": "1.1.1",
-      "TRANSPARENT": true,
+      "TRANSPARENT": false,
       "QUERY_LAYERS": "aireel:aireel_indic_7m_atmo_deg",
       "LAYERS": "aireel:aireel_indic_7m_atmo_deg",
       "SRS": "EPSG:4326",
@@ -15,6 +15,16 @@
       "Y": 50,
       "WIDTH": 101,
       "HEIGHT": 101
+    }
+  },
+  "PARCOURS": {
+    "baseUrl": "https://api.naonair.org/geoserver/aireel/wms",
+    "params": {
+      "SERVICE": "WFS",
+      "version": "1.0.0",
+      "request": "GetFeature",
+      "typeName": "aireel:parcours",
+      "outputFormat": "application/json"
     }
   },
   "SENTRY": {

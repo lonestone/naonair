@@ -1,6 +1,6 @@
 import { Position } from 'geojson';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { getQAFromPosition, QAType } from '../../actions/qa';
 import { fonts, theme } from '../../theme';
 
@@ -42,9 +42,10 @@ interface Props {
   size: 'xs' | 'sm' | 'md';
   value?: QAType;
   shadow?: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
-const ARQAChip = ({ size, shadow, coord, value }: Props) => {
+const ARQAChip = ({ size, shadow, coord, value, style }: Props) => {
   const [qa, setQA] = useState<QAType | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -88,6 +89,7 @@ const ARQAChip = ({ size, shadow, coord, value }: Props) => {
       { backgroundColor: qa?.main || value?.main || theme.colors.accent },
       styles.chip,
       shadow ? styles.chipShadow : {},
+      style,
     ]);
   };
 
