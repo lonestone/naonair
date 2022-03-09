@@ -40,7 +40,7 @@ const Item = ({
   return (
     <ARListItem
       title={poi.name}
-      description={poi.adress}
+      description={poi.address}
       descriptionStyle={styles.description}
       titleStyle={styles.title}
       onPress={() => navigation.navigate('POIDetails', { poi })}
