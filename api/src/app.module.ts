@@ -10,6 +10,7 @@ import { SentryModule } from './modules/sentry/sentry.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AlertsModule } from './modules/alerts/alerts.module';
 import authConfig from './configs/auth.config';
+import { RoutingModule } from './modules/routing/routing.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import authConfig from './configs/auth.config';
     SentryModule,
     AuthModule,
     AlertsModule,
+    RoutingModule,
   ],
   controllers: [AppController],
 })
