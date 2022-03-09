@@ -101,7 +101,7 @@ const ARPOIDetails = () => {
                 </View>
               </Card>
             </View>
-            <ARHeadingGroup title={poi.name} caption={poi.adress} />
+            <ARHeadingGroup title={poi.name} caption={poi.address} />
             <Divider />
             <ARForecasts id={+poi.id} forecastQA />
           </View>

@@ -48,9 +48,11 @@ const ARPlaceFormLayout = () => {
 
   useEffect(() => {
     if (!params) return;
-    setName(params.poi.name);
-    setValues({ coord: params.poi.geolocation, text: params.poi.adress });
-  }, []);
+
+    const { poi } = params;
+    setName(poi.name);
+    setValues({ coord: poi.geolocation, text: poi.address });
+  }, [params]);
 
   const handleOnsubmit = async () => {
     if (values) {
@@ -58,7 +60,7 @@ const ARPlaceFormLayout = () => {
 
       await setPlaceStorage({
         id: Date.now(),
-        adress: values?.text,
+        address: values?.text,
         category: POICategory.FAVORITE,
         name,
         geolocation: values?.coord,
@@ -82,7 +84,7 @@ const ARPlaceFormLayout = () => {
 
       await updatePlaceStorage(params.poi.id, {
         id: params.poi.id,
-        adress: values.text,
+        address: values.text,
         category: POICategory.FAVORITE,
         name,
         geolocation: values.coord,

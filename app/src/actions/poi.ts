@@ -22,7 +22,7 @@ export interface POI {
   id: number | string; // TODO: need to be complianted with POI from json file and api-adresse.data.gouv.fr
   category: POICategory;
   name: string;
-  adress: string;
+  address: string;
   geolocation: Position;
 }
 
@@ -57,7 +57,7 @@ const POIs = poiJson.map<POI>(({ id, nom, categorie, adresse, gps }) => {
     id,
     category: getCategory(),
     name: nom,
-    adress: adresse,
+    address: adresse,
     geolocation: [lon, lat],
   };
 });

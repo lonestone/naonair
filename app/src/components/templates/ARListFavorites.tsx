@@ -70,7 +70,7 @@ const ARListFavorites = () => {
             <ARListItem
               key={`poi-${poi.id}`}
               title={poi.name}
-              description={poi.adress}
+              description={poi.address}
               descriptionStyle={styles.description}
               titleStyle={styles.title}
               onPress={() =>
