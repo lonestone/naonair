@@ -9,7 +9,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { NewsService } from './news.service';
