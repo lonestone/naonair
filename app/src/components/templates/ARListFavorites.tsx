@@ -66,7 +66,7 @@ const ARListFavorites = () => {
       <ARSnackbar />
       <ScrollView style={styles.container}>
         {items && items.length > 0 ? (
-          items.map((poi) => (
+          items.map(poi => (
             <ARListItem
               key={`poi-${poi.id}`}
               title={poi.name}

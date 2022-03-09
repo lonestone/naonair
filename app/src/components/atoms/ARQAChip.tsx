@@ -52,7 +52,7 @@ const ARQAChip = ({ size, shadow, coord, value, style }: Props) => {
   const mounted = useRef(false);
 
   const getQA = useCallback(async () => {
-    if (!coord) {
+    if (!coord || !mounted.current) {
       return;
     }
 
