@@ -10,7 +10,6 @@ import { catchError, tap } from 'rxjs/operators';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
-  constructor() {}
   logger = new Logger('IncomingRequest');
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -26,7 +25,7 @@ export class LoggingInterceptor implements NestInterceptor {
 
       const msg = `${status} ${method.toUpperCase()} ${url} +${
         Date.now() - now
-      }ms ${err?.message}`;
+      }ms ${err?.message || ''}`;
 
       err ? this.logger.error(msg) : this.logger.log(msg);
       return err;
