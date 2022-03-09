@@ -106,8 +106,10 @@ enum Field {
 
 export default () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
-  const [transportMode, setTransportMode] = useState<RouteProfile[]>([RouteProfile.Bike]);
   const [results, setResults] = useState<POI[]>([]);
+  const [transportMode, setTransportMode] = useState<RouteProfile[]>([
+    RouteProfile.Bike,
+  ]);
   const [values, setValues] = useState<{
     [key: string]: { coord: Position; text: string } | undefined;
   }>({
