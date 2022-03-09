@@ -2,12 +2,12 @@
 
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import { useNavigation } from '@react-navigation/native';
-import React, { createRef, useCallback, useEffect, useState } from 'react';
+import React, { createRef, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { POI, poiIcons } from '../../actions/poi';
-import { getQAFromPosition, QAType } from '../../actions/qa';
 import markerBackground from '../../assets/marker-background.svg';
+import { useQA } from '../../hooks/useQA';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
 import ARLegend from '../molecules/ARLegend';
@@ -50,22 +50,13 @@ const styles = StyleSheet.create({
 export const POIMarker = ({ poi }: { poi: POI }) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
   const annotationRef = createRef<MapboxGL.PointAnnotation>();
-  const [qa, setQA] = useState<QAType | undefined>();
+  const { qa } = useQA(poi.geolocation);
+
   const [selected, setSelected] = useState<boolean>(false);
-
-  const getQA = useCallback(async () => {
-    const temp = await getQAFromPosition(poi.geolocation);
-
-    setQA(temp);
-  }, [poi]);
 
   useEffect(() => {
     annotationRef.current?.refresh();
   }, [qa, annotationRef]);
-
-  useEffect(() => {
-    getQA();
-  }, [getQA]);
 
   return (
     <MapboxGL.PointAnnotation

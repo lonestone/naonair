@@ -100,6 +100,7 @@ export const forecast = async (id: number): Promise<Forecast[]> => {
   const URL = `${FORECASTS.baseUrl}?${params}&${queryUrl}`;
 
   console.info({ URL });
+
   const response = await fetch(URL);
 
   const json = (await response.json()) as FeatureCollection<

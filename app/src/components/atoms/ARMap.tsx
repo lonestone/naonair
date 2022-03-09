@@ -89,7 +89,6 @@ const ARMap = (
 ) => {
   const cameraRef = createRef<MapboxGL.Camera>();
   const mapRef = createRef<MapboxGL.MapView>();
-  const userLocationRef = createRef<MapboxGL.UserLocation>();
 
   const [bounds, setBounds] = useState<
     CameraPadding & { ne: Position; sw: Position }
@@ -135,6 +134,7 @@ const ARMap = (
             ref={cameraRef}
             bounds={bounds}
             centerCoordinate={center}
+            minZoomLevel={8}
             padding={{
               paddingBottom: 25 + insets.bottom,
               paddingLeft: 25 + insets.left,

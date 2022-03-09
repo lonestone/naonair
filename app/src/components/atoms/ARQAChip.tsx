@@ -1,7 +1,8 @@
 import { Position } from 'geojson';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
-import { getQAFromPosition, QAType } from '../../actions/qa';
+import { QAType } from '../../actions/qa';
+import { useQA } from '../../hooks/useQA';
 import { fonts, theme } from '../../theme';
 
 const styles = StyleSheet.create({
@@ -46,43 +47,7 @@ interface Props {
 }
 
 const ARQAChip = ({ size, shadow, coord, value, style }: Props) => {
-  const [qa, setQA] = useState<QAType | undefined>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const mounted = useRef(false);
-
-  const getQA = useCallback(async () => {
-    if (!coord || !mounted.current) {
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      const qa = await getQAFromPosition(coord);
-
-      if (mounted.current) {
-        setQA(qa);
-      }
-    } catch (e) {
-      console.info(e);
-    }
-
-    setIsLoading(false);
-  }, [coord]);
-
-  useEffect(() => {
-    mounted.current = true;
-    return () => {
-      mounted.current = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!value) {
-      getQA();
-    }
-  }, [getQA, value]);
+  const { qa, isLoading } = useQA(coord);
 
   const styleChip = () => {
     return StyleSheet.flatten([

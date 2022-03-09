@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { List, Text } from 'react-native-paper';
+import { ActivityIndicator, List, Text } from 'react-native-paper';
 import { Forecast, forecast } from '../../actions/qa';
+import { useForecast } from '../../hooks/useForecast';
 import { fonts, theme } from '../../theme';
 import ARForecastChart from '../molecules/ARForecastChart';
 
@@ -45,16 +46,11 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  // TODO: add real type from received datas
-  forecastQA?: boolean;
   id: number;
 }
 
-const ARForecasts = ({ forecastQA, id }: Props) => {
-  const [indices, setIndices] = useState<Forecast[]>([]);
-  useEffect(() => {
-    forecast(id).then(setIndices);
-  }, [id]);
+const ARForecasts = ({ id }: Props) => {
+  const { indices, isLoading, error } = useForecast(id);
 
   return (
     <View style={styles.container}>
@@ -63,14 +59,17 @@ const ARForecasts = ({ forecastQA, id }: Props) => {
         titleStyle={styles.title}
         title="Prévisions"
       />
-      {forecastQA ? (
-        <ARForecastChart indices={indices} />
-      ) : (
+      {isLoading && (
+        <View style={styles.card}>
+          <ActivityIndicator size="large" animating />
+        </View>
+      )}
+      {indices.length > 0 && <ARForecastChart indices={indices} />}
+      {error && (
         <View style={styles.card}>
           <Text style={styles.text}>non disponible pour ce lieu</Text>
         </View>
       )}
-      <Text style={styles.subtext}>mise à jour le 10/01/222</Text>
     </View>
   );
 };
