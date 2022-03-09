@@ -8,6 +8,8 @@ import {
 import { Position } from 'geojson';
 import React, { useEffect, useState } from 'react';
 import {
+  Image,
+  ImageSourcePropType,
   StyleProp,
   StyleSheet,
   TextStyle,
@@ -21,13 +23,13 @@ import Animated, {
   useDerivedValue,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ARInstruction, signIcons } from '../../actions/instructions';
 import {
-  ARInstruction,
   ARPath,
   getDistanceLabel,
   getInstructionFromPathSection,
 } from '../../actions/routes';
+import { theme } from '../../theme';
 import ARDivider from '../atoms/ARDivider';
 
 export interface ARPathInstructionsProps {
@@ -55,7 +57,27 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     flexDirection: 'row',
-    paddingVertical: 20,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  signContent: {
+    position: 'relative',
+    height: 45,
+    width: 45,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  sign: {
+    width: 45,
+    height: 45,
+    margin: 5,
+  },
+  exitText: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    position: 'absolute',
+    color: theme.colors.blue[500],
   },
 });
 
@@ -68,6 +90,8 @@ const InstructionItem = ({
     return {
       text: {
         fontWeight: isSelected ? 'bold' : 'normal',
+        fontSize: isSelected ? 18 : 14,
+        flex: 1,
       },
     };
   };
@@ -80,7 +104,13 @@ const InstructionItem = ({
           const { layout } = nativeEvent;
           onLayout(layout.y);
         }}>
-        <Icon name="navigation" />
+        <View style={styles.signContent}>
+          <Image
+            style={styles.sign}
+            source={signIcons[instruction.sign] as ImageSourcePropType}
+          />
+          <Text style={styles.exitText}>{instruction.exit_number}</Text>
+        </View>
         <Text style={buildStyle().text}>{instruction.text}</Text>
       </View>
       <ARDivider text={getDistanceLabel(instruction.distance)} />
