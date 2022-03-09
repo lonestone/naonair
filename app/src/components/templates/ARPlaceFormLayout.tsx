@@ -2,14 +2,14 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Position } from 'geojson';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Portal, Provider } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
 import {
   removePlaceStorage,
   setPlaceStorage,
   updatePlaceStorage,
 } from '../../actions/myplaces';
-import { MapboxFeature, POICategory, poiIcons } from '../../actions/poi';
+import { POI, POICategory, poiIcons } from '../../actions/poi';
 import useSnackbar from '../../contexts/snackbar.context';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
@@ -39,7 +39,7 @@ const ARPlaceFormLayout = () => {
   const { setSnackbarStatus } = useSnackbar();
 
   const [name, setName] = useState('');
-  const [results, setResults] = useState<MapboxFeature[]>([]);
+  const [results, setResults] = useState<POI[]>([]);
   const [values, setValues] = useState<
     { coord: Position; text: string } | undefined
   >();
@@ -122,7 +122,7 @@ const ARPlaceFormLayout = () => {
   }, [name, values]);
 
   return (
-    <Provider>
+    <>
       <ARCommonHeader
         headline={
           params && params.poi ? "Modifier l'adresse" : 'Créer une adresse'
@@ -139,10 +139,11 @@ const ARPlaceFormLayout = () => {
           values={values}
           setValues={setValues}
           setResults={setResults}
+          onTextChanged={() => {}}
         />
         <ScrollView
           style={styles.container}
-          contentInset={{ bottom: 70, top: -50 }}
+          contentInset={{ bottom: 70, top: 0 }}
           indicatorStyle="black">
           {(results || []).map(({ geolocation, name, address }, index) => (
             <React.Fragment key={index}>
@@ -154,7 +155,7 @@ const ARPlaceFormLayout = () => {
                   <SvgXml
                     width="20"
                     height="20"
-                    xml={poiIcons[`${POICategory.FAVORITE}`] || null}
+                    xml={poiIcons[POICategory.FAVORITE] || null}
                   />
                 )}
                 onPress={() => {
@@ -197,7 +198,7 @@ const ARPlaceFormLayout = () => {
           onPress={() => params && handleRemove(params.poi.id as string)}
         />
       </Portal>
-    </Provider>
+    </>
   );
 };
 

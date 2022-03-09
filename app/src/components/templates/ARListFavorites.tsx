@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   paragraph: {
     marginHorizontal: 20,
     marginTop: 10,
-    color: theme.colors.blue[500]
+    color: theme.colors.blue[500],
   },
 });
 
@@ -57,8 +57,7 @@ const ARListFavorites = () => {
   useEffect(() => {
     navigation.addListener('focus', readItemFromStorage);
     return () => navigation.removeListener('focus', readItemFromStorage);
-  }, []);
-
+  }, [navigation]);
 
   return (
     <>
