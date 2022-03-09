@@ -34,6 +34,7 @@ export class AlertsService {
             this.converter.toDTO(alert),
           ),
         ),
-      ).pipe(catchError((err) => throwError(() => log(err))));
+      )
+      .pipe(catchError((err) => throwError(() => log(err))));
   }
 }
