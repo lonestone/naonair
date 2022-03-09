@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleProp, StyleSheet, TextStyle } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
+import { SvgXml } from 'react-native-svg';
+import { POICategory, poiIcons } from '../../actions/poi';
 import { fonts, theme } from '../../theme';
 
 const styles = StyleSheet.create({
@@ -33,7 +35,8 @@ interface ARListItemProps {
   description?: string;
   titleStyle?: StyleProp<TextStyle>;
   descriptionStyle?: StyleProp<TextStyle>;
-  leftIcon: IconSource;
+  category?: POICategory;
+  leftIcon?: IconSource;
   rightIcon?: any;
   rightChip?: any;
   onPress?: () => void;
@@ -44,11 +47,29 @@ const ARListItem = ({
   description,
   titleStyle,
   descriptionStyle,
-  leftIcon,
+  category,
   rightIcon,
   rightChip,
+  leftIcon,
   onPress,
 }: ARListItemProps) => {
+  const getIcon = useCallback((): IconSource => {
+    if (leftIcon) {
+      return leftIcon;
+    } else if (!category || !poiIcons[category!]) {
+      return 'navigation';
+    }
+
+    return () => (
+      <SvgXml
+        width="20"
+        height="20"
+        xml={poiIcons[category!]!}
+        fill="#25244E"
+      />
+    );
+  }, [leftIcon, category]);
+
   return (
     <>
       <List.Item
@@ -61,7 +82,7 @@ const ARListItem = ({
           <List.Icon
             {...props}
             style={styles.iconContainer}
-            icon={leftIcon}
+            icon={getIcon()}
             color={theme.colors.blue[500]}
           />
         )}

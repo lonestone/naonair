@@ -2,9 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Paragraph } from 'react-native-paper';
-import { SvgXml } from 'react-native-svg';
 import { getAllPlaces } from '../../actions/myplaces';
-import { POI, POICategory, poiIcons } from '../../actions/poi';
+import { POI, POICategory } from '../../actions/poi';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
@@ -77,16 +76,17 @@ const ARListFavorites = () => {
                 poi.category === POICategory.FAVORITE &&
                 navigation.navigate('PlaceForm', { poi })
               }
-              leftIcon={() => (
-                <View style={styles.iconWrapper}>
-                  <SvgXml
-                    width="20"
-                    height="20"
-                    xml={poiIcons[`${poi.category}`] || null}
-                    fill={theme.colors.blue[500]}
-                  />
-                </View>
-              )}
+              category={poi.category}
+              // leftIcon={() => (
+              //   <View style={styles.iconWrapper}>
+              //     <SvgXml
+              //       width="20"
+              //       height="20"
+              //       xml={poiIcons[`${poi.category}`] || null}
+              //       fill={theme.colors.blue[500]}
+              //     />
+              //   </View>
+              // )}
               rightIcon={
                 poi.category === POICategory.FAVORITE ? 'pencil' : 'star'
               }
