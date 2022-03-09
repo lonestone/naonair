@@ -1,9 +1,9 @@
-import Geolocation from 'react-native-geolocation-service';
 import { Position } from 'geojson';
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 import { TextInput } from 'react-native-paper';
-import { geocoding, MapboxFeature, reverse } from '../../actions/poi';
+import { geocoding, getAll, POI, reverse } from '../../actions/poi';
 import { theme } from '../../theme';
 
 // Gouv API usage
@@ -22,9 +22,10 @@ export interface ARAddressInputProps {
 
   label: string;
   placeholder?: string;
-  onResults?: (results: MapboxFeature[]) => void;
+  onResults?: (results: POI[]) => void;
   onFocus?: () => void;
   onUserLocation?: (coord: Position, text: string) => void;
+  onTextChanged?: () => void;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -36,9 +37,10 @@ export default ({
   onResults,
   onFocus,
   onUserLocation,
+  onTextChanged,
 }: ARAddressInputProps) => {
   const [text, setText] = useState<string>(value?.text || '');
-  const [results, setResults] = useState<MapboxFeature[]>([]);
+  const [results, setResults] = useState<POI[]>([]);
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const searchTimeout = useRef<number | null>(null);
@@ -64,12 +66,17 @@ export default ({
   const onChangeText = (newValue: string) => {
     setText(newValue);
 
+    onTextChanged?.();
+
     if (searchTimeout.current) {
       clearTimeout(searchTimeout.current);
     }
 
     searchTimeout.current = setTimeout(async () => {
-      const features = await geocoding(newValue);
+      const features = [
+        ...(await getAll({ text: newValue })),
+        ...(await geocoding(newValue)),
+      ];
       setResults(features);
     }, 500) as unknown as number;
   };

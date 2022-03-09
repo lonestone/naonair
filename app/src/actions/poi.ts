@@ -26,11 +26,10 @@ export interface POI {
   geolocation: Position;
 }
 
-export interface MapboxFeature extends Feature {
+export interface MapboxFeature extends Feature<Point> {
   id: string;
   text_fr: string;
   text: string;
-  geometry: Point;
   place_name_fr: string;
 }
 
@@ -73,13 +72,35 @@ export const poiIcons: {
   [POICategory.SPORT]: sportIcon,
 };
 
-export const getAll = async (categories: POICategory[]) => {
+export const getAll = async (params?: {
+  categories?: POICategory[];
+  text?: string;
+}) => {
+  const {
+    categories = [
+      POICategory.CULTURE,
+      POICategory.FAVORITE,
+      POICategory.MARKET,
+      POICategory.PARK,
+      POICategory.SPORT,
+      POICategory.UNDEFINED,
+    ],
+    text = '',
+  } = params || {};
+
   let results = POIs.filter(pois => {
-    return categories.includes(pois.category);
+    return (
+      categories.includes(pois.category) &&
+      (pois.address.includes(text) || pois.name.includes(text))
+    );
   });
 
   if (categories.includes(POICategory.FAVORITE)) {
-    results.push(...(await getAllPlaces()));
+    results.push(
+      ...(await getAllPlaces()).filter(
+        p => (p.address || '').includes(text) || p.name.includes(text),
+      ),
+    );
   }
 
   return results;
@@ -107,13 +128,20 @@ export const reverse = async ([lon, lat]: Position): Promise<
   return [];
 };
 
-export const geocoding = async (query: string): Promise<MapboxFeature[]> => {
+export const geocoding = async (query: string): Promise<POI[]> => {
   const queryUrl = encodeURIComponent(query);
 
   const URL = buildMapboxUrl(queryUrl);
 
+  console.info({ URL });
   const response = await fetch(URL);
 
-  const { features } = (await response.json()) as FeatureCollection;
-  return features as MapboxFeature[];
+  const { features } = (await response.json()) as { features: MapboxFeature[] };
+  return features.map<POI>(f => ({
+    id: f.id,
+    category: POICategory.UNDEFINED,
+    name: f.text_fr,
+    address: f.place_name_fr,
+    geolocation: f.geometry.coordinates,
+  }));
 };

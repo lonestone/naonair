@@ -144,11 +144,12 @@ const ARPlaceFormLayout = () => {
           style={styles.container}
           contentInset={{ bottom: 70, top: -50 }}
           indicatorStyle="black">
-          {(results || []).map(({ geometry, text_fr }, index) => (
+          {(results || []).map(({ geolocation, name, address }, index) => (
             <React.Fragment key={index}>
               <ARListItem
                 key={`item-${index}`}
-                title={text_fr}
+                title={name}
+                description={address}
                 leftIcon={() => (
                   <SvgXml
                     width="20"
@@ -158,8 +159,8 @@ const ARPlaceFormLayout = () => {
                 )}
                 onPress={() => {
                   setValues({
-                    coord: geometry.coordinates,
-                    text: text_fr,
+                    coord: geolocation,
+                    text: name,
                   });
                   setResults([]);
                 }}
