@@ -1,5 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
+import { getAllPlaces } from '../actions/myplaces';
 import { getAll, POI, POICategory } from '../actions/poi';
 import { SwitchToggleItem } from '../components/molecules/ARSwitchToggle';
 import ARPOIHeader from '../components/organisms/ARPOIHeader';
@@ -20,8 +21,15 @@ export default () => {
   );
   const [pois, setPois] = useState<POI[]>([]);
 
+  const generateListOfPOIs = async (categories: POICategory[]) => {
+    const pois = await getAll(categories);
+    const myPlaces = await getAllPlaces();
+    const hasFavorite = categories[0] === POICategory.FAVORITE;
+    setPois(hasFavorite ? pois.concat(myPlaces) : pois);
+  };
+
   useEffect(() => {
-    setPois(getAll(selectedCategories));
+    generateListOfPOIs(selectedCategories);
   }, [selectedCategories]);
 
   const displayTypeItems: (SwitchToggleItem & {
