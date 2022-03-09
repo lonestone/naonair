@@ -1,10 +1,11 @@
-import Geolocation from 'react-native-geolocation-service';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 import { Card, Divider } from 'react-native-paper';
-import { theme } from '../../theme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { RouteProfile } from '../../actions/routes';
+import { theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARMap from '../atoms/ARMap';
@@ -64,6 +65,7 @@ const ARPOIDetails = () => {
         navigation.navigate('ChooseItinerary', {
           start: [coords.longitude, coords.latitude],
           end: poi.geolocation,
+          transportMode: RouteProfile.Walk,
         });
       },
       error => {

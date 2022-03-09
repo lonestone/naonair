@@ -103,13 +103,11 @@ enum Field {
   START = 'start',
   END = 'end',
 }
-// [
-//   -1.525139, 47.22919,
-// ]
+
 export default () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
   const [results, setResults] = useState<MapboxFeature[]>([]);
-  const [transportMode, setTransportMode] = useState<RouteProfile[]>([]);
+  const [transportMode, setTransportMode] = useState<RouteProfile[]>([RouteProfile.Bike]);
   const [values, setValues] = useState<{
     [key: string]: { coord: Position; text: string } | undefined;
   }>({
@@ -178,9 +176,9 @@ export default () => {
             accessibilityLabel="Resultats de la recheche"
             indicatorStyle="black">
             {(results || []).map(
-              ({ properties, geometry, text_fr, place_name_fr }) => (
+              ({ geometry, text_fr, place_name_fr }, idx) => (
                 <ARListItem
-                  key={properties?.id}
+                  key={`properties-${idx}`}
                   leftIcon="navigation"
                   title={text_fr}
                   description={place_name_fr}
