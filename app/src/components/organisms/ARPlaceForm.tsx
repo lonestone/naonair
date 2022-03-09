@@ -2,7 +2,7 @@ import { Position } from 'geojson';
 import React, { Dispatch, SetStateAction } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import { MapboxFeature } from '../../actions/poi';
+import { POI } from '../../actions/poi';
 import { theme } from '../../theme';
 import ARAddressInput from '../molecules/ARAddressInput';
 
@@ -22,6 +22,7 @@ interface ARPlaceFormProps {
     coord: Position;
     text: string;
   };
+  onTextChanged?: () => void;
   setValues: Dispatch<
     SetStateAction<
       | {
@@ -31,7 +32,7 @@ interface ARPlaceFormProps {
       | undefined
     >
   >;
-  setResults: Dispatch<SetStateAction<MapboxFeature[]>>;
+  setResults: Dispatch<SetStateAction<POI[]>>;
 }
 
 const ARPlaceForm = ({
@@ -40,6 +41,7 @@ const ARPlaceForm = ({
   values,
   setValues,
   setResults,
+  onTextChanged,
 }: ARPlaceFormProps) => {
   return (
     <View>
@@ -57,6 +59,7 @@ const ARPlaceForm = ({
         label="Adresse"
         placeholder="Adresse"
         onResults={setResults}
+        onTextChanged={onTextChanged}
         onUserLocation={(coord, text) => {
           setValues({ coord, text });
         }}

@@ -11,7 +11,7 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { MapboxFeature } from '../../actions/poi';
+import { POI } from '../../actions/poi';
 import { RouteProfile } from '../../actions/routes';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
@@ -106,8 +106,8 @@ enum Field {
 
 export default () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
-  const [results, setResults] = useState<MapboxFeature[]>([]);
   const [transportMode, setTransportMode] = useState<RouteProfile[]>([RouteProfile.Bike]);
+  const [results, setResults] = useState<POI[]>([]);
   const [values, setValues] = useState<{
     [key: string]: { coord: Position; text: string } | undefined;
   }>({
@@ -176,18 +176,18 @@ export default () => {
             accessibilityLabel="Resultats de la recheche"
             indicatorStyle="black">
             {(results || []).map(
-              ({ geometry, text_fr, place_name_fr }, idx) => (
+              ({ id, address, geolocation, name, category }) => (
                 <ARListItem
-                  key={`properties-${idx}`}
-                  leftIcon="navigation"
-                  title={text_fr}
-                  description={place_name_fr}
+                  key={id}
+                  category={category}
+                  title={name}
+                  description={address}
                   onPress={() => {
                     setValues({
                       ...values,
                       [selectedField.toString()]: {
-                        coord: geometry.coordinates,
-                        text: text_fr,
+                        coord: geolocation,
+                        text: name,
                       },
                     });
                   }}
