@@ -6,6 +6,7 @@ import marketIcon from '../assets/market-icon.svg';
 import parkIcon from '../assets/park-icon.svg';
 import sportIcon from '../assets/sport-icon.svg';
 import { buildMapboxUrl } from '../utils/config';
+import { getAllPlaces } from './myplaces';
 
 // eslint-disable-next-line no-shadow
 export enum POICategory {
@@ -72,10 +73,16 @@ export const poiIcons: {
   [POICategory.SPORT]: sportIcon,
 };
 
-export const getAll = (categories: POICategory[]) => {
-  return POIs.filter(pois => {
+export const getAll = async (categories: POICategory[]) => {
+  let results = POIs.filter(pois => {
     return categories.includes(pois.category);
   });
+
+  if (categories.includes(POICategory.FAVORITE)) {
+    results.push(...(await getAllPlaces()));
+  }
+
+  return results;
 };
 
 export const getOne = (id: number) => {
