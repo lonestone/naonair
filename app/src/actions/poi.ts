@@ -1,13 +1,11 @@
 import { Feature, FeatureCollection, Point, Position } from 'geojson';
-import poiJson from '../assets/db/poi.json';
-import { buildMapboxUrl } from '../utils/config';
-
 import cultureIcon from '../assets/culture-icon.svg';
+import poiJson from '../assets/db/poi.json';
 import favoriteIcon from '../assets/favorite-icon.svg';
-
 import marketIcon from '../assets/market-icon.svg';
 import parkIcon from '../assets/park-icon.svg';
 import sportIcon from '../assets/sport-icon.svg';
+import { buildMapboxUrl } from '../utils/config';
 
 // eslint-disable-next-line no-shadow
 export enum POICategory {
