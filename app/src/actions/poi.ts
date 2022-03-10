@@ -45,7 +45,7 @@ const POIs = poiJson.map<POI>(({ id, nom, categorie, adresse, gps }) => {
         return POICategory.SPORT;
       case 'Culture':
         return POICategory.CULTURE;
-      case 'Marche':
+      case 'Marché':
         return POICategory.MARKET;
       case 'favoris':
         return POICategory.FAVORITE;

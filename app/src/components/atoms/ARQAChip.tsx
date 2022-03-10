@@ -47,7 +47,7 @@ interface Props {
 }
 
 const ARQAChip = ({ size, shadow, coord, value, style }: Props) => {
-  const { qa, isLoading } = useQA(coord);
+  const qa = useQA(coord);
 
   const styleChip = () => {
     return StyleSheet.flatten([
@@ -68,10 +68,7 @@ const ARQAChip = ({ size, shadow, coord, value, style }: Props) => {
             color: qa?.light || value?.light || theme.colors.blue[300],
           },
         ]}>
-        {qa?.label ||
-          value?.label ||
-          (isLoading && 'récupération') ||
-          'non connu'}
+        {qa?.label || value?.label || 'non connu'}
       </Text>
     </View>
   );

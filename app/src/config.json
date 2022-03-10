@@ -14,17 +14,26 @@
       "X": 50,
       "Y": 50,
       "WIDTH": 101,
-      "HEIGHT": 101
+      "HEIGHT": 101,
+      "typeName": "aireel:poi_data"
     }
   },
   "FORECASTS": {
     "baseUrl": "https://api.naonair.org/geoserver/aireel/ows",
     "params": {
-      "typeName": "aireel:poi_data",
       "outputFormat": "application/json",
       "SERVICE": "WFS",
       "version": "1.0.0",
       "request": "GetFeature"
+    }
+  },
+  "QA": {
+    "baseUrl": "https://api.naonair.org/geoserver/aireel/ows",
+    "params": {
+      "SERVICE": "WFS",
+      "version": "1.0.0",
+      "request": "GetFeature",
+      "outputFormat": "application/json"
     }
   },
   "PARCOURS": {

@@ -1,7 +1,8 @@
 import { BBox, FeatureCollection, Point, Position } from 'geojson';
 import { theme } from '../theme';
 import { buildGeoserverUrl, jsonToUrl } from '../utils/config';
-import { FORECASTS } from '../config.json';
+import { FORECASTS, QA } from '../config.json';
+import logger from '../utils/logger';
 
 export enum QATypes {
   GOOD = 0,
@@ -71,15 +72,17 @@ export const getQAFromBBox = async (bbox: BBox): Promise<QAType> => {
 
     return QAValues[index];
   } catch (e) {
-    console.info({ e, URL });
-
-    // TODO SENTRY
+    logger.error(e, 'getQAFromBBox');
   }
 
   return QAValues[QATypes.GOOD];
 };
 
 export const getQAFromPosition = async (coord: Position) => {
+  if (!coord || coord.length < 2) {
+    return;
+  }
+
   const bboxSize: number = 0.01;
   const bbox: BBox = [
     coord[0] - bboxSize,
@@ -89,6 +92,40 @@ export const getQAFromPosition = async (coord: Position) => {
   ];
 
   return await getQAFromBBox(bbox);
+};
+
+export const getQAFromParcours = async () => {
+  const paramsUrl = jsonToUrl({
+    ...QA.params,
+    typeName: 'aireel:parcours_poi_data',
+  });
+
+  const URL = `${QA.baseUrl}?${paramsUrl}`;
+  console.info({ URL });
+  try {
+    const json = (await (
+      await fetch(URL, {
+        headers: {
+          Accept: 'application/json',
+        },
+      })
+    ).json()) as FeatureCollection<Point, { indice: number }>;
+
+    const { features } = json;
+
+    const mid = Math.floor(features.length / 2);
+    let value = features[mid].properties.indice;
+    if (features.length % 2 !== 0) {
+      console.info(value);
+      return value;
+    }
+
+    value += features[mid + 1].properties.indice;
+    console.info({ value });
+    return value / 2;
+  } catch (e) {
+    logger.error(e, 'getQAFromParcours');
+  }
 };
 
 export interface Forecast {
@@ -102,28 +139,33 @@ export const forecast = async (id: number): Promise<Forecast[]> => {
   const URL = `${FORECASTS.baseUrl}?${params}&${queryUrl}`;
 
   // TODO : SENTRY
-  const response = await fetch(URL);
+  try {
+    const response = await fetch(URL);
 
-  const json = (await response.json()) as FeatureCollection<
-    Point,
-    {
-      id: number;
-      poi_id: number;
-      type: string;
-      lieu: string;
-      adresse: string;
-      commentaire: string | null;
-      date_time_iso_utc: string;
-      date_time_local: string;
-      indice: number;
-    }
-  >;
+    const json = (await response.json()) as FeatureCollection<
+      Point,
+      {
+        id: number;
+        poi_id: number;
+        type: string;
+        lieu: string;
+        adresse: string;
+        commentaire: string | null;
+        date_time_iso_utc: string;
+        date_time_local: string;
+        indice: number;
+      }
+    >;
 
-  return json.features.map<Forecast>(({ properties }) => {
-    let hour = new Date(properties.date_time_iso_utc);
-    return {
-      hour,
-      value: properties.indice - 1,
-    };
-  });
+    return json.features.map<Forecast>(({ properties }) => {
+      let hour = new Date(properties.date_time_iso_utc);
+      return {
+        hour,
+        value: properties.indice - 1,
+      };
+    });
+  } catch (e) {
+    logger.error(e, 'forecasts');
+  }
+  return [];
 };

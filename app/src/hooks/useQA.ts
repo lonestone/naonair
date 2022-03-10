@@ -1,15 +1,26 @@
 import { Position } from 'geojson';
 import { useEffect, useRef, useState } from 'react';
-import { getQAFromPosition, QAType } from '../actions/qa';
-import { useLoading } from './useLoading';
+import { ARParcours } from '../actions/parcours';
+import { getQAFromParcours, getQAFromPosition, QAType } from '../actions/qa';
 
 export const useQA = (coord?: Position) => {
-  const { isLoading, results } = useLoading(
-    () => getQAFromPosition(coord!),
-    null,
-  );
+  const [qa, setQA] = useState<QAType | undefined>();
 
-  return { isLoading, qa: results };
+  useEffect(() => {
+    getQAFromPosition(coord!).then(setQA);
+  }, [setQA, coord]);
+
+  return qa;
+};
+
+export const useQAParcours = (parcours?: ARParcours) => {
+  const [qa, setQA] = useState<number>();
+
+  useEffect(() => {
+    getQAFromParcours().then(setQA);
+  }, [setQA]);
+
+  return qa;
 };
 
 export const useQAs = (coords: Position[]) => {

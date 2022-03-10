@@ -5,6 +5,7 @@ import { Card, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ARParcours } from '../../actions/parcours';
 import { QATypes, QAValues } from '../../actions/qa';
+import { useQAParcours } from '../../hooks/useQA';
 import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARQAChip from '../atoms/ARQAChip';
@@ -54,13 +55,15 @@ export default ({ style, parcours }: ARRouteItemProps) => {
 
   const { properties } = parcours;
 
+  const qa = useQAParcours(parcours);
+
   const { coureur, marcheur, cycliste, km, denivele, nom } = properties;
 
   return (
     <Card
       style={[style, styles.card]}
       onPress={() => {
-        navigation.navigate('RouteDetail', { parcours });
+        navigation.navigate('RouteDetail', { parcours, qa });
       }}>
       <View style={styles.mapContainer}>
         <Image source={{ uri }} style={{ backgroundColor: 'red', flex: 1 }} />
@@ -83,7 +86,7 @@ export default ({ style, parcours }: ARRouteItemProps) => {
           )}
 
           <View style={styles.spacer} />
-          <ARQAChip size="md" value={QAValues[QATypes.GOOD]} />
+          <ARQAChip size="md" value={QAValues[qa ?? QATypes.XXBAD]} />
         </View>
       </View>
     </Card>

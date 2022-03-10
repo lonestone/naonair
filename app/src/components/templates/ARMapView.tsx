@@ -8,6 +8,7 @@ import { SvgXml } from 'react-native-svg';
 import { POI, poiIcons } from '../../actions/poi';
 import { QAType } from '../../actions/qa';
 import markerBackground from '../../assets/marker-background.svg';
+
 import { useQAs } from '../../hooks/useQA';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARMap from '../atoms/ARMap';

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
@@ -13,23 +13,23 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoSplashScreen" translatesAutoresizingMaskIntoConstraints="NO" id="j4K-Yn-oFl">
-                                <rect key="frame" x="442" y="605" width="140" height="160"/>
+                                <rect key="frame" x="125" y="347" width="140" height="160"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoAirPDL" translatesAutoresizingMaskIntoConstraints="NO" id="7eI-w3-vA5">
-                                <rect key="frame" x="460" y="1266" width="104" height="30"/>
+                                <rect key="frame" x="143" y="730" width="104" height="30"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BottomShapes" translatesAutoresizingMaskIntoConstraints="NO" id="ylc-ci-xdn">
-                                <rect key="frame" x="0.0" y="707.5" width="1024" height="588.5"/>
+                                <rect key="frame" x="0.0" y="535.66666666666663" width="390" height="224.33333333333337"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ylc-ci-xdn" secondAttribute="height" multiplier="207:119" id="dQF-F9-nub"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TopShapes" translatesAutoresizingMaskIntoConstraints="NO" id="cMp-KG-dxm">
-                                <rect key="frame" x="0.0" y="74" width="1024" height="425.5"/>
+                                <rect key="frame" x="0.0" y="94" width="390" height="162"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="cMp-KG-dxm" secondAttribute="height" multiplier="207:86" id="vHO-O8-SfM"/>
                                 </constraints>
