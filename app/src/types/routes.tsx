@@ -14,7 +14,7 @@ export type StackParamList = {
   };
   Favorites: undefined;
   Navigation: { path: ARPath };
-  RouteDetail: { parcours: ARParcours };
+  RouteDetail: { parcours: ARParcours; qa?: number };
   PlaceForm: undefined | { poi: POI };
 };
 

@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react-native';
 import * as turf from '@turf/turf';
 import { BBox } from 'geojson';
 import { PARCOURS } from '../config.json';
@@ -18,23 +19,35 @@ export interface ARParcours {
   };
 }
 
+// https://api.naonair.org/geoserver/aireel/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=aireel%3Aparcours_poi_data&outputFormat=application%2Fjson
+
 export const getAll = async (filters: string[]): Promise<ARParcours[]> => {
-  const response = await fetch(
-    `${PARCOURS.baseUrl}?${jsonToUrl(PARCOURS.params)}`,
-  );
+  try {
+    const URL = `${PARCOURS.baseUrl}?${jsonToUrl(PARCOURS.params)}`;
+    console.debug(URL);
+    const response = await fetch(URL);
 
-  const geojson = (await response.json()) as { features: ARParcours[] };
-  return geojson.features
-    .map<ARParcours>(({ geometry, properties }) => {
-      const bbox = turf.bbox(turf.multiLineString(geometry.coordinates));
+    const geojson = (await response.json()) as { features: ARParcours[] };
+    const parcours = geojson.features
+      .map<ARParcours>(({ geometry, properties }) => {
+        const bbox = turf.bbox(turf.multiLineString(geometry.coordinates));
 
-      return {
-        geometry,
-        bbox,
-        properties: {
-          ...properties,
-        },
-      } as ARParcours;
-    })
-    .filter(p => filters.some(f => !!p.properties[f]));
+        return {
+          geometry,
+          bbox,
+          properties: {
+            ...properties,
+          },
+        } as ARParcours;
+      })
+      .filter(p => filters.some(f => !!p.properties[f]));
+
+    return parcours;
+  } catch (e) {
+    if (__DEV__) {
+      console.info(e);
+    } else {
+      Sentry.captureException(e);
+    }
+  }
 };

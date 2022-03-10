@@ -1,11 +1,12 @@
-import { forecast } from '../actions/qa';
-import { useLoading } from './useLoading';
+import { useEffect, useState } from 'react';
+import { Forecast, forecast } from '../actions/qa';
 
 export const useForecast = (id: number) => {
-  // useEffect(() => {
-  //   useLoading(() => forecast(id));
-  // }, []);
-  const { isLoading, results, error } = useLoading(() => forecast(id), []);
+  const [indices, setIndices] = useState<Forecast[]>([]);
 
-  return { isLoading, error, indices: results };
+  useEffect(() => {
+    forecast(id).then(setIndices);
+  }, [setIndices, id]);
+
+  return indices;
 };

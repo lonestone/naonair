@@ -10,7 +10,6 @@ import { StackParamList } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
 import ARPathLayer from '../atoms/ARPathLayer';
 import ARQAChip from '../atoms/ARQAChip';
-import ARForecastChart from '../molecules/ARForecastChart';
 import ARForecasts from '../organisms/ARForecasts';
 
 const styles = StyleSheet.create({
@@ -107,7 +106,7 @@ const styles = StyleSheet.create({
 export type ARRouteDetailProp = RouteProp<StackParamList, 'RouteDetail'>;
 
 export default ({}: ARRouteDetailProp) => {
-  const { parcours } = useRoute<ARRouteDetailProp>().params || {};
+  const { parcours, qa } = useRoute<ARRouteDetailProp>().params || {};
 
   const { coureur, cycliste, marcheur, km } = parcours.properties;
 
@@ -140,7 +139,7 @@ export default ({}: ARRouteDetailProp) => {
           <ARQAChip
             style={styles.mapChip}
             size="md"
-            value={QAValues[QATypes.GOOD]}
+            value={QAValues[qa ?? QATypes.XXBAD]}
           />
         </View>
 
@@ -170,7 +169,7 @@ export default ({}: ARRouteDetailProp) => {
             ),
         )}
 
-        <ARForecasts />
+        <ARForecasts id={0} />
       </SafeAreaView>
     </ScrollView>
   );

@@ -49,7 +49,7 @@ interface Props {
 }
 
 const ARForecasts = ({ id }: Props) => {
-  const { indices, isLoading, error } = useForecast(id);
+  const indices = useForecast(id);
 
   return (
     <View style={styles.container}>
@@ -58,17 +58,17 @@ const ARForecasts = ({ id }: Props) => {
         titleStyle={styles.title}
         title="Prévisions"
       />
-      {isLoading && (
+      {/* {isLoading && (
         <View style={styles.card}>
           <ActivityIndicator size="large" animating />
         </View>
-      )}
+      )} */}
       {indices.length > 0 && <ARForecastChart indices={indices} />}
-      {error && (
+      {/* {error && (
         <View style={styles.card}>
           <Text style={styles.text}>non disponible pour ce lieu</Text>
         </View>
-      )}
+      )} */}
     </View>
   );
 };

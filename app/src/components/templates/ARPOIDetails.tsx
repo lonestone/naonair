@@ -78,7 +78,7 @@ const ARPOIDetails = () => {
 
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
 
-  const { qa } = useQA(poi.geolocation);
+  const qa = useQA(poi.geolocation);
 
   return (
     <>
