@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, List, Text } from 'react-native-paper';
-import { Forecast, forecast } from '../../actions/qa';
 import { useForecast } from '../../hooks/useForecast';
 import { fonts, theme } from '../../theme';
 import ARForecastChart from '../molecules/ARForecastChart';

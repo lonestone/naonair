@@ -5,9 +5,10 @@ export const useLoading = <U>(callback: () => Promise<U>, defaultValue: U) => {
   const [results, setResults] = useState<U>(defaultValue);
   const [error, setError] = useState<any | undefined>();
   const fetched = useRef(false);
+  const mounted = useRef(false);
 
   const action = useCallback(async () => {
-    if (fetched.current) {
+    if (fetched.current || !mounted.current) {
       return;
     }
 
@@ -15,16 +16,29 @@ export const useLoading = <U>(callback: () => Promise<U>, defaultValue: U) => {
     try {
       setIsLoading(true);
 
-      setResults(await callback());
+      const temp = await callback();
+      if (mounted.current) {
+        setResults(temp);
+      }
     } catch (e) {
-      setError(e);
+      if (mounted.current) {
+        setError(e);
+      }
     }
-    setIsLoading(false);
-  }, [setError, setResults, setIsLoading, callback, fetched]);
+
+    if (mounted.current) {
+      setIsLoading(false);
+    }
+  }, [setError, setResults, setIsLoading, callback, fetched, mounted]);
 
   useEffect(() => {
+    mounted.current = true;
     action();
-  }, [action]);
+
+    return () => {
+      mounted.current = false;
+    };
+  }, [action, mounted]);
 
   return {
     results,

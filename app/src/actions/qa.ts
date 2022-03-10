@@ -72,6 +72,8 @@ export const getQAFromBBox = async (bbox: BBox): Promise<QAType> => {
     return QAValues[index];
   } catch (e) {
     console.info({ e, URL });
+
+    // TODO SENTRY
   }
 
   return QAValues[QATypes.GOOD];
@@ -99,8 +101,7 @@ export const forecast = async (id: number): Promise<Forecast[]> => {
   const params = jsonToUrl(FORECASTS.params);
   const URL = `${FORECASTS.baseUrl}?${params}&${queryUrl}`;
 
-  console.info({ URL });
-
+  // TODO : SENTRY
   const response = await fetch(URL);
 
   const json = (await response.json()) as FeatureCollection<
