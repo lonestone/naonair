@@ -6,10 +6,12 @@ import React, { createRef, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { POI, poiIcons } from '../../actions/poi';
+import { QAType } from '../../actions/qa';
 import markerBackground from '../../assets/marker-background.svg';
-import { useQA } from '../../hooks/useQA';
+import { useQAs } from '../../hooks/useQA';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
+import ARProgress from '../atoms/ARProgress';
 import ARLegend from '../molecules/ARLegend';
 import ARUserLocationAlert from './ARUserLocationAlert';
 
@@ -47,10 +49,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export const POIMarker = ({ poi }: { poi: POI }) => {
+export const POIMarker = ({ poi, qa }: { poi: POI; qa?: QAType | null }) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
   const annotationRef = createRef<MapboxGL.PointAnnotation>();
-  const { qa } = useQA(poi.geolocation);
 
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -99,6 +100,8 @@ export default ({ pois }: ARMapViewProps) => {
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
   const [isLegendDeployed, setIsLegendDeployed] = useState<boolean>(false);
 
+  const { count = 0, QAs } = useQAs(pois.map(({ geolocation }) => geolocation));
+
   return (
     <>
       <ARMap
@@ -108,8 +111,14 @@ export default ({ pois }: ARMapViewProps) => {
         onMapPress={() => setIsLegendDeployed(false)}
         onMapLoaded={() => setMapLoaded(true)}>
         {isMapLoaded &&
-          pois.map(poi => <POIMarker key={`poi-${poi.id}`} poi={poi} />)}
+          pois.map((poi, i) => (
+            <POIMarker key={`poi-${poi.id}`} poi={poi} qa={QAs[i]} />
+          ))}
       </ARMap>
+      {count < pois.length && (
+        <ARProgress percent={count / pois.length} label="Chargement des POIs" />
+      )}
+
       <ARLegend
         onToggle={() => setIsLegendDeployed(!isLegendDeployed)}
         isDeployed={isLegendDeployed}

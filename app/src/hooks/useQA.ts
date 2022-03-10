@@ -1,36 +1,36 @@
 import { Position } from 'geojson';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getQAFromPosition, QAType } from '../actions/qa';
-import { useMounted } from './useMounted';
+import { useLoading } from './useLoading';
 
 export const useQA = (coord?: Position) => {
-  const mounted = useMounted();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [qa, setQA] = useState<QAType | undefined>();
+  const { isLoading, results } = useLoading(
+    () => getQAFromPosition(coord!),
+    null,
+  );
 
-  const getQA = useCallback(async () => {
-    if (!coord || !mounted.current) {
+  return { isLoading, qa: results };
+};
+
+export const useQAs = (coords: Position[]) => {
+  const [QAs, setQAs] = useState<QAType[]>([]);
+
+  const [index, setIndex] = useState<number>(0);
+  const isReady = useRef(true);
+
+  useEffect(() => {
+    if (index >= coords.length || !isReady.current) {
       return;
     }
 
-    setIsLoading(true);
+    isReady.current = false;
+    getQAFromPosition(coords[index])
+      .then(q => setQAs([...QAs, q]))
+      .finally(() => {
+        isReady.current = true;
+        setIndex(index + 1);
+      });
+  }, [index, coords, QAs, isReady]);
 
-    try {
-      const qa = await getQAFromPosition(coord!);
-
-      if (mounted.current) {
-        setQA(qa);
-      }
-    } catch (e) {
-      console.info(e);
-    }
-
-    setIsLoading(false);
-  }, [coord, mounted]);
-
-  useEffect(() => {
-    getQA();
-  }, [getQA]);
-
-  return { isLoading, qa };
+  return { count: index, QAs };
 };

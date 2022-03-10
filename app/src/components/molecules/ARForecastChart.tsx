@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Forecast, QATypes, QAValues } from '../../actions/qa';
+import { Forecast, QAValues } from '../../actions/qa';
 import { theme } from '../../theme';
 import ARChartPie from '../atoms/ARChartPie';
 

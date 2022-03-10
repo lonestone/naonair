@@ -5,6 +5,7 @@ import Geolocation from 'react-native-geolocation-service';
 import { Card, Divider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RouteProfile } from '../../actions/routes';
+import { useQA } from '../../hooks/useQA';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
@@ -77,6 +78,8 @@ const ARPOIDetails = () => {
 
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
 
+  const { qa } = useQA(poi.geolocation);
+
   return (
     <>
       <ScrollView
@@ -93,7 +96,7 @@ const ARPOIDetails = () => {
                     heatmapVisible
                     onMapLoaded={() => setMapLoaded(true)}
                     center={poi.geolocation}>
-                    {isMapLoaded && <POIMarker poi={poi} />}
+                    {isMapLoaded && <POIMarker poi={poi} qa={qa} />}
                   </ARMap>
                 </View>
                 <View style={styles.chipWrapper}>
