@@ -22,10 +22,8 @@ export default () => {
   const [pois, setPois] = useState<POI[]>([]);
 
   const generateListOfPOIs = async (categories: POICategory[]) => {
-    const pois = await getAll(categories);
-    const myPlaces = await getAllPlaces();
-    const hasFavorite = categories[0] === POICategory.FAVORITE;
-    setPois(hasFavorite ? pois.concat(myPlaces) : pois);
+    const pois = await getAll({ categories });
+    setPois(pois);
   };
 
   useEffect(() => {
