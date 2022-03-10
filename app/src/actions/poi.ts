@@ -6,6 +6,7 @@ import marketIcon from '../assets/market-icon.svg';
 import parkIcon from '../assets/park-icon.svg';
 import sportIcon from '../assets/sport-icon.svg';
 import { buildMapboxUrl } from '../utils/config';
+import removeAccent from '../utils/remove-accent';
 import { getAllPlaces } from './myplaces';
 
 // eslint-disable-next-line no-shadow
@@ -88,17 +89,22 @@ export const getAll = async (params?: {
     text = '',
   } = params || {};
 
+  const lowedText = removeAccent(text).toLowerCase();
+
   let results = POIs.filter(pois => {
     return (
-      categories.includes(pois.category) &&
-      (pois.address.includes(text) || pois.name.includes(text))
+      (categories.includes(pois.category) &&
+        removeAccent((pois.address || '').toLowerCase()).includes(lowedText)) ||
+      removeAccent(pois.name.toLowerCase()).includes(lowedText)
     );
   });
 
   if (categories.includes(POICategory.FAVORITE)) {
     results.push(
       ...(await getAllPlaces()).filter(
-        p => (p.address || '').includes(text) || p.name.includes(text),
+        p =>
+          removeAccent((p.address || '').toLowerCase()).includes(lowedText) ||
+          removeAccent(p.name.toLowerCase()).includes(lowedText),
       ),
     );
   }
