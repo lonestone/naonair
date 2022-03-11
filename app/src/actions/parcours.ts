@@ -1,8 +1,7 @@
 import * as Sentry from '@sentry/react-native';
 import * as turf from '@turf/turf';
 import { BBox } from 'geojson';
-import { PARCOURS } from '../config.json';
-import { jsonToUrl } from '../utils/config';
+import { buildGeoserverUrl } from '../utils/config';
 
 export interface ARParcours {
   geometry: turf.MultiLineString;
@@ -23,8 +22,14 @@ export interface ARParcours {
 
 export const getAll = async (filters: string[]): Promise<ARParcours[]> => {
   try {
-    const URL = `${PARCOURS.baseUrl}?${jsonToUrl(PARCOURS.params)}`;
-    console.debug(URL);
+    const URL = buildGeoserverUrl('wms', {
+      SERVICE: 'WFS',
+      VERSION: '1.0.0',
+      REQUEST: 'GetFeature',
+      typeName: 'aireel:parcours',
+      outputFormat: 'application/json',
+    });
+
     const response = await fetch(URL);
 
     const geojson = (await response.json()) as { features: ARParcours[] };
@@ -50,4 +55,6 @@ export const getAll = async (filters: string[]): Promise<ARParcours[]> => {
       Sentry.captureException(e);
     }
   }
+
+  return [];
 };

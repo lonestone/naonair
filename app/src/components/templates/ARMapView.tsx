@@ -4,6 +4,7 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import { useNavigation } from '@react-navigation/native';
 import React, { createRef, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
 import { POI, poiIcons } from '../../actions/poi';
 import { QAType } from '../../actions/qa';
@@ -50,7 +51,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export const POIMarker = ({ poi, qa }: { poi: POI; qa?: QAType | null }) => {
+export const POIMarker = ({
+  poi,
+  qa,
+  isLoading,
+}: {
+  poi: POI;
+  qa?: QAType | null;
+  isLoading?: boolean;
+}) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
   const annotationRef = createRef<MapboxGL.PointAnnotation>();
 
@@ -84,14 +93,17 @@ export const POIMarker = ({ poi, qa }: { poi: POI; qa?: QAType | null }) => {
           xml={markerBackground}
           style={styles.markerBackground}
         />
-
-        <SvgXml
-          width="20"
-          height="20"
-          fill={qa?.main || '#25244E'}
-          style={styles.markerIcon}
-          xml={poiIcons[poi.category] || null}
-        />
+        {isLoading == true ? (
+          <ActivityIndicator size={13} style={{ top: -2 }} />
+        ) : (
+          <SvgXml
+            width="20"
+            height="20"
+            fill={qa?.main || '#25244E'}
+            style={styles.markerIcon}
+            xml={poiIcons[poi.category] || null}
+          />
+        )}
       </View>
     </MapboxGL.PointAnnotation>
   );

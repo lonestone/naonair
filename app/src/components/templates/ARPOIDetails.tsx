@@ -78,7 +78,7 @@ const ARPOIDetails = () => {
 
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
 
-  const qa = useQA(poi.geolocation);
+  const [qa, isLoading] = useQA(poi.geolocation);
 
   return (
     <>
@@ -96,7 +96,9 @@ const ARPOIDetails = () => {
                     heatmapVisible
                     onMapLoaded={() => setMapLoaded(true)}
                     center={poi.geolocation}>
-                    {isMapLoaded && <POIMarker poi={poi} qa={qa} />}
+                    {isMapLoaded && (
+                      <POIMarker poi={poi} qa={qa} isLoading={isLoading} />
+                    )}
                   </ARMap>
                 </View>
                 <View style={styles.chipWrapper}>

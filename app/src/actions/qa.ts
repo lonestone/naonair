@@ -1,7 +1,6 @@
 import { BBox, FeatureCollection, Point, Position } from 'geojson';
 import { theme } from '../theme';
-import { buildGeoserverUrl, jsonToUrl } from '../utils/config';
-import { FORECASTS, QA } from '../config.json';
+import { buildGeoserverUrl } from '../utils/config';
 import logger from '../utils/logger';
 
 export enum QATypes {
@@ -52,8 +51,22 @@ export const QAValues: { [key: number]: QAType } = {
 
 export const getQAFromBBox = async (bbox: BBox): Promise<QAType> => {
   // [0,2,5,6] => "0,2,5,6"
-  const bboxUrl = `BBOX=${bbox.map(encodeURIComponent).join(',')}`;
-  const URL = buildGeoserverUrl(bboxUrl);
+
+  const URL = buildGeoserverUrl('wms', {
+    SERVICE: 'WMS',
+    VERSION: '1.1.1',
+    QUERY_LAYERS: 'aireel:aireel_indic_7m_atmo_deg',
+    LAYERS: 'aireel:aireel_indic_7m_atmo_deg',
+    BBOX: [bbox[0], bbox[1], bbox[2], bbox[3]],
+    SRS: 'EPSG:4326',
+    INFO_FORMAT: 'application/json',
+    REQUEST: 'GetFeatureInfo',
+    FEATURE_COUNT: 50,
+    X: 50,
+    Y: 50,
+    WIDTH: 101,
+    HEIGHT: 101,
+  });
 
   try {
     const json = await (
@@ -95,12 +108,14 @@ export const getQAFromPosition = async (coord: Position) => {
 };
 
 export const getQAFromParcours = async () => {
-  const paramsUrl = jsonToUrl({
-    ...QA.params,
+  const URL = buildGeoserverUrl('ows', {
+    REQUEST: 'GetFeature',
+    VERSION: '1.0.0',
+    SERVICE: 'WFS',
+    outputFormat: 'application/json',
     typeName: 'aireel:parcours_poi_data',
   });
 
-  const URL = `${QA.baseUrl}?${paramsUrl}`;
   console.info({ URL });
   try {
     const json = (await (
@@ -133,14 +148,23 @@ export interface Forecast {
   value: QATypes;
 }
 
-export const forecast = async (id: number): Promise<Forecast[]> => {
-  const queryUrl = `CQL_FILTER=poi_id=${encodeURIComponent(id)}`;
-  const params = jsonToUrl(FORECASTS.params);
-  const URL = `${FORECASTS.baseUrl}?${params}&${queryUrl}`;
+export const forecast = async (poi_id: number): Promise<Forecast[]> => {
+  const URL = buildGeoserverUrl('ows', {
+    outputFormat: 'application/json',
+    SERVICE: 'WFS',
+    VERSION: '1.1.1',
+    REQUEST: 'GetFeature',
+    typeName: 'aireel:poi_data',
+    CQL_FILTER: {
+      poi_id,
+    },
+  });
 
   // TODO : SENTRY
   try {
     const response = await fetch(URL);
+
+    console.info(URL);
 
     const json = (await response.json()) as FeatureCollection<
       Point,
@@ -166,6 +190,6 @@ export const forecast = async (id: number): Promise<Forecast[]> => {
     });
   } catch (e) {
     logger.error(e, 'forecasts');
+    throw 'Impossible de récupérer les prévisions';
   }
-  return [];
 };
