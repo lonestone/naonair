@@ -1,22 +1,39 @@
 import { Position } from 'geojson';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ARParcours } from '../actions/parcours';
 import { getQAFromParcours, getQAFromPosition, QAType } from '../actions/qa';
 
-export const useQA = (coord?: Position) => {
+export const useQA = (coord?: Position): [QAType | undefined, boolean, any] => {
   const [qa, setQA] = useState<QAType | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    getQAFromPosition(coord!).then(setQA);
+  const [error, setError] = useState<any | undefined>(null);
+
+  useLayoutEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    setIsLoading(true);
+    getQAFromPosition(coord!)
+      .then(results => {
+        setIsLoading(false);
+        setQA(results);
+      })
+      .catch(e => {
+        setIsLoading(false);
+        setError(e);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setQA, coord]);
 
-  return qa;
+  return [qa, isLoading, error];
 };
 
 export const useQAParcours = (parcours?: ARParcours) => {
   const [qa, setQA] = useState<number>();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getQAFromParcours().then(setQA);
   }, [setQA]);
 
@@ -36,7 +53,7 @@ export const useQAs = (coords: Position[]) => {
 
     isReady.current = false;
     getQAFromPosition(coords[index])
-      .then(q => setQAs([...QAs, q]))
+      .then(q => q && setQAs([...QAs, q]))
       .finally(() => {
         isReady.current = true;
         setIndex(index + 1);

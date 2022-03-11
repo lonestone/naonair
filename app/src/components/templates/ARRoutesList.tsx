@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, VirtualizedList } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
-import { ARParcours, getAll } from '../../actions/parcours';
-
+import { ARParcours } from '../../actions/parcours';
+import { useParcours } from '../../hooks/useParcours';
 import ARRouteItem from '../molecules/ARRouteItem';
 
 const styles = StyleSheet.create({
@@ -23,22 +23,7 @@ export interface ARRoutesListProps {
 }
 
 export default ({ filters }: ARRoutesListProps) => {
-  const [parcours, setParcours] = useState<ARParcours[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const getParcours = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      setParcours(await getAll(filters));
-    } catch (e) {
-      console.info(e);
-    }
-    setIsLoading(false);
-  }, [filters]);
-
-  useEffect(() => {
-    getParcours();
-  }, [getParcours, filters]);
+  const [parcours, isLoading] = useParcours(filters);
 
   return (
     <View style={styles.container}>

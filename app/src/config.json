@@ -1,6 +1,6 @@
 {
   "GEOSERVER": {
-    "baseUrl": "https://api.naonair.org/geoserver/aireel/wms",
+    "baseUrl": "https://api.naonair.org/geoserver/aireel",
     "params": {
       "SERVICE": "WMS",
       "VERSION": "1.1.1",
@@ -16,34 +16,6 @@
       "WIDTH": 101,
       "HEIGHT": 101,
       "typeName": "aireel:poi_data"
-    }
-  },
-  "FORECASTS": {
-    "baseUrl": "https://api.naonair.org/geoserver/aireel/ows",
-    "params": {
-      "outputFormat": "application/json",
-      "SERVICE": "WFS",
-      "version": "1.0.0",
-      "request": "GetFeature"
-    }
-  },
-  "QA": {
-    "baseUrl": "https://api.naonair.org/geoserver/aireel/ows",
-    "params": {
-      "SERVICE": "WFS",
-      "version": "1.0.0",
-      "request": "GetFeature",
-      "outputFormat": "application/json"
-    }
-  },
-  "PARCOURS": {
-    "baseUrl": "https://api.naonair.org/geoserver/aireel/wms",
-    "params": {
-      "SERVICE": "WFS",
-      "version": "1.0.0",
-      "request": "GetFeature",
-      "typeName": "aireel:parcours",
-      "outputFormat": "application/json"
     }
   },
   "SENTRY": {
