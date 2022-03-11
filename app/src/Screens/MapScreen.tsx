@@ -21,8 +21,8 @@ export default () => {
   const [pois, setPois] = useState<POI[]>([]);
 
   const generateListOfPOIs = async (categories: POICategory[]) => {
-    const pois = await getAll({ categories });
-    setPois(pois);
+    const _pois = await getAll({ categories });
+    setPois(_pois);
   };
 
   useEffect(() => {

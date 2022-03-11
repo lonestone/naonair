@@ -93,9 +93,9 @@ export const getAll = async (params?: {
 
   let results = POIs.filter(pois => {
     return (
-      (categories.includes(pois.category) &&
-        removeAccent((pois.address || '').toLowerCase()).includes(lowedText)) ||
-      removeAccent(pois.name.toLowerCase()).includes(lowedText)
+      categories.includes(pois.category) &&
+      (removeAccent((pois.address || '').toLowerCase()).includes(lowedText) ||
+        removeAccent(pois.name.toLowerCase()).includes(lowedText))
     );
   });
 
