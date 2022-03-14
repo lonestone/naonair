@@ -46,7 +46,7 @@ const Item = ({
       category={poi.category}
       rightChip={
         <View style={styles.chipWrapper}>
-          <ARQAChip coord={poi.geolocation} size="xs" />
+          <ARQAChip coord={poi.geolocation} value={poi.qa} size="xs" />
         </View>
       }
     />

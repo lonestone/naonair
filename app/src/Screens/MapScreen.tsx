@@ -22,10 +22,12 @@ export default () => {
 
   const generateListOfPOIs = async (categories: POICategory[]) => {
     const _pois = await getAll({ categories });
+    console.info(_pois);
     setPois(_pois);
   };
 
   useEffect(() => {
+    console.info(selectedCategories);
     generateListOfPOIs(selectedCategories);
   }, [selectedCategories]);
 

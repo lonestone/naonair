@@ -1,16 +1,18 @@
 import { Position } from 'geojson';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { ARParcours } from '../actions/parcours';
 import { getQAFromParcours, getQAFromPosition, QAType } from '../actions/qa';
 
-export const useQA = (coord?: Position): [QAType | undefined, boolean, any] => {
+export const useQA = (
+  coord?: Position,
+  value?: QAType,
+): [QAType | undefined, boolean, any] => {
   const [qa, setQA] = useState<QAType | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
   const [error, setError] = useState<any | undefined>(null);
 
   useLayoutEffect(() => {
-    if (isLoading) {
+    if (isLoading || value) {
       return;
     }
 
@@ -27,10 +29,10 @@ export const useQA = (coord?: Position): [QAType | undefined, boolean, any] => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setQA, coord]);
 
-  return [qa, isLoading, error];
+  return [qa || value, isLoading, error];
 };
 
-export const useQAParcours = (parcours?: ARParcours) => {
+export const useQAParcours = () => {
   const [qa, setQA] = useState<number>();
 
   useLayoutEffect(() => {

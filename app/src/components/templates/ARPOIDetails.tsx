@@ -5,7 +5,6 @@ import Geolocation from 'react-native-geolocation-service';
 import { Card, Divider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RouteProfile } from '../../actions/routes';
-import { useQA } from '../../hooks/useQA';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
@@ -78,7 +77,7 @@ const ARPOIDetails = () => {
 
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
 
-  const [qa, isLoading] = useQA(poi.geolocation);
+  console.info({ poi });
 
   return (
     <>
@@ -96,19 +95,22 @@ const ARPOIDetails = () => {
                     heatmapVisible
                     onMapLoaded={() => setMapLoaded(true)}
                     center={poi.geolocation}>
-                    {isMapLoaded && (
-                      <POIMarker poi={poi} qa={qa} isLoading={isLoading} />
-                    )}
+                    {isMapLoaded && <POIMarker poi={poi} />}
                   </ARMap>
                 </View>
                 <View style={styles.chipWrapper}>
-                  <ARQAChip size="md" shadow coord={poi.geolocation} />
+                  <ARQAChip
+                    size="md"
+                    shadow
+                    coord={poi.geolocation}
+                    value={poi.qa}
+                  />
                 </View>
               </Card>
             </View>
             <ARHeadingGroup title={poi.name} caption={poi.address} />
             <Divider />
-            <ARForecasts id={+poi.id} />
+            {poi.poi_id && <ARForecasts id={poi.poi_id} />}
           </View>
         )}
       </ScrollView>

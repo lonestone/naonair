@@ -145,7 +145,7 @@ export const getQAFromParcours = async () => {
 
 export interface Forecast {
   hour: Date;
-  value: QATypes;
+  value: QAType;
 }
 
 export const forecast = async (poi_id: number): Promise<Forecast[]> => {
@@ -162,6 +162,7 @@ export const forecast = async (poi_id: number): Promise<Forecast[]> => {
 
   // TODO : SENTRY
   try {
+    console.info(URL);
     const response = await fetch(URL);
 
     console.info(URL);
@@ -185,7 +186,7 @@ export const forecast = async (poi_id: number): Promise<Forecast[]> => {
       let hour = new Date(properties.date_time_iso_utc);
       return {
         hour,
-        value: properties.indice - 1,
+        value: QAValues[properties.indice - 1],
       };
     });
   } catch (e) {
