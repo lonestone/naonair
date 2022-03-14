@@ -32,8 +32,7 @@ const styles = StyleSheet.create({
 });
 
 export default () => {
-  const [userLocationEnabled, setUserLocationEnabled] =
-    useState<boolean>(false);
+  const [userLocationEnabled, setUserLocationEnabled] = useState<boolean>(true);
 
   const watchId = useRef<number | null>();
 

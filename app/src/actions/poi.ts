@@ -1,13 +1,14 @@
 import { Feature, FeatureCollection, Point, Position } from 'geojson';
 import cultureIcon from '../assets/culture-icon.svg';
-import poiJson from '../assets/db/poi.json';
+// import poiJson from '../assets/db/poi.json';
 import favoriteIcon from '../assets/favorite-icon.svg';
 import marketIcon from '../assets/market-icon.svg';
 import parkIcon from '../assets/park-icon.svg';
 import sportIcon from '../assets/sport-icon.svg';
-import { buildMapboxUrl } from '../utils/config';
+import { buildGeoserverUrl, buildMapboxUrl } from '../utils/config';
 import removeAccent from '../utils/remove-accent';
 import { getAllPlaces } from './myplaces';
+import { QAType, QAValues } from './qa';
 
 // eslint-disable-next-line no-shadow
 export enum POICategory {
@@ -21,10 +22,12 @@ export enum POICategory {
 
 export interface POI {
   id: number | string; // TODO: need to be complianted with POI from json file and api-adresse.data.gouv.fr
+  poi_id?: number;
   category: POICategory;
   name: string;
   address: string;
   geolocation: Position;
+  qa?: QAType;
 }
 
 export interface MapboxFeature extends Feature<Point> {
@@ -33,34 +36,6 @@ export interface MapboxFeature extends Feature<Point> {
   text: string;
   place_name_fr: string;
 }
-
-const POIs = poiJson.map<POI>(({ id, nom, categorie, adresse, gps }) => {
-  const [lat, lon] = gps.split(',').map(t => +t);
-
-  const getCategory = (): POICategory => {
-    switch (categorie) {
-      case 'Parc':
-        return POICategory.PARK;
-      case 'Sport':
-        return POICategory.SPORT;
-      case 'Culture':
-        return POICategory.CULTURE;
-      case 'Marché':
-        return POICategory.MARKET;
-      case 'favoris':
-        return POICategory.FAVORITE;
-    }
-    return POICategory.UNDEFINED;
-  };
-
-  return {
-    id,
-    category: getCategory(),
-    name: nom,
-    address: adresse,
-    geolocation: [lon, lat],
-  };
-});
 
 export const poiIcons: {
   [key in POICategory]?: string | null;
@@ -71,6 +46,70 @@ export const poiIcons: {
   [POICategory.MARKET]: marketIcon,
   [POICategory.PARK]: parkIcon,
   [POICategory.SPORT]: sportIcon,
+};
+
+type POIFeatureProperties = {
+  id: number;
+  poi_id: number;
+  type: 'Parc' | 'Sport' | 'Culture' | 'Marché' | 'favoris';
+  lieu: string;
+  adresse: string;
+  commentaire?: string;
+  date_time_iso_utc: string;
+  date_time_local: string;
+  indice: number;
+};
+
+const fetchAll = async () => {
+  const date = new Date();
+  date.setMinutes(0, 0, 0);
+
+  const URL = buildGeoserverUrl('ows', {
+    SERVICE: 'WFS',
+    VERSION: '1.0.0',
+    REQUEST: 'GetFeature',
+    typeName: 'aireel:poi_data',
+    outputFormat: 'application/json',
+    CQL_FILTER: {
+      date_time_iso_utc: date.toISOString(),
+    },
+  });
+
+  const response = await fetch(URL);
+  const json = (await response.json()) as FeatureCollection<
+    Point,
+    POIFeatureProperties
+  >;
+
+  return json.features.map<POI>(({ properties, geometry }) => {
+    const { type, id, adresse, lieu, indice, poi_id } = properties;
+
+    const getCategory = (): POICategory => {
+      switch (type) {
+        case 'Parc':
+          return POICategory.PARK;
+        case 'Sport':
+          return POICategory.SPORT;
+        case 'Culture':
+          return POICategory.CULTURE;
+        case 'Marché':
+          return POICategory.MARKET;
+        case 'favoris':
+          return POICategory.FAVORITE;
+      }
+      return POICategory.UNDEFINED;
+    };
+
+    return {
+      id,
+      poi_id,
+      category: getCategory(),
+      name: lieu,
+      address: adresse,
+      geolocation: geometry.coordinates,
+      qa: QAValues[indice - 1],
+    };
+  });
 };
 
 export const getAll = async (params?: {
@@ -90,6 +129,8 @@ export const getAll = async (params?: {
   } = params || {};
 
   const lowedText = removeAccent(text).toLowerCase();
+
+  const POIs = await fetchAll();
 
   let results = POIs.filter(pois => {
     return (
@@ -112,8 +153,25 @@ export const getAll = async (params?: {
   return results;
 };
 
-export const getOne = (id: number) => {
-  return POIs[id];
+export const getOne = async (poi_id: number) => {
+  const URL = buildGeoserverUrl('ows', {
+    REQUEST: 'GetFeature',
+    VERSION: '1.0.0',
+    SERVICE: 'WFS',
+    typeName: 'aireel:poi_data',
+    outputFormat: 'application/json',
+    CQL_FILTER: {
+      poi_id,
+    },
+  });
+
+  const response = await fetch(URL);
+  const json = (await response.json()) as FeatureCollection<
+    Point,
+    POIFeatureProperties
+  >;
+
+  return json.features[0].properties;
 };
 
 export const reverse = async ([lon, lat]: Position): Promise<

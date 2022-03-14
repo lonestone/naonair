@@ -22,7 +22,7 @@ const ARForecastChart = ({ indices }: ARForecastChartProps) => {
     <View style={styles.container}>
       <ScrollView horizontal>
         {indices.map(({ hour, value }, i) => (
-          <ARChartPie key={i} qa={{ hour, color: QAValues[value].main }} />
+          <ARChartPie key={i} qa={{ hour, color: value.main }} />
         ))}
       </ScrollView>
     </View>

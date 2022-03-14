@@ -13,7 +13,6 @@ export const useParcours = (
       return;
     }
 
-    console.info('hello');
     getAll(filters)
       .then(p => {
         setParcours(p);

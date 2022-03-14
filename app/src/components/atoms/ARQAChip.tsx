@@ -41,13 +41,13 @@ const styles = StyleSheet.create({
 interface Props {
   coord?: Position;
   size: 'xs' | 'sm' | 'md';
-  value?: QAType;
+  value?: QAType | undefined;
   shadow?: boolean;
   style?: StyleProp<ViewStyle>;
 }
 
 const ARQAChip = ({ size, shadow, coord, value, style }: Props) => {
-  const [qa, isLoading] = useQA(coord);
+  const [qa, isLoading] = useQA(coord, value);
 
   const styleChip = () => {
     return StyleSheet.flatten([

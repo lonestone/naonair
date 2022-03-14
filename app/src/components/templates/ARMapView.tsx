@@ -2,18 +2,13 @@
 
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import { useNavigation } from '@react-navigation/native';
-import React, { createRef, useEffect, useState } from 'react';
+import React, { createRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
 import { POI, poiIcons } from '../../actions/poi';
-import { QAType } from '../../actions/qa';
 import markerBackground from '../../assets/marker-background.svg';
-
-import { useQAs } from '../../hooks/useQA';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
-import ARProgress from '../atoms/ARProgress';
 import ARLegend from '../molecules/ARLegend';
 import ARUserLocationAlert from './ARUserLocationAlert';
 
@@ -51,23 +46,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export const POIMarker = ({
-  poi,
-  qa,
-  isLoading,
-}: {
-  poi: POI;
-  qa?: QAType | null;
-  isLoading?: boolean;
-}) => {
+export const POIMarker = ({ poi }: { poi: POI }) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
   const annotationRef = createRef<MapboxGL.PointAnnotation>();
 
   const [selected, setSelected] = useState<boolean>(false);
-
-  useEffect(() => {
-    annotationRef.current?.refresh();
-  }, [qa, annotationRef]);
 
   return (
     <MapboxGL.PointAnnotation
@@ -89,21 +72,18 @@ export const POIMarker = ({
         <SvgXml
           width="40"
           height="46"
-          fill={qa?.light || 'white'}
+          fill={poi.qa?.light || 'white'}
           xml={markerBackground}
           style={styles.markerBackground}
         />
-        {isLoading == true ? (
-          <ActivityIndicator size={13} style={{ top: -2 }} />
-        ) : (
-          <SvgXml
-            width="20"
-            height="20"
-            fill={qa?.main || '#25244E'}
-            style={styles.markerIcon}
-            xml={poiIcons[poi.category] || null}
-          />
-        )}
+
+        <SvgXml
+          width="20"
+          height="20"
+          fill={poi.qa?.main || '#25244E'}
+          style={styles.markerIcon}
+          xml={poiIcons[poi.category] || null}
+        />
       </View>
     </MapboxGL.PointAnnotation>
   );
@@ -112,8 +92,6 @@ export const POIMarker = ({
 export default ({ pois }: ARMapViewProps) => {
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
   const [isLegendDeployed, setIsLegendDeployed] = useState<boolean>(false);
-
-  const { count = 0, QAs } = useQAs(pois.map(({ geolocation }) => geolocation));
 
   return (
     <>
@@ -124,13 +102,8 @@ export default ({ pois }: ARMapViewProps) => {
         onMapPress={() => setIsLegendDeployed(false)}
         onMapLoaded={() => setMapLoaded(true)}>
         {isMapLoaded &&
-          pois.map((poi, i) => (
-            <POIMarker key={`poi-${poi.id}`} poi={poi} qa={QAs[i]} />
-          ))}
+          pois.map(poi => <POIMarker key={`poi-${poi.id}`} poi={poi} />)}
       </ARMap>
-      {count < pois.length && (
-        <ARProgress percent={count / pois.length} label="Chargement des POIs" />
-      )}
 
       <ARLegend
         onToggle={() => setIsLegendDeployed(!isLegendDeployed)}

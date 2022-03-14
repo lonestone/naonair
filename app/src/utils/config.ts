@@ -41,7 +41,8 @@ export interface GeoServerParams {
   typeName?: 'aireel:poi_data' | 'aireel:parcours' | 'aireel:parcours_poi_data';
   BBOX?: [number, number, number, number];
   CQL_FILTER?: {
-    poi_id: string | number;
+    poi_id?: string | number;
+    date_time_iso_utc?: string;
   };
 }
 
