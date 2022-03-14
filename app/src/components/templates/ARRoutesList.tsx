@@ -25,6 +25,8 @@ export interface ARRoutesListProps {
 export default ({ filters }: ARRoutesListProps) => {
   const [parcours, isLoading] = useParcours(filters);
 
+  console.info({ parcours, isLoading });
+
   return (
     <View style={styles.container}>
       {parcours.length > 0 && (

@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
   },
   mapContainer: {
-    flex: 2,
+    flex: 1.4,
   },
   listContainer: {
     flex: 1,
@@ -94,6 +94,8 @@ const styles = StyleSheet.create({
   },
 });
 
+export type ARRouteType = 'fastest_path' | 'cleanest_path';
+
 export const BackButton = () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
 
@@ -112,18 +114,26 @@ export const BackButton = () => {
 };
 
 const ItineraryItem = ({
+  isSelected,
   path,
   onPress,
-  index,
+  keyPath,
+  label,
 }: {
+  isSelected?: boolean;
   path: ARPath;
-  index: number;
-  onPress: (index: number) => void;
+  label: string;
+  keyPath: ARRouteType;
+  onPress: (key: ARRouteType) => void;
 }) => {
   return (
     <List.Item
       left={() => (
-        <View style={styles.itemLeftContainer}>
+        <View
+          style={[
+            styles.itemLeftContainer,
+            !!isSelected ? { backgroundColor: theme.colors.white } : {},
+          ]}>
           <Icon name="navigation" size={15} color={theme.colors.blue[500]} />
         </View>
       )}
@@ -132,39 +142,64 @@ const ItineraryItem = ({
           <Text style={styles.rightLabel}>{getDurationLabel(path.time)}</Text>
         </View>
       )}
-      style={styles.item}
+      style={[
+        styles.item,
+        !!isSelected ? { backgroundColor: theme.colors.blue[100] } : {},
+      ]}
+      rippleColor={theme.colors.blue[100]}
       titleStyle={styles.itemTitle}
       descriptionStyle={styles.itemDescription}
-      title="Le plus sain"
+      title={label}
       description={getDistanceLabel(path.distance)}
       onPress={() => {
-        onPress(index);
+        console.info(keyPath);
+        onPress(keyPath);
       }}
     />
   );
 };
 
-const ItineraryList = ({ paths = [] }: { paths: ARPath[] }) => {
-  const [pathIndex, setPathIndex] = useState<number>(0);
+const ItineraryList = ({
+  route,
+  selected,
+  onSelected,
+}: {
+  route: ARRoute;
+  selected: ARRouteType;
+  onSelected: (path: ARRouteType) => void;
+}) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
+
+  const { fastest_path, cleanest_path } = route;
 
   return (
     <Surface style={styles.listContainer}>
       <SafeAreaView edges={['bottom', 'left', 'right']}>
         <Headline style={styles.title}>Choisissez votre itinéraire</Headline>
-        {paths.map((path, index) => (
+        {cleanest_path && (
           <ItineraryItem
-            key={`path-${index}`}
-            path={path}
-            index={index}
-            onPress={setPathIndex}
+            label="Le plus sain"
+            path={cleanest_path}
+            keyPath="cleanest_path"
+            onPress={onSelected}
+            isSelected={selected === 'cleanest_path'}
           />
-        ))}
+        )}
+        {fastest_path && (
+          <ItineraryItem
+            label="Le plus rapide"
+            path={fastest_path}
+            keyPath="fastest_path"
+            isSelected={selected === 'fastest_path'}
+            onPress={onSelected}
+          />
+        )}
+
         <ARButton
           label="C'est parti"
           size={ARButtonSize.Medium}
           onPress={() =>
-            navigation.navigate('Navigation', { path: paths[pathIndex] })
+            navigation.navigate('Navigation', { path: route[selected] })
           }
           styleContainer={styles.letsGoButton}
           icon={() => (
@@ -191,6 +226,7 @@ export default () => {
   const { params } = useRoute<ARChooseItineraryProp>();
   const [route, setRoute] = useState<ARRoute | undefined>();
   const [bbox, setBbox] = useState<BBox | undefined>();
+  const [selected, setSelected] = useState<ARRouteType>('fastest_path');
 
   const { start, end, transportMode } = params;
 
@@ -215,19 +251,32 @@ export default () => {
     getRoute();
   }, [getRoute]);
 
+  console.info({ route });
+
   return (
     <>
       <View style={styles.mapContainer}>
         {bbox && (
           <ARRouteMapView
-            paths={route?.paths || []}
+            route={route}
             bbox={bbox}
             start={start}
             end={end}
+            selected={selected}
           />
         )}
       </View>
-      {route?.paths ? <ItineraryList paths={route?.paths} /> : <LoadingView />}
+      {route ? (
+        <ItineraryList
+          selected={selected}
+          route={route}
+          onSelected={key => {
+            setSelected(key);
+          }}
+        />
+      ) : (
+        <LoadingView />
+      )}
       <BackButton />
     </>
   );

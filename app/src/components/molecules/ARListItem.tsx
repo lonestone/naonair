@@ -78,6 +78,7 @@ const ARListItem = ({
         description={description}
         onPress={onPress}
         descriptionStyle={[styles.description, descriptionStyle]}
+        rippleColor={theme.colors.blue[100]}
         left={props => (
           <List.Icon
             {...props}
