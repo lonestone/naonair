@@ -1,5 +1,5 @@
 import { Position } from 'geojson';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { TextInput } from 'react-native-paper';
@@ -26,6 +26,7 @@ export interface ARAddressInputProps {
   onFocus?: () => void;
   onUserLocation?: (coord: Position, text: string) => void;
   onTextChanged?: () => void;
+  onClear?: () => void;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -38,6 +39,7 @@ export default ({
   onFocus,
   onUserLocation,
   onTextChanged,
+  onClear,
 }: ARAddressInputProps) => {
   const [text, setText] = useState<string>(value?.text || '');
   const [results, setResults] = useState<POI[]>([]);
@@ -45,8 +47,8 @@ export default ({
 
   const searchTimeout = useRef<number | null>(null);
 
-  useEffect(() => {
-    setText(value?.text || '');
+  useLayoutEffect(() => {
+    value && setText(value.text);
   }, [value]);
 
   useEffect(() => {
@@ -111,11 +113,15 @@ export default ({
               text !== '' ? 'Supprimer la recherche' : 'Me localiser'
             }
             onPress={() => {
-              text !== ''
-                ? setText('')
-                : Geolocation.getCurrentPosition(({ coords }) => {
-                    reverseValue([coords.longitude, coords.latitude]);
-                  });
+              if (text !== '') {
+                setText('');
+                onClear?.();
+                setResults([]);
+              } else {
+                Geolocation.getCurrentPosition(({ coords }) => {
+                  reverseValue([coords.longitude, coords.latitude]);
+                });
+              }
             }}
           />
         }

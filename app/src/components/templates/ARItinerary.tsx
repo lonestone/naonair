@@ -136,6 +136,18 @@ export default () => {
           onUserLocation={(coord, text) =>
             setValues({ ...values, [field]: { coord, text } })
           }
+          onClear={() => {
+            setValues({
+              ...values,
+              [field]: undefined,
+            });
+          }}
+          onTextChanged={() => {
+            setValues({
+              ...values,
+              [field]: undefined,
+            });
+          }}
           onFocus={() => setSelectedField(field)}
         />
       </View>
@@ -174,7 +186,9 @@ export default () => {
 
           <ScrollView
             style={styles.container}
-            contentInset={{ bottom: 70, top: 0 }}
+            contentContainerStyle={{
+              paddingBottom: values[Field.START] && values[Field.END] ? 120 : 0,
+            }}
             accessibilityLabel="Resultats de la recheche"
             indicatorStyle="black">
             {(results || []).map(
