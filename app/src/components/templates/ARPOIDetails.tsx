@@ -70,7 +70,7 @@ const ARPOIDetails = () => {
         });
       },
       error => {
-        console.log(error);
+        console.error(error);
       },
       { timeout: 20000, enableHighAccuracy: true, maximumAge: 1000 },
     );

@@ -1,5 +1,11 @@
 import { Position } from 'geojson';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { TextInput } from 'react-native-paper';
@@ -19,7 +25,6 @@ const styles = StyleSheet.create({
 
 export interface ARAddressInputProps {
   value?: { coord: Position; text: string };
-
   label: string;
   placeholder?: string;
   onResults?: (results: POI[]) => void;
@@ -41,15 +46,20 @@ export default ({
   onTextChanged,
   onClear,
 }: ARAddressInputProps) => {
-  const [text, setText] = useState<string>(value?.text || '');
+  const [text, setText] = useState('');
   const [results, setResults] = useState<POI[]>([]);
-  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState(true);
 
   const searchTimeout = useRef<number | null>(null);
 
   useLayoutEffect(() => {
-    value && setText(value.text);
-  }, [value]);
+    if (value) {
+      setText(value.text);
+      setIsValid(true);
+    } else if (!value) {
+      text.length > 0 ? setIsValid(false) : setIsValid(true);
+    }
+  }, [value, text]);
 
   useEffect(() => {
     onResults && onResults(results);
@@ -57,7 +67,6 @@ export default ({
 
   const reverseValue = async (position: Position) => {
     const features = await reverse(position);
-    // console.info(features);
     if (features.length > 0) {
       const { text_fr = 'Ma position' } = features[0];
       setText(text_fr);
@@ -83,12 +92,19 @@ export default ({
     }, 500) as unknown as number;
   };
 
+  const handleClearValues = useCallback(() => {
+    setText('');
+    onClear?.();
+    setResults([]);
+  }, [text]);
+
   return (
     <>
       <TextInput
         mode="outlined"
+        activeOutlineColor={theme.colors.outlineFocused}
         outlineColor={
-          isFocused ? theme.colors.outlineFocused : theme.colors.outlineDisabled
+          isValid ? theme.colors.outlineDisabled : theme.colors.quality.main.red
         }
         multiline={false}
         placeholder={placeholder}
@@ -100,10 +116,8 @@ export default ({
         value={text}
         onChangeText={onChangeText}
         onFocus={() => {
-          setIsFocused(true);
           onFocus && onFocus();
         }}
-        onBlur={() => setIsFocused(false)}
         right={
           <TextInput.Icon
             name={text !== '' ? 'close' : 'target'}
@@ -114,9 +128,7 @@ export default ({
             }
             onPress={() => {
               if (text !== '') {
-                setText('');
-                onClear?.();
-                setResults([]);
+                handleClearValues();
               } else {
                 Geolocation.getCurrentPosition(({ coords }) => {
                   reverseValue([coords.longitude, coords.latitude]);

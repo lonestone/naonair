@@ -38,7 +38,7 @@ const ARPlaceFormLayout = () => {
 
   const { setSnackbarStatus } = useSnackbar();
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState<string>();
   const [results, setResults] = useState<POI[]>([]);
   const [values, setValues] = useState<
     { coord: Position; text: string } | undefined
@@ -55,7 +55,7 @@ const ARPlaceFormLayout = () => {
   }, [params]);
 
   const handleOnsubmit = async () => {
-    if (values) {
+    if (values && name) {
       setIsLoading(true);
 
       await setPlaceStorage({
@@ -79,7 +79,7 @@ const ARPlaceFormLayout = () => {
   };
 
   const handleOnUpdatesubmit = async () => {
-    if (params && values) {
+    if (params && values && name) {
       setIsLoading(true);
 
       await updatePlaceStorage(params.poi.id, {
@@ -115,10 +115,10 @@ const ARPlaceFormLayout = () => {
     });
   };
 
-  const isDisabled = useMemo(() => {
-    if (!values || values?.coord.length === 0 || !name.length) {
+  const isVisible = useMemo(() => {
+    if (name && name.length > 0 && values) {
       return true;
-    }
+    } else return false;
   }, [name, values]);
 
   return (
@@ -161,7 +161,7 @@ const ARPlaceFormLayout = () => {
                 onPress={() => {
                   setValues({
                     coord: geolocation,
-                    text: name,
+                    text: address.includes(name) ? address : name,
                   });
                   setResults([]);
                 }}
@@ -170,23 +170,29 @@ const ARPlaceFormLayout = () => {
           ))}
         </ScrollView>
         {params ? (
-          <ARButton
-            label="Modifier"
-            size={ARButtonSize.Medium}
-            styleContainer={styles.button}
-            onPress={handleOnUpdatesubmit}
-            disabled={isDisabled}
-            loading={isLoading}
-          />
+          <>
+            {isVisible && (
+              <ARButton
+                label="Modifier"
+                size={ARButtonSize.Medium}
+                styleContainer={styles.button}
+                onPress={handleOnUpdatesubmit}
+                loading={isLoading}
+              />
+            )}
+          </>
         ) : (
-          <ARButton
-            label="Enregistrer"
-            size={ARButtonSize.Medium}
-            styleContainer={styles.button}
-            onPress={handleOnsubmit}
-            disabled={isDisabled}
-            loading={isLoading}
-          />
+          <>
+            {isVisible && (
+              <ARButton
+                label="Enregistrer"
+                size={ARButtonSize.Medium}
+                styleContainer={styles.button}
+                onPress={handleOnsubmit}
+                loading={isLoading}
+              />
+            )}
+          </>
         )}
       </View>
       <Portal>

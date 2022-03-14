@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
 });
 
 interface ARPlaceFormProps {
-  name: string;
-  setName: Dispatch<SetStateAction<string>>;
+  name?: string;
+  setName: Dispatch<SetStateAction<string | undefined>>;
   values?: {
     coord: Position;
     text: string;
@@ -62,6 +62,9 @@ const ARPlaceForm = ({
         onTextChanged={onTextChanged}
         onUserLocation={(coord, text) => {
           setValues({ coord, text });
+        }}
+        onClear={() => {
+          setValues(undefined);
         }}
         value={values}
         style={styles.input}
