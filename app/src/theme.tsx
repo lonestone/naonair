@@ -64,6 +64,7 @@ export const theme = {
     lightRed: '#FFEEEE',
     grey: {
       50: '#F0F0F0',
+      100: '#A3A3A3',
       300: '#737373',
     },
     outlineDisabled: '#9BA4D1',

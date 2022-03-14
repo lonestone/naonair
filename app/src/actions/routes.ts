@@ -1,9 +1,7 @@
 import { BBox, LineString, Position } from 'geojson';
-import { GRAPHHOPPER } from '../config.json';
+import { API } from '../config.json';
 import { jsonToUrl } from '../utils/config';
 import { ARInstruction } from './instructions';
-
-
 
 export interface ARPath {
   distance: number;
@@ -14,7 +12,8 @@ export interface ARPath {
 }
 
 export interface ARRoute {
-  paths: ARPath[];
+  fastest_path: ARPath;
+  cleanest_path: ARPath;
 }
 
 export enum RouteProfile {
@@ -79,21 +78,21 @@ export const calculateRoute = async (
   end: Position,
   profile: RouteProfile,
 ): Promise<ARRoute> => {
-  const startUrl = `point=${encodeURIComponent(start[1])},${encodeURIComponent(
-    start[0],
-  )}`;
+  const URL = `${API.baseUrl}routing?${jsonToUrl({
+    startPoint: [start[1], start[0]],
+    endPoint: [end[1], end[0]],
+    profile,
+  })}`;
 
-  const endUrl = `point=${encodeURIComponent(end[1])},${encodeURIComponent(
-    end[0],
-  )}`;
+  console.info(URL);
 
-  const url = `${GRAPHHOPPER.baseUrl}/route?${jsonToUrl(
-    GRAPHHOPPER.params,
-  )}&${startUrl}&${endUrl}&profile=${profile}`;
+  // const url = `${GRAPHHOPPER.baseUrl}/route?${jsonToUrl(
+  //   GRAPHHOPPER.params,
+  // )}&${startUrl}&${endUrl}&profile=${profile}`;
 
-  console.info({ url });
-  const response = await fetch(url);
-  const json = await response.json();
+  // console.info({ url });
+  const response = await fetch(URL);
+  const json = (await response.json()) as ARRoute;
 
   return json;
 };

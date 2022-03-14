@@ -14,12 +14,22 @@ const lineStyle: LineLayerStyle = {
 
 export interface ARPathLayerProp {
   path: ARPath | ARParcours;
+  id: string;
+  isSelected: boolean;
+  aboveLayerId?: string;
 }
 
-export default ({ path }: ARPathLayerProp) => {
+export default ({ path, id, isSelected, aboveLayerId }: ARPathLayerProp) => {
+  const line = (): LineLayerStyle => {
+    return {
+      ...lineStyle,
+      lineColor: isSelected ? theme.colors.blue[500] : theme.colors.grey[100],
+    };
+  };
+
   return (
     <MapboxGL.ShapeSource
-      id="source"
+      id={`source-${id}`}
       lineMetrics
       shape={
         {
@@ -27,7 +37,13 @@ export default ({ path }: ARPathLayerProp) => {
           geometry: path.points || path.geometry,
         } as Feature<Geometry>
       }>
-      <MapboxGL.LineLayer id="route" style={lineStyle} />
+      <MapboxGL.LineLayer
+        id={`route-${id}`}
+        style={line()}
+        aboveLayerID={
+          isSelected && !!aboveLayerId ? `route-${aboveLayerId}` : undefined
+        }
+      />
     </MapboxGL.ShapeSource>
   );
 };
