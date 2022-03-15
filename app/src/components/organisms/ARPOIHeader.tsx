@@ -92,7 +92,7 @@ interface Props {
     render: () => ReactElement;
   })[];
   displayTypeIndex: number;
-  setSelectedCategories: Dispatch<SetStateAction<POICategory[]>>;
+  setSelectedCategories: Dispatch<SetStateAction<POICategory[] | undefined>>;
   setDisplayTypeIndex: Dispatch<SetStateAction<number>>;
 }
 

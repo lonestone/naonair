@@ -55,7 +55,7 @@ export const buildGeoserverUrl = (
   const URL = `${GEOSERVER.baseUrl}/${type}?${paramsUrl}`;
 
   if (__DEV__) {
-    console.debug(URL);
+    // console.debug(URL);
   }
   return URL;
 };
