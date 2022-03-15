@@ -77,7 +77,6 @@ const ARPOIDetails = () => {
 
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
 
-  console.info({ poi });
 
   return (
     <>

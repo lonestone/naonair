@@ -5,7 +5,6 @@ export const useForecast = (id: number) => {
   const [indices, setIndices] = useState<Forecast[]>([]);
   const isLoading = useRef(false);
   const [error, setError] = useState<any | undefined>();
-  console.info(id);
 
   useLayoutEffect(() => {
     if (isLoading.current) {

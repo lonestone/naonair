@@ -162,10 +162,7 @@ export const forecast = async (poi_id: number): Promise<Forecast[]> => {
 
   // TODO : SENTRY
   try {
-    console.info(URL);
     const response = await fetch(URL);
-
-    console.info(URL);
 
     const json = (await response.json()) as FeatureCollection<
       Point,
