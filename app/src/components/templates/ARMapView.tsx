@@ -2,7 +2,7 @@
 
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import { useNavigation } from '@react-navigation/native';
-import React, { createRef, useState } from 'react';
+import React, { createRef, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { POI, poiIcons } from '../../actions/poi';
@@ -11,6 +11,8 @@ import { StackNavigationScreenProp } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
 import ARLegend from '../molecules/ARLegend';
 import ARUserLocationAlert from './ARUserLocationAlert';
+import Geolocation from 'react-native-geolocation-service';
+import { Position } from '@turf/turf';
 
 export interface ARMapViewProps {
   pois: POI[];
@@ -92,6 +94,13 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
 export default ({ pois }: ARMapViewProps) => {
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
   const [isLegendDeployed, setIsLegendDeployed] = useState<boolean>(false);
+  const [center, setCenter] = useState<Position | undefined>();
+
+  useEffect(() => {
+    Geolocation.getCurrentPosition(({ coords }) => {
+      setCenter([coords.longitude, coords.latitude]);
+    });
+  }, [setCenter]);
 
   return (
     <>
@@ -99,6 +108,7 @@ export default ({ pois }: ARMapViewProps) => {
         userLocationVisible
         interactionEnabled
         heatmapVisible
+        center={center}
         onMapPress={() => setIsLegendDeployed(false)}
         onMapLoaded={() => setMapLoaded(true)}>
         {isMapLoaded &&
