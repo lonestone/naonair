@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import { theme } from '../../theme';
+import logger from '../../utils/logger';
 
 type ARLinkType = {
   label: string;
@@ -27,7 +28,7 @@ export const ARLink = ({ label, url }: ARLinkType) => {
     try {
       Linking.openURL(url);
     } catch (e) {
-      console.error(e);
+      logger.error(e, 'from openUrl');
     }
   };
 

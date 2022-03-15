@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import logger from '../utils/logger';
 import { POI } from './poi';
 
 export const getAllPlaces = async () => {
@@ -6,7 +7,7 @@ export const getAllPlaces = async () => {
     const result = await AsyncStorage.getItem('@myplaces');
     return JSON.parse(result || '[]') as POI[];
   } catch (e) {
-    console.error(e);
+    logger.error(e, 'getAllPlaces');
   }
 
   return [];
@@ -22,7 +23,7 @@ export const getOne = async (id: string | number) => {
     }
     return { currentPlaces, newIndex };
   } catch (e) {
-    console.error(e);
+    logger.error(e, 'getOne');
   }
 };
 
@@ -32,7 +33,7 @@ export const setPlaceStorage = async (place: POI) => {
     const jsonValue = JSON.stringify([...currentPlaces, place]);
     await AsyncStorage.setItem('@myplaces', jsonValue);
   } catch (e) {
-    console.error(e);
+    logger.error(e, 'setPlaceStorage');
   }
 };
 
@@ -47,7 +48,7 @@ export const updatePlaceStorage = async (id: string | number, place: POI) => {
       );
     }
   } catch (e) {
-    console.error(e);
+    logger.error(e, 'updatePlaceStorage');
   }
 };
 
@@ -62,7 +63,7 @@ export const removePlaceStorage = async (id?: string | number) => {
       );
     }
   } catch (e) {
-    console.error(e);
+    logger.error(e, 'removePlaceStorage');
   }
 };
 
