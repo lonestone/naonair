@@ -15,15 +15,15 @@ const lineStyle: LineLayerStyle = {
 export interface ARPathLayerProp {
   path: ARPath | ARParcours;
   id: string;
-  isSelected: boolean;
-  aboveLayerId?: string;
+  isSelected?: boolean;
 }
 
-export default ({ path, id, isSelected, aboveLayerId }: ARPathLayerProp) => {
+export default ({ path, id, isSelected }: ARPathLayerProp) => {
   const line = (): LineLayerStyle => {
     return {
       ...lineStyle,
-      lineColor: isSelected ? theme.colors.blue[500] : theme.colors.grey[100],
+      lineColor:
+        isSelected === false ? theme.colors.grey[100] : theme.colors.blue[500],
     };
   };
 
@@ -37,13 +37,7 @@ export default ({ path, id, isSelected, aboveLayerId }: ARPathLayerProp) => {
           geometry: path.points || path.geometry,
         } as Feature<Geometry>
       }>
-      <MapboxGL.LineLayer
-        id={`route-${id}`}
-        style={line()}
-        aboveLayerID={
-          isSelected && !!aboveLayerId ? `route-${aboveLayerId}` : undefined
-        }
-      />
+      <MapboxGL.LineLayer id={`route-${id}`} style={line()} />
     </MapboxGL.ShapeSource>
   );
 };
