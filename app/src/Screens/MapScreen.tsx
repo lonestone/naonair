@@ -1,10 +1,15 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, {
+  ReactElement, useLayoutEffect,
+  useState
+} from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { getAll, POI, POICategory } from '../actions/poi';
 import { SwitchToggleItem } from '../components/molecules/ARSwitchToggle';
 import ARPOIHeader from '../components/organisms/ARPOIHeader';
 import ARListView from '../components/templates/ARListView';
 import ARMapView from '../components/templates/ARMapView';
+import { TabNavigationScreenProp } from '../types/routes';
 
 const styles = StyleSheet.create({
   container: {
@@ -15,19 +20,31 @@ const styles = StyleSheet.create({
 
 export default () => {
   const [displayTypeIndex, setDisplayTypeIndex] = useState(0);
-  const [selectedCategories, setSelectedCategories] = useState<POICategory[]>(
-    [],
-  );
+  const [selectedCategories, setSelectedCategories] = useState<POICategory[]>([
+    POICategory.CULTURE,
+    POICategory.FAVORITE,
+    POICategory.MARKET,
+    POICategory.PARK,
+    POICategory.SPORT,
+    POICategory.UNDEFINED,
+  ]);
   const [pois, setPois] = useState<POI[]>([]);
+  const navigation = useNavigation<TabNavigationScreenProp>();
 
   const generateListOfPOIs = async (categories: POICategory[]) => {
     const _pois = await getAll({ categories });
     setPois(_pois);
   };
 
-  useEffect(() => {
-    generateListOfPOIs(selectedCategories);
-  }, [selectedCategories]);
+  useLayoutEffect(() => {
+    navigation.addListener('state', () =>
+      generateListOfPOIs(selectedCategories),
+    );
+    return () =>
+      navigation.removeListener('state', () =>
+        generateListOfPOIs(selectedCategories),
+      );
+  }, [navigation, selectedCategories]);
 
   const displayTypeItems: (SwitchToggleItem & {
     render: () => ReactElement;

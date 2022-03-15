@@ -95,8 +95,9 @@ const fetchAll = async () => {
           return POICategory.MARKET;
         case 'favoris':
           return POICategory.FAVORITE;
+        default:
+          return POICategory.UNDEFINED;
       }
-      return POICategory.UNDEFINED;
     };
 
     return {
@@ -148,7 +149,6 @@ export const getAll = async (params?: {
       ),
     );
   }
-
   return results;
 };
 

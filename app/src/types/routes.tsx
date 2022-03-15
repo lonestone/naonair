@@ -1,3 +1,4 @@
+import { MaterialBottomTabNavigationProp } from '@react-navigation/material-bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Position } from 'geojson';
 import { ARParcours } from '../actions/parcours';
@@ -26,3 +27,4 @@ export type TabParamList = {
 };
 
 export type StackNavigationScreenProp = StackNavigationProp<StackParamList>;
+export type TabNavigationScreenProp = MaterialBottomTabNavigationProp<TabParamList>;
