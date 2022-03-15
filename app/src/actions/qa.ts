@@ -160,7 +160,6 @@ export const forecast = async (poi_id: number): Promise<Forecast[]> => {
     },
   });
 
-  // TODO : SENTRY
   try {
     const response = await fetch(URL);
 

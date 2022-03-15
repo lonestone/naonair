@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RouteProfile } from '../../actions/routes';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
+import logger from '../../utils/logger';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARMap from '../atoms/ARMap';
 import ARQAChip from '../atoms/ARQAChip';
@@ -69,7 +70,7 @@ const ARPOIDetails = () => {
         });
       },
       error => {
-        console.error(error);
+        logger.error(error, 'getCurrentPosition');
       },
       { timeout: 20000, enableHighAccuracy: true, maximumAge: 1000 },
     );

@@ -6,6 +6,7 @@ import { getAllPlaces } from '../../actions/myplaces';
 import { POI, POICategory } from '../../actions/poi';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
+import logger from '../../utils/logger';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARSnackbar from '../atoms/ARSnackbar';
 import ARListItem from '../molecules/ARListItem';
@@ -48,8 +49,7 @@ const ARListFavorites = () => {
       try {
         setItems(Array.isArray(values) ? values : [values]);
       } catch (e) {
-        console.error(e);
-        console.error(values);
+        logger.error(e, 'fromGetAllPlaces')
       }
     }
   };
