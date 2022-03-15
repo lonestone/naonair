@@ -84,13 +84,6 @@ export const calculateRoute = async (
     profile,
   })}`;
 
-  console.info(URL);
-
-  // const url = `${GRAPHHOPPER.baseUrl}/route?${jsonToUrl(
-  //   GRAPHHOPPER.params,
-  // )}&${startUrl}&${endUrl}&profile=${profile}`;
-
-  // console.info({ url });
   const response = await fetch(URL);
   const json = (await response.json()) as ARRoute;
 

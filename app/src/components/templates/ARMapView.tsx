@@ -13,6 +13,8 @@ import ARLegend from '../molecules/ARLegend';
 import ARUserLocationAlert from './ARUserLocationAlert';
 import Geolocation from 'react-native-geolocation-service';
 import { Position } from '@turf/turf';
+import { useQA } from '../../hooks/useQA';
+import { QAType } from '../../actions/qa';
 
 export interface ARMapViewProps {
   pois: POI[];
@@ -53,6 +55,7 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
   const annotationRef = createRef<MapboxGL.PointAnnotation>();
 
   const [selected, setSelected] = useState<boolean>(false);
+  const [qa] = useQA(poi.geolocation, poi.qa);
 
   return (
     <MapboxGL.PointAnnotation
@@ -74,7 +77,7 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
         <SvgXml
           width="40"
           height="46"
-          fill={poi.qa?.light || 'white'}
+          fill={qa?.light || 'white'}
           xml={markerBackground}
           style={styles.markerBackground}
         />
@@ -82,7 +85,7 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
         <SvgXml
           width="20"
           height="20"
-          fill={poi.qa?.main || '#25244E'}
+          fill={qa?.main || '#25244E'}
           style={styles.markerIcon}
           xml={poiIcons[poi.category] || null}
         />

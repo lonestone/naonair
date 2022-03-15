@@ -1,6 +1,5 @@
 import { Feature, FeatureCollection, Point, Position } from 'geojson';
 import cultureIcon from '../assets/culture-icon.svg';
-// import poiJson from '../assets/db/poi.json';
 import favoriteIcon from '../assets/favorite-icon.svg';
 import marketIcon from '../assets/market-icon.svg';
 import parkIcon from '../assets/park-icon.svg';

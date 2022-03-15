@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
     borderRadius: 14,
   },
   mapContainer: {
-    flex: 1.4,
+    flex: 1,
   },
   listContainer: {
-    flex: 1,
+    flex: 0,
     shadowOffset: { width: 0, height: -8 },
     shadowRadius: 10,
     shadowOpacity: 0.2,
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     flex: 0,
     alignSelf: 'flex-end',
     marginRight: 24,
+    marginTop: 20,
   },
 });
 
@@ -151,10 +152,7 @@ const ItineraryItem = ({
       descriptionStyle={styles.itemDescription}
       title={label}
       description={getDistanceLabel(path.distance)}
-      onPress={() => {
-        console.info(keyPath);
-        onPress(keyPath);
-      }}
+      onPress={() => onPress(keyPath)}
     />
   );
 };
@@ -182,6 +180,7 @@ const ItineraryList = ({
             path={cleanest_path}
             keyPath="cleanest_path"
             onPress={onSelected}
+            key="cleanest_path"
             isSelected={selected === 'cleanest_path'}
           />
         )}
@@ -190,6 +189,7 @@ const ItineraryList = ({
             label="Le plus rapide"
             path={fastest_path}
             keyPath="fastest_path"
+            key="fastest_path"
             isSelected={selected === 'fastest_path'}
             onPress={onSelected}
           />
@@ -216,9 +216,13 @@ const ItineraryList = ({
 };
 
 const LoadingView = () => (
-  <Surface style={styles.listContainer}>
-    <Headline style={styles.title}>Calcul de l'itinéraire en cours...</Headline>
-    <ActivityIndicator animating />
+  <Surface style={[styles.listContainer]}>
+    <SafeAreaView edges={['bottom']}>
+      <Headline style={styles.title}>
+        Calcul de l'itinéraire en cours...
+      </Headline>
+      <ActivityIndicator animating />
+    </SafeAreaView>
   </Surface>
 );
 
@@ -242,16 +246,16 @@ export default () => {
   const getRoute = useCallback(async () => {
     if (start && end) {
       const routes = await calculateRoute(start, end, transportMode);
-
       setRoute(routes);
+      setTimeout(() => {
+        setBbox(routes.cleanest_path.bbox);
+      });
     }
   }, [end, start, transportMode]);
 
   useEffect(() => {
     getRoute();
   }, [getRoute]);
-
-  console.info({ route });
 
   return (
     <>

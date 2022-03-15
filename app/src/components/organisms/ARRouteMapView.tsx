@@ -19,7 +19,6 @@ export default ({ route, bbox, start, end, selected }: ARRouteMapViewProps) => {
   // If not, PointAnnotation will be render outside the bbox and has incorrect values
   const [isMapLoaded, setMapLoaded] = useState<boolean>();
 
-  console.info({ selected });
 
   const paths_key: ['cleanest_path', 'fastest_path'] = [
     'cleanest_path',
