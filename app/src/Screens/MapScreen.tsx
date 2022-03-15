@@ -1,8 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, {
-  ReactElement, useLayoutEffect,
-  useState
-} from 'react';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { getAll, POI, POICategory } from '../actions/poi';
 import { SwitchToggleItem } from '../components/molecules/ARSwitchToggle';
@@ -20,31 +17,23 @@ const styles = StyleSheet.create({
 
 export default () => {
   const [displayTypeIndex, setDisplayTypeIndex] = useState(0);
-  const [selectedCategories, setSelectedCategories] = useState<POICategory[]>([
-    POICategory.CULTURE,
-    POICategory.FAVORITE,
-    POICategory.MARKET,
-    POICategory.PARK,
-    POICategory.SPORT,
-    POICategory.UNDEFINED,
-  ]);
+  const [selectedCategories, setSelectedCategories] = useState<POICategory[]>();
   const [pois, setPois] = useState<POI[]>([]);
   const navigation = useNavigation<TabNavigationScreenProp>();
 
-  const generateListOfPOIs = async (categories: POICategory[]) => {
-    const _pois = await getAll({ categories });
+  const generateListOfPOIs = useCallback(async () => {
+    const _pois = await getAll({ categories: selectedCategories });
     setPois(_pois);
-  };
+  }, [selectedCategories]);
 
-  useLayoutEffect(() => {
-    navigation.addListener('state', () =>
-      generateListOfPOIs(selectedCategories),
-    );
-    return () =>
-      navigation.removeListener('state', () =>
-        generateListOfPOIs(selectedCategories),
-      );
-  }, [navigation, selectedCategories]);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', generateListOfPOIs);
+    return unsubscribe;
+  }, [navigation, generateListOfPOIs]);
+
+  useEffect(() => {
+    generateListOfPOIs();
+  }, [selectedCategories]);
 
   const displayTypeItems: (SwitchToggleItem & {
     render: () => ReactElement;
@@ -67,7 +56,9 @@ export default () => {
         displayTypeIndex={displayTypeIndex}
         displayTypeItems={displayTypeItems}
         setDisplayTypeIndex={setDisplayTypeIndex}
-        setSelectedCategories={setSelectedCategories}
+        setSelectedCategories={items => {
+          setSelectedCategories(items);
+        }}
       />
       <SafeAreaView style={styles.container}>
         {displayTypeItems[displayTypeIndex].render()}
