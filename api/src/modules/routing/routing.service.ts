@@ -19,12 +19,10 @@ export class RoutingService {
   ) {}
   logger = new Logger('RoutingModule');
 
-  async route(
-    startPoint: string,
-    endPoint: string,
-    profile: RoutingProfile,
-  ): Promise<any> {
-    const url = `http://${this._appConfig.graphhopperUrl}/route?point=${startPoint}&point=${endPoint}&type=json&locale=fr&key=&elevation=false&points_encoded=false&profile=${profile}`;
+  async route(startPoint: string, endPoint: string, profile: RoutingProfile) {
+    const ghProfile =
+      profile === RoutingProfile.ElectricBike ? RoutingProfile.Bike : profile;
+    const url = `http://${this._appConfig.graphhopperUrl}/route?point=${startPoint}&point=${endPoint}&type=json&locale=fr&key=&elevation=false&points_encoded=false&profile=${ghProfile}`;
 
     try {
       const promiseFastest = await lastValueFrom(
@@ -42,15 +40,38 @@ export class RoutingService {
       return {
         fastest_path:
           fastest.status === 'fulfilled' && fastest.value
-            ? fastest.value.data.paths[0]
+            ? this.formatData(fastest, profile)
             : null,
         cleanest_path:
           cleanest.status === 'fulfilled' && cleanest.value
-            ? cleanest.value.data.paths[0]
+            ? this.formatData(cleanest, profile)
             : null,
       };
     } catch (e) {
       throw new InternalServerErrorException(e.message);
     }
   }
+
+  private formatData = (
+    path: PromiseFulfilledResult<void | any>,
+    profile: RoutingProfile,
+  ) => {
+    const QARounded = Math.round(path.value.data.hints.QA);
+    const data = {
+      qa: QARounded / 15, // QA must be in [0;6] for app
+      qa_calculated: QARounded,
+      qa_cumulated: Math.round(path.value.data.hints.QA_cumulated),
+      nb_points: path.value.data.paths[0].points.coordinates.length,
+      ...path.value.data.paths[0],
+    };
+
+    // apply speed factor if electric_bike
+    if (profile === RoutingProfile.ElectricBike) {
+      if (data.time) {
+        data.time = data.time * 0.78;
+      }
+    }
+
+    return data;
+  };
 }

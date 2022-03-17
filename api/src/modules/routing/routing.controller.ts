@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  ParseEnumPipe,
-  ParseFloatPipe,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { RoutingService } from './routing.service';
 import { RoutingProfile } from '@aireal/dtos/dist';
 import { ParseProfilePipe } from 'src/pipes/ParseProfile.pipe';
