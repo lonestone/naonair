@@ -42,8 +42,6 @@ export interface ARPathInstructionsProps {
 interface InstructionItemProp {
   instruction: ARInstruction;
   isSelected: boolean;
-  id: number;
-  listLength: number;
   onLayout: (y: number) => void;
 }
 
@@ -85,8 +83,6 @@ const styles = StyleSheet.create({
 
 const InstructionItem = ({
   instruction,
-  id,
-  listLength,
   isSelected,
   onLayout,
 }: InstructionItemProp) => {
@@ -117,9 +113,7 @@ const InstructionItem = ({
         </View>
         <Text style={buildStyle().text}>{instruction.text}</Text>
       </View>
-      {instruction.distance > 0 && (id + 1 !== listLength) && (
-        <ARDivider text={getDistanceLabel(instruction.distance)} />
-      )}
+      <ARDivider text={getDistanceLabel(instruction.distance)} />
     </>
   );
 };
@@ -172,8 +166,6 @@ export default ({
               isSelected={index === currentIndex}
               key={`instruction-${index}`}
               instruction={instruction}
-              id={index}
-              listLength={path.instructions.length}
               onLayout={y => (itemsY[index] = y)}
             />
           ))}
