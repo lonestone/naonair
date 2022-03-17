@@ -56,11 +56,10 @@ export class RoutingService {
     path: PromiseFulfilledResult<void | any>,
     profile: RoutingProfile,
   ) => {
-    const QARounded = Math.round(path.value.data.hints.QA);
+    const hints = path.value.data.hints;
     const data = {
-      qa: QARounded / 15, // QA must be in [0;6] for app
-      qa_calculated: QARounded,
-      qa_cumulated: Math.round(path.value.data.hints.QA_cumulated),
+      qa: hints.qa, // QA must be in [0;6] for app
+      qa_cumulated: hints.qa_cumulated,
       nb_points: path.value.data.paths[0].points.coordinates.length,
       ...path.value.data.paths[0],
     };
