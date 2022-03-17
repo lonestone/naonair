@@ -13,6 +13,7 @@ import {
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { QAValues } from '../../actions/qa';
 import {
   ARPath,
   ARRoute,
@@ -79,7 +80,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 16,
   },
-  right: { justifyContent: 'center' },
+  right: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   rightLabel: {
     ...fonts.Lato.bold,
     color: theme.colors.blue[500],
@@ -92,6 +97,12 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginRight: 24,
     marginTop: 20,
+  },
+  chipQa: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    marginLeft: 20,
   },
 });
 
@@ -141,6 +152,15 @@ const ItineraryItem = ({
       right={() => (
         <View style={styles.right}>
           <Text style={styles.rightLabel}>{getDurationLabel(path.time)}</Text>
+          <View
+            style={[
+              styles.chipQa,
+              {
+                backgroundColor:
+                  QAValues[path.qa]?.main ?? theme.colors.grey[100],
+              },
+            ]}
+          />
         </View>
       )}
       style={[

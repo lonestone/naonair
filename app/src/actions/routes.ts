@@ -2,12 +2,14 @@ import { BBox, LineString, Position } from 'geojson';
 import { API } from '../config.json';
 import { jsonToUrl } from '../utils/config';
 import { ARInstruction } from './instructions';
+import { QAType } from './qa';
 
 export interface ARPath {
   distance: number;
   time: number;
   bbox: BBox;
   points: LineString;
+  qa: number;
   instructions: ARInstruction[];
 }
 
@@ -18,7 +20,7 @@ export interface ARRoute {
 
 export enum RouteProfile {
   Bike = 'bike',
-  ElecBike = 'scooter', // used by graphhopper
+  ElecBike = 'electric_bike', // used by graphhopper
   Walk = 'foot', // used by graphhopper
 }
 
@@ -86,6 +88,14 @@ export const calculateRoute = async (
 
   const response = await fetch(URL);
   const json = (await response.json()) as ARRoute;
+
+  json.cleanest_path.instructions.slice(
+    json.cleanest_path.instructions.length - 1,
+  );
+
+  json.fastest_path.instructions.slice(
+    json.fastest_path.instructions.length - 1,
+  );
 
   return json;
 };
