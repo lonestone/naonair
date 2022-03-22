@@ -3,9 +3,9 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from '@react-navigation/stack';
-import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, { useEffect, useState } from 'react';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
 import ARListFavorites from '../components/templates/ARListFavorites';
@@ -18,8 +18,10 @@ import { StackParamList, TabParamList } from '../types/routes';
 import ItineraryScreen from './ItineraryScreen';
 import MapScreen from './MapScreen';
 import NavigationScreen from './NavigationScreen';
+import OnboardingScren from './OnboardingScren';
 import ProfileScreen from './ProfileScreen';
 import RoutesScreen from './RoutesScreen';
+import { getIsFirstLaunched, setIsFirstLaunched } from '../actions/launch';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 const Stack = createStackNavigator<StackParamList>();
@@ -71,9 +73,33 @@ const options: StackNavigationOptions = {
 };
 
 export default () => {
+  const [isAppFirstLaunched, setIsAppFirstLaunched] = useState<boolean>();
+
+  const firstLaunched = async () => {
+    const isFirstLaunched = await getIsFirstLaunched();
+    
+    if (isFirstLaunched === null) {
+      setIsAppFirstLaunched(true);
+      await setIsFirstLaunched('false');
+    } else {
+      setIsAppFirstLaunched(false);
+    }
+  };
+
+  useEffect(() => {
+    firstLaunched();
+  }, [firstLaunched]);
+
   return (
     <SnackbarProvider>
       <Stack.Navigator screenOptions={options}>
+        {isAppFirstLaunched && (
+          <Stack.Screen
+            name="Onboarding"
+            options={{ headerShown: false }}
+            component={OnboardingScren}
+          />
+        )}
         <Stack.Screen
           name="Home"
           options={{ headerShown: false }}

@@ -24,6 +24,7 @@ type ARButtonType = {
   onPress: any;
   styleContainer?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
+  isReversed?: boolean;
 };
 
 const styles = StyleSheet.create({
@@ -60,6 +61,7 @@ export const ARButton = ({
   onPress,
   styleContainer,
   labelStyle,
+  isReversed,
 }: ARButtonType) => {
   return (
     <Button
@@ -68,11 +70,12 @@ export const ARButton = ({
       icon={icon ? icon : undefined}
       mode={mode || 'contained'}
       onPress={onPress}
-      contentStyle={
+      contentStyle={StyleSheet.flatten([
         size === ARButtonSize.Medium
           ? styles.mdContentStyle
-          : styles.smContentStyle
-      }
+          : styles.smContentStyle,
+        isReversed && { flexDirection: 'row-reverse' },
+      ])}
       labelStyle={StyleSheet.flatten([styles.labelStyle, labelStyle])}
       style={StyleSheet.flatten([styles.button, styleContainer])}>
       {label}
