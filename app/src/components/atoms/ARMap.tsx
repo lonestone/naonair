@@ -36,7 +36,7 @@ const defaultSettingsCamera: CameraSettings = {
 const rasterSourceProps: RasterSourceProps = {
   id: 'aireel_source',
   tileUrlTemplates: [
-    `${GEOSERVER.baseUrl}/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/jpeg&TRANSPARENT=true&STYLES=&LAYERS=aireel:aireel_indic_7m_atmo_deg&SRS=EPSG:3857&WIDTH=768&HEIGHT=497&BBOX={bbox-epsg-3857}`,
+    `${GEOSERVER.baseUrl}/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/jpeg&TRANSPARENT=true&STYLES=&LAYERS=aireel:aireel_indic_7m_atmo_deg&SRS=EPSG:3857&WIDTH=256&HEIGHT=256&BBOX={bbox-epsg-3857}&tiled=true`,
   ],
   tileSize: 256,
 };
