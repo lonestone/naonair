@@ -1,16 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   createStackNavigator,
-  StackNavigationOptions,
+  StackNavigationOptions
 } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import React, { useEffect, useState } from 'react';
-import {
-  getCGUAccepted,
-  getIsFirstLaunched,
-  setIsFirstLaunched,
-} from '../actions/launch';
+import React, { useEffect, useMemo, useState } from 'react';
+import { getCGUAccepted, getIsFirstLaunched } from '../actions/launch';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
 import ARListFavorites from '../components/templates/ARListFavorites';
@@ -78,48 +74,57 @@ const options: StackNavigationOptions = {
 };
 
 export default () => {
-  const [isAppFirstLaunched, setIsAppFirstLaunched] = useState<boolean>();
-  const [isCGUAccepted, setIsCGUAccepted] = useState<boolean>();
+  const [isAppFirstLaunched, setIsAppFirstLaunched] = useState<boolean>(true);
+  const [isCGUAccepted, setIsCGUAccepted] = useState<string>();
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   const firstLaunched = async () => {
     const isFirstLaunched = await getIsFirstLaunched();
-    const isCGUAccepted = await getCGUAccepted();
+    const CGUAccepted = await getCGUAccepted();
+
+    setIsCGUAccepted(CGUAccepted);
 
     if (isFirstLaunched === null) {
       setIsAppFirstLaunched(true);
-      await setIsFirstLaunched('false');
     } else {
       setIsAppFirstLaunched(false);
     }
 
-    if (isCGUAccepted != null) {
-      setIsCGUAccepted(true);
-    } else {
-      setIsCGUAccepted(false);
-    }
+    setIsReady(true);
   };
 
   useEffect(() => {
     firstLaunched();
-  }, []);
+  }, [firstLaunched]);
+
+  if (!isReady) {
+    return null;
+  }
+
+  const handleScreenOnLaunch = useMemo(() => {
+    if (isAppFirstLaunched) {
+      return 'Onboarding' as keyof StackParamList;
+    } else if (!isAppFirstLaunched && isCGUAccepted === null) {
+      return 'CGU' as keyof StackParamList;
+    } else {
+      return 'Home' as keyof StackParamList;
+    }
+  }, [isAppFirstLaunched, isCGUAccepted]);
 
   return (
     <SnackbarProvider>
-      <Stack.Navigator screenOptions={options}>
-        {isAppFirstLaunched && (
-          <Stack.Screen
-            name="Onboarding"
-            options={{ headerShown: false }}
-            component={OnboardingScreen}
-          />
-        )}
-        {!isCGUAccepted && (
-          <Stack.Screen
-            name="CGU"
-            component={CGUScreen}
-            options={{ headerTitle: "Conditions Générales d'Utilisation" }}
-          />
-        )}
+      <Stack.Navigator
+        screenOptions={options}
+        initialRouteName={handleScreenOnLaunch}>
+        <Stack.Screen name="Onboarding" options={{ headerShown: false }}>
+          {() => <OnboardingScreen CGUAccepted={isCGUAccepted} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="CGU"
+          component={CGUScreen}
+          options={{ headerTitle: "Conditions Générales d'Utilisation" }}
+        />
+
         <Stack.Screen
           name="Home"
           options={{ headerShown: false }}

@@ -31,9 +31,9 @@ export const getCGUAccepted = async () => {
   }
 };
 
-export const setCGUAccepted = async (accepted: string) => {
+export const setCGUAccepted = async (version: string) => {
   try {
-    await AsyncStorage.setItem('@cgu', accepted);
+    await AsyncStorage.setItem('@cgu', version);
   } catch (e) {
     logger.error(e, 'setCGUAccepted');
   }

@@ -1,9 +1,12 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useRef, useState } from 'react';
 import { Dimensions, FlatList, ImageProps, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { setIsFirstLaunched } from '../actions/launch';
 import Footer from '../components/atoms/ARSlideFooter';
 import Slide from '../components/organisms/ARSLide';
 import { theme } from '../theme';
+import { StackNavigationScreenProp } from '../types/routes';
 
 const dimensions = Dimensions.get('window');
 
@@ -23,7 +26,7 @@ const slidesItem: Item[] = [
   {
     id: 1,
     img: require('../assets/onboarding/step1.png'),
-    title: 'Gardez un oeil sur  la qualité de l’air autour de vous',
+    title: 'Gardez un oeil sur la qualité de l’air autour de vous',
     caption: "S'informer en temps réel",
     description:
       'Grâce à Naonair, retrouvez les niveaux de pollution sur la métropole Nantaise en temps réel et dans les prochaines heures.',
@@ -39,16 +42,23 @@ const slidesItem: Item[] = [
   {
     id: 3,
     img: require('../assets/onboarding/step3.png'),
-    title: 'Découvrez des parcours sportifset des promenades',
+    title: 'Découvrez des parcours sportifs et des promenades',
     caption: 'Respirer un air meilleur',
     description:
       "Avec Naonair, organisez vos activités et sorties sportives en fonction de la qualité de l'air : respirez, bougez !",
   },
 ];
 
-const OnboardingScren = () => {
+interface Props {
+  CGUAccepted?: string;
+}
+
+const OnboardingScren = ({ CGUAccepted }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+
   const ref = useRef<FlatList<Item>>(null);
+
+  const navigation = useNavigation<StackNavigationScreenProp>();
 
   const updateCurrentSlideIndex = (e: {
     nativeEvent: { contentOffset: { x: any } };
@@ -58,11 +68,18 @@ const OnboardingScren = () => {
     setCurrentIndex(currentIndex);
   };
 
-  const handleNextSlide = () => {
+  const handleNextSlide = async () => {
     const newtSlideIndex = currentIndex + 1;
     if (newtSlideIndex != slidesItem.length) {
       ref.current?.scrollToIndex({ index: currentIndex + 1 });
       setCurrentIndex(newtSlideIndex);
+    } else if (newtSlideIndex === slidesItem.length) {
+      console.log('here', CGUAccepted === null);
+
+      if (CGUAccepted === null) {
+        await setIsFirstLaunched('false');
+        navigation.navigate('CGU');
+      }
     }
   };
 
