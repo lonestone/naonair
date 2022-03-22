@@ -19,3 +19,22 @@ export const setIsFirstLaunched = async (firstLaunch: string) => {
     logger.error(e, 'setIsFirstLaunched');
   }
 };
+
+export const getCGUAccepted = async () => {
+  try {
+    const result = await AsyncStorage.getItem('@cgu');
+    if (result) {
+      return JSON.parse(result);
+    } else return null;
+  } catch (e) {
+    logger.error(e, 'getCGUAccepted');
+  }
+};
+
+export const setCGUAccepted = async (accepted: string) => {
+  try {
+    await AsyncStorage.setItem('@cgu', accepted);
+  } catch (e) {
+    logger.error(e, 'setCGUAccepted');
+  }
+};

@@ -6,6 +6,11 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { useEffect, useState } from 'react';
+import {
+  getCGUAccepted,
+  getIsFirstLaunched,
+  setIsFirstLaunched,
+} from '../actions/launch';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
 import ARListFavorites from '../components/templates/ARListFavorites';
@@ -15,13 +20,13 @@ import ARRouteDetail from '../components/templates/ARRouteDetail';
 import { SnackbarProvider } from '../contexts/snackbar.context';
 import { theme } from '../theme';
 import { StackParamList, TabParamList } from '../types/routes';
+import CGUScreen from './CGUScreen';
 import ItineraryScreen from './ItineraryScreen';
 import MapScreen from './MapScreen';
 import NavigationScreen from './NavigationScreen';
-import OnboardingScren from './OnboardingScren';
+import OnboardingScreen from './OnboardingScreen';
 import ProfileScreen from './ProfileScreen';
 import RoutesScreen from './RoutesScreen';
-import { getIsFirstLaunched, setIsFirstLaunched } from '../actions/launch';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 const Stack = createStackNavigator<StackParamList>();
@@ -74,21 +79,29 @@ const options: StackNavigationOptions = {
 
 export default () => {
   const [isAppFirstLaunched, setIsAppFirstLaunched] = useState<boolean>();
+  const [isCGUAccepted, setIsCGUAccepted] = useState<boolean>();
 
   const firstLaunched = async () => {
     const isFirstLaunched = await getIsFirstLaunched();
-    
+    const isCGUAccepted = await getCGUAccepted();
+
     if (isFirstLaunched === null) {
       setIsAppFirstLaunched(true);
       await setIsFirstLaunched('false');
     } else {
       setIsAppFirstLaunched(false);
     }
+
+    if (isCGUAccepted != null) {
+      setIsCGUAccepted(true);
+    } else {
+      setIsCGUAccepted(false);
+    }
   };
 
   useEffect(() => {
     firstLaunched();
-  }, [firstLaunched]);
+  }, []);
 
   return (
     <SnackbarProvider>
@@ -97,7 +110,14 @@ export default () => {
           <Stack.Screen
             name="Onboarding"
             options={{ headerShown: false }}
-            component={OnboardingScren}
+            component={OnboardingScreen}
+          />
+        )}
+        {!isCGUAccepted && (
+          <Stack.Screen
+            name="CGU"
+            component={CGUScreen}
+            options={{ headerTitle: "Conditions Générales d'Utilisation" }}
           />
         )}
         <Stack.Screen

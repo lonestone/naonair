@@ -1,14 +1,19 @@
 import React from 'react';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Item } from '../../screens/OnboardingScren';
+import { Item } from '../../screens/OnboardingScreen';
 import { fonts, theme } from '../../theme';
 
 const dimensions = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: theme.colors.primary },
-  image: { height: '60%', width: dimensions.width, marginVertical: 10, resizeMode: 'contain' },
+  image: {
+    height: '60%',
+    width: dimensions.width,
+    marginVertical: 10,
+    resizeMode: 'contain',
+  },
   content: { marginLeft: 20, width: 350 },
   caption: {
     ...fonts.Raleway.bold,

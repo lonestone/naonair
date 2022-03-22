@@ -1,17 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { Dispatch, RefObject, SetStateAction, useState } from 'react';
-import {
-  Dimensions,
-  FlatList,
-  NativeScrollEvent,
-  NativeTouchEvent,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { NativeGesture } from 'react-native-gesture-handler';
+import React from 'react';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import buttonIcon from '../../assets/wave-icon.svg';
-import { Item } from '../../screens/OnboardingScren';
+import { Item } from '../../screens/OnboardingScreen';
 import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
 import { ARButton, ARButtonSize } from './ARButton';
