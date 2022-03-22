@@ -1,11 +1,9 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import buttonIcon from '../../assets/wave-icon.svg';
 import { Item } from '../../screens/OnboardingScreen';
 import { fonts, theme } from '../../theme';
-import { StackNavigationScreenProp } from '../../types/routes';
 import { ARButton, ARButtonSize } from './ARButton';
 
 const dimensions = Dimensions.get('window');
@@ -38,8 +36,6 @@ interface Props {
 }
 
 const ARSlideFooter = ({ slides, currentIndex, handleNextSlide }: Props) => {
-  const navigation = useNavigation<StackNavigationScreenProp>();
-
   return (
     <View style={styles.wrapper}>
       <View style={styles.content}>
@@ -58,7 +54,7 @@ const ARSlideFooter = ({ slides, currentIndex, handleNextSlide }: Props) => {
           <ARButton
             label={"C'est parti !"}
             size={ARButtonSize.Small}
-            onPress={() => navigation.navigate('Home')}
+            onPress={handleNextSlide}
             styleContainer={{ backgroundColor: 'white' }}
             labelStyle={{ color: theme.colors.primary, ...fonts.Lato.semibold }}
           />

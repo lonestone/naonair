@@ -1,9 +1,17 @@
-import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import {
+  NativeScrollEvent,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { Paragraph, Subheading, Title } from 'react-native-paper';
 import { setCGUAccepted } from '../actions/launch';
 import { ARButton, ARButtonSize } from '../components/atoms/ARButton';
 import { fonts, theme } from '../theme';
+import { StackNavigationScreenProp } from '../types/routes';
 
 const styles = StyleSheet.create({
   container: { backgroundColor: 'white', flex: 1, padding: 12 },
@@ -43,32 +51,69 @@ const cguArticle = [
         description:
           ' Scelerisque sit lorem sodales velit at nulla. Suspendisse elementum enim nunc accumsan. Semper arcu euismod quisque praesent. ',
       },
+      {
+        subheading: '1.1 Titre 1',
+        description:
+          'Lobortis sem convallis placerat adipiscing diam eget maecenas. Scelerisque sit lorem sodales velit at nulla. Suspendisse elementum enim nunc accumsan. Semper arcu euismod quisque praesent. Nisi volutpat vitae nullam egestas arcu facilisi. Mattis felis feugiat mauris nibh dui vivamus. Venenatis ut pulvinar nisl sit tortor et a massa in. Pharetra ut leo morbi iaculis tortor mauris. Lobortis vulputate mauris, tristique vitae, potenti pellentesque dignissim.',
+      },
+      {
+        subheading: '1.1 Titre 1',
+        description:
+          'Lobortis sem convallis placerat adipiscing diam eget maecenas. Scelerisque sit lorem sodales velit at nulla. Suspendisse elementum enim nunc accumsan. Semper arcu euismod quisque praesent. Nisi volutpat vitae nullam egestas arcu facilisi. Mattis felis feugiat mauris nibh dui vivamus. Venenatis ut pulvinar nisl sit tortor et a massa in. Pharetra ut leo morbi iaculis tortor mauris. Lobortis vulputate mauris, tristique vitae, potenti pellentesque dignissim.',
+      },
+      {
+        subheading: '1.1 Titre 1',
+        description:
+          'Lobortis sem convallis placerat adipiscing diam eget maecenas. Scelerisque sit lorem sodales velit at nulla. Suspendisse elementum enim nunc accumsan. Semper arcu euismod quisque praesent. Nisi volutpat vitae nullam egestas arcu facilisi. Mattis felis feugiat mauris nibh dui vivamus. Venenatis ut pulvinar nisl sit tortor et a massa in. Pharetra ut leo morbi iaculis tortor mauris. Lobortis vulputate mauris, tristique vitae, potenti pellentesque dignissim.',
+      },
     ],
   },
 ];
 
 const CGUScreen = () => {
+  const navigation = useNavigation<StackNavigationScreenProp>();
+  const [isDisabled, setIsDisabled] = useState(true)
+
   const handleAcceptedCGU = async () => {
-    await setCGUAccepted('true');
+    await setCGUAccepted('1.0');
+    navigation.navigate('Home');
+  };
+
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }: NativeScrollEvent) => {
+    const paddingToBottom = 10;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        {cguArticle.map(article => (
-          <>
+      <ScrollView
+        onScroll={({ nativeEvent }) => {
+          if (isCloseToBottom(nativeEvent)) {
+            setIsDisabled(false);
+          }
+        }}
+        scrollEventThrottle={1400}>
+        {cguArticle.map((article, idx) => (
+          <View key={`article-${idx}`} style={{marginBottom: 100}}>
             <Title style={styles.title}>{article.title}</Title>
-            {article.paragraph.map(p => (
-              <>
+            {article.paragraph.map((p, id) => (
+              <View key={`paragraph-${id}`}>
                 <Subheading style={styles.subheading}>
                   {p.subheading}
                 </Subheading>
                 <Paragraph style={styles.description}>
                   {p.description}
                 </Paragraph>
-              </>
+              </View>
             ))}
-          </>
+          </View>
         ))}
       </ScrollView>
       <ARButton
@@ -76,6 +121,7 @@ const CGUScreen = () => {
         onPress={handleAcceptedCGU}
         size={ARButtonSize.Small}
         styleContainer={styles.button}
+        disabled={isDisabled}
       />
     </SafeAreaView>
   );
