@@ -6,6 +6,7 @@ import { POI } from '../actions/poi';
 import { ARPath, RouteProfile } from '../actions/routes';
 
 export type StackParamList = {
+  Onboarding: undefined;
   Home: undefined;
   POIDetails: { poi: POI };
   ChooseItinerary: {
