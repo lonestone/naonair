@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 
   mdContentStyle: {
     paddingHorizontal: 24,
-    paddingVertical: 14,
+    paddingVertical: 12,
   },
   smContentStyle: {
     paddingHorizontal: 7,
