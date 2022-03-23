@@ -178,13 +178,15 @@ export const forecast = async (poi_id: number): Promise<Forecast[]> => {
       }
     >;
 
-    return json.features.map<Forecast>(({ properties }) => {
-      let hour = new Date(properties.date_time_iso_utc);
-      return {
-        hour,
-        value: QAValues[properties.indice - 1],
-      };
-    });
+    return json.features
+      .map<Forecast>(({ properties }) => {
+        let hour = new Date(properties.date_time_iso_utc);
+        return {
+          hour,
+          value: QAValues[properties.indice - 1],
+        };
+      })
+      .slice(1, json.features.length);
   } catch (e) {
     logger.error(e, 'forecasts');
     throw 'Impossible de récupérer les prévisions';
