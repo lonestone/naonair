@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Position } from 'geojson';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -121,7 +121,22 @@ export default () => {
     [Field.END]: undefined,
   });
 
+  useEffect(() => {
+    console.info(values);
+  }, [values]);
+
   const [selectedField, setSelectedField] = useState<Field>(Field.START);
+
+  const onClear = useCallback(() => {
+    setValues({ ...values, [selectedField]: undefined });
+  }, [values, selectedField]);
+
+  const onUserLocation = useCallback(
+    (coord: Position, text: string) => {
+      setValues({ ...values, [selectedField]: { coord, text } });
+    },
+    [values, selectedField],
+  );
 
   const renderInput = (label: string, field: Field, iconName: string) => {
     return (
@@ -137,14 +152,13 @@ export default () => {
           style={styles.geocodingInput}
           onResults={setResults}
           value={values[field]}
-          onUserLocation={(coord, text) =>
-            setValues({ ...values, [field]: { coord, text } })
-          }
+          onUserLocation={(coord, text) => {
+            setSelectedField(field);
+            onUserLocation(coord, text);
+          }}
           onClear={() => {
-            setValues({
-              ...values,
-              [field]: undefined,
-            });
+            setSelectedField(field);
+            onClear();
           }}
           onTextChanged={() => {
             setValues({
@@ -199,6 +213,8 @@ export default () => {
             contentContainerStyle={{
               paddingBottom: values[Field.START] && values[Field.END] ? 120 : 0,
             }}
+            keyboardShouldPersistTaps
+            onScrollBeginDrag={Keyboard.dismiss}
             accessibilityLabel="Resultats de la recheche"
             indicatorStyle="black">
             {(results || []).map(
