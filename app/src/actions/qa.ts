@@ -161,6 +161,7 @@ export const forecast = async (poi_id: number): Promise<Forecast[]> => {
   });
 
   try {
+    console.info(URL);
     const response = await fetch(URL);
 
     const json = (await response.json()) as FeatureCollection<

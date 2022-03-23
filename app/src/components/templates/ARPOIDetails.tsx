@@ -18,6 +18,7 @@ import ARMap from '../atoms/ARMap';
 import ARQAChip from '../atoms/ARQAChip';
 import ARHeadingGroup from '../molecules/ARHeadingGroup';
 import ARForecasts from '../organisms/ARForecasts';
+import ARPollution from '../organisms/ARPollution';
 import { POIMarker } from './ARMapView';
 
 const styles = StyleSheet.create({
@@ -123,6 +124,8 @@ const ARPOIDetails = () => {
               </Card>
             </View>
             <ARHeadingGroup title={poi.name} caption={poi.address} />
+            <Divider />
+            <ARPollution />
             <Divider />
             {poi.poi_id && <ARForecasts id={poi.poi_id} />}
           </View>
