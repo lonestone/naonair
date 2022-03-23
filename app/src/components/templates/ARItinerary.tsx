@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { POI } from '../../actions/poi';
@@ -110,6 +111,9 @@ export default () => {
   const [transportMode, setTransportMode] = useState<RouteProfile[]>([
     RouteProfile.Bike,
   ]);
+
+  const { left, right } = useSafeAreaInsets();
+
   const [values, setValues] = useState<{
     [key: string]: { coord: Position; text: string } | undefined;
   }>({
@@ -177,6 +181,12 @@ export default () => {
               </View>
               <ARFilter
                 items={filterItems}
+                style={{
+                  marginLeft: -18 - left,
+                  marginRight: -18 - right,
+                  paddingLeft: 18 + left,
+                }}
+                contentInset={{ right: 18 + right }}
                 onChange={items => {
                   setTransportMode(items.map(i => i.value));
                 }}

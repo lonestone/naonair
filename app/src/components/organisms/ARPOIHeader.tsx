@@ -1,6 +1,7 @@
 import React, { Dispatch, ReactElement, SetStateAction } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Caption, Headline } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SvgXml } from 'react-native-svg';
 import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { POICategory, poiIcons } from '../../actions/poi';
@@ -102,6 +103,7 @@ const ARPOIHeader = ({
   setDisplayTypeIndex,
   setSelectedCategories,
 }: Props) => {
+  const { left, right } = useSafeAreaInsets();
   return (
     <ARHeader>
       <>
@@ -122,6 +124,12 @@ const ARPOIHeader = ({
         <ARFilter
           items={filters}
           multiple
+          style={{
+            marginRight: -right - 18,
+            marginLeft: -left - 18,
+            paddingLeft: left + 15,
+          }}
+          contentInset={{ right: right + 18 }}
           onChange={items => {
             setSelectedCategories(items.map(item => item.value));
           }}
