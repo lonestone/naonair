@@ -32,8 +32,6 @@ const App = () => {
       <NavigationContainer>
         <Screens />
       </NavigationContainer>
-      <ARAlert />
-      <ARNews />
     </Provider>
   );
 };

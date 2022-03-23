@@ -1,11 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
+import { Portal } from 'react-native-paper';
 import { getAll, POI, POICategory } from '../actions/poi';
 import { SwitchToggleItem } from '../components/molecules/ARSwitchToggle';
 import ARPOIHeader from '../components/organisms/ARPOIHeader';
+import ARAlert from '../components/templates/ARAlert';
 import ARListView from '../components/templates/ARListView';
 import ARMapView from '../components/templates/ARMapView';
+import ARNews from '../components/templates/ARNews';
 import { TabNavigationScreenProp } from '../types/routes';
 
 const styles = StyleSheet.create({
@@ -52,6 +55,10 @@ export default () => {
 
   return (
     <>
+      <Portal>
+        <ARAlert />
+        <ARNews />
+      </Portal>
       <ARPOIHeader
         displayTypeIndex={displayTypeIndex}
         displayTypeItems={displayTypeItems}
