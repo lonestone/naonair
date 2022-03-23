@@ -196,7 +196,9 @@ const ItineraryList = ({
         <Headline style={styles.title}>Choisissez votre itinéraire</Headline>
         {cleanest_path && (
           <ItineraryItem
-            label="Le plus sain"
+            label={
+              fastest_path ? 'Le plus sain' : 'Le plus sain et le plus rapide'
+            }
             path={cleanest_path}
             keyPath="cleanest_path"
             onPress={onSelected}
