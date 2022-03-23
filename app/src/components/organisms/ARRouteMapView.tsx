@@ -19,21 +19,24 @@ export default ({ route, bbox, start, end, selected }: ARRouteMapViewProps) => {
   // If not, PointAnnotation will be render outside the bbox and has incorrect values
   const [isMapLoaded, setMapLoaded] = useState<boolean>();
 
-
   const paths_key: ['cleanest_path', 'fastest_path'] = [
     'cleanest_path',
     'fastest_path',
   ];
+
+  console.info(route);
 
   // sort paths to make the selected one above the others
   const paths = paths_key
     .sort(key => (key === selected ? 1 : -1))
     .map(
       key =>
-        route && (
+        route &&
+        route[key] && (
           <ARPathLayer
             id={key}
-            path={route![key]}
+            key={key}
+            path={route[key]}
             isSelected={selected === key}
           />
         ),
