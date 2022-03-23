@@ -1,6 +1,7 @@
 import MapboxGL, { LineLayerStyle } from '@react-native-mapbox-gl/maps';
 import React, { RefObject, useCallback, useEffect, useState } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
+import Share from 'react-native-share';
 import { Button } from 'react-native-paper';
 import {
   flushSnapshots,
@@ -22,6 +23,7 @@ let timeoutId: number | undefined = undefined;
 export default () => {
   const [routes, setRoutes] = useState<ARParcours[]>([]);
   const [index, setIndex] = useState(0);
+  const [isCrawling, setIsCrawling] = useState(false);
 
   const [base64, setBase64] = useState<string[]>([]);
 
@@ -51,11 +53,18 @@ export default () => {
       // await new Promise(resolve => setTimeout(resolve, 500)); // need to make sure the map is correctly loaded
       const img = await mapRef.current?.takeSnap(false);
 
-      console.info(img);
-      img && (await saveMapSnapshot(routes[index].properties.nom, img));
+      console.info(img, mapRef.current);
+      let path =
+        img && (await saveMapSnapshot(routes[index].properties.nom, img));
+
+      console.info({ path });
+      if (path) {
+        setBase64([...base64, path]);
+      }
 
       if (index + 1 >= routes.length) {
         retreiveSnapshot();
+        setIsCrawling(false);
         return;
       }
 
@@ -63,7 +72,7 @@ export default () => {
       // await new Promise(resolve => setTimeout(resolve, 500));
       // gatheringSnapshots(mapRef, index + 1);
     },
-    [index, retreiveSnapshot, routes],
+    [base64, index, retreiveSnapshot, routes],
   );
 
   // useEffect(() => {
@@ -79,8 +88,32 @@ export default () => {
     }
 
     timeoutId = setTimeout(() => {
+      console.info('MAP LOADED', mapRef);
+
       gatheringSnapshots(mapRef);
-    }, 200) as unknown as number;
+    }, 500) as unknown as number;
+  };
+
+  const shareMultipleImages = async () => {
+    if (base64.length == 0) {
+      return;
+    }
+
+    const shareOptions = {
+      title: 'Share file',
+      failOnCancel: false,
+      urls: base64,
+    };
+
+    // If you want, you can use a try catch, to parse
+    // the share response. If the user cancels, etc.
+    try {
+      const ShareResponse = await Share.open(shareOptions);
+      // setResult(JSON.stringify(ShareResponse, null, 2));
+    } catch (error) {
+      console.log('Error =>', error);
+      // setResult('error: '.concat(getErrorString(error)));
+    }
   };
 
   const flush = async () => {
@@ -120,10 +153,11 @@ export default () => {
         </ARMap>
       </View>
 
-      <View style={{ position: 'absolute' }}>
-        <Button onPress={flush}>Flush snapShot</Button>
-      </View>
-
+      {isCrawling ? (
+        <Text>IS CRAWLING</Text>
+      ) : (
+        <Button onPress={shareMultipleImages}>Send</Button>
+      )}
       <Text>PREVIEW:</Text>
       <Button onPress={flush}>Flush snapShot</Button>
       <ScrollView style={{ height: 400 }}>

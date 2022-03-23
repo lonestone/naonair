@@ -159,10 +159,10 @@ export const calculateRoute = async (
 //   // );
 // };
 
-const folderPath = `${RNFS.LibraryDirectoryPath}`;
+const folderPath = `${RNFS.CachesDirectoryPath}/parcours`;
 
 export const saveMapSnapshot = async (uuid: string, base64: string) => {
-  const path = `${folderPath}/${slugify(uuid)}.png`;
+  const path = `${folderPath}/${uuid}.png`;
 
   try {
     // const isFolderExists = await RNFS.exists(folderPath);
@@ -175,11 +175,12 @@ export const saveMapSnapshot = async (uuid: string, base64: string) => {
     // if (isAlreadyExists) {
     //   throw 'FILE_ALREADY_EXISTS';
     // }
-
     const imageDatas = base64.split('data:image/png;base64,');
-    const file = await RNFetchBlob.fs.writeFile(path, imageDatas[1], 'base64');
-    await CameraRoll.save(path);
+    const imageData = imageDatas[1];
+    await RNFetchBlob.fs.writeFile(path, imageData, 'base64');
     console.log(`File written in ${path}`);
+    return path;
+    // await CameraRoll.save(path);
   } catch (e) {
     console.warn('ERROR', e);
   }
