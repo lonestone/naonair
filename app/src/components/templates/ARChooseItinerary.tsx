@@ -31,9 +31,9 @@ type ARChooseItineraryProp = RouteProp<StackParamList, 'ChooseItinerary'>;
 const styles = StyleSheet.create({
   backButtonSafeArea: { position: 'absolute', paddingLeft: 16, paddingTop: 16 },
   backButtonContainer: {
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.primary,
     padding: 16,
-    borderRadius: 14,
+    borderRadius: 50,
   },
   mapContainer: {
     flex: 1,
@@ -118,7 +118,7 @@ export const BackButton = () => {
           navigation.goBack();
         }}>
         <Surface style={styles.backButtonContainer}>
-          <Icon name="arrow-left" size={16} color={theme.colors.blue[500]} />
+          <Icon name="arrow-left" size={16} color={theme.colors.white} />
         </Surface>
       </TouchableOpacity>
     </SafeAreaView>

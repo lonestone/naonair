@@ -32,8 +32,9 @@ const styles = StyleSheet.create({
     ...fonts.Raleway.bold,
   },
   caption: {
-    color: theme.colors.blue[300],
     fontSize: 14,
+    color: theme.colors.blue[300],
+    ...fonts.Lato.regular,
     lineHeight: 20,
   },
 });

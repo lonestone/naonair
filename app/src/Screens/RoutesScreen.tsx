@@ -19,14 +19,15 @@ const styles = StyleSheet.create({
   headline: {
     flex: 0,
     alignItems: 'stretch',
-    fontSize: 20,
+    fontSize: 21,
     lineHeight: 24,
     color: theme.colors.blue[500],
     ...fonts.Raleway.bold,
   },
   caption: {
-    ...fonts.Lato.regular,
     fontSize: 14,
+    color: theme.colors.blue[300],
+    ...fonts.Lato.regular,
     lineHeight: 20,
   },
 });

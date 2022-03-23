@@ -17,12 +17,15 @@ const styles = StyleSheet.create({
   headline: {
     flex: 1,
     alignItems: 'stretch',
-    fontSize: 20,
+    fontSize: 21,
     color: theme.colors.blue[500],
     ...fonts.Raleway.bold,
   },
   caption: {
+    fontSize: 14,
+    color: theme.colors.blue[300],
     ...fonts.Lato.regular,
+    lineHeight: 24,
   },
 });
 

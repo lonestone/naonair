@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: theme.colors.blue[400],
     ...fonts.Lato.regular,
-    fontSize: 10,
+    fontSize: 12,
     lineHeight: 16,
   },
 });
