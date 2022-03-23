@@ -213,7 +213,7 @@ export default () => {
             contentContainerStyle={{
               paddingBottom: values[Field.START] && values[Field.END] ? 120 : 0,
             }}
-            keyboardShouldPersistTaps
+            keyboardShouldPersistTaps="always"
             onScrollBeginDrag={Keyboard.dismiss}
             accessibilityLabel="Resultats de la recheche"
             indicatorStyle="black">
