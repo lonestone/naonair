@@ -218,7 +218,7 @@ const ItineraryList = ({
         )}
 
         <ARButton
-          label="C'est parti"
+          label="C'est parti !"
           size={ARButtonSize.Medium}
           onPress={() =>
             navigation.navigate('Navigation', { path: route[selected] })
@@ -227,7 +227,7 @@ const ItineraryList = ({
           icon={() => (
             <Icon
               name="navigation-variant"
-              size={36}
+              size={25}
               color={theme.colors.white}
             />
           )}
