@@ -4,15 +4,13 @@ import { Text } from 'react-native-paper';
 import { Item } from '../../screens/OnboardingScreen';
 import { fonts, theme } from '../../theme';
 
-const dimensions = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: theme.colors.primary },
   image: {
-    height: '60%',
-    width: dimensions.width,
+    width,
     marginVertical: 10,
-    resizeMode: 'contain',
   },
   content: { marginLeft: 20, width: 350 },
   caption: {
@@ -43,7 +41,7 @@ interface Props {
 const Slide = ({ item }: Props) => {
   return (
     <View>
-      <Image source={item.img} style={styles.image} />
+      <Image source={item.img} style={styles.image} resizeMode="contain" />
       <View style={styles.content}>
         <Text style={styles.caption}>{item.caption}</Text>
         <Text style={styles.title}>{item.title}</Text>

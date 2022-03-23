@@ -97,10 +97,6 @@ export default () => {
     firstLaunched();
   }, [firstLaunched]);
 
-  if (!isReady) {
-    return null;
-  }
-
   const handleScreenOnLaunch = useMemo(() => {
     if (isAppFirstLaunched) {
       return 'Onboarding' as keyof StackParamList;
@@ -110,6 +106,10 @@ export default () => {
       return 'Home' as keyof StackParamList;
     }
   }, [isAppFirstLaunched, isCGUAccepted]);
+
+  if (!isReady) {
+    return null;
+  }
 
   return (
     <SnackbarProvider>
