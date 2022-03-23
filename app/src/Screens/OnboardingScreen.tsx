@@ -12,6 +12,7 @@ const dimensions = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: theme.colors.primary },
+  listContent: { flexGrow: 1, justifyContent: 'center', alignItems: 'center' },
 });
 
 export type Item = {
@@ -74,8 +75,6 @@ const OnboardingScren = ({ CGUAccepted }: Props) => {
       ref.current?.scrollToIndex({ index: currentIndex + 1 });
       setCurrentIndex(newtSlideIndex);
     } else if (newtSlideIndex === slidesItem.length) {
-      console.log('here', CGUAccepted === null);
-
       if (CGUAccepted === null) {
         await setIsFirstLaunched('false');
         navigation.navigate('CGU');
@@ -88,7 +87,7 @@ const OnboardingScren = ({ CGUAccepted }: Props) => {
       <FlatList
         ref={ref}
         onMomentumScrollEnd={updateCurrentSlideIndex}
-        contentContainerStyle={{ height: dimensions.height * 0.95 }}
+        contentContainerStyle={styles.listContent}
         showsHorizontalScrollIndicator={false}
         horizontal
         data={slidesItem}

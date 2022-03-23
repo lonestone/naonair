@@ -52,7 +52,7 @@ const ARSlideFooter = ({ slides, currentIndex, handleNextSlide }: Props) => {
         </View>
         {currentIndex + 1 === slides.length ? (
           <ARButton
-            label={"C'est parti !"}
+            label={"Continuer"}
             size={ARButtonSize.Small}
             onPress={handleNextSlide}
             styleContainer={{ backgroundColor: 'white' }}
