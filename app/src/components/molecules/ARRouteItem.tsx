@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, View, ViewProps } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import slugify from 'slugify';
 import { ARParcours } from '../../actions/parcours';
 import { QATypes, QAValues } from '../../actions/qa';
 import { useQAParcours } from '../../hooks/useQA';
@@ -50,7 +51,6 @@ export interface ARRouteItemProps extends ViewProps {
 }
 
 export default ({ style, parcours }: ARRouteItemProps) => {
-  const [uri] = useState<string | undefined>();
   const navigation = useNavigation<StackNavigationScreenProp>();
 
   const { properties } = parcours;
@@ -59,6 +59,12 @@ export default ({ style, parcours }: ARRouteItemProps) => {
 
   const { coureur, marcheur, cycliste, km, denivele, nom } = properties;
 
+  const imageName = slugify(properties.nom, {
+    lower: true,
+    replacement: '_',
+    remove: /[*+~.()'"!:@]/g,
+  });
+
   return (
     <Card
       style={[style, styles.card]}
@@ -66,7 +72,16 @@ export default ({ style, parcours }: ARRouteItemProps) => {
         navigation.navigate('RouteDetail', { parcours, qa });
       }}>
       <View style={styles.mapContainer}>
-        <Image source={{ uri }} style={{ backgroundColor: 'red', flex: 1 }} />
+        <Image
+          source={{
+            uri: imageName,
+          }}
+          // source={
+          //   !!properties?.nom &&
+          //   require(`../../assets/parcours/Foulées de l'éléphant.png`)
+          // }
+          style={{ backgroundColor: theme.colors.blue[100], flex: 1 }}
+        />
       </View>
       <View style={styles.container}>
         <Text style={styles.headline}>{nom}</Text>
