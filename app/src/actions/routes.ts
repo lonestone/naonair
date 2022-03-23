@@ -67,10 +67,10 @@ export const getDurationLabel = (duration: number): string => {
     duration = duration - minutes * msInMinute;
   }
 
-  const seconds = Math.trunc(duration / 1000);
-  if (seconds > 0) {
-    portions.push(seconds + 's');
-  }
+  // const seconds = Math.trunc(duration / 1000);
+  // if (seconds > 0) {
+  //   portions.push(seconds + 's');
+  // }
 
   return portions.join(' ');
 };
