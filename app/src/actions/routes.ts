@@ -162,7 +162,11 @@ export const calculateRoute = async (
 const folderPath = `${RNFS.CachesDirectoryPath}/parcours`;
 
 export const saveMapSnapshot = async (uuid: string, base64: string) => {
-  const path = `${folderPath}/${uuid}.png`;
+  const path = `${folderPath}/${slugify(uuid, {
+    lower: true,
+    replacement: '_',
+    remove: /[*+~.()'"!:@]/g,
+  })}.png`;
 
   try {
     // const isFolderExists = await RNFS.exists(folderPath);
