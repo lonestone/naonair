@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
   },
   denivele: {
     ...fonts.Lato.regular,
-    fontSize: 12,
-    lineHeight: 16,
+    fontSize: 14,
+    lineHeight: 24,
     color: theme.colors.blue[300],
   },
   distance: {

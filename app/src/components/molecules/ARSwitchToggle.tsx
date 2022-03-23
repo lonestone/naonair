@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     padding: 12,
     flex: 0,
   },
-  activeItem: {},
 });
 
 export default ({

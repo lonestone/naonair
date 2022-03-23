@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { POI } from '../../actions/poi';
+import { Paragraph } from 'react-native-paper';
+import { POI, POICategory } from '../../actions/poi';
 import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARQAChip from '../atoms/ARQAChip';
@@ -23,10 +24,16 @@ const styles = StyleSheet.create({
   chipWrapper: {
     justifyContent: 'center',
   },
+  paragraph: {
+    marginHorizontal: 20,
+    marginTop: 10,
+    color: theme.colors.blue[500],
+  },
 });
 
 interface ARListViewProps {
   pois: POI[];
+  category?: POICategory[];
 }
 
 const Item = ({
@@ -53,16 +60,28 @@ const Item = ({
   );
 };
 
-const ARListView = ({ pois }: ARListViewProps) => {
+const ARListView = ({ pois, category }: ARListViewProps) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
 
-  return (
-    <FlatList
-      data={pois}
-      keyExtractor={item => `poi-${item.id}`}
-      renderItem={({ item }) => <Item poi={item} navigation={navigation} />}
-    />
-  );
+  const handleNoFavorite = useMemo(() => {
+    if (!pois.length && category![0] === POICategory.FAVORITE) {
+      return (
+        <View style={styles.paragraph}>
+          <Paragraph>Vous n'avez aucune favoris.</Paragraph>
+        </View>
+      );
+    } else {
+      return (
+        <FlatList
+          data={pois}
+          keyExtractor={item => `poi-${item.id}`}
+          renderItem={({ item }) => <Item poi={item} navigation={navigation} />}
+        />
+      );
+    }
+  }, [category, pois]);
+
+  return <>{handleNoFavorite}</>;
 };
 
 export default ARListView;

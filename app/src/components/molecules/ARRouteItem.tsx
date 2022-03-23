@@ -26,14 +26,14 @@ const styles = StyleSheet.create({
   headline: {
     ...fonts.Lato.bold,
     color: theme.colors.blue[500],
-    fontSize: 16,
+    fontSize: 20,
     lineHeight: 24,
   },
   distance: {
     ...fonts.Lato.regular,
     color: theme.colors.blue[300],
-    fontSize: 12,
-    lineHeight: 16,
+    fontSize: 14,
+    lineHeight: 24,
   },
   icons: {
     flexDirection: 'row',
