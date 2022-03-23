@@ -6,6 +6,7 @@ import ARRoutesList from '../components/templates/ARRoutesList';
 import ARFilter, { ARFilterItem } from '../components/molecules/ARFilter';
 import ARHeader from '../components/atoms/ARHeader';
 import { Caption, Headline } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
   container: {
@@ -68,6 +69,7 @@ const filters: ARFilterItem[] = [
 
 export default () => {
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const { left, right } = useSafeAreaInsets();
 
   return (
     <>
@@ -81,6 +83,12 @@ export default () => {
           <ARFilter
             items={filters}
             multiple
+            style={{
+              marginLeft: -18 - left,
+              marginRight: -18 - right,
+              paddingLeft: 18 + left,
+            }}
+            contentInset={{ right: 18 + right }}
             onChange={items => {
               setSelectedFilters(items.map(i => i.value));
             }}

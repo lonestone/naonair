@@ -1,5 +1,11 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import {
+  Insets,
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
+} from 'react-native';
 import ARFilterItemComponent from '../atoms/ARFilterItemComponent';
 
 const styles = StyleSheet.create({
@@ -19,10 +25,18 @@ export interface ARFilterItem {
 export interface ARFilterProps {
   items: ARFilterItem[];
   multiple?: boolean;
+  style?: StyleProp<ViewStyle>;
+  contentInset?: Insets;
   onChange: (selectedItems: ARFilterItem[]) => void;
 }
 
-export default ({ items, onChange, multiple }: ARFilterProps) => {
+export default ({
+  items,
+  onChange,
+  multiple,
+  style,
+  contentInset,
+}: ARFilterProps) => {
   const [propsItems, setPropsItems] = useState<ARFilterItem[]>(items);
 
   useEffect(() => {
@@ -53,8 +67,9 @@ export default ({ items, onChange, multiple }: ARFilterProps) => {
 
   return (
     <ScrollView
-      style={styles.container}
+      style={StyleSheet.flatten([styles.container, style])}
       horizontal
+      contentInset={contentInset}
       showsHorizontalScrollIndicator={false}>
       <>
         {multiple && (
