@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Position } from 'geojson';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { POI } from '../../actions/poi';
 import { RouteProfile } from '../../actions/routes';
 import { theme } from '../../theme';
-import { StackNavigationScreenProp } from '../../types/routes';
+import { StackNavigationScreenProp, TabParamList } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARHeader from '../atoms/ARHeader';
 import ARAddressInput from '../molecules/ARAddressInput';
@@ -105,8 +105,11 @@ enum Field {
   END = 'end',
 }
 
+type ARItineraryRouteProps = RouteProp<TabParamList, 'Itinéraires'>;
+
 export default () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
+  const { params } = useRoute<ARItineraryRouteProps>();
   const [results, setResults] = useState<POI[]>([]);
   const [transportMode, setTransportMode] = useState<RouteProfile[]>([
     RouteProfile.Bike,
@@ -117,13 +120,16 @@ export default () => {
   const [values, setValues] = useState<{
     [key: string]: { coord: Position; text: string } | undefined;
   }>({
-    [Field.START]: undefined,
-    [Field.END]: undefined,
+    [Field.START]: params.start,
+    [Field.END]: params.end,
   });
 
   useEffect(() => {
-    console.info(values);
-  }, [values]);
+    setValues({
+      [Field.START]: params.start,
+      [Field.END]: params.end,
+    });
+  }, [params]);
 
   const [selectedField, setSelectedField] = useState<Field>(Field.START);
 
