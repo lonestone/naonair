@@ -124,10 +124,14 @@ const ARPOIDetails = () => {
               </Card>
             </View>
             <ARHeadingGroup title={poi.name} caption={poi.address} />
-            <Divider />
-            <ARPollution />
-            <Divider />
-            {poi.poi_id && <ARForecasts id={poi.poi_id} />}
+            {poi.poi_id && (
+              <>
+                <Divider />
+                <ARPollution />
+                <Divider />
+                <ARForecasts id={poi.poi_id} />
+              </>
+            )}
           </View>
         )}
       </ScrollView>
