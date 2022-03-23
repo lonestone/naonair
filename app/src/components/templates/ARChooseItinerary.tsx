@@ -250,7 +250,7 @@ export default () => {
   const { params } = useRoute<ARChooseItineraryProp>();
   const [route, setRoute] = useState<ARRoute | undefined>();
   const [bbox, setBbox] = useState<BBox | undefined>();
-  const [selected, setSelected] = useState<ARRouteType>('fastest_path');
+  const [selected, setSelected] = useState<ARRouteType>('cleanest_path');
 
   const { start, end, transportMode } = params;
 

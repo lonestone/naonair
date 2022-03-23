@@ -14,7 +14,7 @@ export interface ARPath {
 }
 
 export interface ARRoute {
-  fastest_path: ARPath;
+  fastest_path?: ARPath;
   cleanest_path: ARPath;
 }
 
@@ -96,6 +96,10 @@ export const calculateRoute = async (
   json.fastest_path.instructions.slice(
     json.fastest_path.instructions.length - 1,
   );
+
+  if (json.cleanest_path.distance === json.fastest_path.distance) {
+    return { cleanest_path: json.cleanest_path };
+  }
 
   return json;
 };
