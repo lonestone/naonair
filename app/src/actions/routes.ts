@@ -93,11 +93,14 @@ export const calculateRoute = async (
     json.cleanest_path.instructions.length - 1,
   );
 
-  json.fastest_path.instructions.slice(
-    json.fastest_path.instructions.length - 1,
+  json.fastest_path?.instructions.slice(
+    json.fastest_path?.instructions.length - 1,
   );
 
-  if (json.cleanest_path.distance === json.fastest_path.distance) {
+  if (
+    json.cleanest_path.distance === json.fastest_path?.distance &&
+    json.cleanest_path.time === json.fastest_path?.time
+  ) {
     return { cleanest_path: json.cleanest_path };
   }
 

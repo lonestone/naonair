@@ -21,10 +21,14 @@ export type StackParamList = {
 
 export type TabParamList = {
   Carte: undefined;
-  Itinéraires: undefined;
+  Itinéraires: {
+    start?: { coord: Position; text: string };
+    end?: { coord: Position; text: string };
+  };
   Parcours: undefined;
   Profil: undefined;
 };
 
 export type StackNavigationScreenProp = StackNavigationProp<StackParamList>;
-export type TabNavigationScreenProp = MaterialBottomTabNavigationProp<TabParamList>;
+export type TabNavigationScreenProp =
+  MaterialBottomTabNavigationProp<TabParamList>;

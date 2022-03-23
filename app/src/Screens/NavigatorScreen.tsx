@@ -38,7 +38,7 @@ const Home = () => {
       defaultScreenOptions={{
         headerShown: false,
       }}
-      screenOptions={({ route, navigation }) => ({
+      screenOptions={({ route }) => ({
         tabBarStyle: {
           backgroundColor: theme.colors.primary,
           paddingVertical: 12,
@@ -48,40 +48,14 @@ const Home = () => {
         tabBarActiveTintColor: theme.colors.white,
         tabBarInactiveTintColor: 'rgba(255,255,255, 0.6)',
 
-        tabBarIcon: ({ focused, color, size }) => (
+        tabBarIcon: ({ color }) => (
           <Icon name={routeIcon[route.name]} size={30} color={color} />
         ),
-
-        // tabBarIni: theme.colors.primary,
-      })}
-      // barStyle={{ backgroundColor: theme.colors.primary }}
-      // screenOptions={({ route }) => ({
-      //   // title: route.name,
-      //   // tabBarIcon: <Icon name={routeIcon[route.name]} size={30} />,
-      // })}
-      // shifting={false}
-    >
-      <Tab.Screen
-        name="Carte"
-        component={MapScreen}
-        // options={{ tabBa: <Icon name={'map'} size={30} /> }}
-        // options={{ tabBarIcon: 'map' }}
-      />
-      <Tab.Screen
-        name="Itinéraires"
-        // options={{ tabBarIcon: 'near-me' }}
-        component={ItineraryScreen}
-      />
-      <Tab.Screen
-        name="Parcours"
-        // options={{ tabBarIcon: 'run' }}
-        component={RoutesScreen}
-      />
-      <Tab.Screen
-        name="Profil"
-        // options={{ tabBarIcon: 'account-circle' }}
-        component={ProfileScreen}
-      />
+      })}>
+      <Tab.Screen name="Carte" component={MapScreen} />
+      <Tab.Screen name="Itinéraires" component={ItineraryScreen} />
+      <Tab.Screen name="Parcours" component={RoutesScreen} />
+      <Tab.Screen name="Profil" component={ProfileScreen} />
     </Tab.Navigator>
   );
 };

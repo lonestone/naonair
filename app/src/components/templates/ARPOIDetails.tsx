@@ -4,9 +4,14 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { Card, Divider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { reverse } from '../../actions/poi';
 import { RouteProfile } from '../../actions/routes';
 import { theme } from '../../theme';
-import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
+import {
+  StackNavigationScreenProp,
+  StackParamList,
+  TabNavigationScreenProp,
+} from '../../types/routes';
 import logger from '../../utils/logger';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARMap from '../atoms/ARMap';
@@ -57,16 +62,26 @@ const styles = StyleSheet.create({
 type POIDetailsRouteProp = RouteProp<StackParamList, 'POIDetails'>;
 
 const ARPOIDetails = () => {
-  const navigation = useNavigation<StackNavigationScreenProp>();
+  const navigation = useNavigation<TabNavigationScreenProp>();
   const { poi } = useRoute<POIDetailsRouteProp>().params || {};
 
   const goTo = () => {
     Geolocation.getCurrentPosition(
       ({ coords }) => {
-        navigation.navigate('ChooseItinerary', {
-          start: [coords.longitude, coords.latitude],
-          end: poi.geolocation,
-          transportMode: RouteProfile.Walk,
+        reverse([coords.longitude, coords.latitude]).then(features => {
+          if (features.length > 0) {
+            const { text_fr = 'Ma position' } = features[0];
+            navigation.navigate('Itinéraires', {
+              start: {
+                text: text_fr,
+                coord: [coords.longitude, coords.latitude],
+              },
+              end: {
+                text: poi.name,
+                coord: poi.geolocation,
+              },
+            });
+          }
         });
       },
       error => {
