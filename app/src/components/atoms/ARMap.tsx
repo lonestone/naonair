@@ -79,6 +79,7 @@ const ARMap = (
     animationMode,
     isGPS,
     onUserLocationChanged,
+    onFrameLoaded,
     onMapLoaded,
     style,
   }: ARMapProps,
@@ -92,7 +93,7 @@ const ARMap = (
   >();
 
   const defaultSettingsCamera: CameraSettings = {
-    zoomLevel: 14,
+    zoomLevel: 10,
     centerCoordinate: [-1.56857384817453, 47.20300691709389],
     bounds,
   };
@@ -100,6 +101,7 @@ const ARMap = (
   // console.log({bbox, center});
 
   useEffect(() => {
+    console.info(bbox);
     bbox &&
       setBounds({
         ne: [bbox[0], bbox[1]],
@@ -130,9 +132,8 @@ const ARMap = (
           pitchEnabled={false}
           surfaceView
           onPress={() => onMapPress && onMapPress()}
-          onDidFinishRenderingMapFully={() =>
-            onMapLoaded && onMapLoaded(mapRef, cameraRef)
-          }
+          onDidFinishRenderingMapFully={() => onMapLoaded?.(mapRef, cameraRef)}
+          onDidFinishRenderingFrameFully={() => onFrameLoaded?.(mapRef)}
           zoomEnabled={!!interactionEnabled}
           scrollEnabled={!!interactionEnabled}>
           <MapboxGL.Camera
@@ -141,10 +142,10 @@ const ARMap = (
             centerCoordinate={center}
             minZoomLevel={8}
             padding={{
-              paddingBottom: 25 + insets.bottom,
-              paddingLeft: 25 + insets.left,
-              paddingRight: 25 + insets.right,
-              paddingTop: 25 + insets.top,
+              paddingBottom: 10,
+              paddingLeft: 10,
+              paddingRight: 10,
+              paddingTop: 10,
             }}
             animationMode={animationMode || 'moveTo'}
             defaultSettings={{

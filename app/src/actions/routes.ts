@@ -1,5 +1,9 @@
+import CameraRoll from '@react-native-community/cameraroll';
 import { BBox, LineString, Position } from 'geojson';
+
 import RNFS from 'react-native-fs';
+import RNFetchBlob from 'rn-fetch-blob';
+import slugify from 'slugify';
 import { API } from '../config.json';
 import { jsonToUrl } from '../utils/config';
 import { ARInstruction } from './instructions';
@@ -106,75 +110,78 @@ export const calculateRoute = async (
 
   return json;
 };
-export interface Route {
-  name: string;
-  geojson: Turf.Feature;
-  bounds: { ne: Turf.Position; sw: Turf.Position };
-  center: Turf.Position;
-}
+// export interface Route {
+//   name: string;
+//   geojson: Turf.Feature;
+//   bounds: { ne: Turf.Position; sw: Turf.Position };
+//   center: Turf.Position;
+// }
 
-export const getAll = (): Route[] => {
-  return (hugeTest as FeatureCollection).features
-    .splice(0, 20)
-    .filter(feature => feature.geometry !== null)
-    .map(feature => {
-      // const center = [0, 0];
-      // const bbox = [0, 0, 0, 0];
-      const center = Turf.centerOfMass(feature).geometry.coordinates;
-      const bbox = Turf.bbox(feature);
+// export const getAll = (): Route[] => {
+//   return (hugeTest as FeatureCollection).features
+//     .splice(0, 20)
+//     .filter(feature => feature.geometry !== null)
+//     .map(feature => {
+//       // const center = [0, 0];
+//       // const bbox = [0, 0, 0, 0];
+//       const center = Turf.centerOfMass(feature).geometry.coordinates;
+//       const bbox = Turf.bbox(feature);
 
-      return {
-        name: `${feature.properties!['objectid'] as number}`,
-        geojson: feature,
-        bounds: {
-          ne: [bbox[0], bbox[1]],
-          sw: [bbox[2], bbox[3]],
-        },
-        center,
-      };
-    });
+//       return {
+//         name: `${feature.properties!['objectid'] as number}`,
+//         geojson: feature,
+//         bounds: {
+//           ne: [bbox[0], bbox[1]],
+//           sw: [bbox[2], bbox[3]],
+//         },
+//         center,
+//       };
+//     });
 
-  // return Promise.all(
-  //   routesJson.map(async route => {
-  //     console.info({route});
+//   // return Promise.all(
+//   //   routesJson.map(async route => {
+//   //     console.info({route});
 
-  //     const routeJson = routes[route.geojson_name];
-  //     const center = Turf.centerOfMass(routeJson).geometry.coordinates;
-  //     const bbox = Turf.bbox(routeJson);
-  //     console.info({center, bbox});
-  //     return {
-  //       name: route.geojson_name,
-  //       geojson: routeJson,
-  //       bounds: {
-  //         ne: [bbox[0], bbox[1]],
-  //         sw: [bbox[2], bbox[3]],
-  //       },
-  //       center,
-  //     };
-  //   }),
-  // );
-};
+//   //     const routeJson = routes[route.geojson_name];
+//   //     const center = Turf.centerOfMass(routeJson).geometry.coordinates;
+//   //     const bbox = Turf.bbox(routeJson);
+//   //     console.info({center, bbox});
+//   //     return {
+//   //       name: route.geojson_name,
+//   //       geojson: routeJson,
+//   //       bounds: {
+//   //         ne: [bbox[0], bbox[1]],
+//   //         sw: [bbox[2], bbox[3]],
+//   //       },
+//   //       center,
+//   //     };
+//   //   }),
+//   // );
+// };
 
-const folderPath = `${RNFS.CachesDirectoryPath}/aireal-snapshots`;
+const folderPath = `${RNFS.LibraryDirectoryPath}`;
 
 export const saveMapSnapshot = async (uuid: string, base64: string) => {
-  const path = `${folderPath}/${uuid}`;
+  const path = `${folderPath}/${slugify(uuid)}.png`;
 
   try {
-    const isFolderExists = await RNFS.exists(folderPath);
-    if (!isFolderExists) {
-      await RNFS.mkdir(folderPath);
-    }
+    // const isFolderExists = await RNFS.exists(folderPath);
+
+    // if (!isFolderExists) {
+    //   await RNFS.mkdir(folderPath);
+    // }
 
     // const isAlreadyExists = await RNFS.exists(path);
     // if (isAlreadyExists) {
     //   throw 'FILE_ALREADY_EXISTS';
     // }
 
-    await RNFS.writeFile(path, base64);
+    const imageDatas = base64.split('data:image/png;base64,');
+    const file = await RNFetchBlob.fs.writeFile(path, imageDatas[1], 'base64');
+    await CameraRoll.save(path);
     console.log(`File written in ${path}`);
   } catch (e) {
-    console.warn(e);
+    console.warn('ERROR', e);
   }
 };
 
@@ -189,7 +196,9 @@ export const flushSnapshots = async () => {
   );
 };
 
-export const getMapSnapshot = async (uuid: string): Promise<string> => {
+export const getMapSnapshot = async (
+  uuid: string,
+): Promise<string | undefined> => {
   const path = `${folderPath}/${uuid}`;
 
   const isExists = await RNFS.exists(path);
@@ -197,5 +206,5 @@ export const getMapSnapshot = async (uuid: string): Promise<string> => {
     throw 'FILE_NOT_EXISTING';
   }
 
-  return await RNFS.readFile(path);
+  return (await RNFS.readFile(path)) || undefined;
 };

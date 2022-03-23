@@ -20,7 +20,7 @@ export interface ARParcours {
 
 // https://api.naonair.org/geoserver/aireel/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=aireel%3Aparcours_poi_data&outputFormat=application%2Fjson
 
-export const getAll = async (filters: string[]): Promise<ARParcours[]> => {
+export const getAll = async (filters?: string[]): Promise<ARParcours[]> => {
   try {
     const URL = buildGeoserverUrl('wms', {
       SERVICE: 'WFS',
@@ -45,8 +45,9 @@ export const getAll = async (filters: string[]): Promise<ARParcours[]> => {
           },
         } as ARParcours;
       })
-      .filter(p => filters.some(f => !!p.properties[f]));
+      .filter(p => filters?.some(f => !!p.properties[f]) ?? true);
 
+    console.info(parcours);
     return parcours;
   } catch (e) {
     if (__DEV__) {
