@@ -120,14 +120,14 @@ export default () => {
   const [values, setValues] = useState<{
     [key: string]: { coord: Position; text: string } | undefined;
   }>({
-    [Field.START]: params.start,
-    [Field.END]: params.end,
+    [Field.START]: params?.start ?? undefined,
+    [Field.END]: params?.end ?? undefined,
   });
 
   useEffect(() => {
     setValues({
-      [Field.START]: params.start,
-      [Field.END]: params.end,
+      [Field.START]: params?.start ?? undefined,
+      [Field.END]: params?.end ?? undefined,
     });
   }, [params]);
 
