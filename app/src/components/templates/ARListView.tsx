@@ -67,7 +67,7 @@ const ARListView = ({ pois, category }: ARListViewProps) => {
     if (!pois.length && category![0] === POICategory.FAVORITE) {
       return (
         <View style={styles.paragraph}>
-          <Paragraph>Vous n'avez aucune favoris.</Paragraph>
+          <Paragraph>Vous n'avez aucun favoris.</Paragraph>
         </View>
       );
     } else {
@@ -79,7 +79,7 @@ const ARListView = ({ pois, category }: ARListViewProps) => {
         />
       );
     }
-  }, [category, pois]);
+  }, [category, navigation, pois]);
 
   return <>{handleNoFavorite}</>;
 };
