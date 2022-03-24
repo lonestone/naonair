@@ -67,7 +67,9 @@ const ARCommonHeader = ({
           />
         )}
         <View>
-          <Headline style={styles.headline}>{headline}</Headline>
+          <Headline numberOfLines={2} style={styles.headline}>
+            {headline}
+          </Headline>
 
           {!!caption && <Caption style={styles.caption}>{caption}</Caption>}
         </View>

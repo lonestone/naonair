@@ -1,11 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   createStackNavigator,
-  StackNavigationOptions
+  StackNavigationOptions,
 } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { getCGUAccepted, getIsFirstLaunched } from '../actions/launch';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
@@ -78,7 +78,7 @@ export default () => {
   const [isCGUAccepted, setIsCGUAccepted] = useState<string>();
   const [isReady, setIsReady] = useState<boolean>(false);
 
-  const firstLaunched = async () => {
+  const firstLaunched = useCallback(async () => {
     const isFirstLaunched = await getIsFirstLaunched();
     const CGUAccepted = await getCGUAccepted();
 
@@ -91,7 +91,7 @@ export default () => {
     }
 
     setIsReady(true);
-  };
+  }, []);
 
   useEffect(() => {
     firstLaunched();
@@ -122,7 +122,9 @@ export default () => {
         <Stack.Screen
           name="CGU"
           component={CGUScreen}
-          options={{ headerTitle: "Conditions Générales d'Utilisation" }}
+          options={{
+            headerTitle: "Conditions Générales d'Utilisation",
+          }}
         />
 
         <Stack.Screen
