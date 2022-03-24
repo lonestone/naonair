@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, Title } from 'react-native-paper';
-import { QAType, QATypes, QAValues } from '../../actions/qa';
+import { QAType, QAValues } from '../../actions/qa';
 import { fonts, theme } from '../../theme';
 import ARQAChip from '../atoms/ARQAChip';
 
@@ -42,22 +42,27 @@ const Particle = ({ title, value }: { title: string; value: QAType }) => (
 export default () => {
   const particles = [
     {
+      key: 'pm10',
       title: 'Particles PM 10',
       indice: 5,
     },
     {
+      key: 'pm2.5',
       title: 'Particles PM 2.5',
       indice: 4,
     },
     {
+      key: 'ozone',
       title: 'Ozone',
       indice: 3,
     },
     {
+      key: 'azote',
       title: "Dioxyde d'azote",
       indice: 2,
     },
     {
+      key: 'soufre',
       title: 'Dioxyde de soufre',
       indice: 1,
     },
@@ -66,8 +71,8 @@ export default () => {
     <View>
       <Title style={styles.title}>Détail</Title>
 
-      {particles.map(({ indice, title }) => (
-        <Particle title={title} value={QAValues[indice]} />
+      {particles.map(({ indice, title, key }) => (
+        <Particle key={key} title={title} value={QAValues[indice]} />
       ))}
       <Text style={styles.legendText}>
         Chaque jour la qualité de l’air est définie par le(s) polluant(s) le(s)
