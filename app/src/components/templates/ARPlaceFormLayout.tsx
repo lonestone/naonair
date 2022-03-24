@@ -151,13 +151,14 @@ const ARPlaceFormLayout = () => {
                 key={`item-${index}`}
                 title={name}
                 description={address}
-                leftIcon={() => (
-                  <SvgXml
-                    width="20"
-                    height="20"
-                    xml={poiIcons[POICategory.FAVORITE] || null}
-                  />
-                )}
+                leftIconShown={false}
+                // leftIcon={() => (
+                //   <SvgXml
+                //     width="20"
+                //     height="20"
+                //     xml={poiIcons[POICategory.FAVORITE] || null}
+                //   />
+                // )}
                 onPress={() => {
                   setValues({
                     coord: geolocation,

@@ -39,6 +39,7 @@ interface ARListItemProps {
   leftIcon?: IconSource;
   rightIcon?: any;
   rightChip?: any;
+  leftIconShown?: boolean;
   onPress?: () => void;
 }
 
@@ -52,6 +53,7 @@ const ARListItem = ({
   rightChip,
   leftIcon,
   onPress,
+  leftIconShown = true,
 }: ARListItemProps) => {
   const getIcon = useCallback((): IconSource => {
     if (leftIcon) {
@@ -79,14 +81,16 @@ const ARListItem = ({
         onPress={onPress}
         descriptionStyle={[styles.description, descriptionStyle]}
         rippleColor={theme.colors.blue[100]}
-        left={props => (
-          <List.Icon
-            {...props}
-            style={styles.iconContainer}
-            icon={getIcon()}
-            color={theme.colors.blue[500]}
-          />
-        )}
+        left={props =>
+          !!leftIconShown && (
+            <List.Icon
+              {...props}
+              style={styles.iconContainer}
+              icon={getIcon()}
+              color={theme.colors.blue[500]}
+            />
+          )
+        }
         right={() => (
           <>
             {rightIcon && (
