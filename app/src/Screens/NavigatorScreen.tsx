@@ -23,6 +23,7 @@ import NavigationScreen from './NavigationScreen';
 import OnboardingScreen from './OnboardingScreen';
 import ProfileScreen from './ProfileScreen';
 import RoutesScreen from './RoutesScreen';
+import { Platform } from 'react-native';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 const Stack = createStackNavigator<StackParamList>();
@@ -45,7 +46,11 @@ const Home = () => {
         tabBarStyle: {
           backgroundColor: theme.colors.primary,
           paddingVertical: 12,
-          height: 60 + bottom,
+          height: (Platform.OS === 'ios' ? 60 : 70) + bottom,
+          // paddingBottom: 20,
+        },
+        tabBarLabelStyle: {
+          marginBottom: 5,
         },
         headerShown: false,
         tabBarActiveTintColor: theme.colors.white,
