@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "snapshot_chantenay.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

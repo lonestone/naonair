@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "snapshot_ile_de_nantes.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

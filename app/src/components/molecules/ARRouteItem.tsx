@@ -59,11 +59,11 @@ export default ({ style, parcours }: ARRouteItemProps) => {
 
   const { coureur, marcheur, cycliste, km, denivele, nom } = properties;
 
-  const imageName = slugify(properties.nom, {
+  const imageName = `snapshot_${slugify(properties.nom, {
     lower: true,
     replacement: '_',
     remove: /[*+~.()'"!:@-]/g,
-  });
+  })}`;
 
   return (
     <Card
