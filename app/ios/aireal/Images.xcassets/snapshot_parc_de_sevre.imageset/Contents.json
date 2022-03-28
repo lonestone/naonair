@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "snapshot_parc_de_sevre.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

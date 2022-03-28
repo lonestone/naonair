@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "snapshot_vallee_de_bouguenais.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
