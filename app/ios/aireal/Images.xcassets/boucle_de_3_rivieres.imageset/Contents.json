@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "boucle_de_3_rivieres.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

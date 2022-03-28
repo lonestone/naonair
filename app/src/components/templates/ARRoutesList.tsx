@@ -34,7 +34,7 @@ export default ({ filters }: ARRoutesListProps) => {
           renderItem={({ item }) => (
             <ARRouteItem parcours={item} style={styles.item} />
           )}
-          keyExtractor={item => `toto-${item}`}
+          keyExtractor={item => `parcours-${item.properties.id}`}
           getItemCount={data => data.length}
           getItem={(data, index) => data[index]}
         />
