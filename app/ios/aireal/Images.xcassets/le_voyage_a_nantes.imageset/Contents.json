@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "le_voyage_a_nantes.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

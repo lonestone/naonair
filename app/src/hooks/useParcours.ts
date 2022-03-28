@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { ARParcours, getAll } from '../actions/parcours';
 
 export const useParcours = (
@@ -7,21 +7,28 @@ export const useParcours = (
   const [parcours, setParcours] = useState<ARParcours[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
+  const fetchingParcours = useRef<number | null>(null);
 
   useLayoutEffect(() => {
     if (isLoading) {
       return;
     }
 
-    getAll(filters)
-      .then(p => {
-        setParcours(p);
-        setIsLoading(false);
-      })
-      .catch(e => {
-        setError(e);
-        setIsLoading(false);
-      });
+    if (fetchingParcours.current) {
+      clearTimeout(fetchingParcours.current);
+    }
+
+    fetchingParcours.current = setTimeout(() => {
+      getAll(filters)
+        .then(p => {
+          setParcours(p);
+          setIsLoading(false);
+        })
+        .catch(e => {
+          setError(e);
+          setIsLoading(false);
+        });
+    }, 200) as unknown as number;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setParcours, filters]);

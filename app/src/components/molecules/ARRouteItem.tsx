@@ -62,7 +62,7 @@ export default ({ style, parcours }: ARRouteItemProps) => {
   const imageName = slugify(properties.nom, {
     lower: true,
     replacement: '_',
-    remove: /[*+~.()'"!:@]/g,
+    remove: /[*+~.()'"!:@-]/g,
   });
 
   return (
