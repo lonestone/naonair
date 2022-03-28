@@ -165,7 +165,7 @@ export const saveMapSnapshot = async (uuid: string, base64: string) => {
   const path = `${folderPath}/${slugify(uuid, {
     lower: true,
     replacement: '_',
-    remove: /[*+~.()'"!:@]/g,
+    remove: /[*+~.()'"!:@-]/g,
   })}.png`;
 
   try {
