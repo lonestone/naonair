@@ -57,6 +57,11 @@ type POIFeatureProperties = {
   date_time_iso_utc: string;
   date_time_local: string;
   indice: number;
+  no2_indice: number;
+  pm10_indice: number;
+  pm25_indice: number;
+  o3_indice: number;
+  so2_indice: number;
 };
 
 const fetchAll = async () => {
@@ -74,6 +79,7 @@ const fetchAll = async () => {
     },
   });
 
+  console.info({ URL });
   const response = await fetch(URL);
   const json = (await response.json()) as FeatureCollection<
     Point,
@@ -101,6 +107,7 @@ const fetchAll = async () => {
     };
 
     return {
+      ...properties,
       id,
       poi_id,
       category: getCategory(),

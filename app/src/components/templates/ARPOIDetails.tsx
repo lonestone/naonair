@@ -127,7 +127,7 @@ const ARPOIDetails = () => {
             {poi.poi_id && (
               <>
                 <Divider />
-                <ARPollution />
+                <ARPollution poi={poi} />
                 <Divider />
                 <ARForecasts id={poi.poi_id} />
               </>

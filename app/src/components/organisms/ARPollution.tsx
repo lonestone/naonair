@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, Title } from 'react-native-paper';
+import { POI } from '../../actions/poi';
 import { QAType, QAValues } from '../../actions/qa';
 import { fonts, theme } from '../../theme';
 import ARQAChip from '../atoms/ARQAChip';
@@ -39,40 +40,39 @@ const Particle = ({ title, value }: { title: string; value: QAType }) => (
   </View>
 );
 
-export default () => {
+export type ARPollutionProps = {
+  poi: POI;
+};
+
+export default ({ poi }: ARPollutionProps) => {
   const particles = [
     {
-      key: 'pm10',
+      key: 'pm10_indice',
       title: 'Particles PM 10',
-      indice: 5,
     },
     {
-      key: 'pm2.5',
+      key: 'pm25_indice',
       title: 'Particles PM 2.5',
-      indice: 4,
     },
     {
-      key: 'ozone',
+      key: 'o3_indice',
       title: 'Ozone',
-      indice: 3,
     },
     {
-      key: 'azote',
+      key: 'no2_indice',
       title: "Dioxyde d'azote",
-      indice: 2,
     },
     {
-      key: 'soufre',
+      key: 'so2_indice',
       title: 'Dioxyde de soufre',
-      indice: 1,
     },
   ];
   return (
     <View>
       <Title style={styles.title}>Détail</Title>
 
-      {particles.map(({ indice, title, key }) => (
-        <Particle key={key} title={title} value={QAValues[indice]} />
+      {particles.map(({ title, key }) => (
+        <Particle key={key} title={title} value={QAValues[poi[key]]} />
       ))}
       <Text style={styles.legendText}>
         Chaque jour la qualité de l’air est définie par le(s) polluant(s) le(s)
