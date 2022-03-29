@@ -39,6 +39,8 @@ const styles = StyleSheet.create({
     marginTop: 26,
     marginBottom: 20,
     justifyContent: 'space-between',
+    alignItems: 'center',
+    flex: 1,
   },
   headline: {
     ...fonts.Raleway.bold,
@@ -108,18 +110,31 @@ export type ARRouteDetailProp = RouteProp<StackParamList, 'RouteDetail'>;
 export default ({}: ARRouteDetailProp) => {
   const { parcours, qa } = useRoute<ARRouteDetailProp>().params || {};
 
-  const { coureur, cycliste, marcheur, km } = parcours.properties;
+  const {
+    coureur,
+    cycliste,
+    marcheur,
+    km,
+    marcheurs_temps_min,
+    coureurs_temps_min,
+    cyclistes_temps_min,
+  } = parcours.properties;
+  console.info(parcours);
 
   const speeds = [
     marcheur && {
       icon: 'walk',
-      speed: (km / 5) * 60,
+      speed: marcheurs_temps_min,
       label: 'minutes de marche',
     },
-    coureur && { icon: 'run', speed: (km / 20) * 60, label: 'minutes à vélo' },
+    coureur && {
+      icon: 'run',
+      speed: cyclistes_temps_min,
+      label: 'minutes à vélo',
+    },
     cycliste && {
       icon: 'bike',
-      speed: (km / 30) * 60,
+      speed: coureurs_temps_min,
       label: 'minutes de course',
     },
   ];
@@ -144,16 +159,14 @@ export default ({}: ARRouteDetailProp) => {
         </View>
 
         <View style={styles.headContainer}>
-          <View>
+          <View style={{ flex: 1 }}>
             <Text style={styles.headline}>{parcours.properties.nom}</Text>
             <Text style={styles.denivele}>
               Dénivelé : {parcours.properties.denivele}m
             </Text>
           </View>
           <View style={styles.distance}>
-            <Text style={styles.distanceKm}>
-              {Math.round(parcours.properties.km * 10) / 10}
-            </Text>
+            <Text style={styles.distanceKm}>{Math.round(km * 10) / 10}</Text>
             <Text style={styles.distanceUnit}>Km</Text>
           </View>
         </View>

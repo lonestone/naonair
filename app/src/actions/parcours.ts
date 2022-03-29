@@ -15,6 +15,9 @@ export interface ARParcours {
     cycliste: boolean;
     coureur: boolean;
     marcheur: boolean;
+    marcheurs_temps_min: number;
+    cyclistes_temps_min: number;
+    coureurs_temps_min: number;
   };
 }
 
