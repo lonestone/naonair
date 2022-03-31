@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    position: 'relative',
   },
   row: {
     flexDirection: 'row',
@@ -238,27 +239,28 @@ export default () => {
                         text: name,
                       },
                     });
+                    Keyboard.dismiss();
                   }}
                 />
               ),
             )}
           </ScrollView>
+          {values[Field.START] && values[Field.END] && (
+            <ARButton
+              label="Calculer mon itinéraire"
+              size={ARButtonSize.Medium}
+              styleContainer={styles.calculateButton}
+              onPress={() => {
+                navigation.navigate('ChooseItinerary', {
+                  start: values[Field.START]?.coord,
+                  end: values[Field.END]?.coord,
+                  transportMode: transportMode[0],
+                });
+              }}
+            />
+          )}
         </View>
       </TouchableWithoutFeedback>
-      {values[Field.START] && values[Field.END] && (
-        <ARButton
-          label="Calculer mon itinéraire"
-          size={ARButtonSize.Medium}
-          styleContainer={styles.calculateButton}
-          onPress={() => {
-            navigation.navigate('ChooseItinerary', {
-              start: values[Field.START]?.coord,
-              end: values[Field.END]?.coord,
-              transportMode: transportMode[0],
-            });
-          }}
-        />
-      )}
     </KeyboardAvoidingView>
   );
 };
