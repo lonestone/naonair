@@ -108,7 +108,9 @@ const styles = StyleSheet.create({
 export type ARRouteDetailProp = RouteProp<StackParamList, 'RouteDetail'>;
 
 export default ({}: ARRouteDetailProp) => {
-  const { parcours, qa } = useRoute<ARRouteDetailProp>().params || {};
+  const { parcours } = useRoute<ARRouteDetailProp>().params || {};
+
+  console.info({ parcours });
 
   const {
     coureur,
@@ -130,12 +132,12 @@ export default ({}: ARRouteDetailProp) => {
     coureur && {
       icon: 'run',
       speed: cyclistes_temps_min,
-      label: 'minutes à vélo',
+      label: 'minutes de course',
     },
     cycliste && {
       icon: 'bike',
       speed: coureurs_temps_min,
-      label: 'minutes de course',
+      label: 'minutes à vélo',
     },
   ];
 
@@ -154,7 +156,7 @@ export default ({}: ARRouteDetailProp) => {
           <ARQAChip
             style={styles.mapChip}
             size="md"
-            value={QAValues[qa ?? QATypes.XXBAD]}
+            value={QAValues[parcours.properties.mode ?? QATypes.XXBAD]}
           />
         </View>
 
@@ -182,7 +184,7 @@ export default ({}: ARRouteDetailProp) => {
             ),
         )}
 
-        <ARForecasts id={0} />
+        <ARForecasts id={parcours.properties.id} type="aireel:parcours_data" />
       </SafeAreaView>
     </ScrollView>
   );

@@ -129,7 +129,7 @@ const ARPOIDetails = () => {
                 <Divider />
                 <ARPollution poi={poi} />
                 <Divider />
-                <ARForecasts id={poi.poi_id} />
+                <ARForecasts id={poi.poi_id} type="aireel:poi_data" />
               </>
             )}
           </View>

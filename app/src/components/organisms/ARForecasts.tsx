@@ -46,10 +46,11 @@ const styles = StyleSheet.create({
 
 interface Props {
   id: number;
+  type: 'aireel:poi_data' | 'aireel:parcours_data';
 }
 
-const ARForecasts = ({ id }: Props) => {
-  const [indices, isLoading, error] = useForecast(id);
+const ARForecasts = ({ id, type }: Props) => {
+  const [indices, isLoading, error] = useForecast(id, type);
 
   return (
     <View style={styles.container}>

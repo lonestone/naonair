@@ -148,15 +148,19 @@ export interface Forecast {
   value: QAType;
 }
 
-export const forecast = async (poi_id: number): Promise<Forecast[]> => {
+export const forecast = async (
+  poi_id: number,
+  typeName: 'aireel:poi_data' | 'aireel:parcours_data',
+): Promise<Forecast[]> => {
   const URL = buildGeoserverUrl('ows', {
     outputFormat: 'application/json',
     SERVICE: 'WFS',
     VERSION: '1.1.1',
     REQUEST: 'GetFeature',
-    typeName: 'aireel:poi_data',
+    typeName,
     CQL_FILTER: {
-      poi_id,
+      poi_id: typeName === 'aireel:poi_data' ? poi_id : undefined,
+      id_parcours: typeName === 'aireel:parcours_data' ? poi_id : undefined,
     },
   });
 
@@ -175,7 +179,8 @@ export const forecast = async (poi_id: number): Promise<Forecast[]> => {
         commentaire: string | null;
         date_time_iso_utc: string;
         date_time_local: string;
-        indice: number;
+        indice?: number;
+        mode?: number;
       }
     >;
 
@@ -184,7 +189,7 @@ export const forecast = async (poi_id: number): Promise<Forecast[]> => {
         let hour = new Date(properties.date_time_iso_utc);
         return {
           hour,
-          value: QAValues[properties.indice - 1],
+          value: QAValues[(properties.indice ?? properties.mode ?? 1) - 1],
         };
       })
       .slice(1, json.features.length);

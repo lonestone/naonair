@@ -5,6 +5,7 @@ export const jsonToUrl = (object: object) => {
     .map(([key, value]) => {
       if (typeof value === 'object' && value && !Array.isArray(value)) {
         return `${encodeURIComponent(key)}=${Object.keys(value)
+          .filter(_key => value[_key] !== undefined)
           .map(_key => `${_key}=${encodeURIComponent(value[_key])}`)
           .join(',')}`;
       } else if (Array.isArray(value)) {
@@ -38,11 +39,16 @@ export interface GeoServerParams {
   Y?: number;
   WIDTH?: number;
   HEIGHT?: number;
-  typeName?: 'aireel:poi_data' | 'aireel:parcours' | 'aireel:parcours_poi_data';
+  typeName?:
+    | 'aireel:poi_data'
+    | 'aireel:parcours'
+    | 'aireel:parcours_poi_data'
+    | 'aireel:parcours_data';
   BBOX?: [number, number, number, number];
   CQL_FILTER?: {
     poi_id?: string | number;
     date_time_iso_utc?: string;
+    id_parcours?: string | number;
   };
 }
 

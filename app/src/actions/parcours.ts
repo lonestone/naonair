@@ -7,6 +7,8 @@ export interface ARParcours {
   geometry: turf.MultiLineString;
   bbox: BBox;
   properties: {
+    mode: number;
+    id_parcours: number;
     id: number;
     date_maj: string;
     nom: string;
@@ -25,13 +27,15 @@ export interface ARParcours {
 
 export const getAll = async (filters: string[]): Promise<ARParcours[]> => {
   try {
-    const URL = buildGeoserverUrl('wms', {
+    const URL = buildGeoserverUrl('ows', {
       SERVICE: 'WFS',
       VERSION: '1.0.0',
       REQUEST: 'GetFeature',
       typeName: 'aireel:parcours',
       outputFormat: 'application/json',
     });
+
+    console.info(URL);
 
     const response = await fetch(URL);
 

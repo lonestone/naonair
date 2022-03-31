@@ -34,7 +34,7 @@
     "baseUrl": "https://api.mapbox.com/geocoding/v5/mapbox.places/",
     "params": {
       "country": "fr",
-      "bbox": "-1.7,47.1,-1.4,47.3",
+      "bbox": "-1.868231,47.088103,-1.375608,47.372655",
       "types": "poi,place,postcode,address",
       "language": "fr",
       "autocomplete": true,

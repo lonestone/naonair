@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ARParcours, getAll } from '../actions/parcours';
 
 export const useParcours = (
@@ -9,7 +9,7 @@ export const useParcours = (
   const [error, setError] = useState<string | undefined>();
   const fetchingParcours = useRef<number | null>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isLoading) {
       return;
     }
@@ -19,6 +19,7 @@ export const useParcours = (
     }
 
     fetchingParcours.current = setTimeout(() => {
+      setIsLoading(true);
       getAll(filters)
         .then(p => {
           setParcours(p);
