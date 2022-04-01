@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import slugify from 'slugify';
 import { ARParcours } from '../../actions/parcours';
 import { QATypes, QAValues } from '../../actions/qa';
+import { useQAParcours } from '../../hooks/useQA';
 import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARQAChip from '../atoms/ARQAChip';
@@ -54,7 +55,7 @@ export default ({ style, parcours }: ARRouteItemProps) => {
 
   const { properties } = parcours;
 
-  // const qa = useQAParcours(parcours);
+  const qa = useQAParcours(parcours);
 
   const { coureur, marcheur, cycliste, km, denivele, nom } = properties;
 
@@ -67,18 +68,12 @@ export default ({ style, parcours }: ARRouteItemProps) => {
   return (
     <Card
       style={[style, styles.card]}
-      onPress={() => {
-        navigation.navigate('RouteDetail', { parcours });
-      }}>
+      onPress={() => navigation.navigate('RouteDetail', { parcours, qa })}>
       <View style={styles.mapContainer}>
         <Image
           source={{
             uri: imageName,
           }}
-          // source={
-          //   !!properties?.nom &&
-          //   require(`../../assets/parcours/Foulées de l'éléphant.png`)
-          // }
           style={{ backgroundColor: theme.colors.blue[100], flex: 1 }}
         />
       </View>
@@ -100,10 +95,7 @@ export default ({ style, parcours }: ARRouteItemProps) => {
           )}
 
           <View style={styles.spacer} />
-          <ARQAChip
-            size="md"
-            value={QAValues[parcours.properties.mode ?? QATypes.XXBAD]}
-          />
+          <ARQAChip size="md" value={QAValues[qa ?? QATypes.XXBAD]} />
         </View>
       </View>
     </Card>

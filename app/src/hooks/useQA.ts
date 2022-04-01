@@ -1,5 +1,6 @@
 import { Position } from 'geojson';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ARParcours } from '../actions/parcours';
 import { getQAFromParcours, getQAFromPosition, QAType } from '../actions/qa';
 
 export const useQA = (
@@ -32,12 +33,14 @@ export const useQA = (
   return [qa || value, isLoading, error];
 };
 
-export const useQAParcours = () => {
+export const useQAParcours = (parcours: ARParcours) => {
   const [qa, setQA] = useState<number>();
 
   useLayoutEffect(() => {
-    getQAFromParcours().then(setQA);
-  }, [setQA]);
+    getQAFromParcours(
+      parcours.properties.id || parcours.properties.id_parcours,
+    ).then(setQA);
+  }, [parcours.properties.id, parcours.properties.id_parcours, setQA]);
 
   return qa;
 };

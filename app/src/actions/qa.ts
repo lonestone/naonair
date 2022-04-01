@@ -2,6 +2,7 @@ import { BBox, FeatureCollection, Point, Position } from 'geojson';
 import { theme } from '../theme';
 import { buildGeoserverUrl } from '../utils/config';
 import logger from '../utils/logger';
+import { ARParcours } from './parcours';
 
 export enum QATypes {
   GOOD = 0,
@@ -107,13 +108,16 @@ export const getQAFromPosition = async (coord: Position) => {
   return await getQAFromBBox(bbox);
 };
 
-export const getQAFromParcours = async () => {
+export const getQAFromParcours = async (id_parcours: number) => {
   const URL = buildGeoserverUrl('ows', {
     REQUEST: 'GetFeature',
     VERSION: '1.0.0',
     SERVICE: 'WFS',
     outputFormat: 'application/json',
-    typeName: 'aireel:parcours_poi_data',
+    typeName: 'aireel:parcours_data',
+    CQL_FILTER: {
+      id_parcours,
+    },
   });
 
   console.info({ URL });
@@ -124,20 +128,20 @@ export const getQAFromParcours = async () => {
           Accept: 'application/json',
         },
       })
-    ).json()) as FeatureCollection<Point, { indice: number }>;
+    ).json()) as FeatureCollection<Point, { mode: number }>;
 
     const { features } = json;
 
-    const mid = Math.floor(features.length / 2);
-    let value = features[mid].properties.indice;
-    if (features.length % 2 !== 0) {
-      console.info(value);
-      return value;
-    }
+    // const mid = Math.floor(features.length / 2);
+    // let value = features[mid].properties.indice;
+    // if (features.length % 2 !== 0) {
+    //   console.info(value);
+    //   return value;
+    // }
 
-    value += features[mid + 1].properties.indice;
-    console.info({ value });
-    return value / 2;
+    // value += features[mid + 1].properties.indice;
+    // console.info({ value });
+    return features[0].properties.mode;
   } catch (e) {
     logger.error(e, 'getQAFromParcours');
   }

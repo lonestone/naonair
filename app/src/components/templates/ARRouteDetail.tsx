@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
 export type ARRouteDetailProp = RouteProp<StackParamList, 'RouteDetail'>;
 
 export default ({}: ARRouteDetailProp) => {
-  const { parcours } = useRoute<ARRouteDetailProp>().params || {};
+  const { parcours, qa } = useRoute<ARRouteDetailProp>().params || {};
 
   console.info({ parcours });
 
@@ -156,7 +156,7 @@ export default ({}: ARRouteDetailProp) => {
           <ARQAChip
             style={styles.mapChip}
             size="md"
-            value={QAValues[parcours.properties.mode ?? QATypes.XXBAD]}
+            value={QAValues[qa ?? QATypes.XXBAD]}
           />
         </View>
 
