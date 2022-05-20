@@ -48,11 +48,15 @@ export default ({
   const filtered = propsItems.filter(item => item.selected);
 
   const selectAll = () => {
+    console.log('here',selectAll);
+
     setPropsItems(propsItems.map(item => ({ ...item, selected: true })));
     onChange(propsItems);
   };
 
   const selectOne = (index: number) => {
+    console.log('here',selectOne);
+
     if (filtered.length === propsItems.length || !multiple) {
       propsItems.map(temp => (temp.selected = false));
       propsItems[index].selected = true;
