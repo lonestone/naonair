@@ -3,13 +3,12 @@ import { Position } from 'geojson';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Portal } from 'react-native-paper';
-import { SvgXml } from 'react-native-svg';
 import {
   removePlaceStorage,
   setPlaceStorage,
-  updatePlaceStorage,
+  updatePlaceStorage
 } from '../../actions/myplaces';
-import { POI, POICategory, poiIcons } from '../../actions/poi';
+import { POI, POICategory } from '../../actions/poi';
 import useSnackbar from '../../contexts/snackbar.context';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
@@ -118,7 +117,9 @@ const ARPlaceFormLayout = () => {
   const isVisible = useMemo(() => {
     if (name && name.length > 0 && values) {
       return true;
-    } else return false;
+    } else {
+      return false;
+    }
   }, [name, values]);
 
   return (
@@ -170,30 +171,14 @@ const ARPlaceFormLayout = () => {
             </React.Fragment>
           ))}
         </ScrollView>
-        {params ? (
-          <>
-            {isVisible && (
-              <ARButton
-                label="Modifier"
-                size={ARButtonSize.Medium}
-                styleContainer={styles.button}
-                onPress={handleOnUpdatesubmit}
-                loading={isLoading}
-              />
-            )}
-          </>
-        ) : (
-          <>
-            {isVisible && (
-              <ARButton
-                label="Enregistrer"
-                size={ARButtonSize.Medium}
-                styleContainer={styles.button}
-                onPress={handleOnsubmit}
-                loading={isLoading}
-              />
-            )}
-          </>
+        {isVisible && (
+          <ARButton
+            label="Enregistrer"
+            size={ARButtonSize.Medium}
+            styleContainer={styles.button}
+            onPress={params ? handleOnUpdatesubmit : handleOnsubmit}
+            loading={isLoading}
+          />
         )}
       </View>
       <Portal>
