@@ -72,7 +72,7 @@ const profileItems: ProfileItemType[] = [
   {
     icon: 'information',
     linkIcon: 'launch',
-    title: 'En savoir plus sur AirPDL',
+    title: 'En savoir plus sur Air Pays de la Loire',
     url: 'https://www.airpl.org',
   },
 ];
