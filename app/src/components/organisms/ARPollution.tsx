@@ -8,6 +8,10 @@ import ARQAChip from '../atoms/ARQAChip';
 
 const styles = StyleSheet.create({
   title: {
+    fontSize: 18,
+    color: theme.colors.blue[500],
+    ...fonts.Raleway.bold,
+    lineHeight: 24,
     marginBottom: 12,
     marginTop: 24,
   },
@@ -19,13 +23,13 @@ const styles = StyleSheet.create({
   particleLabel: {
     flex: 1,
     color: theme.colors.blue[500],
-    fontSize: 14,
+    fontSize: 15,
     lineHeight: 20,
     ...fonts.Lato.regular,
   },
   legendText: {
-    fontSize: 10,
-    lineHeight: 16,
+    fontSize: 14,
+    lineHeight: 18,
     color: theme.colors.blue[200],
     ...fonts.Lato.bold,
     marginTop: 9,
@@ -48,11 +52,11 @@ export default ({ poi }: ARPollutionProps) => {
   const particles = [
     {
       key: 'pm10_indice',
-      title: 'Particles PM 10',
+      title: 'Particules PM 10',
     },
     {
       key: 'pm25_indice',
-      title: 'Particles PM 2.5',
+      title: 'Particules fines PM 2.5',
     },
     {
       key: 'o3_indice',
