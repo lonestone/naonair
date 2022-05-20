@@ -11,7 +11,7 @@ import { QAType, QAValues } from './qa';
 
 // eslint-disable-next-line no-shadow
 export enum POICategory {
-  UNDEFINED = 'undefined',
+  ALL = 'all',
   FAVORITE = 'favorite',
   PARK = 'park',
   SPORT = 'sport',
@@ -41,7 +41,7 @@ export const poiIcons: {
 } = {
   [POICategory.CULTURE]: cultureIcon,
   [POICategory.FAVORITE]: favoriteIcon,
-  [POICategory.UNDEFINED]: null,
+  [POICategory.ALL]: null,
   [POICategory.MARKET]: marketIcon,
   [POICategory.PARK]: parkIcon,
   [POICategory.SPORT]: sportIcon,
@@ -102,7 +102,7 @@ const fetchAll = async () => {
         case 'favoris':
           return POICategory.FAVORITE;
         default:
-          return POICategory.UNDEFINED;
+          return POICategory.ALL;
       }
     };
 
@@ -130,7 +130,7 @@ export const getAll = async (params?: {
       POICategory.MARKET,
       POICategory.PARK,
       POICategory.SPORT,
-      POICategory.UNDEFINED,
+      POICategory.ALL,
     ],
     text = '',
   } = params || {};
@@ -209,7 +209,7 @@ export const geocoding = async (query: string): Promise<POI[]> => {
   const { features } = (await response.json()) as { features: MapboxFeature[] };
   return features.map<POI>(f => ({
     id: f.id,
-    category: POICategory.UNDEFINED,
+    category: POICategory.ALL,
     name: f.text_fr,
     address: f.place_name_fr,
     geolocation: f.geometry.coordinates,
