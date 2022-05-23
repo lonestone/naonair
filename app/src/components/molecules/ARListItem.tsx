@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { View } from 'react-native';
 import { StyleProp, StyleSheet, TextStyle } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
@@ -7,6 +8,9 @@ import { POICategory, poiIcons } from '../../actions/poi';
 import { fonts, theme } from '../../theme';
 
 const styles = StyleSheet.create({
+  content: {
+    backgroundColor: 'white',
+  },
   iconContainer: {
     width: 40,
     height: 40,
@@ -73,7 +77,7 @@ const ARListItem = ({
   }, [leftIcon, category]);
 
   return (
-    <>
+    <View style={styles.content}>
       <List.Item
         title={title}
         titleStyle={[styles.title, titleStyle]}
@@ -102,7 +106,7 @@ const ARListItem = ({
       />
 
       <Divider />
-    </>
+    </View>
   );
 };
 
