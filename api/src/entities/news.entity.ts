@@ -19,6 +19,9 @@ export class NewsEntity {
   type: NewsType;
 
   @Property({ length: 200 })
+  title: string;
+
+  @Property({ length: 200 })
   message: string;
 
   @Property({ type: DateType })
