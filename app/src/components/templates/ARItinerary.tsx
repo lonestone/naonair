@@ -10,13 +10,19 @@ import {
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { POI, reverse } from '../../actions/poi';
+import {
+  getAllHistoryPlaces,
+  setHistoryPlaceStorage,
+} from '../../actions/myhistory';
+import { POI, POICategory, reverse } from '../../actions/poi';
 import { RouteProfile } from '../../actions/routes';
-import { theme } from '../../theme';
+import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp, TabParamList } from '../../types/routes';
+import logger from '../../utils/logger';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARHeader from '../atoms/ARHeader';
 import ARAddressInput from '../molecules/ARAddressInput';
@@ -26,7 +32,6 @@ import ARListItem from '../molecules/ARListItem';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
     position: 'relative',
   },
   row: {
@@ -43,7 +48,16 @@ const styles = StyleSheet.create({
   inputs: {
     flex: 0,
   },
-  icons: {},
+  historyContent: {
+    paddingBottom: 18,
+  },
+  history: {
+    paddingHorizontal: 18,
+    paddingVertical: 18,
+    color: theme.colors.blue[500],
+    fontSize: 16,
+    ...fonts.Lato.regular,
+  },
   calculateButton: {
     margin: 40,
     flex: 0,
@@ -102,7 +116,7 @@ const filterItems: ARFilterItem[] = [
   },
 ];
 
-enum Field {
+export enum Field {
   START = 'start',
   END = 'end',
 }
@@ -125,6 +139,7 @@ export default () => {
     [Field.START]: params?.start ?? undefined,
     [Field.END]: params?.end ?? undefined,
   });
+  const [selectedResult, setSelectedResult] = useState<POI>();
 
   const getUserPosition = useCallback(() => {
     Geolocation.getCurrentPosition(
@@ -170,6 +185,24 @@ export default () => {
     [values],
   );
 
+  const [historyList, setHistoryList] = useState<POI[]>();
+
+  const readItemFromStorage = async () => {
+    const history = await getAllHistoryPlaces();
+    if (history) {
+      try {
+        setHistoryList(Array.isArray(history) ? history : [history]);
+      } catch (e) {
+        logger.error(e, 'fromGetAllHistoryPlaces');
+      }
+    }
+  };
+
+  useEffect(() => {
+    navigation.addListener('focus', readItemFromStorage);
+    return () => navigation.removeListener('focus', readItemFromStorage);
+  }, [navigation]);
+
   const renderInput = (label: string, field: Field, iconName: string) => {
     return (
       <View style={styles.input}>
@@ -202,6 +235,20 @@ export default () => {
     );
   };
 
+  const handleOnPress = async (
+    start: Position | undefined,
+    end: Position | undefined,
+    mode: RouteProfile,
+  ) => {
+    navigation.navigate('ChooseItinerary', {
+      start,
+      end,
+      transportMode: mode,
+    });
+
+    setHistoryPlaceStorage(selectedResult!);
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -232,7 +279,7 @@ export default () => {
                 }}
                 contentInset={{ right: 18 + right }}
                 onChange={items => {
-                  setTransportMode(items.map(i => i.value));
+                  setTransportMode(items.map(i => i.value as RouteProfile));
                 }}
               />
             </>
@@ -247,39 +294,66 @@ export default () => {
             onScrollBeginDrag={Keyboard.dismiss}
             accessibilityLabel="Resultats de la recheche"
             indicatorStyle="black">
-            {(results || []).map(
-              ({ id, address, geolocation, name, category }) => (
-                <ARListItem
-                  key={id}
-                  category={category}
-                  title={name}
-                  description={address}
-                  onPress={() => {
-                    setValues({
-                      ...values,
-                      [selectedField.toString()]: {
-                        coord: geolocation,
-                        text: name,
-                      },
-                    });
-                    Keyboard.dismiss();
-                  }}
-                />
-              ),
+            {historyList && historyList.length > 0 && (
+              <View style={styles.historyContent}>
+                <Text style={styles.history}>Recherches récentes</Text>
+                {historyList.map(
+                  ({ id, address, geolocation, name, category }) => (
+                    <ARListItem
+                      key={id}
+                      category={category}
+                      title={name}
+                      description={address}
+                      onPress={() => {
+                        setValues({
+                          ...values,
+                          [selectedField.toString()]: {
+                            coord: geolocation,
+                            text: name,
+                          },
+                        });
+                        Keyboard.dismiss();
+                      }}
+                    />
+                  ),
+                )}
+              </View>
             )}
+            {(results || []).map(result => (
+              <ARListItem
+                key={result.id}
+                category={result.category}
+                title={result.name}
+                description={result.address}
+                onPress={() => {
+                  setSelectedResult({
+                    ...result,
+                    category: POICategory.HISTORY,
+                  });
+                  setValues({
+                    ...values,
+                    [selectedField.toString()]: {
+                      coord: result.geolocation,
+                      text: result.name,
+                    },
+                  });
+                  Keyboard.dismiss();
+                }}
+              />
+            ))}
           </ScrollView>
           {values[Field.START] && values[Field.END] && (
             <ARButton
               label="Calculer mon itinéraire"
               size={ARButtonSize.Medium}
               styleContainer={styles.calculateButton}
-              onPress={() => {
-                navigation.navigate('ChooseItinerary', {
-                  start: values[Field.START]?.coord,
-                  end: values[Field.END]?.coord,
-                  transportMode: transportMode[0],
-                });
-              }}
+              onPress={() =>
+                handleOnPress(
+                  values[Field.START]?.coord,
+                  values[Field.END]?.coord,
+                  transportMode[0],
+                )
+              }
             />
           )}
         </View>

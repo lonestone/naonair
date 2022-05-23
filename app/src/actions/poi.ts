@@ -1,9 +1,11 @@
 import { Feature, FeatureCollection, Point, Position } from 'geojson';
 import cultureIcon from '../assets/culture-icon.svg';
 import favoriteIcon from '../assets/favorite-icon.svg';
+import historyIcon from '../assets/history-icon.svg';
 import marketIcon from '../assets/market-icon.svg';
 import parkIcon from '../assets/park-icon.svg';
 import sportIcon from '../assets/sport-icon.svg';
+
 import { buildGeoserverUrl, buildMapboxUrl } from '../utils/config';
 import removeAccent from '../utils/remove-accent';
 import { getAllPlaces } from './myplaces';
@@ -17,6 +19,7 @@ export enum POICategory {
   SPORT = 'sport',
   CULTURE = 'culture',
   MARKET = 'market',
+  HISTORY = 'history',
 }
 
 export interface POI {
@@ -45,12 +48,13 @@ export const poiIcons: {
   [POICategory.MARKET]: marketIcon,
   [POICategory.PARK]: parkIcon,
   [POICategory.SPORT]: sportIcon,
+  [POICategory.HISTORY]: historyIcon,
 };
 
 type POIFeatureProperties = {
   id: number;
   poi_id: number;
-  type: 'Parc' | 'Sport' | 'Culture' | 'Marché' | 'favoris';
+  type: 'Parc' | 'Sport' | 'Culture' | 'Marché' | 'favoris' | 'history';
   lieu: string;
   adresse: string;
   commentaire?: string;
@@ -101,6 +105,8 @@ const fetchAll = async () => {
           return POICategory.MARKET;
         case 'favoris':
           return POICategory.FAVORITE;
+        case 'history':
+          return POICategory.HISTORY;
         default:
           return POICategory.ALL;
       }
