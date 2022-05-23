@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ViewStyle,
 } from 'react-native';
+import { POICategory } from '../../actions/poi';
 import ARFilterItemComponent from '../atoms/ARFilterItemComponent';
 
 const styles = StyleSheet.create({
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
 export interface ARFilterItem {
   label: string;
   selected?: boolean;
-  value: any;
+  value: POICategory;
   icon?: ReactElement | ((selected: boolean) => ReactElement);
 }
 
@@ -48,15 +49,11 @@ export default ({
   const filtered = propsItems.filter(item => item.selected);
 
   const selectAll = () => {
-    console.log('here',selectAll);
-
     setPropsItems(propsItems.map(item => ({ ...item, selected: true })));
     onChange(propsItems);
   };
 
   const selectOne = (index: number) => {
-    console.log('here',selectOne);
-
     if (filtered.length === propsItems.length || !multiple) {
       propsItems.map(temp => (temp.selected = false));
       propsItems[index].selected = true;
@@ -64,9 +61,13 @@ export default ({
       propsItems[index].selected = !propsItems[index].selected;
     }
 
-    setPropsItems([...propsItems]);
-
-    onChange(propsItems.filter(item => item.selected));
+    // handle double clicked filter when oly one selected to select All category
+    if (!propsItems.filter(item => item.selected).length) {
+      selectAll();
+    } else {
+      setPropsItems([...propsItems]);
+      onChange(propsItems.filter(item => item.selected));
+    }
   };
 
   return (
