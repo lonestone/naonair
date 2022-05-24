@@ -31,16 +31,12 @@ export const setHistoryPlaceStorage = async (history: POI) => {
     //Limit history list  and remove older entries
     if (filteredHistoryList.length > 7) {
       filteredHistoryList.pop();
-      await AsyncStorage.setItem(
-        '@myhistory',
-        JSON.stringify(filteredHistoryList),
-      );
-    } else {
-      await AsyncStorage.setItem(
-        '@myhistory',
-        JSON.stringify(filteredHistoryList),
-      );
     }
+
+    await AsyncStorage.setItem(
+      '@myhistory',
+      JSON.stringify(filteredHistoryList),
+    );
   } catch (e) {
     logger.error(e, 'setHistoryPlaceStorage');
   }
