@@ -96,7 +96,7 @@ export default ({
     setText('');
     onClear?.();
     setResults([]);
-  }, [text]);
+  }, [onClear]);
 
   return (
     <>

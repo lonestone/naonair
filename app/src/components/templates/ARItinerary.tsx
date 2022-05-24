@@ -8,11 +8,12 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { POI } from '../../actions/poi';
+import { POI, reverse } from '../../actions/poi';
 import { RouteProfile } from '../../actions/routes';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp, TabParamList } from '../../types/routes';
@@ -125,7 +126,28 @@ export default () => {
     [Field.END]: params?.end ?? undefined,
   });
 
+  const getUserPosition = useCallback(() => {
+    Geolocation.getCurrentPosition(
+      async ({ coords: { longitude, latitude } }) => {
+        const coord = [longitude, latitude];
+        const features = await reverse(coord);
+        if (!values[Field.START]) {
+          setValues({
+            ...values,
+            [Field.START]: { coord, text: features[0].text_fr },
+          });
+        }
+      },
+    );
+  }, [values]);
+
   useEffect(() => {
+    navigation.addListener('focus', getUserPosition);
+    return () => navigation.removeListener('focus', getUserPosition);
+  });
+
+  useEffect(() => {
+    console.info(params);
     setValues({
       [Field.START]: params?.start ?? undefined,
       [Field.END]: params?.end ?? undefined,
@@ -134,15 +156,18 @@ export default () => {
 
   const [selectedField, setSelectedField] = useState<Field>(Field.START);
 
-  const onClear = useCallback(() => {
-    setValues({ ...values, [selectedField]: undefined });
-  }, [values, selectedField]);
+  const onClear = useCallback(
+    (field: Field) => {
+      setValues({ ...values, [field]: undefined });
+    },
+    [values],
+  );
 
   const onUserLocation = useCallback(
-    (coord: Position, text: string) => {
-      setValues({ ...values, [selectedField]: { coord, text } });
+    (coord: Position, text: string, field: Field) => {
+      setValues({ ...values, [field]: { coord, text } });
     },
-    [values, selectedField],
+    [values],
   );
 
   const renderInput = (label: string, field: Field, iconName: string) => {
@@ -160,12 +185,10 @@ export default () => {
           onResults={setResults}
           value={values[field]}
           onUserLocation={(coord, text) => {
-            setSelectedField(field);
-            onUserLocation(coord, text);
+            onUserLocation(coord, text, field);
           }}
           onClear={() => {
-            setSelectedField(field);
-            onClear();
+            onClear(field);
           }}
           onTextChanged={() => {
             setValues({
