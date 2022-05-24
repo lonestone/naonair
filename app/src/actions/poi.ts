@@ -114,7 +114,7 @@ const fetchAll = async () => {
       name: lieu,
       address: adresse,
       geolocation: geometry.coordinates,
-      qa: QAValues[indice - 1],
+      qa: QAValues[indice],
     };
   });
 };

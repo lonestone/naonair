@@ -2,15 +2,14 @@ import { BBox, FeatureCollection, Point, Position } from 'geojson';
 import { theme } from '../theme';
 import { buildGeoserverUrl } from '../utils/config';
 import logger from '../utils/logger';
-import { ARParcours } from './parcours';
 
 export enum QATypes {
-  GOOD = 0,
-  MEDIUM = 1,
-  DEGRADED = 2,
-  BAD = 3,
-  XBAD = 4,
-  XXBAD = 5,
+  GOOD = 1,
+  MEDIUM = 2,
+  DEGRADED = 3,
+  BAD = 4,
+  XBAD = 5,
+  XXBAD = 6,
 }
 
 export type QAType = {
@@ -193,7 +192,7 @@ export const forecast = async (
         let hour = new Date(properties.date_time_iso_utc);
         return {
           hour,
-          value: QAValues[(properties.indice ?? properties.mode ?? 1) - 1],
+          value: QAValues[properties.indice ?? properties.mode ?? 1],
         };
       })
       .slice(1, json.features.length);
