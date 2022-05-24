@@ -26,6 +26,8 @@ const styles = StyleSheet.create({
   map: { flex: 1 },
 });
 
+MapboxGL.offlineManager.clearAmbientCache();
+
 const styleJSON = JSON.stringify(require('../../assets/db/mapViewStyle.json'));
 
 const defaultSettingsCamera: CameraSettings = {
