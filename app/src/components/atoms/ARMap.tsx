@@ -26,8 +26,6 @@ const styles = StyleSheet.create({
   map: { flex: 1 },
 });
 
-MapboxGL.offlineManager.clearAmbientCache();
-
 const styleJSON = JSON.stringify(require('../../assets/db/mapViewStyle.json'));
 
 const defaultSettingsCamera: CameraSettings = {
@@ -70,6 +68,8 @@ MapboxGL.setAccessToken('');
 if (Platform.OS == 'android') {
   MapboxGL.requestAndroidLocationPermissions();
 }
+
+MapboxGL.offlineManager.clearAmbientCache();
 
 const ARMap = (
   {
