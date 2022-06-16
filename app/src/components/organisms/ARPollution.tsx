@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 18,
     color: theme.colors.blue[200],
-    ...fonts.Lato.bold,
+    ...fonts.Lato.regular,
     marginTop: 9,
     marginBottom: 30,
   },
