@@ -1,12 +1,12 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Position } from 'geojson';
 import React, { useEffect, useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
 import { Portal } from 'react-native-paper';
 import {
   removePlaceStorage,
   setPlaceStorage,
-  updatePlaceStorage
+  updatePlaceStorage,
 } from '../../actions/myplaces';
 import { POI, POICategory } from '../../actions/poi';
 import useSnackbar from '../../contexts/snackbar.context';
@@ -143,6 +143,8 @@ const ARPlaceFormLayout = () => {
           onTextChanged={() => {}}
         />
         <ScrollView
+          keyboardShouldPersistTaps="always"
+          onScrollBeginDrag={Keyboard.dismiss}
           style={styles.container}
           contentInset={{ bottom: 70, top: 0 }}
           indicatorStyle="black">
@@ -166,6 +168,7 @@ const ARPlaceFormLayout = () => {
                     text: address.includes(name) ? address : name,
                   });
                   setResults([]);
+                  Keyboard.dismiss();
                 }}
               />
             </React.Fragment>
