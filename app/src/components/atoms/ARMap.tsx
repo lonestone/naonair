@@ -164,8 +164,9 @@ const ARMap = (
             <MapboxGL.RasterSource {...rasterSourceProps}>
               <MapboxGL.RasterLayer
                 id="airreel_layer"
-                aboveLayerID="landcover_glacier" // used to force the layer to draw below roads and buildings
+                // aboveLayerID="landcover_glacier" // used to force the layer to draw below roads and buildings
                 sourceID="aireel_source"
+                style={{ rasterOpacity: 0.6 }}
               />
             </MapboxGL.RasterSource>
           )}

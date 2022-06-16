@@ -95,7 +95,7 @@ export default ({ style, parcours }: ARRouteItemProps) => {
           )}
 
           <View style={styles.spacer} />
-          <ARQAChip size="md" value={QAValues[qa ?? QATypes.XXBAD]} />
+          <ARQAChip size="md" value={QAValues[qa ?? QATypes.GOOD]} />
         </View>
       </View>
     </Card>
