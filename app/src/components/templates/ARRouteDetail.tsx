@@ -131,12 +131,12 @@ export default ({}: ARRouteDetailProp) => {
     },
     coureur && {
       icon: 'run',
-      speed: cyclistes_temps_min,
+      speed: coureurs_temps_min,
       label: 'minutes de course',
     },
     cycliste && {
       icon: 'bike',
-      speed: coureurs_temps_min,
+      speed: cyclistes_temps_min,
       label: 'minutes à vélo',
     },
   ];
