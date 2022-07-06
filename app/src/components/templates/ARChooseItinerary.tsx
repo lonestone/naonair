@@ -152,15 +152,6 @@ const ItineraryItem = ({
       right={() => (
         <View style={styles.right}>
           <Text style={styles.rightLabel}>{getDurationLabel(path.time)}</Text>
-          <View
-            style={[
-              styles.chipQa,
-              {
-                backgroundColor:
-                  QAValues[path.qa]?.main ?? theme.colors.grey[100],
-              },
-            ]}
-          />
         </View>
       )}
       style={[
