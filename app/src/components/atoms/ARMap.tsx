@@ -65,7 +65,7 @@ export interface ARMapHandle {
 // if we don't call this methods, MapboxGL crash on Android
 MapboxGL.setAccessToken('');
 
-if (Platform.OS == 'android') {
+if (Platform.OS === 'android') {
   MapboxGL.requestAndroidLocationPermissions();
 }
 
@@ -164,7 +164,7 @@ const ARMap = (
             <MapboxGL.RasterSource {...rasterSourceProps}>
               <MapboxGL.RasterLayer
                 id="airreel_layer"
-                // aboveLayerID="landcover_glacier" // used to force the layer to draw below roads and buildings
+                aboveLayerID="place_country_major" // used to force the layer to draw below roads and buildings
                 sourceID="aireel_source"
                 style={{ rasterOpacity: 0.6 }}
               />
