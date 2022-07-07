@@ -97,7 +97,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
       if (res.statusCode >= 400) {
         setSnackbarStatus?.({
           open: true,
-          message: `La date de fin ne peut pas être inférieure à la date de début`,
+          message: res.message,
           severity: "error",
         });
         return;
@@ -135,9 +135,10 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
       try {
         const res = await updateNews(updatedNews);
         if (res.statusCode >= 400) {          
+          console.log(res)
           setSnackbarStatus?.({
             open: true,
-            message: `La date de fin ne peut pas être inférieure à la date de début`,
+            message: res.message,
             severity: "error",
           });
           return;
