@@ -56,7 +56,6 @@ export default () => {
   return (
     <>
       <Portal>
-        <ARAlert />
         <ARNews />
       </Portal>
       <ARPOIHeader
@@ -67,6 +66,7 @@ export default () => {
           setSelectedCategories(items);
         }}
       />
+      <ARAlert />
       <SafeAreaView style={styles.container}>
         {displayTypeItems[displayTypeIndex].render()}
       </SafeAreaView>

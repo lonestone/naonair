@@ -123,7 +123,6 @@ const ARPOIHeader = ({
         <Caption style={styles.caption}>
           Découvrez la qualité de l'air en temps réel
         </Caption>
-
         <ARFilter
           items={filters}
           multiple

@@ -7,3 +7,4 @@ backoffice/src/types/dist/*
 
 */node_modules/*
 cron-geotiff/.env
+*.dccache

@@ -8,10 +8,6 @@ import { theme } from '../../theme';
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
     paddingVertical: 12,
     paddingHorizontal: 18,
     flexDirection: 'row',
