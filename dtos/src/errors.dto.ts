@@ -1,12 +1,12 @@
 export enum HttpErrors {
-  EXISTING_CURRENT_NEWS = 'Already existing a current news',
-  NEWS_CANNOT_START_IN_PAST = 'News cannot start in the past',
-  NEWS_CANNOT_FINISH_IN_PAST = 'News cannot finish in the past',
-  NEWS_CANNOT_START_BEFORE_END_OF_CURRENT = 'News cannot start before current news finish',
-  ONLY_ONE_CURRENT_NEWS_AUTHORIZED = 'Only one current news is authorized',
-  ONLY_ONE_PLANNED_NEWS_AUTHORIZED = 'Only one planned news is authorized',
-  NEWS_NOT_FOUND = 'News not found',
-  AUTH_INVALID_TOKEN = 'Invalid token',
-  ENDDATE_CANNOT_START_BEFORE_STARTDATE = "End date cannot start before start date",
-  NEWS_CANNOT_START_SAME_AS_PLANNED = "News cannot start same as planned"
+  EXISTING_CURRENT_NEWS = "Il existe déja une actualité en cours",
+  NEWS_CANNOT_START_IN_PAST = "Les actualités ne peuvent commencer dans le passé",
+  NEWS_CANNOT_FINISH_IN_PAST = "Les actualités ne peuvent finir dans le passé",
+  NEWS_CANNOT_START_BEFORE_END_OF_CURRENT = "Les actualités plannifiées ne peuvent commencer avant la fin de l'actualité en cours",
+  ONLY_ONE_CURRENT_NEWS_AUTHORIZED = "Seulement une actualité en cours est autorisé",
+  ONLY_ONE_PLANNED_NEWS_AUTHORIZED = "Seulement une actualité planifiée est autorisé",
+  NEWS_NOT_FOUND = "Actualité non trouvée",
+  AUTH_INVALID_TOKEN = "Token d'authentification invalide",
+  ENDDATE_CANNOT_START_BEFORE_STARTDATE = "La date de fin ne peut être avant la date de début",
+  NEWS_CANNOT_START_SAME_AS_PLANNED = "L'actualité en cours ne peut commencer en même temps que l'actualité plannifée",
 }
