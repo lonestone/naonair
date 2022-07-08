@@ -67,7 +67,7 @@ const profileItems: ProfileItemType[] = [
     icon: 'information',
     linkIcon: 'launch',
     title: 'En savoir plus sur Naonair',
-    url: 'https://www.airpl.org',
+    url: 'https://naonair.org',
   },
   {
     icon: 'information',
