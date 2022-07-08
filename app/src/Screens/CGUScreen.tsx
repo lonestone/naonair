@@ -13,6 +13,7 @@ import { setCGUAccepted } from '../actions/launch';
 import { ARButton, ARButtonSize } from '../components/atoms/ARButton';
 import { fonts, theme } from '../theme';
 import { StackNavigationScreenProp } from '../types/routes';
+import { API } from '../config.json';
 
 const styles = StyleSheet.create({
   container: { backgroundColor: 'white', flex: 1, padding: 15 },
@@ -65,9 +66,7 @@ const CGUScreen = () => {
                 styles.label,
                 { color: 'blue', textDecorationLine: 'underline' },
               ])}
-              onPress={() =>
-                Linking.openURL('https://policies.google.com/terms?hl=fr')
-              }>
+              onPress={() => Linking.openURL(`${API.baseUrl}CGU_Naonair.pdf`)}>
               Conditions Générales d'Utilisation
             </Text>{' '}
             de l'application mobile Naonair.

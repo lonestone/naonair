@@ -11,12 +11,18 @@ import { AuthModule } from './modules/auth/auth.module';
 import { AlertsModule } from './modules/alerts/alerts.module';
 import authConfig from './configs/auth.config';
 import { RoutingModule } from './modules/routing/routing.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [ormConfig, appConfig, sentryConfig, authConfig],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveStaticOptions: { index: false },
     }),
     NewsModule,
     OrmModule,
