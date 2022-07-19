@@ -2,16 +2,11 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import { Card, Divider } from 'react-native-paper';
+import { Card, Divider, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { reverse } from '../../actions/poi';
-import { RouteProfile } from '../../actions/routes';
 import { theme } from '../../theme';
-import {
-  StackNavigationScreenProp,
-  StackParamList,
-  TabNavigationScreenProp,
-} from '../../types/routes';
+import { StackParamList, TabNavigationScreenProp } from '../../types/routes';
 import logger from '../../utils/logger';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARMap from '../atoms/ARMap';
@@ -66,6 +61,7 @@ const ARPOIDetails = () => {
   const navigation = useNavigation<TabNavigationScreenProp>();
   const { poi } = useRoute<POIDetailsRouteProp>().params || {};
 
+  console.log('poi', poi);
   const goTo = () => {
     Geolocation.getCurrentPosition(
       ({ coords }) => {
@@ -113,6 +109,7 @@ const ARPOIDetails = () => {
                     {isMapLoaded && <POIMarker poi={poi} />}
                   </ARMap>
                 </View>
+                <Text>{poi.qa}</Text>
                 <View style={styles.chipWrapper}>
                   <ARQAChip
                     size="md"
@@ -121,6 +118,7 @@ const ARPOIDetails = () => {
                     value={poi.qa}
                   />
                 </View>
+                <Text>AAAAAAA{poi.qa}</Text>
               </Card>
             </View>
             <ARHeadingGroup title={poi.name} caption={poi.address} />
