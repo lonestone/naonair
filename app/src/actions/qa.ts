@@ -80,7 +80,7 @@ export const getQAFromBBox = async (bbox: BBox): Promise<QAType> => {
     const { GRAY_INDEX } = json.features[0].properties;
 
     const index = Math.floor(
-      (GRAY_INDEX / 100) * Object.entries(QAValues).length,
+      (GRAY_INDEX / 90) * Object.entries(QAValues).length,
     );
     console.info({ GRAY_INDEX, index });
 
