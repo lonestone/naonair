@@ -1,5 +1,6 @@
 import { NewsDTO } from '@aireal/dtos/dist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import addDays from 'date-fns/addDays';
 import { API } from '../config.json';
 
 const URL_ENDPOINT = `${API.baseUrl}news`;
@@ -39,11 +40,12 @@ export const getLast = async (): Promise<NewsDTO | undefined> => {
 
   for (let i = 0; i < news.length; i++) {
     const item = news[i];
-    const endDate = new Date(item.endDate);
     const startDate = new Date(item.startDate);
+    // add 1 day to include "today"
+    const endDate = addDays(new Date(item.endDate), 1);
     const seen = viewedNewsUuid.includes(item.uuid);
 
-    if (!seen && startDate < now && now < endDate) {
+    if (!seen && startDate < now && now < endDate && item.displayPeriod) {
       unseens.push({ ...item, endDate, startDate });
     } else if (seen && now > endDate) {
       removeNew(item.uuid);

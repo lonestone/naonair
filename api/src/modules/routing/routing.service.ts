@@ -59,7 +59,13 @@ export class RoutingService {
     const hints = path.value.data.hints;
     const data = {
       qa: hints.qa, // QA must be in [0;6] for app
-      qa_cumulated: hints.qa_cumulated,
+
+      // here, QA is in [0;90]
+      qa_mode_90: hints.qa_mode_90,
+      qa_avg_90: hints.qa_avg_90,
+      qa_avg_dist_90: hints.qa_avg_dist_90,
+      qa_cumulated_90: hints.qa_cumulated_90,
+
       nb_points: path.value.data.paths[0].points.coordinates.length,
       ...path.value.data.paths[0],
     };
