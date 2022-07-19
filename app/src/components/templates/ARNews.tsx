@@ -1,10 +1,11 @@
-import { NewsDTO } from '@aireal/dtos/dist';
+import { NewsDTO, NewsType } from '@aireal/dtos/dist';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Caption, Headline, Modal, Paragraph } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { getLast, markNewAsSeen } from '../../actions/news';
 import { theme } from '../../theme';
+import { convertNewsType, iconNewsType } from '../../utils/news';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import { ARLink } from '../atoms/ARLink';
 
@@ -72,19 +73,25 @@ export default ({}: NewsDialogType) => {
   return (
     <Modal visible={!!news} dismissable onDismiss={() => {}}>
       <View style={styles.dialog}>
-        <Icon
-          name="today"
-          size={20}
-          color={theme.colors.blue[500]}
-          style={{ paddingTop: 7 }}
-        />
+        {news?.type && news?.type !== NewsType.None && (
+          <Icon
+            name={iconNewsType[news?.type || NewsType.None]}
+            size={20}
+            color={theme.colors.blue[500]}
+            style={{ paddingTop: 3 }}
+          />
+        )}
         <View style={styles.container}>
-          <Headline style={styles.title}>{news?.type}</Headline>
+          <Headline style={styles.title}>
+            {news?.type ? convertNewsType[news?.type] : NewsType.None}
+          </Headline>
           <View style={styles.content}>
-            <Caption style={styles.dates}>
-              Du {news?.startDate.toLocaleDateString('fr')} au{' '}
-              {news?.endDate.toLocaleDateString('fr')}
-            </Caption>
+            {news?.displayPeriod && (
+              <Caption style={styles.dates}>
+                Du {news?.startDate.toLocaleDateString('fr')} au{' '}
+                {news?.endDate.toLocaleDateString('fr')}
+              </Caption>
+            )}
             <Paragraph style={styles.paragraph}>{news?.message}</Paragraph>
             <View style={styles.link}>
               {!!news && !!news.link && !!news.linkTitle && (

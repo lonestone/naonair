@@ -14,7 +14,7 @@ import {
   SxProps,
   TextareaAutosize,
   TextField,
-  Theme
+  Theme,
 } from "@mui/material";
 import { AxiosError } from "axios";
 import frLocale from "date-fns/locale/fr";
@@ -45,7 +45,7 @@ interface Props {
 const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
-  const [displayPeriod, setDisplayPeriod] = useState(false);
+  const [displayPeriod, setDisplayPeriod] = useState(true);
   const [newsType, setNewsType] = useState<NewsType>(NewsType.None);
   const [message, setMessage] = useState("");
   const [link, setLink] = useState("");
@@ -68,6 +68,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
     setMessage(news.message);
     checkHttps(news.link!);
     setLinkTitle(news.linkTitle!);
+    setDisplayPeriod(news.displayPeriod);
   };
 
   useEffect(() => {
@@ -134,8 +135,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
       };
       try {
         const res = await updateNews(updatedNews);
-        if (res.statusCode >= 400) {          
-          console.log(res)
+        if (res.statusCode >= 400) {
           setSnackbarStatus?.({
             open: true,
             message: res.message,
@@ -150,7 +150,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
           message: "L'information a été modifiée",
           severity: "success",
         });
-      } catch (error: any) {      
+      } catch (error: any) {
         setSnackbarStatus?.({
           open: true,
           message: error.message,
@@ -183,7 +183,6 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
         <Grid item md={6} xs={12} sx={gridItem}>
           <>
             <ARTitleChip label={"Période d'affichage"} chip={"2"} />
-
             <LocalizationProvider
               dateAdapter={AdapterDateFns}
               locale={frLocale}

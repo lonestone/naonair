@@ -45,7 +45,7 @@ export const getLast = async (): Promise<NewsDTO | undefined> => {
     const endDate = addDays(new Date(item.endDate), 1);
     const seen = viewedNewsUuid.includes(item.uuid);
 
-    if (!seen && startDate < now && now < endDate && item.displayPeriod) {
+    if (!seen && startDate < now && now < endDate) {
       unseens.push({ ...item, endDate, startDate });
     } else if (seen && now > endDate) {
       removeNew(item.uuid);
