@@ -61,7 +61,6 @@ const ARPOIDetails = () => {
   const navigation = useNavigation<TabNavigationScreenProp>();
   const { poi } = useRoute<POIDetailsRouteProp>().params || {};
 
-  console.log('poi', poi);
   const goTo = () => {
     Geolocation.getCurrentPosition(
       ({ coords }) => {
@@ -118,7 +117,6 @@ const ARPOIDetails = () => {
                     value={poi.qa}
                   />
                 </View>
-                <Text>AAAAAAA{poi.qa}</Text>
               </Card>
             </View>
             <ARHeadingGroup title={poi.name} caption={poi.address} />

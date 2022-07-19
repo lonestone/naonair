@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@aireal/dtos" : "file:../dtos",
+    "@aireal/dtos": "file:../dtos",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.3.1",
@@ -32,7 +32,6 @@
   },
   "scripts": {
     "start": "tsc && vite",
-    "install-deps": "pnpm i",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },

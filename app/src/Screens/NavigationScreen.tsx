@@ -2,6 +2,8 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { Position } from '@turf/turf';
 import React, { useState } from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { ARButton } from '../components/atoms/ARButton';
 import ARElasticView from '../components/atoms/ARElasticView';
 import ARNavigationMapView from '../components/organisms/ARNavigationMapView';
 import ARPathInstructions from '../components/organisms/ARPathInstructions';
@@ -38,12 +40,27 @@ export default ({}: NavigationScreenProp) => {
         minHeight={130}
         onFold={() => setCanScroll(false)}
         onExpanded={() => setCanScroll(true)}>
-        <ARPathInstructions
-          style={styles.instructions}
-          path={path}
-          userPosition={userPosition}
-          scrollEnabled={canScroll}
-        />
+        <>
+          <ARButton
+            label=""
+            onPress={() => {}}
+            icon={() => (
+              <Icon
+                name={canScroll ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
+                size={32}
+                color="black"
+              />
+            )}
+            mode="text"
+            styleContainer={{ backgroundColor: 'white', borderRadius: 0 }}
+          />
+          <ARPathInstructions
+            style={styles.instructions}
+            path={path}
+            userPosition={userPosition}
+            scrollEnabled={canScroll}
+          />
+        </>
       </ARElasticView>
     </>
   );
