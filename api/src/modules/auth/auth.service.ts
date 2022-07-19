@@ -15,4 +15,11 @@ export class AuthService {
     };
     return { access_token: this.jwtService.sign(payload) };
   }
+
+  checkToken(token: string) {
+    const res = this.jwtService.verify(token);
+    if (new Date().getTime() > res.exp * 1000) {
+      throw new Error('Token expired');
+    }
+  }
 }

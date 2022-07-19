@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import { checkToken } from "../api/login.api";
 
 interface AuthContextType {
   token?: string;
@@ -14,8 +15,16 @@ export function AuthProvider({
   children: ReactNode;
 }): JSX.Element {
   const [token, setToken] = useState<string | undefined>(() => {
+    const validateTokenOrRedirect = async () => {
+      const res = await checkToken();
+      if (!res) {
+        removeCurrentToken();
+      }
+    };
+
     const existingToken = localStorage.getItem("access_token");
     if (existingToken) {
+      validateTokenOrRedirect();
       return existingToken;
     }
   });
