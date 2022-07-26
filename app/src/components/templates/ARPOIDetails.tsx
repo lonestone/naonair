@@ -108,7 +108,6 @@ const ARPOIDetails = () => {
                     {isMapLoaded && <POIMarker poi={poi} />}
                   </ARMap>
                 </View>
-                <Text>{poi.qa}</Text>
                 <View style={styles.chipWrapper}>
                   <ARQAChip
                     size="md"
