@@ -3,7 +3,6 @@ import { Position } from '@turf/turf';
 import React, { useState } from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { ARButton } from '../components/atoms/ARButton';
 import ARElasticView from '../components/atoms/ARElasticView';
 import ARNavigationMapView from '../components/organisms/ARNavigationMapView';
 import ARPathInstructions from '../components/organisms/ARPathInstructions';
@@ -18,6 +17,11 @@ const styles = StyleSheet.create({
   map: { flex: 0 },
   instructions: {
     flex: 1,
+  },
+  foldButton: {
+    backgroundColor: 'white',
+    borderRadius: 0,
+    alignItems: 'center',
   },
 });
 
@@ -41,14 +45,7 @@ export default ({}: NavigationScreenProp) => {
         onFold={() => setCanScroll(false)}
         onExpanded={() => setCanScroll(true)}>
         <>
-          <TouchableOpacity
-            onPress={() => {}}
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={{
-              backgroundColor: 'white',
-              borderRadius: 0,
-              alignItems: 'center',
-            }}>
+          <TouchableOpacity style={styles.foldButton}>
             <Icon
               name={canScroll ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
               size={32}
