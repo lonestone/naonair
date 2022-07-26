@@ -1,7 +1,7 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { Position } from '@turf/turf';
 import React, { useState } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { ARButton } from '../components/atoms/ARButton';
 import ARElasticView from '../components/atoms/ARElasticView';
@@ -41,19 +41,20 @@ export default ({}: NavigationScreenProp) => {
         onFold={() => setCanScroll(false)}
         onExpanded={() => setCanScroll(true)}>
         <>
-          <ARButton
-            label=""
+          <TouchableOpacity
             onPress={() => {}}
-            icon={() => (
-              <Icon
-                name={canScroll ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
-                size={32}
-                color="black"
-              />
-            )}
-            mode="text"
-            styleContainer={{ backgroundColor: 'white', borderRadius: 0 }}
-          />
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{
+              backgroundColor: 'white',
+              borderRadius: 0,
+              alignItems: 'center',
+            }}>
+            <Icon
+              name={canScroll ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
+              size={32}
+              color="black"
+            />
+          </TouchableOpacity>
           <ARPathInstructions
             style={styles.instructions}
             path={path}
