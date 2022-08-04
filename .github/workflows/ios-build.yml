@@ -1,0 +1,34 @@
+name: iOS Build Testflight
+
+on:
+  push: 
+    branches: ['app-ci']
+  pull_request:
+    branches: ['develop']
+
+jobs:
+  build:
+    runs-on: macos-12
+
+    steps:
+      - uses: ./.github/workflows/app-build
+
+      - name: Setup Ruby (bundle)
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.5
+          bundler-cache: true
+
+      - name: Restore Pods cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ios/Pods
+            ~/Library/Caches/CocoaPods
+            ~/.cocoapods
+          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+      - name: Install Pods
+        working-directory: ./ios
+        run: pod install --repo-update
