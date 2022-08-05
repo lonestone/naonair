@@ -8,3 +8,5 @@ backoffice/src/types/dist/*
 */node_modules/*
 cron-geotiff/.env
 *.dccache
+app/android/app/release/app-release.aab
+app/tests/app-release.aab
