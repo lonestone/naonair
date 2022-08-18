@@ -6,12 +6,3 @@ export enum NewsType {
   Event = "event",
   Warning = "warning",
 }
-
-export const convertNewsType = {
-  none: "Actualité",
-  goodPractice: "Bonne pratique",
-  announcement: "Annonce",
-  info: "Information",
-  event: "Évenement",
-  warning: "Avertissement",
-};

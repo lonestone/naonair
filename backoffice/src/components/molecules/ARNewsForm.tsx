@@ -12,7 +12,6 @@ import {
   Select,
   SelectChangeEvent,
   SxProps,
-  TextareaAutosize,
   TextField,
   Theme,
 } from "@mui/material";
@@ -22,7 +21,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { createNews, updateNews } from "../../api/news.api";
 import useSnackbar from "../../contexts/snackbar.context";
 import theme from "../../theme";
-import { convertNewsType, NewsType } from "../../types/news";
+import { NewsType } from "../../types/news";
+import { convertNewsType } from "../../utils";
 import ARButtonIcon from "../atoms/ARButton";
 import { ARTitleChip } from "../atoms/ARTitleChip";
 
@@ -174,7 +174,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
             >
               {Object.values(NewsType).map((option, idx) => (
                 <MenuItem key={idx} value={option}>
-                  {convertNewsType[option]}
+                  {convertNewsType(option as NewsType)}
                 </MenuItem>
               ))}
             </Select>

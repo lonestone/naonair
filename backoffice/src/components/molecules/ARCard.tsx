@@ -4,8 +4,8 @@ import { Theme } from "@mui/system";
 import { format } from "date-fns";
 import theme from "../../theme";
 import { NewsDTO } from "@aireal/dtos";
-import { convertNewsType } from "../../types/news";
 import ARTitleIcon from "../atoms/ARTitleIcon";
+import { convertNewsType } from "../../utils";
 
 type ARCardProps = {
   news?: NewsDTO;
@@ -40,7 +40,7 @@ const ARCard = ({ news }: ARCardProps) => {
         <>
           <Card sx={cardStyle}>
             <ARTitleIcon
-              label={convertNewsType[news.type]}
+              label={convertNewsType(news.type)}
               icon={<Today />}
               isNewsTitle
               marginBottom={theme.spacing(2)}
