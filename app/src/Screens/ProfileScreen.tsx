@@ -10,6 +10,7 @@ import ARConfirmModal from '../components/templates/ARConfirmModal';
 import { fonts, theme } from '../theme';
 import { ProfileItemType } from '../types/profile';
 import { StackNavigationScreenProp, StackParamList } from '../types/routes';
+import { API } from '../config.json';
 
 const styles = StyleSheet.create({
   container: {
@@ -61,8 +62,11 @@ const styles = StyleSheet.create({
 
 const profileItems: ProfileItemType[] = [
   { icon: 'star', title: 'Mes favoris', link: 'Favorites' },
-  { icon: 'book-open-blank-variant', title: 'CGU' },
-  { icon: 'clipboard-check', title: 'Mentions légales' },
+  {
+    icon: 'book-open-blank-variant',
+    title: 'CGU',
+    url: `${API.baseUrl}files/CGU_Naonair.pdf`,
+  },
   {
     icon: 'information',
     linkIcon: 'launch',

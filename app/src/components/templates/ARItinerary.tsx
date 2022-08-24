@@ -294,6 +294,28 @@ export default () => {
             onScrollBeginDrag={Keyboard.dismiss}
             accessibilityLabel="Resultats de la recheche"
             indicatorStyle="black">
+            {(results || []).map(result => (
+              <ARListItem
+                key={result.id}
+                category={result.category}
+                title={result.name}
+                description={result.address}
+                onPress={() => {
+                  setSelectedResult({
+                    ...result,
+                    category: POICategory.HISTORY,
+                  });
+                  setValues({
+                    ...values,
+                    [selectedField.toString()]: {
+                      coord: result.geolocation,
+                      text: result.name,
+                    },
+                  });
+                  Keyboard.dismiss();
+                }}
+              />
+            ))}
             {historyList && historyList.length > 0 && (
               <View style={styles.historyContent}>
                 <Text style={styles.history}>Recherches récentes</Text>
@@ -319,28 +341,6 @@ export default () => {
                 )}
               </View>
             )}
-            {(results || []).map(result => (
-              <ARListItem
-                key={result.id}
-                category={result.category}
-                title={result.name}
-                description={result.address}
-                onPress={() => {
-                  setSelectedResult({
-                    ...result,
-                    category: POICategory.HISTORY,
-                  });
-                  setValues({
-                    ...values,
-                    [selectedField.toString()]: {
-                      coord: result.geolocation,
-                      text: result.name,
-                    },
-                  });
-                  Keyboard.dismiss();
-                }}
-              />
-            ))}
           </ScrollView>
           {values[Field.START] && values[Field.END] && (
             <ARButton
