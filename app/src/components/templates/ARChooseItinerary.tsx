@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
 
 export type ARRouteType = 'fastest_path' | 'cleanest_path';
 
-export const BackButton = () => {
+const BackButton = () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
 
   return (

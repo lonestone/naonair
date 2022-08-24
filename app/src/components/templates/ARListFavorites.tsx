@@ -49,7 +49,7 @@ const ARListFavorites = () => {
       try {
         setItems(Array.isArray(values) ? values : [values]);
       } catch (e) {
-        logger.error(e, 'fromGetAllPlaces')
+        logger.error(e, 'fromGetAllPlaces');
       }
     }
   };

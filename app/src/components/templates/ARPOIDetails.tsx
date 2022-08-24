@@ -11,6 +11,9 @@ import logger from '../../utils/logger';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARMap from '../atoms/ARMap';
 import ARQAChip from '../atoms/ARQAChip';
+import BackButton from '../molecules/ARBackButton';
+import ARCommonHeader from '../molecules/ARCommonHeader';
+import FavoriteButton from '../molecules/ARFavoriteButton';
 import ARHeadingGroup from '../molecules/ARHeadingGroup';
 import ARForecasts from '../organisms/ARForecasts';
 import ARPollution from '../organisms/ARPollution';
@@ -91,6 +94,16 @@ const ARPOIDetails = () => {
 
   return (
     <>
+      <ARCommonHeader
+        headline="Détails"
+        left={<BackButton />}
+        right={
+          <FavoriteButton
+            isFavorited={true}
+            onPress={() => console.log('test')}
+          />
+        }
+      />
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={{ paddingBottom: 100 }}>

@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Caption, Headline, IconButton } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Caption, Headline } from 'react-native-paper';
 import { fonts, theme } from '../../theme';
 import ARHeader from '../atoms/ARHeader';
 
@@ -12,19 +11,8 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
   },
-  backButton: {
-    padding: 0,
-    margin: 0,
-    marginTop: 3,
-    marginRight: 10,
-    flex: 0,
-  },
-  deleteButton: { marginLeft: 'auto', padding: 0, margin: 0 },
-  headlineContainer: {
-    flexDirection: 'row',
-  },
   headline: {
-    flex: 0,
+    flex: 1,
     alignItems: 'stretch',
     color: theme.colors.blue[500],
     fontSize: 20,
@@ -42,44 +30,22 @@ const styles = StyleSheet.create({
 interface Props {
   headline: string;
   caption?: string;
-  back?: boolean;
-  deleteIcon?: boolean;
-  onDelete?: () => void;
-  onBack?: () => void;
+  left?: ReactNode;
+  right?: ReactNode;
 }
 
-const ARCommonHeader = ({
-  caption,
-  headline,
-  back,
-  deleteIcon,
-  onDelete,
-  onBack,
-}: Props) => {
+const ARCommonHeader = ({ caption, headline, left, right }: Props) => {
   return (
     <ARHeader>
       <View style={styles.container}>
-        {!!back && (
-          <IconButton
-            onPress={onBack}
-            icon={() => <Icon name="arrow-back" size={32} color="black" />}
-            style={styles.backButton}
-          />
-        )}
+        {left}
         <View>
           <Headline numberOfLines={2} style={styles.headline}>
             {headline}
           </Headline>
-
           {!!caption && <Caption style={styles.caption}>{caption}</Caption>}
         </View>
-        {!!deleteIcon && (
-          <IconButton
-            onPress={onDelete}
-            icon={() => <Icon name="delete" size={24} color="red" />}
-            style={styles.deleteButton}
-          />
-        )}
+        {right}
       </View>
     </ARHeader>
   );
