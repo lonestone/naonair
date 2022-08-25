@@ -30,6 +30,7 @@ export interface POI {
   address: string;
   geolocation: Position;
   qa?: QAType;
+  favorited?: boolean;
 }
 
 export interface MapboxFeature extends Feature<Point> {

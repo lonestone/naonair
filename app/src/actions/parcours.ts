@@ -20,6 +20,7 @@ export interface ARParcours {
     marcheurs_temps_min: number;
     cyclistes_temps_min: number;
     coureurs_temps_min: number;
+    favorited?: boolean;
   };
 }
 

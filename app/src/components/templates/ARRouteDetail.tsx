@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { addToFavorites } from '../../actions/favorites';
 import { QATypes, QAValues } from '../../actions/qa';
 import { fonts, theme } from '../../theme';
 import { StackParamList } from '../../types/routes';
@@ -149,7 +150,12 @@ export default ({}: ARRouteDetailProp) => {
       <ARCommonHeader
         headline="Détails"
         left={<BackButton />}
-        right={<FavoriteButton isFavorited={false} />}
+        right={
+          <FavoriteButton
+            isFavorited={parcours.properties.favorited}
+            onPress={() => addToFavorites(parcours)}
+          />
+        }
       />
       <ScrollView style={styles.container}>
         <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1 }}>

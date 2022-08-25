@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { Card, Divider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { addToFavorites } from '../../actions/favorites';
 import { reverse } from '../../actions/poi';
 import { theme } from '../../theme';
 import { StackParamList, TabNavigationScreenProp } from '../../types/routes';
@@ -97,7 +98,12 @@ const ARPOIDetails = () => {
       <ARCommonHeader
         headline="Détails"
         left={<BackButton />}
-        right={<FavoriteButton isFavorited={false} />}
+        right={
+          <FavoriteButton
+            isFavorited={poi.favorited}
+            onPress={() => addToFavorites(poi)}
+          />
+        }
       />
       <ScrollView
         style={styles.scrollView}
