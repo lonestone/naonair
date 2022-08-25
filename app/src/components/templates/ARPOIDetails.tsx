@@ -97,12 +97,7 @@ const ARPOIDetails = () => {
       <ARCommonHeader
         headline="Détails"
         left={<BackButton />}
-        right={
-          <FavoriteButton
-            isFavorited={true}
-            onPress={() => console.log('test')}
-          />
-        }
+        right={<FavoriteButton isFavorited={false} />}
       />
       <ScrollView
         style={styles.scrollView}

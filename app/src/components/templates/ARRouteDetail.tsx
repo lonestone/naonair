@@ -10,6 +10,9 @@ import { StackParamList } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
 import ARPathLayer from '../atoms/ARPathLayer';
 import ARQAChip from '../atoms/ARQAChip';
+import BackButton from '../molecules/ARBackButton';
+import ARCommonHeader from '../molecules/ARCommonHeader';
+import FavoriteButton from '../molecules/ARFavoriteButton';
 import ARForecasts from '../organisms/ARForecasts';
 
 const styles = StyleSheet.create({
@@ -142,50 +145,64 @@ export default ({}: ARRouteDetailProp) => {
   ];
 
   return (
-    <ScrollView style={styles.container}>
-      <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1 }}>
-        <View style={styles.mapContainer}>
-          <ARMap
-            heatmapVisible
-            userLocationVisible
-            interactionEnabled
-            bbox={parcours.bbox}
-            style={styles.map}>
-            <ARPathLayer path={parcours} />
-          </ARMap>
-          <ARQAChip
-            style={styles.mapChip}
-            size="md"
-            value={QAValues[qa ?? QATypes.XXBAD]}
+    <>
+      <ARCommonHeader
+        headline="Détails"
+        left={<BackButton />}
+        right={<FavoriteButton isFavorited={false} />}
+      />
+      <ScrollView style={styles.container}>
+        <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1 }}>
+          <View style={styles.mapContainer}>
+            <ARMap
+              heatmapVisible
+              userLocationVisible
+              interactionEnabled
+              bbox={parcours.bbox}
+              style={styles.map}>
+              <ARPathLayer path={parcours} />
+            </ARMap>
+            <ARQAChip
+              style={styles.mapChip}
+              size="md"
+              value={QAValues[qa ?? QATypes.XXBAD]}
+            />
+          </View>
+
+          <View style={styles.headContainer}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.headline}>{parcours.properties.nom}</Text>
+              <Text style={styles.denivele}>
+                Dénivelé : {parcours.properties.denivele}m
+              </Text>
+            </View>
+            <View style={styles.distance}>
+              <Text style={styles.distanceKm}>{Math.round(km * 10) / 10}</Text>
+              <Text style={styles.distanceUnit}>Km</Text>
+            </View>
+          </View>
+
+          {speeds.map(
+            s =>
+              s && (
+                <View key={`speed-${s.icon}`} style={styles.speedContainer}>
+                  <Icon
+                    color={theme.colors.blue[500]}
+                    name={s.icon}
+                    size={24}
+                  />
+                  <Text style={styles.speedUnit}>{Math.round(s.speed)}</Text>
+                  <Text style={styles.speedLabel}>{s.label}</Text>
+                </View>
+              ),
+          )}
+
+          <ARForecasts
+            id={parcours.properties.id}
+            type="aireel:parcours_data"
           />
-        </View>
-
-        <View style={styles.headContainer}>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.headline}>{parcours.properties.nom}</Text>
-            <Text style={styles.denivele}>
-              Dénivelé : {parcours.properties.denivele}m
-            </Text>
-          </View>
-          <View style={styles.distance}>
-            <Text style={styles.distanceKm}>{Math.round(km * 10) / 10}</Text>
-            <Text style={styles.distanceUnit}>Km</Text>
-          </View>
-        </View>
-
-        {speeds.map(
-          s =>
-            s && (
-              <View key={`speed-${s.icon}`} style={styles.speedContainer}>
-                <Icon color={theme.colors.blue[500]} name={s.icon} size={24} />
-                <Text style={styles.speedUnit}>{Math.round(s.speed)}</Text>
-                <Text style={styles.speedLabel}>{s.label}</Text>
-              </View>
-            ),
-        )}
-
-        <ARForecasts id={parcours.properties.id} type="aireel:parcours_data" />
-      </SafeAreaView>
-    </ScrollView>
+        </SafeAreaView>
+      </ScrollView>
+    </>
   );
 };

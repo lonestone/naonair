@@ -165,7 +165,7 @@ export default () => {
         <Stack.Screen
           name="RouteDetail"
           component={ARRouteDetail}
-          options={{ headerTitle: 'Détails' }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
