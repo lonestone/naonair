@@ -11,11 +11,13 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
   },
-  headline: {
+  headlineContainer: {
     flex: 1,
     alignItems: 'stretch',
-    color: theme.colors.blue[500],
+  },
+  headline: {
     fontSize: 20,
+    color: theme.colors.blue[500],
     textAlignVertical: 'top',
     ...fonts.Raleway.bold,
   },
@@ -39,7 +41,7 @@ const ARCommonHeader = ({ caption, headline, left, right }: Props) => {
     <ARHeader>
       <View style={styles.container}>
         {left}
-        <View>
+        <View style={styles.headlineContainer}>
           <Headline numberOfLines={2} style={styles.headline}>
             {headline}
           </Headline>

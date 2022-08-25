@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
 import { poiIcons } from '../../actions/poi';
+import { theme } from '../../theme';
 
 export type FavoriteButtonProps = Omit<
   ComponentProps<typeof IconButton>,
@@ -30,7 +31,9 @@ const FavoriteButton = ({ isFavorited, ...props }: FavoriteButtonProps) => {
           width="20"
           height="20"
           xml={poiIcons.favorite!}
-          fill={isFavorited ? '#25244E' : 'white'}
+          fill={isFavorited ? theme.colors.blue[500] : 'white'}
+          stroke={theme.colors.blue[500]}
+          strokeWidth={isFavorited ? '0' : '1.5'}
         />
       )}
       style={styles.favoriteButton}
