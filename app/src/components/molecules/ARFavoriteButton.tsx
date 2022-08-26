@@ -33,7 +33,7 @@ const FavoriteButton = ({ isFavorited, ...props }: FavoriteButtonProps) => {
           xml={poiIcons.favorite!}
           fill={isFavorited ? theme.colors.blue[500] : 'white'}
           stroke={theme.colors.blue[500]}
-          strokeWidth={isFavorited ? '0' : '1.5'}
+          strokeWidth="1.5"
         />
       )}
       style={styles.favoriteButton}

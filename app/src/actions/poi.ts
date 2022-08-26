@@ -161,8 +161,13 @@ export const getAll = async (params?: {
   });
 
   if (categories.includes(POICategory.FAVORITE)) {
+    // Add places and favorited POI not allready present to results
+    const myPlaces = await getAllPlaces();
+    const myFavorites = POIs.filter(p => p.favorited && !results.includes(p));
+    const addToResult = [...myPlaces, ...myFavorites];
+
     results.push(
-      ...(await getAllPlaces()).filter(
+      ...addToResult.filter(
         p =>
           removeAccent((p.address || '').toLowerCase()).includes(lowedText) ||
           removeAccent(p.name.toLowerCase()).includes(lowedText),

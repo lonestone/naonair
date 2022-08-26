@@ -25,9 +25,20 @@ export interface ARParcours {
   };
 }
 
+// eslint-disable-next-line no-shadow
+export enum ParcoursCategory {
+  ALL = 'all',
+  FAVORITE = 'favorite',
+  WALK = 'marcheur',
+  BIKE = 'cycliste',
+  RUNNING = 'coureur',
+}
+
 // https://api.naonair.org/geoserver/aireel/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=aireel%3Aparcours_poi_data&outputFormat=application%2Fjson
 
-export const getAll = async (filters: string[]): Promise<ARParcours[]> => {
+export const getAll = async (
+  filters: ParcoursCategory[],
+): Promise<ARParcours[]> => {
   try {
     const URL = buildGeoserverUrl('ows', {
       SERVICE: 'WFS',
@@ -43,8 +54,8 @@ export const getAll = async (filters: string[]): Promise<ARParcours[]> => {
     const favorites = await getFavorites();
 
     const geojson = (await response.json()) as { features: ARParcours[] };
-    const parcours = geojson.features
-      .map<ARParcours>(({ geometry, properties }) => {
+    const parcours = geojson.features.map<ARParcours>(
+      ({ geometry, properties }) => {
         const bbox = turf.bbox(turf.multiLineString(geometry.coordinates));
 
         return {
@@ -56,10 +67,20 @@ export const getAll = async (filters: string[]): Promise<ARParcours[]> => {
             favorited: favorites.has(`${properties.id}`),
           },
         } as ARParcours;
-      })
-      .filter(p => filters.some(f => !!p.properties[f]));
+      },
+    );
 
-    return parcours;
+    let result = parcours.filter(p => filters.some(f => !!p.properties[f]));
+
+    // Add favorited parcours not allready present to results
+    if (filters.includes(ParcoursCategory.FAVORITE)) {
+      const favoritesToAdd = parcours.filter(
+        p => p.properties.favorited && !result.includes(p),
+      );
+      result = [...result, ...favoritesToAdd];
+    }
+
+    return result;
   } catch (e) {
     if (__DEV__) {
       console.info(e);

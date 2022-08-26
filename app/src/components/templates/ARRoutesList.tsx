@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, VirtualizedList } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
-import { ARParcours } from '../../actions/parcours';
+import { ARParcours, ParcoursCategory } from '../../actions/parcours';
 import { useParcours } from '../../hooks/useParcours';
 import ARRouteItem from '../molecules/ARRouteItem';
 
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 });
 
 export interface ARRoutesListProps {
-  filters: string[];
+  filters: ParcoursCategory[];
 }
 
 export default ({ filters }: ARRoutesListProps) => {
