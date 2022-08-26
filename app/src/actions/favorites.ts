@@ -4,27 +4,37 @@ import { POI } from './poi';
 
 const FAVORITES_KEY = '@favorites';
 
-export const getFavorites = async (): Promise<string[]> => {
+export const getFavorites = async function (): Promise<Set<string>> {
   const favorites = await AsyncStorage.getItem(FAVORITES_KEY);
   if (!favorites) {
-    return [];
+    return new Set([]);
   }
-  return favorites.split('|');
+  return new Set(favorites.split('|'));
 };
 
-const setFavorites = async (favorites: string[]) => {
+export const isFavorited = async function (item: POI | ARParcours) {
+  const favorites = await getFavorites();
+  const id = 'id' in item ? `${item.id}` : `${item.properties.id}`;
+  return favorites.has(id);
+};
+
+const setFavorites = async function (favorites: string[]) {
   const formatedFavorites = favorites.join('|');
   await AsyncStorage.setItem(FAVORITES_KEY, formatedFavorites);
 };
 
-export const addToFavorites = async (item: POI | ARParcours) => {
+export const addToFavorites = async function (item: POI | ARParcours) {
   const current = await getFavorites();
-  const idToAdd = 'id' in item ? item.id : item.properties.id;
-  await setFavorites([...current, `${idToAdd}`]);
+  const idToAdd = 'id' in item ? `${item.id}` : `${item.properties.id}`;
+  if (!current.has(idToAdd)) {
+    const favoritesArray = Array.from(current);
+    await setFavorites([...favoritesArray, idToAdd]);
+  }
 };
 
-export const removeFromFavorites = async (item: POI | ARParcours) => {
+export const removeFromFavorites = async function (item: POI | ARParcours) {
   const current = await getFavorites();
   const idToRemove = 'id' in item ? item.id : item.properties.id;
-  await setFavorites([...current].filter(id => id !== `${idToRemove}`));
+  const favoritesArray = Array.from(current);
+  await setFavorites(favoritesArray.filter(id => id !== `${idToRemove}`));
 };

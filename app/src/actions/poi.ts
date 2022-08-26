@@ -8,6 +8,7 @@ import sportIcon from '../assets/sport-icon.svg';
 
 import { buildGeoserverUrl, buildMapboxUrl } from '../utils/config';
 import removeAccent from '../utils/remove-accent';
+import { getFavorites } from './favorites';
 import { getAllPlaces } from './myplaces';
 import { QAType, QAValues } from './qa';
 
@@ -144,7 +145,12 @@ export const getAll = async (params?: {
 
   const lowedText = removeAccent(text).toLowerCase();
 
-  const POIs = await fetchAll();
+  const favorites = await getFavorites();
+  const result = await fetchAll();
+  // Check if each POI has been added to favorites
+  const POIs = result.map(poi => {
+    return { ...poi, favorited: favorites.has(`${poi.id}`) };
+  });
 
   let results = POIs.filter(pois => {
     return (

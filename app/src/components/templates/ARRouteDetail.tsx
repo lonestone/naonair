@@ -1,10 +1,15 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { addToFavorites } from '../../actions/favorites';
+import {
+  addToFavorites,
+  isFavorited,
+  removeFromFavorites,
+} from '../../actions/favorites';
+import { ARParcours } from '../../actions/parcours';
 import { QATypes, QAValues } from '../../actions/qa';
 import { fonts, theme } from '../../theme';
 import { StackParamList } from '../../types/routes';
@@ -113,6 +118,16 @@ export type ARRouteDetailProp = RouteProp<StackParamList, 'RouteDetail'>;
 
 export default ({}: ARRouteDetailProp) => {
   const { parcours, qa } = useRoute<ARRouteDetailProp>().params || {};
+  const [favorited, setFavorited] = useState(parcours.properties.favorited);
+
+  useEffect(() => {
+    checkIsFavorited(parcours);
+  }, [parcours]);
+
+  const checkIsFavorited = async (item: ARParcours) => {
+    const result = await isFavorited(item);
+    setFavorited(result);
+  };
 
   console.info({ parcours });
 
@@ -145,16 +160,20 @@ export default ({}: ARRouteDetailProp) => {
     },
   ];
 
+  const toggleFavorited = async () => {
+    setFavorited(value => !value);
+    favorited
+      ? await removeFromFavorites(parcours)
+      : await addToFavorites(parcours);
+  };
+
   return (
     <>
       <ARCommonHeader
         headline="Détails"
         left={<BackButton />}
         right={
-          <FavoriteButton
-            isFavorited={parcours.properties.favorited}
-            onPress={() => addToFavorites(parcours)}
-          />
+          <FavoriteButton isFavorited={favorited} onPress={toggleFavorited} />
         }
       />
       <ScrollView style={styles.container}>

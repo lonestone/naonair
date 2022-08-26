@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/react-native';
 import * as turf from '@turf/turf';
 import { BBox } from 'geojson';
 import { buildGeoserverUrl } from '../utils/config';
+import { getFavorites } from './favorites';
 
 export interface ARParcours {
   geometry: turf.MultiLineString;
@@ -39,6 +40,7 @@ export const getAll = async (filters: string[]): Promise<ARParcours[]> => {
     console.info(URL);
 
     const response = await fetch(URL);
+    const favorites = await getFavorites();
 
     const geojson = (await response.json()) as { features: ARParcours[] };
     const parcours = geojson.features
@@ -50,6 +52,8 @@ export const getAll = async (filters: string[]): Promise<ARParcours[]> => {
           bbox,
           properties: {
             ...properties,
+            // Check if each parcours has been added to favorites
+            favorited: favorites.has(`${properties.id}`),
           },
         } as ARParcours;
       })

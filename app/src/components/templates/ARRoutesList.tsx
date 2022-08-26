@@ -23,7 +23,7 @@ export interface ARRoutesListProps {
 }
 
 export default ({ filters }: ARRoutesListProps) => {
-  const [parcours, isLoading] = useParcours(filters);
+  const { parcours, isLoading } = useParcours(filters);
 
   return (
     <View style={styles.container}>
