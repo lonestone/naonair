@@ -2,14 +2,20 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Paragraph } from 'react-native-paper';
-import { getAllPlaces } from '../../actions/myplaces';
-import { POI, POICategory } from '../../actions/poi';
+import { removeFromFavorites } from '../../actions/favorites';
+import {
+  ARParcours,
+  getAll as getAllParcours,
+  ParcoursCategory,
+} from '../../actions/parcours';
+import { getAll as getAllPOIs, POI, POICategory } from '../../actions/poi';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
 import logger from '../../utils/logger';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARSnackbar from '../atoms/ARSnackbar';
-import ARListItem from '../molecules/ARListItem';
+import ARListItemParcours from '../organisms/ARListItemParcours';
+import ARListItemPOI from '../organisms/ARListItemPOI';
 
 const styles = StyleSheet.create({
   container: { backgroundColor: 'white', flex: 1 },
@@ -41,16 +47,22 @@ const styles = StyleSheet.create({
 
 const ARListFavorites = () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
-  const [items, setItems] = useState<POI[]>();
+  const [items, setItems] = useState<(POI | ARParcours)[]>();
 
   const readItemFromStorage = async () => {
-    const values = await getAllPlaces();
-    if (values) {
-      try {
-        setItems(Array.isArray(values) ? values : [values]);
-      } catch (e) {
-        logger.error(e, 'fromGetAllPlaces');
-      }
+    try {
+      let myPOIs: POI[] = [];
+      let myParcours: ARParcours[] = [];
+      Promise.all([
+        getAllPOIs({ categories: [POICategory.FAVORITE] }),
+        getAllParcours([ParcoursCategory.FAVORITE]),
+      ]).then(values => {
+        myPOIs = values[0];
+        myParcours = values[1];
+        setItems([...myPOIs, ...myParcours]);
+      });
+    } catch (e) {
+      logger.error(e, 'getALlFavorites');
     }
   };
 
@@ -59,38 +71,39 @@ const ARListFavorites = () => {
     return () => navigation.removeListener('focus', readItemFromStorage);
   }, [navigation]);
 
+  const handleRemove = (item: POI | ARParcours) => {
+    removeFromFavorites(item);
+    readItemFromStorage();
+  };
+
   return (
     <>
       <ARSnackbar />
       <ScrollView style={styles.container}>
         {items && items.length > 0 ? (
-          items.map(poi => (
-            <ARListItem
-              key={`poi-${poi.id}`}
-              title={poi.name}
-              description={poi.address}
-              descriptionStyle={styles.description}
-              titleStyle={styles.title}
-              onPress={() =>
-                poi.category === POICategory.FAVORITE &&
-                navigation.navigate('PlaceForm', { poi })
-              }
-              category={poi.category}
-              // leftIcon={() => (
-              //   <View style={styles.iconWrapper}>
-              //     <SvgXml
-              //       width="20"
-              //       height="20"
-              //       xml={poiIcons[`${poi.category}`] || null}
-              //       fill={theme.colors.blue[500]}
-              //     />
-              //   </View>
-              // )}
-              rightIcon={
-                poi.category === POICategory.FAVORITE ? 'pencil' : 'star'
-              }
-            />
-          ))
+          items.map(item =>
+            'id' in item ? (
+              <ARListItemPOI
+                key={`poi-${item.id}`}
+                poi={item}
+                descriptionStyle={styles.description}
+                titleStyle={styles.title}
+                onPress={() =>
+                  item.category === POICategory.FAVORITE
+                    ? navigation.navigate('PlaceForm', { poi: item })
+                    : handleRemove(item)
+                }
+              />
+            ) : (
+              <ARListItemParcours
+                key={`parcours-${item.properties.id}`}
+                parcours={item}
+                descriptionStyle={styles.description}
+                titleStyle={styles.title}
+                onPress={() => handleRemove(item)}
+              />
+            ),
+          )
         ) : (
           <View style={styles.paragraph}>
             <Paragraph>Vous n'avez aucune adresse ici.</Paragraph>
