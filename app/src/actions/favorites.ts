@@ -12,9 +12,13 @@ export const getFavorites = async function (): Promise<Set<string>> {
   return new Set(favorites.split('|'));
 };
 
+const generateId = function (item: POI | ARParcours) {
+  return 'id' in item ? `poi-${item.id}` : `parcours-${item.properties.id}`;
+};
+
 export const isFavorited = async function (item: POI | ARParcours) {
   const favorites = await getFavorites();
-  const id = 'id' in item ? `${item.id}` : `${item.properties.id}`;
+  const id = generateId(item);
   return favorites.has(id);
 };
 
@@ -25,7 +29,7 @@ const setFavorites = async function (favorites: string[]) {
 
 export const addToFavorites = async function (item: POI | ARParcours) {
   const current = await getFavorites();
-  const idToAdd = 'id' in item ? `${item.id}` : `${item.properties.id}`;
+  const idToAdd = generateId(item);
   if (!current.has(idToAdd)) {
     const favoritesArray = Array.from(current);
     await setFavorites([...favoritesArray, idToAdd]);
@@ -34,7 +38,7 @@ export const addToFavorites = async function (item: POI | ARParcours) {
 
 export const removeFromFavorites = async function (item: POI | ARParcours) {
   const current = await getFavorites();
-  const idToRemove = 'id' in item ? item.id : item.properties.id;
+  const idToRemove = generateId(item);
   const favoritesArray = Array.from(current);
   await setFavorites(favoritesArray.filter(id => id !== `${idToRemove}`));
 };

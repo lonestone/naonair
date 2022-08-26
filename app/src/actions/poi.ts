@@ -149,7 +149,7 @@ export const getAll = async (params?: {
   const result = await fetchAll();
   // Check if each POI has been added to favorites
   const POIs = result.map(poi => {
-    return { ...poi, favorited: favorites.has(`${poi.id}`) };
+    return { ...poi, favorited: favorites.has(`poi-${poi.id}`) };
   });
 
   let results = POIs.filter(pois => {

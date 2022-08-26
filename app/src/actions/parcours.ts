@@ -64,7 +64,7 @@ export const getAll = async (
           properties: {
             ...properties,
             // Check if each parcours has been added to favorites
-            favorited: favorites.has(`${properties.id}`),
+            favorited: favorites.has(`parcours-${properties.id}`),
           },
         } as ARParcours;
       },
