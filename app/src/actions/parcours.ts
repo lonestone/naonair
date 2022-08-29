@@ -70,17 +70,17 @@ export const getAll = async (
       },
     );
 
-    let result = parcours.filter(p => filters.some(f => !!p.properties[f]));
+    let results = parcours.filter(p => filters.some(f => !!p.properties[f]));
 
     // Add favorited parcours not allready present to results
     if (filters.includes(ParcoursCategory.FAVORITE)) {
       const favoritesToAdd = parcours.filter(
-        p => p.properties.favorited && !result.includes(p),
+        p => p.properties.favorited && !results.includes(p),
       );
-      result = [...result, ...favoritesToAdd];
+      results = [...results, ...favoritesToAdd];
     }
 
-    return result;
+    return results;
   } catch (e) {
     if (__DEV__) {
       console.info(e);
