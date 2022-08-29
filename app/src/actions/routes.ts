@@ -99,8 +99,8 @@ export const calculateRoute = async (
 
   if (
     json.fastest_path &&
-    json.cleanest_path.distance <= json.fastest_path?.distance &&
-    json.cleanest_path.time <= json.fastest_path?.time
+    json.cleanest_path.distance <= json.fastest_path.distance &&
+    json.cleanest_path.time <= json.fastest_path.time
   ) {
     return { cleanest_path: json.cleanest_path };
   }
