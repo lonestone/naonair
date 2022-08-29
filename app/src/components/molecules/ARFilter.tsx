@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ViewStyle,
 } from 'react-native';
+import { ParcoursCategory } from '../../actions/parcours';
 import { POICategory } from '../../actions/poi';
 import { RouteProfile } from '../../actions/routes';
 import ARFilterItemComponent from '../atoms/ARFilterItemComponent';
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
 export interface ARFilterItem {
   label: string;
   selected?: boolean;
-  value: POICategory | RouteProfile;
+  value: POICategory | ParcoursCategory | RouteProfile;
   icon?: ReactElement | ((selected: boolean) => ReactElement);
 }
 

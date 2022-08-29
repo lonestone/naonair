@@ -8,6 +8,7 @@ import sportIcon from '../assets/sport-icon.svg';
 
 import { buildGeoserverUrl, buildMapboxUrl } from '../utils/config';
 import removeAccent from '../utils/remove-accent';
+import { getFavorites } from './favorites';
 import { getAllPlaces } from './myplaces';
 import { QAType, QAValues } from './qa';
 
@@ -30,6 +31,7 @@ export interface POI {
   address: string;
   geolocation: Position;
   qa?: QAType;
+  favorited?: boolean;
 }
 
 export interface MapboxFeature extends Feature<Point> {
@@ -143,7 +145,12 @@ export const getAll = async (params?: {
 
   const lowedText = removeAccent(text).toLowerCase();
 
-  const POIs = await fetchAll();
+  const favorites = await getFavorites();
+  const result = await fetchAll();
+  // Check if each POI has been added to favorites
+  const POIs = result.map(poi => {
+    return { ...poi, favorited: favorites.has(`poi-${poi.id}`) };
+  });
 
   let results = POIs.filter(pois => {
     return (
@@ -154,8 +161,13 @@ export const getAll = async (params?: {
   });
 
   if (categories.includes(POICategory.FAVORITE)) {
+    // Add places and favorited POI not allready present to results
+    const myPlaces = await getAllPlaces();
+    const myFavorites = POIs.filter(p => p.favorited && !results.includes(p));
+    const addToResult = [...myPlaces, ...myFavorites];
+
     results.push(
-      ...(await getAllPlaces()).filter(
+      ...addToResult.filter(
         p =>
           removeAccent((p.address || '').toLowerCase()).includes(lowedText) ||
           removeAccent(p.name.toLowerCase()).includes(lowedText),

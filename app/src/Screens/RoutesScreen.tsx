@@ -7,6 +7,8 @@ import ARFilter, { ARFilterItem } from '../components/molecules/ARFilter';
 import ARHeader from '../components/atoms/ARHeader';
 import { Caption, Headline } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ParcoursCategory } from '../actions/parcours';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,8 +36,19 @@ const styles = StyleSheet.create({
 
 const filters: ARFilterItem[] = [
   {
+    label: 'Mes favoris',
+    value: ParcoursCategory.FAVORITE,
+    icon: selected => (
+      <CommunityIcon
+        size={20}
+        color={selected ? 'white' : theme.colors.blue[500]}
+        name="star"
+      />
+    ),
+  },
+  {
     label: 'Promenades',
-    value: 'marcheur',
+    value: ParcoursCategory.WALK,
     icon: selected => (
       <Icon
         size={20}
@@ -46,7 +59,7 @@ const filters: ARFilterItem[] = [
   },
   {
     label: 'Vélo',
-    value: 'cycliste',
+    value: ParcoursCategory.BIKE,
     icon: selected => (
       <Icon
         size={20}
@@ -57,7 +70,7 @@ const filters: ARFilterItem[] = [
   },
   {
     label: 'Course',
-    value: 'coureur',
+    value: ParcoursCategory.RUNNING,
     icon: selected => (
       <Icon
         size={20}
@@ -69,7 +82,9 @@ const filters: ARFilterItem[] = [
 ];
 
 export default () => {
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [selectedFilters, setSelectedFilters] = useState<ParcoursCategory[]>(
+    [],
+  );
   const { left, right } = useSafeAreaInsets();
 
   return (
@@ -91,7 +106,7 @@ export default () => {
             }}
             contentInset={{ right: 18 + right }}
             onChange={items => {
-              setSelectedFilters(items.map(i => i.value));
+              setSelectedFilters(items.map(i => i.value) as ParcoursCategory[]);
             }}
           />
         </>

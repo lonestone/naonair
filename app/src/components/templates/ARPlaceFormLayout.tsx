@@ -13,7 +13,9 @@ import useSnackbar from '../../contexts/snackbar.context';
 import { theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
+import BackButton from '../molecules/ARBackButton';
 import ARCommonHeader from '../molecules/ARCommonHeader';
+import DeleteButton from '../molecules/ARDeleteButton';
 import ARListItem from '../molecules/ARListItem';
 import ARPlaceForm from '../organisms/ARPlaceForm';
 import ARConfirmModal from './ARConfirmModal';
@@ -128,10 +130,10 @@ const ARPlaceFormLayout = () => {
         headline={
           params && params.poi ? "Modifier l'adresse" : 'Créer une adresse'
         }
-        back
-        deleteIcon={!!params}
-        onDelete={() => setOpenModal(true)}
-        onBack={navigation.goBack}
+        left={<BackButton />}
+        right={
+          params ? <DeleteButton onPress={() => setOpenModal(true)} /> : null
+        }
       />
       <View style={styles.container}>
         <ARPlaceForm

@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
 });
 
-interface ARListItemProps {
+export interface ARListItemProps {
   title: string;
   description?: string;
   titleStyle?: StyleProp<TextStyle>;

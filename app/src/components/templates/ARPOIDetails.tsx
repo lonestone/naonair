@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { Card, Divider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { addToFavorites, removeFromFavorites } from '../../actions/favorites';
 import { reverse } from '../../actions/poi';
 import { theme } from '../../theme';
 import { StackParamList, TabNavigationScreenProp } from '../../types/routes';
@@ -11,6 +12,9 @@ import logger from '../../utils/logger';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARMap from '../atoms/ARMap';
 import ARQAChip from '../atoms/ARQAChip';
+import BackButton from '../molecules/ARBackButton';
+import ARCommonHeader from '../molecules/ARCommonHeader';
+import FavoriteButton from '../molecules/ARFavoriteButton';
 import ARHeadingGroup from '../molecules/ARHeadingGroup';
 import ARForecasts from '../organisms/ARForecasts';
 import ARPollution from '../organisms/ARPollution';
@@ -60,6 +64,7 @@ type POIDetailsRouteProp = RouteProp<StackParamList, 'POIDetails'>;
 const ARPOIDetails = () => {
   const navigation = useNavigation<TabNavigationScreenProp>();
   const { poi } = useRoute<POIDetailsRouteProp>().params || {};
+  const [favorited, setFavorited] = useState(poi.favorited);
 
   const goTo = () => {
     Geolocation.getCurrentPosition(
@@ -89,8 +94,20 @@ const ARPOIDetails = () => {
 
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
 
+  const toggleFavorited = async () => {
+    setFavorited(value => !value);
+    favorited ? await removeFromFavorites(poi) : await addToFavorites(poi);
+  };
+
   return (
     <>
+      <ARCommonHeader
+        headline="Détails"
+        left={<BackButton />}
+        right={
+          <FavoriteButton isFavorited={favorited} onPress={toggleFavorited} />
+        }
+      />
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={{ paddingBottom: 100 }}>

@@ -24,6 +24,7 @@ import OnboardingScreen from './OnboardingScreen';
 import ProfileScreen from './ProfileScreen';
 import RoutesScreen from './RoutesScreen';
 import { Platform } from 'react-native';
+import BackButton from '../components/molecules/ARBackButton';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 const Stack = createStackNavigator<StackParamList>();
@@ -69,11 +70,10 @@ const Home = () => {
 };
 
 const options: StackNavigationOptions = {
-  header: ({ options, navigation }) => (
+  header: ({ options }) => (
     <ARCommonHeader
       headline={options.headerTitle as string}
-      back={navigation.canGoBack()}
-      onBack={navigation.goBack}
+      left={<BackButton />}
     />
   ),
 };
@@ -147,7 +147,7 @@ export default () => {
         <Stack.Screen
           name="POIDetails"
           component={ARPOIDetails}
-          options={{ headerTitle: 'Détails' }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
@@ -165,7 +165,7 @@ export default () => {
         <Stack.Screen
           name="RouteDetail"
           component={ARRouteDetail}
-          options={{ headerTitle: 'Détails' }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
