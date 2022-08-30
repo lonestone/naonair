@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: bundleRelease" time="52.754365">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: copy_artifacts" time="0.059534">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

@@ -1,0 +1,51 @@
+before_all do
+  # ensure_git_branch
+  # ensure_git_status_clean
+  # git_pull
+end
+
+
+lane :deploy do
+  platform :ios do
+    # cocoapods(clean_install: true, podfile: './ios')
+
+    # # import_certificate(
+    # #   certificate_path: "certs/dist.p12",
+    # #   certificate_password: ENV["CERTIFICATE_PASSWORD"] || "default"
+    # # )
+
+
+    # gym(
+    #   scheme: "aireal", 
+    #   workspace: "ios/aireal.xcworkspace", 
+    #   configuration: "Release", 
+    #   export_method: "app-store",
+    #   clean: true, 
+    #   output_directory: "build"
+    # )
+
+    # testflight(
+    #   ipa: "build/aireal.ipa", 
+    #   skip_waiting_for_build_processing: true, 
+    #   team_id: '124095409',
+    #   username: "julien.smolareck@lonestone.io",
+    # )
+
+    # clean_build_artifacts
+  end
+  
+  platform :android do
+    gradle(
+      task: "bundle",
+      build_type: "Release", 
+      project_dir: './android',
+    )
+
+    copy_artifacts(
+      target_path: "./tests",
+      artifacts: ['./android/app/build/outputs/bundle/**/*.aab']
+    )
+    # upload_to_play_store
+  end
+end
+
