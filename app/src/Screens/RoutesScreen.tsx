@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const filters: ARFilterItem[] = [
+export const ROUTE_FILTERS: ARFilterItem[] = [
   {
     label: 'Mes favoris',
     value: ParcoursCategory.FAVORITE,
@@ -97,7 +97,7 @@ export default () => {
             basés sur la qualité de l’air
           </Caption>
           <ARFilter
-            items={filters}
+            items={ROUTE_FILTERS}
             multiple
             style={{
               marginLeft: -18 - left,

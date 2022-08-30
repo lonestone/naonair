@@ -34,21 +34,31 @@ interface Props {
   caption?: string;
   left?: ReactNode;
   right?: ReactNode;
+  children?: ReactNode;
 }
 
-const ARCommonHeader = ({ caption, headline, left, right }: Props) => {
+const ARCommonHeader = ({
+  caption,
+  headline,
+  left,
+  right,
+  children,
+}: Props) => {
   return (
     <ARHeader>
-      <View style={styles.container}>
-        {left}
-        <View style={styles.headlineContainer}>
-          <Headline numberOfLines={2} style={styles.headline}>
-            {headline}
-          </Headline>
-          {!!caption && <Caption style={styles.caption}>{caption}</Caption>}
+      <>
+        <View style={styles.container}>
+          {left}
+          <View style={styles.headlineContainer}>
+            <Headline numberOfLines={2} style={styles.headline}>
+              {headline}
+            </Headline>
+            {!!caption && <Caption style={styles.caption}>{caption}</Caption>}
+          </View>
+          {right}
         </View>
-        {right}
-      </View>
+        {children}
+      </>
     </ARHeader>
   );
 };

@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const filters: ARFilterItem[] = [
+export const POI_FILTERS: ARFilterItem[] = [
   {
     label: 'Mes favoris',
     value: POICategory.FAVORITE,
@@ -124,7 +124,7 @@ const ARPOIHeader = ({
           Découvrez la qualité de l'air en temps réel
         </Caption>
         <ARFilter
-          items={filters}
+          items={POI_FILTERS}
           multiple
           style={{
             marginRight: -right - 18,

@@ -153,7 +153,7 @@ export default () => {
         <Stack.Screen
           name="Favorites"
           component={ARListFavorites}
-          options={{ headerTitle: 'Mes favoris' }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
