@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Paragraph } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { removeFromFavorites } from '../../actions/favorites';
 import {
   ARParcours,
@@ -14,8 +15,13 @@ import { StackNavigationScreenProp } from '../../types/routes';
 import logger from '../../utils/logger';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARSnackbar from '../atoms/ARSnackbar';
+import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
 import ARListItemParcours from '../organisms/ARListItemParcours';
 import ARListItemPOI from '../organisms/ARListItemPOI';
+import BackButton from '../molecules/ARBackButton';
+import ARCommonHeader from '../molecules/ARCommonHeader';
+import { ROUTE_FILTERS } from '../../screens/RoutesScreen';
+import { POI_FILTERS } from '../organisms/ARPOIHeader';
 
 const styles = StyleSheet.create({
   container: { backgroundColor: 'white', flex: 1 },
@@ -47,7 +53,9 @@ const styles = StyleSheet.create({
 
 const ARListFavorites = () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
+  const { left, right } = useSafeAreaInsets();
   const [items, setItems] = useState<(POI | ARParcours)[]>();
+  const [filters, setFilters] = useState<ARFilterItem['value'][]>([]);
 
   const readItemFromStorage = async () => {
     try {
@@ -76,12 +84,50 @@ const ARListFavorites = () => {
     readItemFromStorage();
   };
 
+  const favoritesFilters = useMemo(() => {
+    const routefiltersWithoutFavorites = [...ROUTE_FILTERS].filter(
+      f => f.value !== ParcoursCategory.FAVORITE,
+    );
+    return [...POI_FILTERS, ...routefiltersWithoutFavorites];
+  }, []);
+
+  const filteredItems = useMemo(
+    () =>
+      items?.filter(item => {
+        if ('properties' in item) {
+          return filters?.some(
+            filter =>
+              !!item.properties[filter as keyof ARParcours['properties']],
+          );
+        } else {
+          return filters?.includes(item.category);
+        }
+      }),
+    [items, filters],
+  );
+
   return (
     <>
+      <ARCommonHeader headline="Mes favoris" left={<BackButton />}>
+        <ARFilter
+          items={favoritesFilters}
+          multiple
+          style={{
+            marginRight: -right - 18,
+            marginLeft: -left - 18,
+            paddingLeft: left + 15,
+          }}
+          contentInset={{ right: right + 18 }}
+          onChange={list => {
+            const values = list.map(i => i.value);
+            setFilters(values);
+          }}
+        />
+      </ARCommonHeader>
       <ARSnackbar />
       <ScrollView style={styles.container}>
-        {items && items.length > 0 ? (
-          items.map(item =>
+        {filteredItems && filteredItems.length > 0 ? (
+          filteredItems.map(item =>
             'id' in item ? (
               <ARListItemPOI
                 key={`poi-${item.id}`}

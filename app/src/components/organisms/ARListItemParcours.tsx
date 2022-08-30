@@ -19,6 +19,7 @@ const ListItemPOI = ({
     <ARListItem
       key={`parcours-${parcours.properties.id}`}
       title={parcours.properties.nom}
+      description={`${parcours.properties.km}Km - dénivelé ${parcours.properties.denivele}m`}
       descriptionStyle={descriptionStyle}
       titleStyle={titleStyle}
       onPress={onPress}
