@@ -682,7 +682,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = YR674NJJDX;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = aireal/Info.plist;
@@ -714,7 +714,7 @@
 				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Air Pays de la Loire (YR674NJJDX)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Air Pays de la Loire (YR674NJJDX)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = YR674NJJDX;
 				INFOPLIST_FILE = aireal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
