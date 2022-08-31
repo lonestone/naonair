@@ -6,7 +6,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import ARElasticView from '../components/atoms/ARElasticView';
 import ARNavigationMapView from '../components/organisms/ARNavigationMapView';
 import ARPathInstructions from '../components/organisms/ARPathInstructions';
-import { BackButton } from '../components/templates/ARChooseItinerary';
+import { FloatingBackButton } from '../components/templates/ARChooseItinerary';
+
 import { StackParamList } from '../types/routes';
 
 export interface NavigationScreenProp {}
@@ -38,7 +39,7 @@ export default ({}: NavigationScreenProp) => {
         style={styles.map}
         onUserMoved={setUserPosition}
       />
-      <BackButton />
+      <FloatingBackButton />
       <ARElasticView
         maxHeight={Dimensions.get('screen').height - 150}
         minHeight={130}
