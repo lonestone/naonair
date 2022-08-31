@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
 
 export type ARRouteType = 'fastest_path' | 'cleanest_path';
 
-const BackButton = () => {
+export const FloatingBackButton = () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
 
   return (
@@ -294,7 +294,7 @@ export default () => {
       ) : (
         <LoadingView />
       )}
-      <BackButton />
+      <FloatingBackButton />
     </>
   );
 };

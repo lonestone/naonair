@@ -20,8 +20,24 @@ import ARListItemParcours from '../organisms/ARListItemParcours';
 import ARListItemPOI from '../organisms/ARListItemPOI';
 import BackButton from '../molecules/ARBackButton';
 import ARCommonHeader from '../molecules/ARCommonHeader';
-import { ROUTE_FILTERS } from '../../screens/RoutesScreen';
-import { POI_FILTERS } from '../organisms/ARPOIHeader';
+
+// eslint-disable-next-line no-shadow
+export enum FavoritesType {
+  POIS = 'pois',
+  PARCOURS = 'parcours',
+}
+
+const FAVORITES_FILTERS: ARFilterItem<FavoritesType>[] = [
+  {
+    label: "Points d'intérêts",
+    value: FavoritesType.POIS,
+    selected: true,
+  },
+  {
+    label: 'Parcours sportifs',
+    value: FavoritesType.PARCOURS,
+  },
+];
 
 const styles = StyleSheet.create({
   container: { backgroundColor: 'white', flex: 1 },
@@ -55,7 +71,7 @@ const ARListFavorites = () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
   const { left, right } = useSafeAreaInsets();
   const [items, setItems] = useState<(POI | ARParcours)[]>();
-  const [filters, setFilters] = useState<ARFilterItem['value'][]>([]);
+  const [filter, setFilter] = useState<FavoritesType>(FavoritesType.POIS);
 
   const readItemFromStorage = async () => {
     try {
@@ -84,34 +100,19 @@ const ARListFavorites = () => {
     readItemFromStorage();
   };
 
-  const favoritesFilters = useMemo(() => {
-    const routefiltersWithoutFavorites = [...ROUTE_FILTERS].filter(
-      f => f.value !== ParcoursCategory.FAVORITE,
-    );
-    return [...POI_FILTERS, ...routefiltersWithoutFavorites];
-  }, []);
-
   const filteredItems = useMemo(
     () =>
-      items?.filter(item => {
-        if ('properties' in item) {
-          return filters?.some(
-            filter =>
-              !!item.properties[filter as keyof ARParcours['properties']],
-          );
-        } else {
-          return filters?.includes(item.category);
-        }
-      }),
-    [items, filters],
+      items?.filter(item =>
+        filter === FavoritesType.PARCOURS ? 'properties' in item : 'id' in item,
+      ),
+    [items, filter],
   );
 
   return (
     <>
       <ARCommonHeader headline="Mes favoris" left={<BackButton />}>
-        <ARFilter
-          items={favoritesFilters}
-          multiple
+        <ARFilter<FavoritesType>
+          items={FAVORITES_FILTERS}
           style={{
             marginRight: -right - 18,
             marginLeft: -left - 18,
@@ -119,8 +120,8 @@ const ARListFavorites = () => {
           }}
           contentInset={{ right: right + 18 }}
           onChange={list => {
-            const values = list.map(i => i.value);
-            setFilters(values);
+            const value = list.map(i => i.value)[0];
+            setFilter(value);
           }}
         />
       </ARCommonHeader>

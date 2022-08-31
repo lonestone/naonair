@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ROUTE_FILTERS: ARFilterItem[] = [
+export const ROUTE_FILTERS: ARFilterItem<ParcoursCategory>[] = [
   {
     label: 'Mes favoris',
     value: ParcoursCategory.FAVORITE,
@@ -96,7 +96,7 @@ export default () => {
             Retrouvez des suggestions de promenades et d’itinéraires sportifs
             basés sur la qualité de l’air
           </Caption>
-          <ARFilter
+          <ARFilter<ParcoursCategory>
             items={ROUTE_FILTERS}
             multiple
             style={{
@@ -106,7 +106,7 @@ export default () => {
             }}
             contentInset={{ right: 18 + right }}
             onChange={items => {
-              setSelectedFilters(items.map(i => i.value) as ParcoursCategory[]);
+              setSelectedFilters(items.map(i => i.value));
             }}
           />
         </>
