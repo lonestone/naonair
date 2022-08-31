@@ -6,9 +6,6 @@ import {
   StyleSheet,
   ViewStyle,
 } from 'react-native';
-import { ParcoursCategory } from '../../actions/parcours';
-import { POICategory } from '../../actions/poi';
-import { RouteProfile } from '../../actions/routes';
 import ARFilterItemComponent from '../atoms/ARFilterItemComponent';
 
 const styles = StyleSheet.create({
@@ -18,29 +15,29 @@ const styles = StyleSheet.create({
   },
 });
 
-export interface ARFilterItem {
+export interface ARFilterItem<T = string> {
   label: string;
   selected?: boolean;
-  value: POICategory | ParcoursCategory | RouteProfile;
+  value: T;
   icon?: ReactElement | ((selected: boolean) => ReactElement);
 }
 
-export interface ARFilterProps {
-  items: ARFilterItem[];
+export interface ARFilterProps<T> {
+  items: ARFilterItem<T>[];
   multiple?: boolean;
   style?: StyleProp<ViewStyle>;
   contentInset?: Insets;
-  onChange: (selectedItems: ARFilterItem[]) => void;
+  onChange: (selectedItems: ARFilterItem<T>[]) => void;
 }
 
-export default ({
+function ARFilter<T = string>({
   items,
   onChange,
   multiple,
   style,
   contentInset,
-}: ARFilterProps) => {
-  const [propsItems, setPropsItems] = useState<ARFilterItem[]>(items);
+}: ARFilterProps<T>) {
+  const [propsItems, setPropsItems] = useState<ARFilterItem<T>[]>(items);
 
   useEffect(() => {
     //HACK : remove deps to call `selectAll` only once
@@ -99,4 +96,6 @@ export default ({
       </>
     </ScrollView>
   );
-};
+}
+
+export default ARFilter;

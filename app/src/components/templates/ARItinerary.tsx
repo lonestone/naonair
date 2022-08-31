@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const filterItems: ARFilterItem[] = [
+const filterItems: ARFilterItem<RouteProfile>[] = [
   {
     selected: true,
     label: 'Vélo',
@@ -270,7 +270,7 @@ export default () => {
                   color={theme.colors.black[500]}
                 />
               </View>
-              <ARFilter
+              <ARFilter<RouteProfile>
                 items={filterItems}
                 style={{
                   marginLeft: -18 - left,
@@ -279,7 +279,7 @@ export default () => {
                 }}
                 contentInset={{ right: 18 + right }}
                 onChange={items => {
-                  setTransportMode(items.map(i => i.value as RouteProfile));
+                  setTransportMode(items.map(i => i.value));
                 }}
               />
             </>
