@@ -23,6 +23,7 @@ export enum NewsType {
 export class NewsDTO {
   uuid: string;
   type: NewsType;
+  title?: string;
   message: string;
   startDate: Date;
   endDate: Date;
@@ -35,6 +36,7 @@ export class NewsDTO {
 export class CreateNewsDTO {
   // @IsString() type:  NewsType;
   @IsEnum(NewsType) type: NewsType;
+  @IsString() @IsOptional() title?: string;
   @IsString() @Length(0, 200) message: string;
   @Type(() => Date) @IsDateString() startDate: Date;
   @Type(() => Date) @IsDateString() endDate: Date;
@@ -47,6 +49,7 @@ export class UpdateNewsDTO {
   @IsUUID() @IsOptional() uuid: string;
   // @IsString()  @IsOptional() type?:  NewsType;
   @IsEnum(NewsType) type: NewsType;
+  @IsString() @IsOptional() title?: string;
   @IsString() @IsOptional() message?: string;
   @Type(() => Date) @IsDateString() @IsOptional() startDate?: Date;
   @Type(() => Date) @IsDateString() @IsOptional() endDate?: Date;

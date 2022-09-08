@@ -18,6 +18,9 @@ export class NewsEntity {
   @Enum({ items: () => NewsType })
   type: NewsType;
 
+  @Property({ nullable: true })
+  title?: string;
+
   @Property({ length: 200 })
   message: string;
 
