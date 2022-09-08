@@ -1,5 +1,5 @@
 import { NewsDTO, NewsType } from '@aireal/dtos/dist';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Caption, Headline, Modal, Paragraph } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -70,6 +70,16 @@ export default ({}: NewsDialogType) => {
     getLastNews();
   }, [getLastNews]);
 
+  const title = useMemo(() => {
+    if (!news) {
+      return '';
+    }
+    if (!news.title) {
+      return convertNewsType[news?.type] ?? NewsType.None;
+    }
+    return news.title;
+  }, [news]);
+
   return (
     <Modal visible={!!news} dismissable onDismiss={() => {}}>
       <View style={styles.dialog}>
@@ -82,9 +92,7 @@ export default ({}: NewsDialogType) => {
           />
         )}
         <View style={styles.container}>
-          <Headline style={styles.title}>
-            {news?.type ? convertNewsType[news?.type] : NewsType.None}
-          </Headline>
+          <Headline style={styles.title}>{title}</Headline>
           <View style={styles.content}>
             {news?.displayPeriod && (
               <Caption style={styles.dates}>

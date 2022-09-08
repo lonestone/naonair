@@ -47,6 +47,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [displayPeriod, setDisplayPeriod] = useState(true);
   const [newsType, setNewsType] = useState<NewsType>(NewsType.None);
+  const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [link, setLink] = useState("");
   const [linkTitle, setLinkTitle] = useState("");
@@ -65,6 +66,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
     setStartDate(news.startDate);
     news.endDate && setEndDate(news.endDate);
     setNewsType(news.type as NewsType);
+    setTitle(news.title!);
     setMessage(news.message);
     checkHttps(news.link!);
     setLinkTitle(news.linkTitle!);
@@ -85,6 +87,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
 
     const news: CreateNewsDTO = {
       type: newsType,
+      title,
       message,
       startDate,
       endDate,
@@ -126,6 +129,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
       const updatedNews: UpdateNewsDTO = {
         uuid: news.uuid,
         type: newsType,
+        title,
         message,
         startDate,
         endDate,
@@ -165,7 +169,7 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
       <Grid container spacing={5}>
         <Grid item md={6} xs={12} sx={gridItem}>
           <>
-            <ARTitleChip label={"Type"} chip={"1"} />
+            <ARTitleChip label={"Type et titre"} chip={"1"} />
             <Select
               required
               value={newsType}
@@ -178,6 +182,14 @@ const ARNewsForm = ({ news, setOpenModal, fetchNews }: Props) => {
                 </MenuItem>
               ))}
             </Select>
+            <TextField
+              label="Titre"
+              color="primary"
+              focused
+              value={title}
+              inputProps={{ maxLength: 25 }}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </>
         </Grid>
         <Grid item md={6} xs={12} sx={gridItem}>

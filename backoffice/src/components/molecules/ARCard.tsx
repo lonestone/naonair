@@ -40,7 +40,7 @@ const ARCard = ({ news }: ARCardProps) => {
         <>
           <Card sx={cardStyle}>
             <ARTitleIcon
-              label={convertNewsType(news.type)}
+              label={news.title ?? convertNewsType(news.type)}
               icon={<Today />}
               isNewsTitle
               marginBottom={theme.spacing(2)}
