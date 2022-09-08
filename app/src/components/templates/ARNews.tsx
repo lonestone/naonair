@@ -75,7 +75,7 @@ export default ({}: NewsDialogType) => {
       return '';
     }
     if (!news.title) {
-      return convertNewsType[news?.type] ?? NewsType.None;
+      return convertNewsType[news.type] ?? NewsType.None;
     }
     return news.title;
   }, [news]);
