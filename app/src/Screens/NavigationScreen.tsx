@@ -1,4 +1,5 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
+import { useKeepAwake } from '@sayem314/react-native-keep-awake';
 import { Position } from '@turf/turf';
 import React, { useState } from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
@@ -29,8 +30,11 @@ const styles = StyleSheet.create({
 export default ({}: NavigationScreenProp) => {
   const { path } = useRoute<NavigationScreenRouteProp>().params || {};
 
+  useKeepAwake();
+
   const [userPosition, setUserPosition] = useState<Position | undefined>();
   const [canScroll, setCanScroll] = useState<boolean>(false);
+
 
   return (
     <>
