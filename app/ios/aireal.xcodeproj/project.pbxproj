@@ -682,7 +682,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = YR674NJJDX;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = aireal/Info.plist;
@@ -710,11 +710,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Julien Smolareck (RDMK6X89BJ)";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Air Pays de la Loire (YR674NJJDX)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Air Pays de la Loire (YR674NJJDX)";
+				CODE_SIGN_IDENTITY = "Apple Distribution: Air Pays de la Loire (YR674NJJDX)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "Apple Distribution: Air Pays de la Loire (YR674NJJDX)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: Air Pays de la Loire (YR674NJJDX)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = YR674NJJDX;
 				INFOPLIST_FILE = aireal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
