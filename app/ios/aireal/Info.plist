@@ -38,11 +38,11 @@
 		</dict>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Utilisé pour placer votre position sur les cartes</string>
+	<string>Naonair utilise votre position pour pouvoir vous guider lors de la navigation</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Utilisé pour placer votre position sur les cartes</string>
+	<string>Naonair utilise votre position pour pouvoir vous guider lors de la navigation</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Utilisé pour placer votre position sur les cartes</string>
+	<string>Naonair utilise votre position pour pouvoir vous guider lors de la navigation</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
