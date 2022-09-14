@@ -67,29 +67,36 @@ const ARPOIDetails = () => {
   const [favorited, setFavorited] = useState(poi.favorited);
 
   const goTo = () => {
-    Geolocation.getCurrentPosition(
-      ({ coords }) => {
-        reverse([coords.longitude, coords.latitude]).then(features => {
-          if (features.length > 0) {
-            const { text_fr = 'Ma position' } = features[0];
-            navigation.navigate('Itinéraires', {
-              start: {
-                text: text_fr,
-                coord: [coords.longitude, coords.latitude],
-              },
-              end: {
-                text: poi.name,
-                coord: poi.geolocation,
-              },
-            });
-          }
-        });
+    navigation.navigate('Itinéraires', {
+      end: {
+        text: poi.name,
+        coord: poi.geolocation,
       },
-      error => {
-        logger.error(error, 'getCurrentPosition');
-      },
-      { timeout: 20000, enableHighAccuracy: true, maximumAge: 1000 },
-    );
+    });
+
+    // Geolocation.getCurrentPosition(
+    //   ({ coords }) => {
+    //     reverse([coords.longitude, coords.latitude]).then(features => {
+    //       if (features.length > 0) {
+    //         const { text_fr = 'Ma position' } = features[0];
+    //         navigation.navigate('Itinéraires', {
+    //           start: {
+    //             text: text_fr,
+    //             coord: [coords.longitude, coords.latitude],
+    //           },
+    //           end: {
+    //             text: poi.name,
+    //             coord: poi.geolocation,
+    //           },
+    //         });
+    //       }
+    //     });
+    //   },
+    //   error => {
+    //     logger.error(error, 'getCurrentPosition');
+    //   },
+    //   { timeout: 20000, enableHighAccuracy: true, maximumAge: 1000 },
+    // );
   };
 
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);

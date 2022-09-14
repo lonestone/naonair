@@ -25,6 +25,7 @@ import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARRouteMapView from '../organisms/ARRouteMapView';
+import ARUserLocationAlert from './ARUserLocationAlert';
 
 type ARChooseItineraryProp = RouteProp<StackParamList, 'ChooseItinerary'>;
 
@@ -180,6 +181,10 @@ const ItineraryList = ({
   const navigation = useNavigation<StackNavigationScreenProp>();
 
   const { fastest_path, cleanest_path } = route;
+
+  const checkUserLocation = () => {
+    navigation.navigate('Navigation', { path: route[selected] });
+  };
 
   return (
     <Surface style={styles.listContainer}>

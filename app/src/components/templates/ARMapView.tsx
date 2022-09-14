@@ -122,7 +122,7 @@ export default ({ pois }: ARMapViewProps) => {
         isDeployed={isLegendDeployed}
         style={styles.legends}
       />
-      <ARUserLocationAlert />
+      {/* <ARUserLocationAlert /> */}
     </>
   );
 };

@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Linking, Platform, StyleSheet } from 'react-native';
 import { Button, Dialog, Paragraph, Portal } from 'react-native-paper';
@@ -29,49 +30,67 @@ const styles = StyleSheet.create({
     ...fonts.Lato.bold,
     color: theme.colors.white,
   },
+  backButton: {
+    // backgroundColor: theme.colors.primary,
+  },
+  backButtonLabel: {
+    ...fonts.Lato.bold,
+    color: theme.colors.grey[300],
+  },
 });
 
-export default () => {
-  const [userLocationEnabled, setUserLocationEnabled] = useState<boolean>(true);
+type ARUserLocationAlertProps = {
+  visible: boolean;
+};
 
-  const watchId = useRef<number | null>();
+export default ({ visible }: ARUserLocationAlertProps) => {
+  // const [userLocationEnabled, setUserLocationEnabled] = useState<boolean>(true);
+  const { goBack } = useNavigation();
 
-  const watch = useCallback(async () => {
-    try {
-      if (Platform.OS === 'android') {
-        await checkAndroidPermission();
-      } else {
-        setUserLocationEnabled(await checkIOSPermission());
-      }
-    } catch (e) {
-      console.info(e);
-    }
+  // const watchId = useRef<number | null>();
 
-    watchId.current = setTimeout(() => {
-      watch();
-    }, 1000) as unknown as number;
-  }, []);
+  // const watch = useCallback(async () => {
+  //   try {
+  //     if (Platform.OS === 'android') {
+  //       await checkAndroidPermission();
+  //     } else {
+  //       setUserLocationEnabled(await checkIOSPermission());
+  //     }
+  //   } catch (e) {
+  //     console.info(e);
+  //   }
 
-  useEffect(() => {
-    watch();
-    return () => {
-      watchId.current && clearTimeout(watchId.current);
-    };
-  }, [watch]);
+  //   watchId.current = setTimeout(() => {
+  //     watch();
+  //   }, 1000) as unknown as number;
+  // }, []);
+
+  // useEffect(() => {
+  //   watch();
+  //   return () => {
+  //     watchId.current && clearTimeout(watchId.current);
+  //   };
+  // }, [watch]);
 
   return Platform.OS === 'ios' ? (
     <Portal>
-      <Dialog visible={!userLocationEnabled} style={styles.modal}>
+      <Dialog visible={visible} style={styles.modal}>
         <Dialog.Title style={styles.title}>
           Impossible de vous trouver
         </Dialog.Title>
         <Dialog.Content>
           <Paragraph style={styles.paragraph}>
-            Pour obtenir une meilleure expérience, activez le gps de l'appareil
-            et autorisez l'accès à votre position.
+            Naonair ne pourra pas vous guider si vous ne l'avez pas autorisé à
+            connaitre votre position
           </Paragraph>
         </Dialog.Content>
         <Dialog.Actions>
+          <Button
+            style={styles.backButton}
+            labelStyle={styles.backButtonLabel}
+            onPress={goBack}>
+            Annuler
+          </Button>
           <Button
             style={styles.button}
             labelStyle={styles.buttonLabel}
