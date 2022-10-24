@@ -1,6 +1,7 @@
 import { RoutingProfile } from '@aireal/dtos/dist';
 import { HttpService } from '@nestjs/axios';
 import {
+  BadRequestException,
   Inject,
   Injectable,
   InternalServerErrorException,
@@ -19,11 +20,14 @@ export class RoutingService {
   ) {}
   logger = new Logger('RoutingModule');
 
-  async route(startPoint: string, endPoint: string, profile: RoutingProfile) {
+  async route(pointList: string[], profile: RoutingProfile) {
+    if (pointList.length > 5) {
+      throw new BadRequestException('Max 5 waypoint allowed');
+    }
+    const ptParam = pointList.join('&point=');
     const ghProfile =
       profile === RoutingProfile.ElectricBike ? RoutingProfile.Bike : profile;
-    const url = `http://${this._appConfig.graphhopperUrl}/route?point=${startPoint}&point=${endPoint}&type=json&locale=fr&key=&elevation=false&points_encoded=false&profile=${ghProfile}`;
-
+    const url = `http://${this._appConfig.graphhopperUrl}/route?point=${ptParam}&type=json&locale=fr&key=&elevation=false&points_encoded=false&profile=${ghProfile}`;
     try {
       const promiseFastest = await lastValueFrom(
         this.httpService.get(url + `_fastest`),
