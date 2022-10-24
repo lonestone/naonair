@@ -18,7 +18,7 @@ export class RoutingController {
     return this.routingService.route(points, profile);
   }
 
-  @Get('/v1')
+  @Get()
   async routeV1(
     @Query('startPoint', ValidatePoint) startPoint: string,
     @Query('endPoint', ValidatePoint) endPoint: string,
