@@ -86,6 +86,7 @@ export const calculateRoute = async (
     profile,
   })}`;
 
+  console.info(URL);
   const response = await fetch(URL);
   const json = (await response.json()) as ARRoute;
 

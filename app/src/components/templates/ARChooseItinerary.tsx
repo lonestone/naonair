@@ -1,8 +1,10 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import * as turf from '@turf/turf';
 import { BBox } from '@turf/turf';
+import { Position } from 'geojson';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   ActivityIndicator,
@@ -13,7 +15,6 @@ import {
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { QAValues } from '../../actions/qa';
 import {
   ARPath,
   ARRoute,
@@ -25,7 +26,6 @@ import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARRouteMapView from '../organisms/ARRouteMapView';
-import ARUserLocationAlert from './ARUserLocationAlert';
 
 type ARChooseItineraryProp = RouteProp<StackParamList, 'ChooseItinerary'>;
 
@@ -171,20 +171,18 @@ const ItineraryItem = ({
 
 const ItineraryList = ({
   route,
+  userRoute,
   selected,
   onSelected,
 }: {
   route: ARRoute;
+  userRoute: ARRoute;
   selected: ARRouteType;
   onSelected: (path: ARRouteType) => void;
 }) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
 
   const { fastest_path, cleanest_path } = route;
-
-  const checkUserLocation = () => {
-    navigation.navigate('Navigation', { path: route[selected] });
-  };
 
   return (
     <Surface style={styles.listContainer}>
@@ -217,7 +215,7 @@ const ItineraryList = ({
           label="C'est parti !"
           size={ARButtonSize.Medium}
           onPress={() =>
-            navigation.navigate('Navigation', { path: route[selected] })
+            navigation.navigate('Navigation', { path: userRoute[selected] })
           }
           styleContainer={styles.letsGoButton}
           icon={() => (
@@ -246,11 +244,23 @@ const LoadingView = () => (
 
 export default () => {
   const { params } = useRoute<ARChooseItineraryProp>();
+  const [userRoute, setUserRoute] = useState<ARRoute | undefined>();
   const [route, setRoute] = useState<ARRoute | undefined>();
   const [bbox, setBbox] = useState<BBox | undefined>();
   const [selected, setSelected] = useState<ARRouteType>('cleanest_path');
 
   const { start, end, transportMode } = params;
+
+  const getUserPosition = useCallback(async (): Promise<Position> => {
+    return new Promise(resolve => {
+      Geolocation.getCurrentPosition(
+        async ({ coords: { longitude, latitude } }) => {
+          console.info('getCurrentPosition', longitude, latitude  );
+          resolve([longitude, latitude]);
+        },
+      );
+    });
+  }, []);
 
   useEffect(() => {
     if (start && end) {
@@ -262,9 +272,16 @@ export default () => {
   }, [setBbox, start, end]);
 
   const getRoute = useCallback(async () => {
+    const userPosition = await getUserPosition();
+    console.info({ userPosition });
+
     if (start && end) {
       const routes = await calculateRoute(start, end, transportMode);
       setRoute(routes);
+
+      const userRoutes = await calculateRoute(userPosition, end, transportMode);
+      setUserRoute(userRoutes);
+
       setTimeout(() => {
         setBbox(routes.cleanest_path.bbox);
       });
@@ -288,10 +305,11 @@ export default () => {
           />
         )}
       </View>
-      {route ? (
+      {route && userRoute ? (
         <ItineraryList
           selected={selected}
           route={route}
+          userRoute={userRoute}
           onSelected={key => {
             setSelected(key);
           }}
