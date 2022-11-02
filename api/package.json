@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@aireal/dtos": "file:../dtos",
-    "@mikro-orm/cli": "^4.5.10",
+    "@mikro-orm/cli": "^5.5.0",
     "@mikro-orm/core": "^4.5.10",
     "@mikro-orm/nestjs": "^4.3.1",
     "@mikro-orm/postgresql": "^4.5.10",
