@@ -1,2 +1,0 @@
-{"default":false,"data":[{"name":"url","value":"https://naonair-api-staging.onrender.com"}],"sortNum":20000,"name":"staging","created":"2022-02-15T11:08:04.431Z","modified":"2022-02-15T11:09:46.020Z","_id":"1d92d61c-2a09-4c29-9fae-d2376ffd7860"}
-{"default":true,"data":[{"name":"url","value":"http://localhost:3001"}],"sortNum":10000,"name":"local","created":"2022-01-24T16:04:50.469Z","modified":"2022-02-15T11:09:05.591Z","_id":"4c296ab2-21b7-4cbe-971f-09ed3bbf4511"}
