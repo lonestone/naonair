@@ -146,4 +146,4 @@ To enable debug mode :
 
 # Who build this ?
 
-Build with lot of love ❤, by Lonestone
+Build with lots of love ❤, by Lonestone
