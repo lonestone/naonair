@@ -14,11 +14,30 @@ AIREAL/
 ├── dtos/        # DTOs used for type between API and fronts app
 ```
 
+## Deployment & Tags
+
+A new version is automatically deployed on Render when a commit is pushed on main branch.
+
+Mobile apps must be manually deployed.
+
+When a new version is deployed, please tag last main branch commit with :
+
+```bash
+git tag -a vX.Y.Z. -m "Small message to describe updates"
+git push origin vX.Y.Z
+
+# with :
+# X : breaking change(s)
+# Y : add new feature(s)
+# Z : minor fix(s)
+```
+
 ## Docker
 
 Docker is used in dev to start databases :
-* aireal-postgres 
-* aireal-postgres-tests 
+
+- aireal-postgres
+- aireal-postgres-tests
 
 ## Database
 
@@ -33,6 +52,7 @@ Update your entities and use `npx mikro-orm migration:create ` to create migrati
 ## Install dependencies and build dtos
 
 For, you need to build your dtos :
+
 ```
 $ cd dtos
 $ yarn
@@ -45,7 +65,6 @@ Next, go in `api`, `app` and `backoffice` and run these commands :
 $ yarn
 $ npm link ../dtos # use dto package as dependency, see DTOs chapiter below
 ```
-
 
 For nest, you need to install `@nestjs/cli` in global (or locally, as you want)
 
@@ -93,11 +112,13 @@ You have to log into API with /login, with payload { pass : <i>secretKey</i> }. 
 
 This API will return a JWT token, which expire after 24 hours.
 
-Don't forget to fill .env : 
+Don't forget to fill .env :
+
 ```
-PASS_KEY : Token used to be connected on backoffice 
+PASS_KEY : Token used to be connected on backoffice
 JWT_KEY : Key to jwt token generation (Keep it secret)
 ```
+
 ## DTOs
 
 DTOs, as (Data Transfer Object), are defined in /dtos. It permits typing between api and front app.
@@ -106,9 +127,10 @@ This projet is considered as package, and used as dependenbcy with `npm link`
 
 You must build all dtos with `yarn build` in dtos packages in order to use it in front apss
 
-⚠️ Unfortunately, ESBuild (builder embedded in Vite), does not support importing types or enums from built dtos. 
-We then need to copy the DTOs into types.ts and import them. However, the typing will be checked between our local enum 
+⚠️ Unfortunately, ESBuild (builder embedded in Vite), does not support importing types or enums from built dtos.
+We then need to copy the DTOs into types.ts and import them. However, the typing will be checked between our local enum
 and the enum scoped in the DTO)
+
 ## Mobile developpement
 
 Fast refresh is enabled by default. If not actived:
