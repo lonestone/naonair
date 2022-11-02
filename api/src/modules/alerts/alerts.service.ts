@@ -6,9 +6,9 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import { map } from 'rxjs';
+import { log } from 'console';
+import { catchError, map, throwError } from 'rxjs';
 import appConfig from 'src/configs/app.config';
-import { AlertDTO } from 'src/dtos/alert.dto';
 import { AlertsConverterService } from './alerts.converter';
 
 @Injectable()
@@ -34,6 +34,7 @@ export class AlertsService {
             this.converter.toDTO(alert),
           ),
         ),
-      );
+      )
+      .pipe(catchError((err) => throwError(() => log(err))));
   }
 }

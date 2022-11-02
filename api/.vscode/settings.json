@@ -3,5 +3,7 @@
         "activityBar.background": "#5A0E29",
         "titleBar.activeBackground": "#7E1439",
         "titleBar.activeForeground": "#FEFCFD"
-    }
+    },
+    "thunder-client.loadFromProject": true,
+    "files.autoSave": "onFocusChange"
 }

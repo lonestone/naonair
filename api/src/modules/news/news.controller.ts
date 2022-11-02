@@ -1,15 +1,16 @@
+import { CreateNewsDTO, NewsDTO, UpdateNewsDTO } from '@aireal/dtos';
 import {
   Body,
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   ParseUUIDPipe,
   Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { CreateNewsDTO, NewsDTO, UpdateNewsDTO } from 'src/dtos/news.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { NewsService } from './news.service';
 
@@ -45,6 +46,7 @@ export class NewsController {
   }
 
   @Delete(':uuid')
+  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   remove(@Param('uuid', ParseUUIDPipe) uuid: string): Promise<void> {
     return this.newsService.remove(uuid);

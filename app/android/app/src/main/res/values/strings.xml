@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">aireal</string>
+    <string name="app_name">Naonair</string>
+
+    <style name="SpashTheme">
+
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 </resources>

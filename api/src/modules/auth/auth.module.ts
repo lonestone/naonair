@@ -13,7 +13,7 @@ import { UniqueTokenStrategy } from './strategies/unique-token.strategy';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('auth.passKey'),
-        signOptions: { expiresIn: '1d' },
+        signOptions: { expiresIn: '30d' },
       }),
       inject: [ConfigService],
     }),

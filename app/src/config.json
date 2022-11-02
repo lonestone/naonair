@@ -1,0 +1,47 @@
+{
+  "GEOSERVER": {
+    "baseUrl": "https://api.naonair.org/geoserver/aireel",
+    "params": {
+      "SERVICE": "WMS",
+      "VERSION": "1.1.1",
+      "TRANSPARENT": false,
+      "QUERY_LAYERS": "aireel:aireel_indic_7m_atmo_deg",
+      "LAYERS": "aireel:aireel_indic_7m_atmo_deg",
+      "SRS": "EPSG:4326",
+      "INFO_FORMAT": "application/json",
+      "REQUEST": "GetFeatureInfo",
+      "FEATURE_COUNT": 50,
+      "X": 50,
+      "Y": 50,
+      "WIDTH": 101,
+      "HEIGHT": 101,
+      "typeName": "aireel:poi_data"
+    }
+  },
+  "SENTRY": {
+    "dsn": "https://a78899e62f4f4819889f55f1f00c4197@o297372.ingest.sentry.io/6235219"
+  },
+  "GRAPHHOPPER": {
+    "baseUrl": "https://graphhopper.com/api/1/",
+    "params": {
+      "key": "1381920f-a973-435c-955c-d74ee25cf1aa",
+      "locale": "fr",
+      "type": "json",
+      "points_encoded": false
+    }
+  },
+  "MAPBOX": {
+    "baseUrl": "https://api.mapbox.com/geocoding/v5/mapbox.places/",
+    "params": {
+      "country": "fr",
+      "bbox": "-1.868231,47.088103,-1.375608,47.372655",
+      "types": "poi,place,postcode,address",
+      "language": "fr",
+      "autocomplete": true,
+      "access_token": "pk.eyJ1Ijoiam9obHMiLCJhIjoiY2t5anlxMDh6MDhydjJ3cG5tb2ZyN3NpMiJ9.NnDn9gsdYR8c0MpGxlpqkA"
+    }
+  },
+  "API": {
+    "baseUrl": "https://naonair-api-staging.onrender.com/"
+  }
+}
