@@ -8,6 +8,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
+import * as Sentry from '@sentry/node';
 import { lastValueFrom } from 'rxjs';
 import appConfig from 'src/configs/app.config';
 
@@ -24,6 +25,11 @@ export class RoutingService {
     if (pointList.length > 5) {
       throw new BadRequestException('Max 5 waypoint allowed');
     }
+
+    if (this._appConfig.logItinerary) {
+      Sentry.captureMessage('Request itinerary', Sentry.Severity.Log);
+    }
+
     const ptParam = pointList.join('&point=');
     const ghProfile =
       profile === RoutingProfile.ElectricBike ? RoutingProfile.Bike : profile;
@@ -31,10 +37,17 @@ export class RoutingService {
     try {
       const promiseFastest = await lastValueFrom(
         this.httpService.get(url + `_fastest`),
-      ).catch((e) => this.logger.error('Fastest path : ' + e.message));
+      ).catch((e) => {
+        this.logger.error('Fastest path : ' + e.message);
+        Sentry.captureException(e);
+      });
+
       const promiseCleanest = await lastValueFrom(
         this.httpService.get(url + `_cleanest`),
-      ).catch((e) => this.logger.error('Cleanest path : ' + e.message));
+      ).catch((e) => {
+        this.logger.error('Cleanest path : ' + e.message);
+        Sentry.captureException(e);
+      });
 
       const [fastest, cleanest] = await Promise.allSettled([
         promiseFastest,
