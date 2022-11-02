@@ -1,5 +1,4 @@
-import { Inject, Logger, Module } from '@nestjs/common';
-import { OnApplicationBootstrap } from '@nestjs/common';
+import { Inject, Logger, Module, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import * as Sentry from '@sentry/node';
 import sentryConfig from 'src/configs/sentry.config';

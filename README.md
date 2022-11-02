@@ -14,6 +14,8 @@ AIREAL/
 ├── dtos/        # DTOs used for type between API and fronts app
 ```
 
+You can find Graphhopper project here : https://github.com/lonestone/graphhopper
+
 ## Deployment & Tags
 
 A new version is automatically deployed on Render when a commit is pushed on main branch.
@@ -146,4 +148,4 @@ To enable debug mode :
 
 # Who build this ?
 
-Build with lot of love ❤, by Lonestone
+Build with lots of love ❤, by Lonestone
