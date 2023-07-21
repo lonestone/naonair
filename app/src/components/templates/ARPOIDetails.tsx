@@ -23,7 +23,10 @@ import { POIMarker } from './ARMapView';
 const styles = StyleSheet.create({
   map: {
     height: 300,
+    alignSelf: 'stretch',
+    flex: 0,
     borderRadius: 16,
+    overflow: 'hidden',
   },
   chipWrapper: {
     position: 'absolute',
@@ -56,7 +59,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
   },
-  mapView: { flex: 1, borderRadius: 16, overflow: 'hidden' },
+  mapView: { flex: 1, borderRadius: 16 },
 });
 
 type POIDetailsRouteProp = RouteProp<StackParamList, 'POIDetails'>;
@@ -121,12 +124,13 @@ const ARPOIDetails = () => {
         {poi && (
           <View style={styles.detailView}>
             <View>
-              <Card style={styles.map}>
-                <View style={styles.mapView}>
+              <Card style={styles.mapView}>
+                <View>
                   <ARMap
                     userLocationVisible
                     interactionEnabled
                     heatmapVisible
+                    style={styles.map}
                     onMapLoaded={() => setMapLoaded(true)}
                     center={poi.geolocation}>
                     {isMapLoaded && <POIMarker poi={poi} />}

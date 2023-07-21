@@ -1,4 +1,4 @@
-import MapboxGL, { LineLayerStyle } from '@react-native-mapbox-gl/maps';
+import MapboxGL, { LineLayerStyle } from '@maplibre/maplibre-react-native';
 import { Feature, Geometry } from 'geojson';
 import React from 'react';
 import { ARParcours } from '../../actions/parcours';
@@ -14,7 +14,7 @@ const lineStyle: LineLayerStyle = {
 
 export interface ARPathLayerProp {
   path: ARPath | ARParcours;
-  id: string;
+  id?: string;
   isSelected?: boolean;
 }
 

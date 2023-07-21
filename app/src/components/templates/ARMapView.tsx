@@ -1,6 +1,6 @@
 /// <reference path="../../custom.d.ts" />
 
-import MapboxGL from '@react-native-mapbox-gl/maps';
+import MapboxGL from '@maplibre/maplibre-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Position } from '@turf/turf';
 import React, { createRef, useEffect, useState } from 'react';
