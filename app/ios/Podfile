@@ -17,7 +17,9 @@ prepare_react_native_project!
 #   dependencies: {
 #     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
 # ```
-flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
+flipper_config = FlipperConfiguration.disabled
+
+
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -29,7 +31,7 @@ $RNMBGL_Use_SPM = {
   url: "https://github.com/maplibre/maplibre-gl-native-distribution",
   requirement: {
     kind: "upToNextMajorVersion",
-    minimumVersion: "5.12.2"
+    minimumVersion: "5.13.0"
   },
   product_name: "Mapbox"
 }
@@ -37,6 +39,9 @@ $RNMGL_USE_MAPLIBRE = true
 
 target 'aireal' do
   config = use_native_modules!
+	
+	use_frameworks! :linkage => :static
+	$RNFirebaseAsStaticFramework = true
 
   # Flags change depending on the env values.
   flags = get_default_flags()

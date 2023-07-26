@@ -26,6 +26,7 @@ import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARRouteMapView from '../organisms/ARRouteMapView';
+import analytics from '@react-native-firebase/analytics';
 
 type ARChooseItineraryProp = RouteProp<StackParamList, 'ChooseItinerary'>;
 
@@ -214,9 +215,13 @@ const ItineraryList = ({
         <ARButton
           label="C'est parti !"
           size={ARButtonSize.Medium}
-          onPress={() =>
-            navigation.navigate('Navigation', { path: userRoute[selected] })
-          }
+          onPress={async () => {
+            await analytics().logEvent('demarrage_navigation', {
+              selected,
+            });
+            
+            navigation.navigate('Navigation', { path: userRoute[selected] });
+          }}
           styleContainer={styles.letsGoButton}
           icon={() => (
             <Icon
@@ -255,7 +260,7 @@ export default () => {
     return new Promise(resolve => {
       Geolocation.getCurrentPosition(
         async ({ coords: { longitude, latitude } }) => {
-          console.info('getCurrentPosition', longitude, latitude  );
+          console.info('getCurrentPosition', longitude, latitude);
           resolve([longitude, latitude]);
         },
       );

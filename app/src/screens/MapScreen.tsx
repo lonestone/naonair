@@ -49,7 +49,7 @@ export default () => {
     {
       key: 'list',
       icon: 'list',
-      render: () => <ARListView pois={pois} category={selectedCategories}/>,
+      render: () => <ARListView pois={pois} category={selectedCategories} />,
     },
   ];
 

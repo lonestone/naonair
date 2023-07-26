@@ -19,6 +19,7 @@ import ARHeadingGroup from '../molecules/ARHeadingGroup';
 import ARForecasts from '../organisms/ARForecasts';
 import ARPollution from '../organisms/ARPollution';
 import { POIMarker } from './ARMapView';
+import analytics from '@react-native-firebase/analytics';
 
 const styles = StyleSheet.create({
   map: {
@@ -69,7 +70,20 @@ const ARPOIDetails = () => {
   const { poi } = useRoute<POIDetailsRouteProp>().params || {};
   const [favorited, setFavorited] = useState(poi.favorited);
 
-  const goTo = () => {
+  const goTo = async () => {
+    try {
+      await analytics().logEvent(
+        'me_rendre_a_cet_endroit_button',
+        {
+          name: poi.name,
+          id: poi.id,
+          address: poi.address,
+        },
+      );
+    } catch (e) {
+      console.warn(e);
+    }
+
     navigation.navigate('Itinéraires', {
       end: {
         text: poi.name,

@@ -162,6 +162,7 @@ export default ({}: ARRouteDetailProp) => {
 
   const toggleFavorited = async () => {
     setFavorited(value => !value);
+
     favorited
       ? await removeFromFavorites(parcours)
       : await addToFavorites(parcours);
@@ -176,7 +177,11 @@ export default ({}: ARRouteDetailProp) => {
           <FavoriteButton isFavorited={favorited} onPress={toggleFavorited} />
         }
       />
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
       <ScrollView style={styles.container}>
         <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1 }}>
           <View style={styles.mapContainer}>

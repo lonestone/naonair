@@ -28,6 +28,7 @@ import ARHeader from '../atoms/ARHeader';
 import ARAddressInput from '../molecules/ARAddressInput';
 import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
 import ARListItem from '../molecules/ARListItem';
+import analytics from '@react-native-firebase/analytics';
 
 const styles = StyleSheet.create({
   container: {
@@ -240,6 +241,7 @@ export default () => {
     end: Position | undefined,
     mode: RouteProfile,
   ) => {
+    await analytics().logEvent('calculer_itineraire_button');
     navigation.navigate('ChooseItinerary', {
       start,
       end,

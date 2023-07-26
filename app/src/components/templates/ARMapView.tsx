@@ -13,7 +13,7 @@ import { useQA } from '../../hooks/useQA';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
 import ARLegend from '../molecules/ARLegend';
-import ARUserLocationAlert from './ARUserLocationAlert';
+import analytics from '@react-native-firebase/analytics';
 
 export interface ARMapViewProps {
   pois: POI[];
@@ -63,7 +63,13 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
       anchor={{ x: 0.5, y: 1 }}
       title={poi.name}
       selected={selected}
-      onSelected={() => {
+      onSelected={async () => {
+        await analytics().logEvent('select_poi_from_map', {
+          name: poi.name,
+          id: poi.id,
+          address: poi.address,
+        });
+
         navigation.navigate('POIDetails', { poi });
 
         // HACK to be sure the user can press on annotation twice in a row
