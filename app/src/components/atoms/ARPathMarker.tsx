@@ -1,4 +1,4 @@
-import MapboxGL from '@react-native-mapbox-gl/maps';
+import MapboxGL from '@maplibre/maplibre-react-native';
 import { Position } from 'geojson';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';

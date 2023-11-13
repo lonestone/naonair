@@ -1,6 +1,6 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -162,6 +162,7 @@ export default ({}: ARRouteDetailProp) => {
 
   const toggleFavorited = async () => {
     setFavorited(value => !value);
+
     favorited
       ? await removeFromFavorites(parcours)
       : await addToFavorites(parcours);
@@ -175,6 +176,11 @@ export default ({}: ARRouteDetailProp) => {
         right={
           <FavoriteButton isFavorited={favorited} onPress={toggleFavorited} />
         }
+      />
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
       />
       <ScrollView style={styles.container}>
         <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1 }}>

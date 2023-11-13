@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ARParcours } from './parcours';
 import { POI } from './poi';
+import analytics from '@react-native-firebase/analytics';
 
 const FAVORITES_KEY = '@favorites';
 
@@ -29,6 +30,18 @@ const setFavorites = async function (favorites: string[]) {
 
 export const addToFavorites = async function (item: POI | ARParcours) {
   const current = await getFavorites();
+
+
+  if ("name" in item) {
+    await analytics().logEvent('ajout_poi_favoris', {
+      name: item.name,
+    });
+  } else if ("properties" in item){
+    await analytics().logEvent('ajout_parcours_favoris', {
+      name: item.properties.nom,
+    });
+  }
+
   const idToAdd = generateId(item);
   if (!current.has(idToAdd)) {
     const favoritesArray = Array.from(current);
@@ -40,5 +53,16 @@ export const removeFromFavorites = async function (item: POI | ARParcours) {
   const current = await getFavorites();
   const idToRemove = generateId(item);
   const favoritesArray = Array.from(current);
+
+  if ("name" in item) {
+    await analytics().logEvent('suppression_poi_favoris', {
+      name: item.name,
+    });
+  } else if ("properties" in item){
+    await analytics().logEvent('suppression_parcours_favoris', {
+      name: item.properties.nom,
+    });
+  }
+
   await setFavorites(favoritesArray.filter(id => id !== `${idToRemove}`));
 };

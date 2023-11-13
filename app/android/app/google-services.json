@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "436056479524",
+    "project_id": "naonair-ce533",
+    "storage_bucket": "naonair-ce533.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436056479524:android:7aced3a775ab8a643185b1",
+        "android_client_info": {
+          "package_name": "com.aireal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436056479524-b1ogrig79alf4hipv0bpn69fqbsvcfr5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjprUyDPfX4RQ7H3ZxXUfafjOSucESclU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436056479524-b1ogrig79alf4hipv0bpn69fqbsvcfr5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "436056479524-vt78jb6cncq2qa447j602mfusbvsv8ah.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.airpl.naonair",
+                "app_store_id": "1613891601"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

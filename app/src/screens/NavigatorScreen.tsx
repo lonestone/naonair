@@ -16,7 +16,6 @@ import ARRouteDetail from '../components/templates/ARRouteDetail';
 import { SnackbarProvider } from '../contexts/snackbar.context';
 import { theme } from '../theme';
 import { StackParamList, TabParamList } from '../types/routes';
-import CGUScreen from './CGUScreen';
 import ItineraryScreen from './ItineraryScreen';
 import MapScreen from './MapScreen';
 import NavigationScreen from './NavigationScreen';
@@ -25,6 +24,7 @@ import ProfileScreen from './ProfileScreen';
 import RoutesScreen from './RoutesScreen';
 import { Platform } from 'react-native';
 import BackButton from '../components/molecules/ARBackButton';
+import CGUScreen from './CGUScreen';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 const Stack = createStackNavigator<StackParamList>();

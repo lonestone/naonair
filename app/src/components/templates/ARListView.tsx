@@ -8,6 +8,7 @@ import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARQAChip from '../atoms/ARQAChip';
 import ARListItem from '../molecules/ARListItem';
+import analytics from '@react-native-firebase/analytics';
 
 const styles = StyleSheet.create({
   description: {
@@ -49,7 +50,15 @@ const Item = ({
       description={poi.address}
       descriptionStyle={styles.description}
       titleStyle={styles.title}
-      onPress={() => navigation.navigate('POIDetails', { poi })}
+      onPress={async () => {
+        await analytics().logEvent('selection_poi_depuis_liste', {
+          name: poi.name,
+          id: poi.id,
+          address: poi.address,
+        });
+
+        navigation.navigate('POIDetails', { poi });
+      }}
       category={poi.category}
       rightChip={
         <View style={styles.chipWrapper}>
