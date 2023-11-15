@@ -1,12 +1,11 @@
 import { HttpService } from '@nestjs/axios';
 import {
-    Inject,
-    Injectable,
-    InternalServerErrorException,
-    Logger,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import { log } from 'console';
 import { catchError, map, throwError } from 'rxjs';
 import appConfig from 'src/configs/app.config';
 import { PollenConverterService } from './pollen.converter';
@@ -27,14 +26,26 @@ export class PollenService {
       throw new InternalServerErrorException();
     }
     return this.httpService
-      .get(this._appConfig.pollenUrl)
+      .get(this._appConfig.pollenUrl, {
+        headers: { Authorization: `Token ${this._appConfig.pollenToken}` },
+      })
       .pipe(
-        map((axiosResponse) =>
-          axiosResponse.data.results.map((alert) =>
-            this.converter.toDTO(alert),
+        map((axiosResponse) => {
+          if (axiosResponse) {
+            return axiosResponse.data.species.map((species) =>
+              this.converter.toDTO(species),
+            );
+          } else return axiosResponse.data.results.species;
+        }),
+        catchError((err) =>
+          throwError(() =>
+            this.logger.error(
+              !!err?.response?.status
+                ? `${err.response.status} - ${err.response.data.detail}`
+                : '==> Undefined Error',
+            ),
           ),
         ),
-      )
-      .pipe(catchError((err) => throwError(() => log(err))));
+      );
   }
 }
