@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
-import { View } from 'react-native';
-import { StyleProp, StyleSheet, TextStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { SvgXml } from 'react-native-svg';
@@ -19,6 +18,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    marginLeft: 10,
   },
   title: {
     ...fonts.Lato.medium,
