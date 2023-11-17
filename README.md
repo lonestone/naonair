@@ -18,6 +18,11 @@ You can find Graphhopper project here : https://github.com/lonestone/graphhopper
 
 ## Deployment & Tags
 
+Don't forget to use the correct environnement before pushing your apps in production :
+
+* Check `.env` files
+* "baseUrl" in `api/config.json`
+
 A new version is automatically deployed on Render when a commit is pushed on main branch.
 
 Mobile apps must be manually deployed.

@@ -1,9 +1,10 @@
+import { AlertDTO } from '@aireal/dtos';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { AlertDTO } from '@aireal/dtos';
 import { getLastOne } from '../../actions/alerts';
+import { getPollen } from '../../actions/pollen';
 import { theme } from '../../theme';
 
 const styles = StyleSheet.create({
@@ -32,6 +33,7 @@ export default () => {
 
   useEffect(() => {
     getLastOne().then(setAlert);
+    getPollen().then(pollen => console.log(pollen));
   }, []);
 
   if (!alert) {

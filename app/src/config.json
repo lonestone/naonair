@@ -33,6 +33,6 @@
     }
   },
   "API": {
-    "baseUrl": "https://naonair-api-staging.onrender.com/"
+    "baseUrl": "http://localhost:3001/"
   }
 }
