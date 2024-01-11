@@ -1,13 +1,9 @@
 import { Entity, PrimaryKey, Property, Unique } from '@mikro-orm/core';
-import { v4 } from 'uuid';
 
 @Entity()
-export class Pollen {
-  @PrimaryKey({ type: 'uuid' })
+export class PollenEntity {
+  @PrimaryKey({ type: 'string' })
   @Unique()
-  uuid: string = v4();
-
-  @Property()
   name: string;
 
   @Property()
@@ -19,7 +15,7 @@ export class Pollen {
   @Property()
   state: number;
 
-  constructor(partial: Partial<Pollen>) {
+  constructor(partial: Partial<PollenEntity>) {
     Object.assign(this, partial);
   }
 }

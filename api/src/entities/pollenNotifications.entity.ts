@@ -7,7 +7,7 @@ import {
   Unique,
 } from '@mikro-orm/core';
 import { v4 } from 'uuid';
-import { Pollen } from './pollen.entity';
+import { PollenEntity } from './pollen.entity';
 
 @Entity()
 export class PollenNotifications {
@@ -18,8 +18,8 @@ export class PollenNotifications {
   @Property()
   fcmToken: string;
 
-  @ManyToOne(() => Pollen, { onDelete: 'CASCADE', primary: true })
-  polen: IdentifiedReference<Pollen>;
+  @ManyToOne(() => PollenEntity, { onDelete: 'CASCADE', primary: true })
+  polen: IdentifiedReference<PollenEntity>;
 
   constructor(partial: Partial<PollenNotifications>) {
     Object.assign(this, partial);

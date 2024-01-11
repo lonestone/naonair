@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { PollenDTO } from '@aireal/dtos';
+import { Controller, Get, Param } from '@nestjs/common';
 import { PollenService } from './pollen.service';
 
 @Controller('pollen')
@@ -8,5 +9,10 @@ export class PollenController {
   @Get()
   async findAll() /*: Promise<PollenDTO[]>*/ {
     return this.pollenService.fetchAll();
+  }
+
+  @Get(':name')
+  async findByName(@Param('name') name: string): Promise<PollenDTO> {
+    return await this.pollenService.findByName(name);
   }
 }

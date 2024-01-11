@@ -1,24 +1,40 @@
+import { HttpErrors, PollenDTO } from '@aireal/dtos';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/postgresql';
 import { HttpService } from '@nestjs/axios';
 import {
   Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { catchError, map, throwError } from 'rxjs';
 import appConfig from 'src/configs/app.config';
+import { PollenEntity } from 'src/entities/pollen.entity';
 import { PollenConverterService } from './pollen.converter';
 
 @Injectable()
 export class PollenService {
+  logger = new Logger('PollenModule');
+
   constructor(
     @Inject(appConfig.KEY)
     private readonly _appConfig: ConfigType<typeof appConfig>,
     private httpService: HttpService,
+    @InjectRepository(PollenEntity)
+    public readonly pollenRepo: EntityRepository<PollenEntity>,
     private converter: PollenConverterService,
   ) {}
-  logger = new Logger('PollenModule');
+
+  async findByName(name: string): Promise<PollenDTO> {
+    const pollen = await this.pollenRepo.findOne({ name });
+    if (!pollen) {
+      throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
+    }
+    return this.converter.fromEntityToDTO(pollen);
+  }
 
   async fetchAll() {
     if (!this._appConfig.pollenUrl) {
