@@ -10,7 +10,7 @@ import { v4 } from 'uuid';
 import { PollenEntity } from './pollen.entity';
 
 @Entity()
-export class PollenNotifications {
+export class PollenNotificationEntity {
   @PrimaryKey({ type: 'uuid' })
   @Unique()
   uuid: string = v4();
@@ -21,7 +21,7 @@ export class PollenNotifications {
   @ManyToOne(() => PollenEntity, { onDelete: 'CASCADE', primary: true })
   polen: IdentifiedReference<PollenEntity>;
 
-  constructor(partial: Partial<PollenNotifications>) {
+  constructor(partial: Partial<PollenNotificationEntity>) {
     Object.assign(this, partial);
   }
 }

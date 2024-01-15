@@ -16,6 +16,10 @@ import { Cron } from '@nestjs/schedule';
 import { catchError, lastValueFrom, map, throwError } from 'rxjs';
 import appConfig from 'src/configs/app.config';
 import { PollenEntity } from 'src/entities/pollen.entity';
+import {
+  PollenNotificationService,
+  UpdatePollenType,
+} from '../pollenNotification/pollenNotification.service';
 import { PollenConverterService } from './pollen.converter';
 
 @Injectable()
@@ -30,6 +34,7 @@ export class PollenService implements OnApplicationBootstrap {
     public readonly pollenRepo: EntityRepository<PollenEntity>,
     private converter: PollenConverterService,
     private readonly em: EntityManager,
+    private readonly pollenNotificationService: PollenNotificationService,
   ) {}
 
   async onApplicationBootstrap() {
@@ -78,32 +83,29 @@ export class PollenService implements OnApplicationBootstrap {
   @Cron('10 * * * * *')
   async getPollenNotifications() {
     try {
+      // lastValueFrom get get Obsarvable datas and not all the observable.
       const data = await lastValueFrom(await this.fetchAll());
 
-      const stateChanges: Array<{
-        name: string;
-        oldState: number;
-        newState: number;
-      }> = [];
+      const stateChanges: UpdatePollenType = [];
 
       // TO REMOVE
       data.push({
         name: 'Test',
         group: 'Graminé',
         latinName: 'rosa rosa rose',
-        state: 0,
+        state: 1,
       });
 
+      // Check all pollen from the api
       for (const pollenData of data) {
         try {
           const existingPollen = await this.em.findOneOrFail(PollenEntity, {
             name: pollenData.name,
           });
-          // Pollen exist in database
+          // Pollen exist in database : update only if needed
           if (existingPollen.state !== pollenData.state) {
             stateChanges.push({
               name: existingPollen.name,
-              oldState: existingPollen.state,
               newState: pollenData.state,
             });
 
@@ -117,7 +119,9 @@ export class PollenService implements OnApplicationBootstrap {
         }
       }
 
-      console.log(stateChanges);
+      //Send notifications only for needed pollen
+      if (stateChanges.length > 0)
+        this.pollenNotificationService.sendNotificationsFor(stateChanges);
     } catch (error) {
       this.logger.error(`Error in getPollenNotifications: ${error.message}`);
     }
