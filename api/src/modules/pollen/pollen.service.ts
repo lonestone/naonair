@@ -1,4 +1,5 @@
 import { HttpErrors, PollenDTO } from '@aireal/dtos';
+import { EntityManager } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { HttpService } from '@nestjs/axios';
@@ -8,15 +9,17 @@ import {
   InternalServerErrorException,
   Logger,
   NotFoundException,
+  OnApplicationBootstrap,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import { catchError, map, throwError } from 'rxjs';
+import { Cron } from '@nestjs/schedule';
+import { catchError, lastValueFrom, map, throwError } from 'rxjs';
 import appConfig from 'src/configs/app.config';
 import { PollenEntity } from 'src/entities/pollen.entity';
 import { PollenConverterService } from './pollen.converter';
 
 @Injectable()
-export class PollenService {
+export class PollenService implements OnApplicationBootstrap {
   logger = new Logger('PollenModule');
 
   constructor(
@@ -26,7 +29,12 @@ export class PollenService {
     @InjectRepository(PollenEntity)
     public readonly pollenRepo: EntityRepository<PollenEntity>,
     private converter: PollenConverterService,
+    private readonly em: EntityManager,
   ) {}
+
+  async onApplicationBootstrap() {
+    await this.getPollenNotifications();
+  }
 
   async findByName(name: string): Promise<PollenDTO> {
     const pollen = await this.pollenRepo.findOne({ name });
@@ -41,6 +49,7 @@ export class PollenService {
       this.logger.error('No url set for pollen url');
       throw new InternalServerErrorException();
     }
+
     return this.httpService
       .get(this._appConfig.pollenUrl, {
         headers: { Authorization: `Token ${this._appConfig.pollenToken}` },
@@ -63,5 +72,54 @@ export class PollenService {
           ),
         ),
       );
+  }
+
+  //@Cron('0 6 * * *')
+  @Cron('10 * * * * *')
+  async getPollenNotifications() {
+    try {
+      const data = await lastValueFrom(await this.fetchAll());
+
+      const stateChanges: Array<{
+        name: string;
+        oldState: number;
+        newState: number;
+      }> = [];
+
+      // TO REMOVE
+      data.push({
+        name: 'Test',
+        group: 'Graminé',
+        latinName: 'rosa rosa rose',
+        state: 0,
+      });
+
+      for (const pollenData of data) {
+        try {
+          const existingPollen = await this.em.findOneOrFail(PollenEntity, {
+            name: pollenData.name,
+          });
+          // Pollen exist in database
+          if (existingPollen.state !== pollenData.state) {
+            stateChanges.push({
+              name: existingPollen.name,
+              oldState: existingPollen.state,
+              newState: pollenData.state,
+            });
+
+            existingPollen.state = pollenData.state;
+            await this.em.flush();
+          }
+        } catch (error) {
+          // Pollen do not exist in database. Create it
+          const pollenEntity = this.em.create(PollenEntity, pollenData);
+          await this.em.persistAndFlush(pollenEntity);
+        }
+      }
+
+      console.log(stateChanges);
+    } catch (error) {
+      this.logger.error(`Error in getPollenNotifications: ${error.message}`);
+    }
   }
 }
