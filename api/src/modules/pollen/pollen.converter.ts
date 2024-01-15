@@ -4,12 +4,12 @@ import { PollenEntity } from 'src/entities/pollen.entity';
 
 @Injectable()
 export class PollenConverterService {
-  public toDTO = (specie: any): PollenDTO => ({
-    name: specie.name,
-    latinName: specie.latin_name,
-    group: specie.group,
-    state: specie.state,
+  public toDTO = (pollen: any): PollenDTO => ({
+    name: pollen.name,
+    latinName: pollen.latin_name,
+    group: pollen.group,
+    state: pollen.state,
   });
 
-  public fromEntityToDTO = (specie: PollenEntity): PollenDTO => specie;
+  public fromEntityToDTO = (pollen: PollenEntity): PollenDTO => pollen;
 }

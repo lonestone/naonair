@@ -49,7 +49,17 @@ export class PollenService implements OnApplicationBootstrap {
     return this.converter.fromEntityToDTO(pollen);
   }
 
-  async fetchAll() {
+  public async fetchAll() {
+    const pollens = await this.em.find(PollenEntity, {});
+    if (!pollens) {
+      throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
+    }
+    return pollens.map((pollen) => {
+      return this.converter.fromEntityToDTO(pollen);
+    });
+  }
+
+  async fetchAllFromAPI() {
     if (!this._appConfig.pollenUrl) {
       this.logger.error('No url set for pollen url');
       throw new InternalServerErrorException();
@@ -79,22 +89,22 @@ export class PollenService implements OnApplicationBootstrap {
       );
   }
 
-  //@Cron('0 6 * * *')
-  @Cron('10 * * * * *')
+  // @Cron('10 * * * * *')
+  @Cron('0 6 * * *')
   async getPollenNotifications() {
     try {
       // lastValueFrom get get Obsarvable datas and not all the observable.
-      const data = await lastValueFrom(await this.fetchAll());
+      const data = await lastValueFrom(await this.fetchAllFromAPI());
 
       const stateChanges: UpdatePollenType = [];
 
-      // TO REMOVE
-      data.push({
-        name: 'Test',
-        group: 'Graminé',
-        latinName: 'rosa rosa rose',
-        state: 1,
-      });
+      // // TO REMOVE
+      // data.push({
+      //   name: 'Test',
+      //   group: 'Graminé',
+      //   latinName: 'rosa rosa rose',
+      //   state: 1,
+      // });
 
       // Check all pollen from the api
       for (const pollenData of data) {

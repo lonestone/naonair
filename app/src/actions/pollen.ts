@@ -1,8 +1,9 @@
-import { PollenDTO } from '@aireal/dtos';
+import { PollenDTO, PollenNotificationDTO } from '@aireal/dtos';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API } from '../config.json';
 
-const ALERTS_URL = `${API.baseUrl}pollen`;
+const POLLEN_URL = `${API.baseUrl}pollen`;
+const NOTIFICATION_URL = `${API.baseUrl}pollenNotification`;
 const POLLEN_SETTINGS_KEY = '@pollensettings';
 
 export interface PollenSettings {
@@ -11,7 +12,20 @@ export interface PollenSettings {
 }
 
 export const getPollen = async (): Promise<PollenDTO[] | null> => {
-  const response = await fetch(ALERTS_URL);
+  const response = await fetch(POLLEN_URL);
+  const json = await response.json();
+  if (json === undefined) {
+    return null;
+  }
+
+  return json;
+};
+
+export const getPollenNotifications = async (
+  token: string,
+): Promise<PollenNotificationDTO[] | null> => {
+  const response = await fetch(`${NOTIFICATION_URL}/${token}`);
+  console.log(response);
   const json = await response.json();
   if (json === undefined) {
     return null;
@@ -28,6 +42,9 @@ export const savePollenSettings = async function (settings: PollenSettings[]) {
 export const getPollenSettings = async function (): Promise<PollenSettings[]> {
   const localSettings = await getLocalPollenSettings();
   const onlinePollen = await getPollen();
+  const notifications = await getPollenNotifications('testtat');
+
+  console.log(notifications);
 
   if (onlinePollen === null) {
     return localSettings;
@@ -46,7 +63,12 @@ export const getPollenSettings = async function (): Promise<PollenSettings[]> {
             localSetting => localSetting.name === pollen.name,
           ),
       )
-      .map(pollen => ({ name: pollen.name, value: false })),
+      .map(pollen => {
+        const isSubscribe = notifications?.find(
+          notification => notification.pollen === pollen.name,
+        );
+        return { name: pollen.name, value: !!isSubscribe };
+      }),
   ];
 
   return updatedSettings ?? [];

@@ -7,7 +7,7 @@ export class PollenController {
   constructor(private readonly pollenService: PollenService) {}
 
   @Get()
-  async findAll() /*: Promise<PollenDTO[]>*/ {
+  async findAll(): Promise<PollenDTO[]> {
     return this.pollenService.fetchAll();
   }
 

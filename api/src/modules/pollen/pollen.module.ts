@@ -3,6 +3,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { PollenEntity } from 'src/entities/pollen.entity';
 import { FirebaseService } from '../firebase/firebase.service';
+import { PollenNotificationConverterService } from '../pollenNotification/pollenNotification.converter';
 import { PollenNotificationModule } from '../pollenNotification/pollenNotification.module';
 import { PollenNotificationService } from '../pollenNotification/pollenNotification.service';
 import { PollenController } from './pollen.controller';
@@ -19,6 +20,7 @@ import { PollenService } from './pollen.service';
   providers: [
     PollenService,
     PollenConverterService,
+    PollenNotificationConverterService,
     PollenNotificationService,
     FirebaseService,
   ],

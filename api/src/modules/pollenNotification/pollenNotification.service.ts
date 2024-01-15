@@ -5,6 +5,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { PollenEntity } from 'src/entities/pollen.entity';
 import { PollenNotificationEntity } from 'src/entities/pollenNotifications.entity';
 import { FirebaseService } from '../firebase/firebase.service';
+import { PollenNotificationConverterService } from './pollenNotification.converter';
 
 export type UpdatePollenType = Array<{
   name: string;
@@ -19,8 +20,21 @@ export class PollenNotificationService {
     private readonly firebaseService: FirebaseService,
     @InjectRepository(PollenEntity)
     public readonly pollenRepo: EntityRepository<PollenEntity>,
+    private converter: PollenNotificationConverterService,
     private readonly em: EntityManager,
   ) {}
+
+  public async findByToken(token: string) {
+    const notificationsSubscription = await this.em.find(
+      PollenNotificationEntity,
+      {
+        fcmToken: token,
+      },
+    );
+    return notificationsSubscription.map((sub) =>
+      this.converter.fromEntityToDTO(sub),
+    );
+  }
 
   public async sendNotificationsFor(updatedPollen: UpdatePollenType) {
     console.log('Ya des changements pour ');
