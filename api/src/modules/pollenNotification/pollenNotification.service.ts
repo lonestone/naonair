@@ -68,7 +68,7 @@ export class PollenNotificationService {
       PollenNotificationEntity,
       {
         fcmToken,
-        polen: existingPollen,
+        pollen: existingPollen,
       },
     );
 
@@ -81,7 +81,7 @@ export class PollenNotificationService {
         //else
         const newPollenNotification = this.em.create(PollenNotificationEntity, {
           fcmToken,
-          polen: existingPollen,
+          pollen: existingPollen,
         });
         this.em.persist(newPollenNotification);
         await this.em.flush();
@@ -115,7 +115,7 @@ export class PollenNotificationService {
         const pollenNotifications = await this.em.find(
           PollenNotificationEntity,
           {
-            polen: pollenEntity,
+            pollen: pollenEntity,
           },
         );
 

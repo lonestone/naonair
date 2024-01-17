@@ -19,7 +19,7 @@ export class PollenNotificationEntity {
   fcmToken: string;
 
   @ManyToOne(() => PollenEntity, { onDelete: 'CASCADE', primary: true })
-  polen: IdentifiedReference<PollenEntity>;
+  pollen: IdentifiedReference<PollenEntity>;
 
   constructor(partial: Partial<PollenNotificationEntity>) {
     Object.assign(this, partial);
