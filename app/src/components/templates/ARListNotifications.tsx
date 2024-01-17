@@ -1,32 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Switch, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import {
   PollenSettings,
   getPollenSettings,
   savePollenSettings,
 } from '../../actions/pollen';
+import { useNotifications } from '../../hooks/useNotifications';
 import ARSnackbar from '../atoms/ARSnackbar';
+import ARSwitch from '../atoms/ARSwitch';
 import BackButton from '../molecules/ARBackButton';
 import ARCommonHeader from '../molecules/ARCommonHeader';
 
 const ARListNotifications = () => {
+  const { getFcmToken } = useNotifications();
   const [pollenSpecies, setPollenSpecies] = useState<PollenSettings[] | null>(
     null,
   );
-  useEffect(() => {
-    getPollenSettings().then(setPollenSpecies);
-  }, []);
+  const [fcmToken, setFcmToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const setPollenValue = (pollen: PollenSettings, value: boolean) => {
-    if (!pollenSpecies) {
+  useEffect(() => {
+    setLoading(true);
+    (async () => {
+      return await getFcmToken();
+    })().then(setFcmToken);
+
+    getPollenSettings(fcmToken)
+      .then(setPollenSpecies)
+      .finally(() => {
+        setLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fcmToken]);
+
+  const setPollenValue = (pollen: PollenSettings) => {
+    if (!pollenSpecies || !fcmToken) {
       return;
     }
-    const updateSettings = pollenSpecies.map(setting =>
-      setting.name === pollen.name ? { ...setting, value } : setting,
-    );
-    setPollenSpecies(updateSettings);
-    savePollenSettings(updateSettings);
+    setLoading(true);
+    savePollenSettings(pollen, fcmToken)
+      .then(setPollenSpecies)
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -45,14 +62,12 @@ const ARListNotifications = () => {
             renderItem={({ item }) => (
               <>
                 <Text>{item.name}</Text>
-                <Switch
-                  trackColor={{ false: '#B2B2C1', true: '#4863F1' }}
-                  thumbColor="#FFFFFF"
-                  ios_backgroundColor="#B2B2C1"
-                  onValueChange={(value: boolean) =>
-                    setPollenValue(item, value)
+                <ARSwitch
+                  onChange={(value: boolean) =>
+                    setPollenValue({ name: item.name, value })
                   }
                   value={item.value}
+                  loading={loading}
                 />
               </>
             )}

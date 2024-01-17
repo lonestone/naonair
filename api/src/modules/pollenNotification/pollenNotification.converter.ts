@@ -7,8 +7,6 @@ export class PollenNotificationConverterService {
   public fromEntityToDTO = (
     pollenNotification: PollenNotificationEntity,
   ): PollenNotificationDTO => ({
-    fcmToken: pollenNotification.fcmToken,
     pollen: pollenNotification.polen.unwrap().name,
-    uuid: pollenNotification.uuid,
   });
 }

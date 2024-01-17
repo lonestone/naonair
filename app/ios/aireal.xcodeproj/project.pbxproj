@@ -10,7 +10,7 @@
 		00E356F31AD99517003FC87E /* airealTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* airealTests.m */; };
 		067AF0A905654DEBB4105485 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EDDE8C003A1D47398B8CF5B8 /* MaterialIcons.ttf */; };
 		0A06A2C4BB57472A87D11E19 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5B79DE438344B9CBB261F64 /* FontAwesome5_Solid.ttf */; };
-		13B07FBC1A68108700A75B9A /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		13B07FBC1A68108700A75B9A /* (null) in Sources */ = {isa = PBXBuildFile; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2CFB9B7886744963A7DC631C /* lato_thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 443DAC5B59F74537BE54430C /* lato_thin.ttf */; };
@@ -115,6 +115,7 @@
 		2EB189C127CFD0C300627280 /* raleway_bolditalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = raleway_bolditalic.ttf; path = ../src/assets/fonts/Raleway/raleway_bolditalic.ttf; sourceTree = "<group>"; };
 		2EC90FDE2A6AA89200127C2C /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = aireal/AppDelegate.mm; sourceTree = "<group>"; };
 		31D259B6A20D46B59A2920D7 /* lato_bolditalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = lato_bolditalic.ttf; path = ../src/assets/fonts/Lato/lato_bolditalic.ttf; sourceTree = "<group>"; };
+		41ACFDB92B559C8D007D808F /* aireal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = aireal.entitlements; path = aireal/aireal.entitlements; sourceTree = "<group>"; };
 		443DAC5B59F74537BE54430C /* lato_thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = lato_thin.ttf; path = ../src/assets/fonts/Lato/lato_thin.ttf; sourceTree = "<group>"; };
 		4D623A9D2CA0421DA64138F5 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		53EB3BD0010E477A9C5623BF /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
@@ -181,6 +182,7 @@
 		13B07FAE1A68108700A75B9A /* aireal */ = {
 			isa = PBXGroup;
 			children = (
+				41ACFDB92B559C8D007D808F /* aireal.entitlements */,
 				2E5F11572A70F493009D9B1A /* GoogleService-Info.plist */,
 				2EC90FDE2A6AA89200127C2C /* AppDelegate.mm */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -590,7 +592,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B07FBC1A68108700A75B9A /* BuildFile in Sources */,
+				13B07FBC1A68108700A75B9A /* (null) in Sources */,
 				2EC90FDF2A6AA89200127C2C /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -664,6 +666,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = aireal/aireal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 7;
@@ -699,6 +702,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = aireal/aireal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 7;

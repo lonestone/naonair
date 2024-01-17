@@ -38,13 +38,13 @@ export class PollenService implements OnApplicationBootstrap {
   ) {}
 
   async onApplicationBootstrap() {
-    await this.getPollenNotifications();
+    this.getPollenNotifications();
   }
 
   async findByName(name: string): Promise<PollenDTO> {
     const pollen = await this.pollenRepo.findOne({ name });
     if (!pollen) {
-      throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
+      throw new NotFoundException(HttpErrors.POLLEN_NOT_FOUND);
     }
     return this.converter.fromEntityToDTO(pollen);
   }
@@ -52,7 +52,7 @@ export class PollenService implements OnApplicationBootstrap {
   public async fetchAll() {
     const pollens = await this.em.find(PollenEntity, {});
     if (!pollens) {
-      throw new NotFoundException(HttpErrors.NEWS_NOT_FOUND);
+      throw new NotFoundException(HttpErrors.POLLEN_NOT_FOUND);
     }
     return pollens.map((pollen) => {
       return this.converter.fromEntityToDTO(pollen);
@@ -133,7 +133,13 @@ export class PollenService implements OnApplicationBootstrap {
       if (stateChanges.length > 0)
         this.pollenNotificationService.sendNotificationsFor(stateChanges);
     } catch (error) {
-      this.logger.error(`Error in getPollenNotifications: ${error.message}`);
+      if (!error)
+        this.logger.error(
+          `Error in getPollenNotifications: please check if airpollen is down`,
+        );
+      else {
+        this.logger.error(`Error in getPollenNotifications:  ${error.message}`);
+      }
     }
   }
 }

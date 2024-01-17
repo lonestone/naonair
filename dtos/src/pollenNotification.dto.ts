@@ -1,5 +1,10 @@
+export enum PollenNotificationStatus { 
+  active = 'active',
+  disabled = 'disabled'
+}
+
 export class PollenNotificationDTO {
-  fcmToken: string;
   pollen: string;
-  uuid: string;
+  status?: 'active' | 'disabled';
+  fcmToken?: string
 }

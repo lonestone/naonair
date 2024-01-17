@@ -1,5 +1,5 @@
 import { PollenNotificationDTO } from '@aireal/dtos';
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { PollenNotificationService } from './pollenNotification.service';
 
 @Controller('pollenNotification')
@@ -11,5 +11,12 @@ export class PollenNotificationController {
     @Param('fcmToken') token: string,
   ): Promise<Array<PollenNotificationDTO>> {
     return await this.pollenService.findByToken(token);
+  }
+
+  @Post('update')
+  async updateNotification(
+    @Body() notificationDTO: PollenNotificationDTO,
+  ): Promise<PollenNotificationDTO | void> {
+    return await this.pollenService.updateNotification(notificationDTO);
   }
 }
