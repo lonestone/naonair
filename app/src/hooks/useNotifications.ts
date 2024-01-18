@@ -1,4 +1,5 @@
 import messaging from '@react-native-firebase/messaging';
+import { PermissionsAndroid, Platform } from 'react-native';
 
 export const useNotifications = () => {
   const getFcmToken = async () => {
@@ -13,13 +14,22 @@ export const useNotifications = () => {
   };
 
   const requestUserPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-    enabled
-      ? console.info('AuthorizationStatus for FCM enabled')
-      : console.warn('AuthorizationStatus NOT enabled. Check the permissions');
+    if (Platform.OS === 'ios') {
+      const authStatus = await messaging().requestPermission();
+
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      enabled
+        ? console.info('AuthorizationStatus for FCM enabled')
+        : console.warn(
+            'AuthorizationStatus NOT enabled. Check the permissions',
+          );
+    } else if (Platform.OS === 'android') {
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
+    }
   };
 
   const notificationListener = () => {

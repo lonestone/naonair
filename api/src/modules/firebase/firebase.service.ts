@@ -1,10 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 
 import * as firebaseAdmin from 'firebase-admin';
-import {
-  DataMessagePayload,
-  NotificationMessagePayload,
-} from 'firebase-admin/lib/messaging/messaging-api';
+import { NotificationMessagePayload } from 'firebase-admin/lib/messaging/messaging-api';
+import { BadTokenError } from 'src/errors/bad-token.error';
 
 @Injectable()
 export class FirebaseService {
@@ -14,20 +12,43 @@ export class FirebaseService {
     return firebaseAdmin.apps.length === 0;
   }
 
-  sendPushNotification(
+  async sendPushNotification(
     token: string,
     notification: NotificationMessagePayload,
-    data: DataMessagePayload,
   ) {
-    this.logger.debug(`Send pushNotification - title: ${notification.title}`);
-
     if (this.skipFirebase()) {
       return;
     }
 
-    return firebaseAdmin.messaging().sendToDevice(token, {
-      notification,
-      data,
-    });
+    try {
+      await firebaseAdmin
+        .messaging()
+        .send({
+          notification,
+          data: notification,
+          token,
+        })
+        .then(() => {
+          this.logger.debug(
+            `Send pushNotification - title: ${notification.title}`,
+          );
+        });
+    } catch (error) {
+      await this.handlePushNotificationError(error, token);
+    }
+  }
+
+  async handlePushNotificationError(
+    error: firebaseAdmin.FirebaseError,
+    token: string,
+  ) {
+    switch (error.code) {
+      case 'messaging/invalid-argument':
+      case 'messaging/registration-token-not-registered':
+        throw new BadTokenError('Token not found', token);
+      default:
+        console.log('Error sending message:', error);
+        throw error;
+    }
   }
 }

@@ -14,6 +14,7 @@ import {
 } from '@aireal/dtos';
 import { PollenEntity } from 'src/entities/pollen.entity';
 import { PollenNotificationEntity } from 'src/entities/pollenNotifications.entity';
+import { BadTokenError } from 'src/errors/bad-token.error';
 import { FirebaseService } from '../firebase/firebase.service';
 import { PollenNotificationConverterService } from './pollenNotification.converter';
 
@@ -74,7 +75,6 @@ export class PollenNotificationService {
 
     switch (status) {
       case PollenNotificationStatus.active:
-        console.log('là');
         if (existingNotification) {
           return this.converter.fromEntityToDTO(existingNotification);
         }
@@ -85,8 +85,11 @@ export class PollenNotificationService {
         });
         this.em.persist(newPollenNotification);
         await this.em.flush();
-        return this.converter.fromEntityToDTO(newPollenNotification);
 
+        //remove this
+        await this.sendNotificationsFor([{ name: 'Aulne', newState: 1 }]);
+
+        return this.converter.fromEntityToDTO(newPollenNotification);
       case PollenNotificationStatus.disabled:
       default:
         if (existingNotification) {
@@ -103,7 +106,6 @@ export class PollenNotificationService {
     console.log(updatedPollen);
     // Only take care of pollen wher the new state is 1
     const pollenAlerts = updatedPollen.filter((p) => p.newState === 1);
-    console.log(pollenAlerts);
 
     // Find all token for this pollen kind
     for (const pollenAlert of pollenAlerts) {
@@ -119,14 +121,39 @@ export class PollenNotificationService {
           },
         );
 
-        this.sendNotifications(pollenNotifications);
+        await this.sendNotifications(pollenNotifications);
       }
     }
   }
 
-  private sendNotifications(pollenNotifications: PollenNotificationEntity[]) {
+  private async sendNotifications(
+    pollenNotifications: PollenNotificationEntity[],
+  ) {
     for (const pollenNotification of pollenNotifications) {
-      console.log(pollenNotification);
+      const { name, group } = pollenNotification.pollen.unwrap();
+      try {
+        await this.firebaseService.sendPushNotification(
+          pollenNotification.fcmToken,
+          {
+            title: 'Alerte Pollen',
+            body: `Une alerte de pollen a été déclanchée pou le polle ${name} du groupe ${group}`,
+          },
+        );
+      } catch (error) {
+        if (error instanceof BadTokenError) {
+          const toDeleteNotifications = await this.em.find(
+            PollenNotificationEntity,
+            {
+              fcmToken: error.token,
+            },
+          );
+
+          for (const toDeleteNotification of toDeleteNotifications) {
+            this.em.remove(toDeleteNotification);
+          }
+          await this.em.flush();
+        }
+      }
     }
   }
 }
