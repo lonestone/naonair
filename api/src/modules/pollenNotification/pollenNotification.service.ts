@@ -86,9 +86,6 @@ export class PollenNotificationService {
         this.em.persist(newPollenNotification);
         await this.em.flush();
 
-        //remove this
-        await this.sendNotificationsFor([{ name: 'Aulne', newState: 1 }]);
-
         return this.converter.fromEntityToDTO(newPollenNotification);
       case PollenNotificationStatus.disabled:
       default:
@@ -103,16 +100,13 @@ export class PollenNotificationService {
   }
 
   public async sendNotificationsFor(updatedPollen: UpdatePollenType) {
-    console.log(updatedPollen);
     // Only take care of pollen wher the new state is 1
     const pollenAlerts = updatedPollen.filter((p) => p.newState === 1);
-
     // Find all token for this pollen kind
     for (const pollenAlert of pollenAlerts) {
       const pollenEntity = await this.em.findOne(PollenEntity, {
         name: pollenAlert.name,
       });
-
       if (pollenEntity) {
         const pollenNotifications = await this.em.find(
           PollenNotificationEntity,
@@ -120,7 +114,6 @@ export class PollenNotificationService {
             pollen: pollenEntity,
           },
         );
-
         await this.sendNotifications(pollenNotifications);
       }
     }
@@ -134,26 +127,25 @@ export class PollenNotificationService {
       try {
         await this.firebaseService.sendPushNotification(
           pollenNotification.fcmToken,
-          {
-            title: 'Alerte Pollen',
-            body: `Une alerte de pollen a été déclanchée pou le polle ${name} du groupe ${group}`,
-          },
+          'Alerte Pollen',
+          `Une émission du pollen ${name} vient de démarrer`,
         );
       } catch (error) {
         if (error instanceof BadTokenError) {
-          const toDeleteNotifications = await this.em.find(
-            PollenNotificationEntity,
-            {
-              fcmToken: error.token,
-            },
-          );
-
-          for (const toDeleteNotification of toDeleteNotifications) {
-            this.em.remove(toDeleteNotification);
-          }
-          await this.em.flush();
+          await this.deletePollenNotificationsWithToken(error.token);
         }
       }
     }
+  }
+
+  private async deletePollenNotificationsWithToken(token: string) {
+    const toDeleteNotifications = await this.em.find(PollenNotificationEntity, {
+      fcmToken: token,
+    });
+
+    for (const toDeleteNotification of toDeleteNotifications) {
+      this.em.remove(toDeleteNotification);
+    }
+    await this.em.flush();
   }
 }
