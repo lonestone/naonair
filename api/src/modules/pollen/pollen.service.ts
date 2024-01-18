@@ -98,14 +98,6 @@ export class PollenService implements OnApplicationBootstrap {
 
       const stateChanges: UpdatePollenType = [];
 
-      // // TO REMOVE
-      // data.push({
-      //   name: 'Test',
-      //   group: 'Graminé',
-      //   latinName: 'rosa rosa rose',
-      //   state: 1,
-      // });
-
       // Check all pollen from the api
       for (const pollenData of data) {
         try {
