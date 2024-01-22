@@ -52,7 +52,7 @@ export class PollenService implements OnApplicationBootstrap {
   public async fetchAll() {
     const pollens = await this.em.find(PollenEntity, {});
     if (!pollens) {
-      throw new NotFoundException(HttpErrors.POLLEN_NOT_FOUND);
+      return [];
     }
     return pollens.map((pollen) => {
       return this.converter.fromEntityToDTO(pollen);

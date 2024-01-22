@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { HttpErrors, PollenNotificationDTO } from '@aireal/dtos';
+import { HttpErrors, UpdatePollenNotificationDTO } from '@aireal/dtos';
 import { PollenEntity } from 'src/entities/pollen.entity';
 import { PollenNotificationEntity } from 'src/entities/pollenNotifications.entity';
 import { BadTokenError } from 'src/errors/bad-token.error';
@@ -44,11 +44,11 @@ export class PollenNotificationService {
   }
 
   async updateNotification(
-    notificationDTO: PollenNotificationDTO,
+    notificationDTO: UpdatePollenNotificationDTO,
   ): Promise<void> {
-    const { pollen, status, fcmToken } = notificationDTO;
+    const { pollen, isEnabled, fcmToken } = notificationDTO;
 
-    if (!fcmToken || status === undefined) {
+    if (!fcmToken || isEnabled === undefined) {
       throw new BadRequestException(HttpErrors.POLLEN_NOTIFICATION_DTO_FAILED);
     }
 
@@ -67,7 +67,7 @@ export class PollenNotificationService {
       },
     );
 
-    if (status) {
+    if (isEnabled) {
       if (existingNotification) {
         return;
       }
