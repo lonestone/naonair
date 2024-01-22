@@ -1,5 +1,8 @@
-import { PollenNotificationDTO } from '@aireal/dtos';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  PollenNotificationDTO,
+  UpdatePollenNotificationDTO,
+} from '@aireal/dtos';
+import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { PollenNotificationService } from './pollenNotification.service';
 
 @Controller('pollenNotification')
@@ -13,10 +16,10 @@ export class PollenNotificationController {
     return await this.pollenService.findByToken(token);
   }
 
-  @Post('update')
+  @Patch()
   async updateNotification(
-    @Body() notificationDTO: PollenNotificationDTO,
-  ): Promise<PollenNotificationDTO | void> {
+    @Body() notificationDTO: UpdatePollenNotificationDTO,
+  ): Promise<void> {
     return await this.pollenService.updateNotification(notificationDTO);
   }
 }

@@ -12,9 +12,9 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   app.useGlobalPipes(
     new ValidationPipe({
-      // whitelist: true,
-      // forbidUnknownValues: true,
-      // forbidNonWhitelisted: true,
+      whitelist: true,
+      forbidUnknownValues: true,
+      forbidNonWhitelisted: true,
       transform: true,
     }),
   );

@@ -1,17 +1,13 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import {
+  BadRequestException,
   Injectable,
   Logger,
-  NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
 
-import {
-  HttpErrors,
-  PollenNotificationDTO,
-  PollenNotificationStatus,
-} from '@aireal/dtos';
+import { HttpErrors, PollenNotificationDTO } from '@aireal/dtos';
 import { PollenEntity } from 'src/entities/pollen.entity';
 import { PollenNotificationEntity } from 'src/entities/pollenNotifications.entity';
 import { BadTokenError } from 'src/errors/bad-token.error';
@@ -49,13 +45,11 @@ export class PollenNotificationService {
 
   async updateNotification(
     notificationDTO: PollenNotificationDTO,
-  ): Promise<void | PollenNotificationDTO> {
+  ): Promise<void> {
     const { pollen, status, fcmToken } = notificationDTO;
 
-    if (!fcmToken || !status) {
-      throw new NotAcceptableException(
-        HttpErrors.POLLEN_NOTIFICATION_DTO_FAILED,
-      );
+    if (!fcmToken || status === undefined) {
+      throw new BadRequestException(HttpErrors.POLLEN_NOTIFICATION_DTO_FAILED);
     }
 
     const existingPollen = await this.em.findOne(PollenEntity, {
@@ -73,30 +67,26 @@ export class PollenNotificationService {
       },
     );
 
-    switch (status) {
-      case PollenNotificationStatus.active:
-        if (existingNotification) {
-          return this.converter.fromEntityToDTO(existingNotification);
-        }
-        //else
-        const newPollenNotification = this.em.create(PollenNotificationEntity, {
-          fcmToken,
-          pollen: existingPollen,
-        });
-        this.em.persist(newPollenNotification);
+    if (status) {
+      if (existingNotification) {
+        return;
+      }
+      //else
+      const newPollenNotification = this.em.create(PollenNotificationEntity, {
+        fcmToken,
+        pollen: existingPollen,
+      });
+      this.em.persist(newPollenNotification);
+      await this.em.flush();
+      return;
+    } else {
+      if (existingNotification) {
+        this.em.remove(existingNotification);
         await this.em.flush();
-
-        return this.converter.fromEntityToDTO(newPollenNotification);
-      case PollenNotificationStatus.disabled:
-      default:
-        if (existingNotification) {
-          this.em.remove(existingNotification);
-          await this.em.flush();
-          return null;
-        }
-        //else the notification doesn't existe and this is fine
-        return null;
+      }
+      //else the notification doesn't existe and this is fine
     }
+    return;
   }
 
   public async sendNotificationsFor(updatedPollen: UpdatePollenType) {

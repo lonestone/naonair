@@ -1,7 +1,7 @@
 import {
   PollenDTO,
   PollenNotificationDTO,
-  PollenNotificationStatus,
+  UpdatePollenNotificationDTO,
 } from '@aireal/dtos';
 import { API } from '../config.json';
 
@@ -11,6 +11,7 @@ const NOTIFICATION_URL = `${API.baseUrl}pollenNotification`;
 export interface PollenSettings {
   name: string;
   value: boolean;
+  group: string;
 }
 
 const getPollen = async (): Promise<PollenDTO[] | null> => {
@@ -23,7 +24,7 @@ const getPollen = async (): Promise<PollenDTO[] | null> => {
   return json;
 };
 
-const updatePollen = async (pollenToUpdate: PollenNotificationDTO) => {
+const updatePollen = async (pollenToUpdate: UpdatePollenNotificationDTO) => {
   try {
     const response = await fetch(`${NOTIFICATION_URL}/update`, {
       method: 'POST',
@@ -51,7 +52,7 @@ const formatPollenDTO = (
       notifications?.find(
         notification => notification.pollen === pollen.name,
       ) || false;
-    return { name: pollen.name, value: !!isSubscribe };
+    return { name: pollen.name, value: !!isSubscribe, group: pollen.group };
   });
 };
 
@@ -73,12 +74,9 @@ export const savePollenSettings = async function (
   pollen: PollenSettings,
   fcmToken: string,
 ): Promise<Array<PollenSettings>> {
-  // On save le nouveau pollen en ligne
   await updatePollen({
     pollen: pollen.name,
-    status: pollen.value
-      ? PollenNotificationStatus.active
-      : PollenNotificationStatus.disabled,
+    status: pollen.value,
     fcmToken,
   });
 

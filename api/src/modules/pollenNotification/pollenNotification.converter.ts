@@ -8,5 +8,8 @@ export class PollenNotificationConverterService {
     pollenNotification: PollenNotificationEntity,
   ): PollenNotificationDTO => ({
     pollen: pollenNotification.pollen.unwrap().name,
+    status: true,
+    fcmToken: '',
   });
+  // TODO faire un dto de sortie
 }

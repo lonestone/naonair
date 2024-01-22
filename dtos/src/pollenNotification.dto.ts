@@ -1,10 +1,14 @@
-export enum PollenNotificationStatus { 
-  active = 'active',
-  disabled = 'disabled'
-}
+import { IsBoolean, IsString } from "class-validator";
 
 export class PollenNotificationDTO {
   pollen: string;
-  status?: 'active' | 'disabled';
-  fcmToken?: string
+  status: boolean;
+  fcmToken: string
 }
+
+export class UpdatePollenNotificationDTO {
+  @IsString() pollen: string;
+  @IsBoolean()status: boolean;
+  @IsString()fcmToken: string
+}
+
