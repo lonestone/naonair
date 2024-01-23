@@ -17,14 +17,14 @@ const styles = StyleSheet.create({
 });
 
 const ARListNotifications = () => {
-  const { getFcmToken } = useNotifications();
   const [pollenSpecies, setPollenSpecies] = useState<PollenSettings[] | null>(
     null,
   );
   const [fcmToken, setFcmToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
   const [pollenGroups, setPollenGroups] = useState<string[]>([]);
+
+  const { getFcmToken } = useNotifications();
 
   useEffect(() => {
     if (pollenSpecies) {
@@ -47,7 +47,6 @@ const ARListNotifications = () => {
       .finally(() => {
         setLoading(false);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fcmToken]);
 
   const setPollenValue = (pollen: PollenSettings) => {

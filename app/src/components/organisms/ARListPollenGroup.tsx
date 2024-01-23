@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { PollenSettings } from '../../actions/pollen';
 import ARNotificationRow from '../molecules/ARNotificationRow';
 
@@ -9,10 +9,6 @@ interface ARListPollenGroupProps {
   setPollenValue: (pollen: PollenSettings) => void;
   loading: boolean;
 }
-
-const styles = StyleSheet.create({
-  container: {},
-});
 
 const ARListPollenGroup = ({
   pollens,
@@ -41,7 +37,7 @@ const ARListPollenGroup = ({
   }, [filteredPollens]);
 
   return (
-    <View key={group} style={styles.container}>
+    <View key={group}>
       <ARNotificationRow
         name={group}
         value={getSelectAllValue}
