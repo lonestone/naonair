@@ -9,4 +9,5 @@ export enum HttpErrors {
   AUTH_INVALID_TOKEN = "Token d'authentification invalide",
   ENDDATE_CANNOT_START_BEFORE_STARTDATE = "La date de fin ne peut être avant la date de début",
   NEWS_CANNOT_START_SAME_AS_PLANNED = "L'actualité en cours ne peut commencer en même temps que l'actualité plannifée",
+  POLLEN_NOT_FOUND = "Pollen non trouvé",
 }

@@ -19,7 +19,7 @@ prepare_react_native_project!
 # ```
 flipper_config = FlipperConfiguration.disabled
 
-
+ENV['USE_HERMES'] = '0'
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil

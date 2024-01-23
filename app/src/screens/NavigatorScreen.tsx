@@ -3,28 +3,29 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from '@react-navigation/stack';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { getCGUAccepted, getIsFirstLaunched } from '../actions/launch';
+import BackButton from '../components/molecules/ARBackButton';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
 import ARListFavorites from '../components/templates/ARListFavorites';
+import ARListNotifications from '../components/templates/ARListNotifications';
 import ARPlaceFormLayout from '../components/templates/ARPlaceFormLayout';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
 import ARRouteDetail from '../components/templates/ARRouteDetail';
 import { SnackbarProvider } from '../contexts/snackbar.context';
 import { theme } from '../theme';
 import { StackParamList, TabParamList } from '../types/routes';
+import CGUScreen from './CGUScreen';
 import ItineraryScreen from './ItineraryScreen';
 import MapScreen from './MapScreen';
 import NavigationScreen from './NavigationScreen';
 import OnboardingScreen from './OnboardingScreen';
 import ProfileScreen from './ProfileScreen';
 import RoutesScreen from './RoutesScreen';
-import { Platform } from 'react-native';
-import BackButton from '../components/molecules/ARBackButton';
-import CGUScreen from './CGUScreen';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 const Stack = createStackNavigator<StackParamList>();
@@ -153,6 +154,12 @@ export default () => {
         <Stack.Screen
           name="Favorites"
           component={ARListFavorites}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Notifications"
+          component={ARListNotifications}
           options={{ headerShown: false }}
         />
 
