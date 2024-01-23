@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  SafeAreaView,
-  StyleSheet
-} from 'react-native';
+import { ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
   PollenSettings,
   getPollenSettings,
   savePollenSettings,
-} from '../../actions/pollen';
+} from '../../actions/pollenNotifications';
 import { useNotifications } from '../../hooks/useNotifications';
 import ARSnackbar from '../atoms/ARSnackbar';
 import BackButton from '../molecules/ARBackButton';

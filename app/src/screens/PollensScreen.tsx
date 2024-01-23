@@ -1,6 +1,8 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { Provider } from 'react-native-paper';
+import ARCommonHeader from '../components/molecules/ARCommonHeader';
+import ARListPollens from '../components/templates/ARListPollens';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,8 +14,12 @@ const styles = StyleSheet.create({
 const PollensScreen = () => {
   return (
     <Provider>
+      <ARCommonHeader
+        headline="Émissions de pollens"
+        caption="Données du pollinarium sentinelle de Nantes"
+      />
       <SafeAreaView style={styles.container}>
-        <Text>Salut</Text>
+        <ARListPollens />
       </SafeAreaView>
     </Provider>
   );
