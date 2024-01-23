@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { PollenSettings } from '../../actions/pollen';
 import ARNotificationRow from '../molecules/ARNotificationRow';
@@ -11,10 +11,7 @@ interface ARListPollenGroupProps {
 }
 
 const styles = StyleSheet.create({
-  flatListContainer: {
-    marginHorizontal: 16,
-    marginTop: 16,
-  },
+  container: {},
 });
 
 const ARListPollenGroup = ({
@@ -23,17 +20,40 @@ const ARListPollenGroup = ({
   setPollenValue,
   loading,
 }: ARListPollenGroupProps) => {
-  const [filteredPollens] = useState(
-    pollens.filter(pollen => pollen.group === group),
-  );
+  const [filteredPollens, setFilteredPollens] = useState<PollenSettings[]>([]);
+
+  useEffect(() => {
+    setFilteredPollens(pollens.filter(pollen => pollen.group === group));
+  }, [group, pollens]);
+
+  const handleOnChangeAll = (value: boolean) => {
+    for (const pollen of filteredPollens) {
+      setPollenValue({ name: pollen.name, value, group: pollen.group });
+    }
+  };
+
+  const getSelectAllValue = useMemo(() => {
+    if (!filteredPollens || filteredPollens.length === 0) {
+      return false;
+    }
+
+    return filteredPollens.every(pollen => pollen.value === true);
+  }, [filteredPollens]);
 
   return (
-    <View key={group}>
+    <View key={group} style={styles.container}>
+      <ARNotificationRow
+        name={group}
+        value={getSelectAllValue}
+        onChange={handleOnChangeAll}
+        loading={loading}
+        isTitle={true}
+        showSelectAll={true}
+      />
       <FlatList
         keyExtractor={item => item.name}
         data={filteredPollens}
-        style={styles.flatListContainer}
-        ItemSeparatorComponent={Separator}
+        scrollEnabled={false}
         renderItem={({ item }) => (
           <ARNotificationRow
             name={item.name}
@@ -48,7 +68,5 @@ const ARListPollenGroup = ({
     </View>
   );
 };
-
-const Separator = () => <View style={{ height: 16 }} />;
 
 export default ARListPollenGroup;

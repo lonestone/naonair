@@ -26,8 +26,8 @@ const getPollen = async (): Promise<PollenDTO[] | null> => {
 
 const updatePollen = async (pollenToUpdate: UpdatePollenNotificationDTO) => {
   try {
-    const response = await fetch(`${NOTIFICATION_URL}/update`, {
-      method: 'POST',
+    const response = await fetch(`${NOTIFICATION_URL}`, {
+      method: 'PATCH',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export const savePollenSettings = async function (
 ): Promise<Array<PollenSettings>> {
   await updatePollen({
     pollen: pollen.name,
-    status: pollen.value,
+    isEnabled: pollen.value,
     fcmToken,
   });
 

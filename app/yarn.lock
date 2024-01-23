@@ -3876,7 +3876,7 @@ async@^3.2.2:
 
 asynckit@^0.4.0:
   version "0.4.0"
-  resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
+  resolved "https://registry.npmjs.org/asynckit/-/asynckit-0.4.0.tgz"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
 at-least-node@^1.0.0:
@@ -3891,7 +3891,7 @@ available-typed-arrays@^1.0.5:
 
 axios@^1.6.5:
   version "1.6.5"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.5.tgz#2c090da14aeeab3770ad30c3a1461bc970fb0cd8"
+  resolved "https://registry.npmjs.org/axios/-/axios-1.6.5.tgz"
   integrity sha512-Ii012v05KEVuUoFWmMW/UQv9aRIc3ZwkWDcM+h5Il8izZCtRVpDUfwpoFf7eOtajT3QiGR4yDUx7lPqHJULgbg==
   dependencies:
     follow-redirects "^1.15.4"
@@ -4384,7 +4384,7 @@ colorette@^1.0.7:
 
 combined-stream@^1.0.8:
   version "1.0.8"
-  resolved "https://registry.yarnpkg.com/combined-stream/-/combined-stream-1.0.8.tgz#c3d45a8b34fd730631a110a8a2520682b31d5a7f"
+  resolved "https://registry.npmjs.org/combined-stream/-/combined-stream-1.0.8.tgz"
   integrity sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==
   dependencies:
     delayed-stream "~1.0.0"
@@ -4636,7 +4636,7 @@ define-properties@^1.1.3, define-properties@^1.1.4, define-properties@^1.2.0:
 
 delayed-stream@~1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
+  resolved "https://registry.npmjs.org/delayed-stream/-/delayed-stream-1.0.0.tgz"
   integrity sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==
 
 denodeify@^1.2.1:
@@ -5292,7 +5292,7 @@ flow-parser@^0.206.0:
 
 follow-redirects@^1.15.4:
   version "1.15.5"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.5.tgz#54d4d6d062c0fa7d9d17feb008461550e3ba8020"
+  resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.5.tgz"
   integrity sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==
 
 for-each@^0.3.3:
@@ -5321,7 +5321,7 @@ for-own@^1.0.0:
 
 form-data@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.0.tgz#93919daeaf361ee529584b9b31664dc12c9fa452"
+  resolved "https://registry.npmjs.org/form-data/-/form-data-4.0.0.tgz"
   integrity sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==
   dependencies:
     asynckit "^0.4.0"
@@ -7042,7 +7042,7 @@ minimist@^1.2.0, minimist@^1.2.6:
 
 mitt@^3.0.1:
   version "3.0.1"
-  resolved "https://registry.yarnpkg.com/mitt/-/mitt-3.0.1.tgz#ea36cf0cc30403601ae074c8f77b7092cdab36d1"
+  resolved "https://registry.npmjs.org/mitt/-/mitt-3.0.1.tgz"
   integrity sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==
 
 mixin-object@^2.0.1:
@@ -7607,7 +7607,7 @@ pure-rand@^6.0.0:
 
 query-string@6.14.1:
   version "6.14.1"
-  resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.14.1.tgz#7ac2dca46da7f309449ba0f86b1fd28255b0c86a"
+  resolved "https://registry.npmjs.org/query-string/-/query-string-6.14.1.tgz"
   integrity sha512-XDxAeVmpfu1/6IjyT/gXHOl+S0vQ9owggJ30hhWKdHAsNPOcasn5o9BW0eejZqL2e4vMjhAxoW3jVHcD6mbcYw==
   dependencies:
     decode-uri-component "^0.2.0"
@@ -7705,7 +7705,7 @@ react-is@^17.0.1:
 
 react-native-flipper@^0.164.0:
   version "0.164.0"
-  resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.164.0.tgz#64f6269a86a13a72e30f53ba9f5281d2073a7697"
+  resolved "https://registry.npmjs.org/react-native-flipper/-/react-native-flipper-0.164.0.tgz"
   integrity sha512-iJhIe3rqx6okuzBp4AJsTa2b8VRAOGzoLRFx/4HGbaGvu8AurZjz8TTQkhJsRma8dsHN2b6KKZPvGGW3wdWzvA==
 
 react-native-geolocation-service@^5.3.0-beta.4:
@@ -7736,7 +7736,7 @@ react-native-paper@^5.9.1:
 
 react-native-reanimated@^3.6.1:
   version "3.6.1"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-3.6.1.tgz#5add41efafac6d0befd9786e752e7f26dbe903b7"
+  resolved "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-3.6.1.tgz"
   integrity sha512-F4vG9Yf9PKmE3GaWtVGUpzj3SM6YY2cx1yRHCwiMd1uY7W0gU017LfcVUorboJnj0y5QZqEriEK1Usq2Y8YZqg==
   dependencies:
     "@babel/plugin-transform-object-assign" "^7.16.7"
@@ -7846,19 +7846,19 @@ react@18.2.0:
 
 reactotron-core-client@2.8.11:
   version "2.8.11"
-  resolved "https://registry.yarnpkg.com/reactotron-core-client/-/reactotron-core-client-2.8.11.tgz#93c7d9c0038704c22b0e9d1e6de54e1578051442"
+  resolved "https://registry.npmjs.org/reactotron-core-client/-/reactotron-core-client-2.8.11.tgz"
   integrity sha512-zoqKrAqWjTPpa1s1AtVZPZItYE8Kjgs99v9gcKMCW2Ejcba9fYOoRCwu0zqoHU8iWyBzJsOWVai0FdRVRUHf8Q==
   dependencies:
     reactotron-core-contract "0.1.1"
 
 reactotron-core-contract@0.1.1:
   version "0.1.1"
-  resolved "https://registry.yarnpkg.com/reactotron-core-contract/-/reactotron-core-contract-0.1.1.tgz#3fc0e72e17a71c830c752985b5d2a5dd3df79166"
+  resolved "https://registry.npmjs.org/reactotron-core-contract/-/reactotron-core-contract-0.1.1.tgz"
   integrity sha512-NmmojG6Pz97NJe8ov0oZgIxxaaEkXsVAiFOeFTI4QH03qMqAs6d28nUd5bTrKLipxWy5rPr4PXITE7AHdT0kaw==
 
 reactotron-react-native@^5.0.4:
   version "5.0.4"
-  resolved "https://registry.yarnpkg.com/reactotron-react-native/-/reactotron-react-native-5.0.4.tgz#4bff2e74f2a99bf4963db130a6b392036bd90130"
+  resolved "https://registry.npmjs.org/reactotron-react-native/-/reactotron-react-native-5.0.4.tgz"
   integrity sha512-Ho5PXLtF4GirFzhjdzbVgRk9Idf3woK5c9Cx1lVdYMVb96kzUMlzn2qCD7H6t/yjIFik9LM/3ncWWNHacVySNg==
   dependencies:
     mitt "^3.0.1"

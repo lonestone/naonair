@@ -2,13 +2,13 @@ import { IsBoolean, IsString } from "class-validator";
 
 export class PollenNotificationDTO {
   pollen: string;
-  status: boolean;
+  isEnabled: boolean;
   fcmToken: string
 }
 
 export class UpdatePollenNotificationDTO {
   @IsString() pollen: string;
-  @IsBoolean()status: boolean;
+  @IsBoolean()isEnabled: boolean;
   @IsString()fcmToken: string
 }
 

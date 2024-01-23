@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { fonts } from '../../theme';
+import { fonts, theme } from '../../theme';
 import ARSwitch from '../atoms/ARSwitch';
 
 interface ARNotificationRowProps {
@@ -8,6 +8,8 @@ interface ARNotificationRowProps {
   value: boolean;
   onChange: (value: boolean) => void;
   loading: boolean;
+  isTitle?: boolean;
+  showSelectAll?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -15,11 +17,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
   },
   text: {
     fontSize: 16,
     lineHeight: 24,
     ...fonts.Lato.regular,
+  },
+  title: {
+    fontSize: 18,
+    ...fonts.Lato.bold,
+  },
+  titleContainer: {
+    borderColor: theme.colors.accent,
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    paddingVertical: 16,
+  },
+  selectAllContainer: { flex: 1, alignItems: 'flex-end' },
+  selectAllText: {
+    ...fonts.Lato.regular,
+    fontSize: 14,
+    lineHeight: 16,
+    marginRight: 12,
+    alignSelf: 'flex-end',
   },
 });
 
@@ -28,10 +50,17 @@ const ARNotificationRow = ({
   value,
   onChange,
   loading,
+  isTitle = false,
+  showSelectAll = false,
 }: ARNotificationRowProps) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>{name}</Text>
+    <View style={[styles.container, isTitle && styles.titleContainer]}>
+      <Text style={[!isTitle ? styles.text : styles.title]}>{name}</Text>
+      {showSelectAll && (
+        <View style={styles.selectAllContainer}>
+          <Text style={styles.selectAllText}>Tout sélectionner</Text>
+        </View>
+      )}
       <ARSwitch onChange={onChange} value={value} loading={loading} />
     </View>
   );

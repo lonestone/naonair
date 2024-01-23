@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import {
   PollenSettings,
   getPollenSettings,
@@ -8,9 +8,13 @@ import {
 } from '../../actions/pollen';
 import { useNotifications } from '../../hooks/useNotifications';
 import ARSnackbar from '../atoms/ARSnackbar';
-import ARSwitch from '../atoms/ARSwitch';
 import BackButton from '../molecules/ARBackButton';
 import ARCommonHeader from '../molecules/ARCommonHeader';
+import ARListPollenGroup from '../organisms/ARListPollenGroup';
+
+const styles = StyleSheet.create({
+  container: { backgroundColor: 'white', flex: 1 },
+});
 
 const ARListNotifications = () => {
   const { getFcmToken } = useNotifications();
@@ -19,6 +23,18 @@ const ARListNotifications = () => {
   );
   const [fcmToken, setFcmToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const [pollenGroups, setPollenGroups] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (pollenSpecies) {
+      const uniqueGroupsSet = new Set<string>();
+      pollenSpecies.forEach(pollen => {
+        uniqueGroupsSet.add(pollen.group);
+      });
+      setPollenGroups(Array.from(uniqueGroupsSet));
+    }
+  }, [pollenSpecies]);
 
   useEffect(() => {
     setLoading(true);
@@ -45,7 +61,6 @@ const ARListNotifications = () => {
         setLoading(false);
       });
   };
-
   return (
     <>
       <ARCommonHeader
@@ -54,25 +69,19 @@ const ARListNotifications = () => {
         caption="Retrouvez ici la gestion de vos alertes"
       />
       <ARSnackbar />
-      <View>
-        {pollenSpecies !== null && (
-          <FlatList
-            keyExtractor={item => item.name}
-            data={pollenSpecies}
-            renderItem={({ item }) => (
-              <>
-                <Text>{item.name}</Text>
-                <ARSwitch
-                  onChange={(value: boolean) =>
-                    setPollenValue({ name: item.name, value })
-                  }
-                  value={item.value}
-                  loading={loading}
-                />
-              </>
-            )}
-          />
-        )}
+      <View style={styles.container}>
+        {loading && <ActivityIndicator />}
+        <ScrollView>
+          {pollenSpecies &&
+            pollenGroups.map(group => (
+              <ARListPollenGroup
+                pollens={pollenSpecies}
+                group={group}
+                setPollenValue={setPollenValue}
+                loading={loading}
+              />
+            ))}
+        </ScrollView>
       </View>
     </>
   );
