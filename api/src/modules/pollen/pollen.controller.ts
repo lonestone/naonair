@@ -13,6 +13,6 @@ export class PollenController {
 
   @Get(':name')
   async findByName(@Param('name') name: string): Promise<PollenDTO> {
-    return await this.pollenService.findByName(name);
+    return this.pollenService.findByName(name);
   }
 }

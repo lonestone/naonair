@@ -13,13 +13,13 @@ export class PollenNotificationController {
   async findByToken(
     @Param('fcmToken') token: string,
   ): Promise<Array<PollenNotificationDTO>> {
-    return await this.pollenService.findByToken(token);
+    return this.pollenService.findByToken(token);
   }
 
   @Patch()
   async updateNotification(
     @Body() notificationDTO: UpdatePollenNotificationDTO,
   ): Promise<void> {
-    return await this.pollenService.updateNotification(notificationDTO);
+    return this.pollenService.updateNotification(notificationDTO);
   }
 }

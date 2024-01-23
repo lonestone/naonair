@@ -20,7 +20,7 @@ import {
   PollenNotificationService,
   UpdatePollenType,
 } from '../pollenNotification/pollenNotification.service';
-import { PollenConverterService } from './pollen.converter';
+import { PollenConverterService, PollenSpecie } from './pollen.converter';
 
 @Injectable()
 export class PollenService implements OnApplicationBootstrap {
@@ -51,9 +51,6 @@ export class PollenService implements OnApplicationBootstrap {
 
   public async fetchAll() {
     const pollens = await this.em.find(PollenEntity, {});
-    if (!pollens) {
-      return [];
-    }
     return pollens.map((pollen) => {
       return this.converter.fromEntityToDTO(pollen);
     });
@@ -72,9 +69,9 @@ export class PollenService implements OnApplicationBootstrap {
       .pipe(
         map((axiosResponse) => {
           if (axiosResponse) {
-            return axiosResponse.data.species.map((species) =>
-              this.converter.toDTO(species),
-            );
+            return axiosResponse.data.species.map((species: PollenSpecie) => {
+              return this.converter.toDTO(species);
+            });
           } else return axiosResponse.data.results.species;
         }),
         catchError((err) =>
@@ -89,11 +86,10 @@ export class PollenService implements OnApplicationBootstrap {
       );
   }
 
-  // @Cron('10 * * * * *')
   @Cron('0 6 * * *')
   async getPollenNotifications() {
     try {
-      // lastValueFrom get get Obsarvable datas and not all the observable.
+      // lastValueFrom get Observable data and not all the observable.
       const data = await lastValueFrom(await this.fetchAllFromAPI());
 
       const stateChanges: UpdatePollenType = [];

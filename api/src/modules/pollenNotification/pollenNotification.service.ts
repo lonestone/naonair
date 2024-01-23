@@ -1,10 +1,9 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import {
-  BadRequestException,
   Injectable,
   Logger,
-  NotFoundException,
+  NotFoundException
 } from '@nestjs/common';
 
 import { HttpErrors, UpdatePollenNotificationDTO } from '@aireal/dtos';
@@ -47,10 +46,6 @@ export class PollenNotificationService {
     notificationDTO: UpdatePollenNotificationDTO,
   ): Promise<void> {
     const { pollen, isEnabled, fcmToken } = notificationDTO;
-
-    if (!fcmToken || isEnabled === undefined) {
-      throw new BadRequestException(HttpErrors.POLLEN_NOTIFICATION_DTO_FAILED);
-    }
 
     const existingPollen = await this.em.findOne(PollenEntity, {
       name: pollen,

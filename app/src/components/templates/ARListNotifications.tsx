@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  StyleSheet
+} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
   PollenSettings,
@@ -68,7 +72,7 @@ const ARListNotifications = () => {
         caption="Retrouvez ici la gestion de vos alertes"
       />
       <ARSnackbar />
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         {loading && <ActivityIndicator />}
         <ScrollView>
           {pollenSpecies &&
@@ -81,7 +85,7 @@ const ARListNotifications = () => {
               />
             ))}
         </ScrollView>
-      </View>
+      </SafeAreaView>
     </>
   );
 };
