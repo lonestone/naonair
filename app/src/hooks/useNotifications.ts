@@ -33,7 +33,8 @@ export const useNotifications = () => {
   };
 
   const notificationListener = () => {
-    messaging().onNotificationOpenedApp(remoteMessage => {
+    const messages = messaging();
+    messages.onNotificationOpenedApp(remoteMessage => {
       console.info(
         'Notification caused app to open from background state:',
         remoteMessage.notification,
@@ -41,7 +42,7 @@ export const useNotifications = () => {
     });
 
     // Quiet and Background State -> Check whether an initial notification is available
-    messaging()
+    messages
       .getInitialNotification()
       .then(remoteMessage => {
         if (remoteMessage) {
@@ -54,7 +55,7 @@ export const useNotifications = () => {
       .catch(error => console.error('Failed to get Remote message', error));
 
     // Foreground State
-    messaging().onMessage(async remoteMessage => {
+    messages.onMessage(async remoteMessage => {
       console.info('foreground', remoteMessage);
     });
   };

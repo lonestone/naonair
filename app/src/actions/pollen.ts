@@ -43,6 +43,12 @@ const updatePollen = async (pollenToUpdate: UpdatePollenNotificationDTO) => {
   }
 };
 
+/**
+ * This function is used to return an array with the user settings by combine online pollen and user notification's settings
+ * @param onlinePollen : All the pollens from the api, but with no settings value
+ * @param notifications : All user subscribe notification
+ * @returns All the pollen with the user sub values : an PollenSettings array
+ */
 const formatPollenDTO = (
   onlinePollen: PollenDTO[],
   notifications: PollenNotificationDTO[] | null,

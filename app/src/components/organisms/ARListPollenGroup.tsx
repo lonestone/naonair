@@ -5,22 +5,22 @@ import ARNotificationRow from '../molecules/ARNotificationRow';
 
 interface ARListPollenGroupProps {
   pollens: PollenSettings[];
-  group: string;
+  groupName: string;
   setPollenValue: (pollen: PollenSettings) => void;
   loading: boolean;
 }
 
 const ARListPollenGroup = ({
   pollens,
-  group,
+  groupName,
   setPollenValue,
   loading,
 }: ARListPollenGroupProps) => {
   const [filteredPollens, setFilteredPollens] = useState<PollenSettings[]>([]);
 
   useEffect(() => {
-    setFilteredPollens(pollens.filter(pollen => pollen.group === group));
-  }, [group, pollens]);
+    setFilteredPollens(pollens.filter(pollen => pollen.group === groupName));
+  }, [groupName, pollens]);
 
   const handleOnChangeAll = (value: boolean) => {
     for (const pollen of filteredPollens) {
@@ -37,9 +37,9 @@ const ARListPollenGroup = ({
   }, [filteredPollens]);
 
   return (
-    <View key={group}>
+    <View key={groupName}>
       <ARNotificationRow
-        name={group}
+        name={groupName}
         value={getSelectAllValue}
         onChange={handleOnChangeAll}
         loading={loading}
@@ -50,12 +50,12 @@ const ARListPollenGroup = ({
         keyExtractor={item => item.name}
         data={filteredPollens}
         scrollEnabled={false}
-        renderItem={({ item }) => (
+        renderItem={({ item: { name, group, value } }) => (
           <ARNotificationRow
-            name={item.name}
-            value={item.value}
-            onChange={(value: boolean) =>
-              setPollenValue({ name: item.name, value, group: item.group })
+            name={name}
+            value={value}
+            onChange={(changedValue: boolean) =>
+              setPollenValue({ name: name, value: changedValue, group })
             }
             loading={loading}
           />

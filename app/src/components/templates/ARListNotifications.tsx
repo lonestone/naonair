@@ -75,7 +75,7 @@ const ARListNotifications = () => {
             pollenGroups.map(group => (
               <ARListPollenGroup
                 pollens={pollenSpecies}
-                group={group}
+                groupName={group}
                 setPollenValue={setPollenValue}
                 loading={loading}
               />
