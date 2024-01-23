@@ -30,6 +30,7 @@ export type TabParamList = {
   };
   Parcours: undefined;
   Profil: undefined;
+  Pollens: undefined;
 };
 
 export type StackNavigationScreenProp = StackNavigationProp<StackParamList>;

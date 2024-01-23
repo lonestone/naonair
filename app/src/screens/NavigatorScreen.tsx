@@ -6,8 +6,10 @@ import {
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SvgXml } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getCGUAccepted, getIsFirstLaunched } from '../actions/launch';
+import pollenIcon from '../assets/pollen-icon.svg';
 import BackButton from '../components/molecules/ARBackButton';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
@@ -24,18 +26,39 @@ import ItineraryScreen from './ItineraryScreen';
 import MapScreen from './MapScreen';
 import NavigationScreen from './NavigationScreen';
 import OnboardingScreen from './OnboardingScreen';
+import PollensScreen from './PollensScreen';
 import ProfileScreen from './ProfileScreen';
 import RoutesScreen from './RoutesScreen';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 const Stack = createStackNavigator<StackParamList>();
 
-const routeIcon = {
+const routeIcon: {
+  [key in keyof TabParamList]: string;
+} = {
   Carte: 'map',
   Itinéraires: 'near-me',
   Parcours: 'run',
+  Pollens: 'pollen',
   Profil: 'account-circle',
 };
+
+const getTabBarIcon =
+  (routeName: keyof TabParamList) =>
+  ({
+    color,
+  }: {
+    focused: boolean;
+    color: string;
+    size: number;
+  }): React.ReactNode => {
+    const name = routeIcon[routeName];
+    if (name !== 'pollen') {
+      return <Icon name={name} size={30} color={color} />;
+    } else {
+      return <SvgXml width={30} height={30} fill={color} xml={pollenIcon} />;
+    }
+  };
 
 const Home = () => {
   const { bottom } = useSafeAreaInsets();
@@ -58,13 +81,12 @@ const Home = () => {
         tabBarActiveTintColor: theme.colors.white,
         tabBarInactiveTintColor: 'rgba(255,255,255, 0.6)',
 
-        tabBarIcon: ({ color }) => (
-          <Icon name={routeIcon[route.name]} size={30} color={color} />
-        ),
+        tabBarIcon: getTabBarIcon(route.name),
       })}>
       <Tab.Screen name="Carte" component={MapScreen} />
       <Tab.Screen name="Itinéraires" component={ItineraryScreen} />
       <Tab.Screen name="Parcours" component={RoutesScreen} />
+      <Tab.Screen name="Pollens" component={PollensScreen} />
       <Tab.Screen name="Profil" component={ProfileScreen} />
     </Tab.Navigator>
   );

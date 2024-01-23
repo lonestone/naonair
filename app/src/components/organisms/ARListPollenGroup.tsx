@@ -55,7 +55,7 @@ const ARListPollenGroup = ({
             name={name}
             value={value}
             onChange={(changedValue: boolean) =>
-              setPollenValue({ name: name, value: changedValue, group })
+              setPollenValue({ name, value: changedValue, group })
             }
             loading={loading}
           />
