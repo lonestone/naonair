@@ -77,10 +77,6 @@ const Home = () => {
   const { bottom } = useSafeAreaInsets();
   const { count } = useContext(NotificationsContext);
 
-  useEffect(() => {
-    console.log('====>', count);
-  }, [count]);
-
   return (
     <Tab.Navigator
       defaultScreenOptions={{

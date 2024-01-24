@@ -20,7 +20,7 @@ const ARPollenStateRow = ({ pollen, stateName }: ARPollenStateRowProps) => {
       case 2:
       case 8:
       default:
-        return { backgroundColor: theme.colors.grey[300] };
+        return { backgroundColor: theme.colors.grey[200] };
     }
   }, [pollen.state]);
   return (

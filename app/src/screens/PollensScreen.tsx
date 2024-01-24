@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { Provider } from 'react-native-paper';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARListPollens from '../components/templates/ARListPollens';
+import { NotificationsContext } from '../contexts/notifications.context';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,6 +13,12 @@ const styles = StyleSheet.create({
 });
 
 const PollensScreen = () => {
+  const { readNotifications } = useContext(NotificationsContext);
+
+  useEffect(() => {
+    readNotifications();
+  }, []);
+
   return (
     <Provider>
       <ARCommonHeader

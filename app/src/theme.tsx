@@ -65,6 +65,7 @@ export const theme = {
     grey: {
       50: '#F0F0F0',
       100: '#A3A3A3',
+      200: '#D4D4D4',
       300: '#737373',
     },
     outlineDisabled: '#9BA4D1',
