@@ -20,7 +20,5 @@ export const getPollenStates = async (): Promise<Record<number, string>> => {
     return [];
   }
 
-  console.log(json);
-
   return json;
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
@@ -6,6 +6,7 @@ import {
   getPollenSettings,
   savePollenSettings,
 } from '../../actions/pollenNotifications';
+import { NotificationsContext } from '../../contexts/notifications.context';
 import { useNotifications } from '../../hooks/useNotifications';
 import ARSnackbar from '../atoms/ARSnackbar';
 import BackButton from '../molecules/ARBackButton';
@@ -25,6 +26,7 @@ const ARListNotifications = () => {
   const [pollenGroups, setPollenGroups] = useState<string[]>([]);
 
   const { getFcmToken } = useNotifications();
+  const { refreshNotifications } = useContext(NotificationsContext);
 
   useEffect(() => {
     if (pollenSpecies) {
@@ -47,6 +49,7 @@ const ARListNotifications = () => {
       .finally(() => {
         setLoading(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fcmToken]);
 
   const setPollenValue = (pollen: PollenSettings) => {
@@ -58,6 +61,7 @@ const ARListNotifications = () => {
       .then(setPollenSpecies)
       .finally(() => {
         setLoading(false);
+        refreshNotifications();
       });
   };
   return (
@@ -74,6 +78,7 @@ const ARListNotifications = () => {
           {pollenSpecies &&
             pollenGroups.map(group => (
               <ARListPollenGroup
+                key={group}
                 pollens={pollenSpecies}
                 groupName={group}
                 setPollenValue={setPollenValue}

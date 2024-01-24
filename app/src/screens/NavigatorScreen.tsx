@@ -3,13 +3,20 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from '@react-navigation/stack';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Platform } from 'react-native';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SvgXml } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getCGUAccepted, getIsFirstLaunched } from '../actions/launch';
 import pollenIcon from '../assets/pollen-icon.svg';
+import ARBadge from '../components/atoms/ARBadge';
 import BackButton from '../components/molecules/ARBackButton';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
@@ -18,6 +25,7 @@ import ARListNotifications from '../components/templates/ARListNotifications';
 import ARPlaceFormLayout from '../components/templates/ARPlaceFormLayout';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
 import ARRouteDetail from '../components/templates/ARRouteDetail';
+import { NotificationsContext } from '../contexts/notifications.context';
 import { SnackbarProvider } from '../contexts/snackbar.context';
 import { theme } from '../theme';
 import { StackParamList, TabParamList } from '../types/routes';
@@ -44,7 +52,7 @@ const routeIcon: {
 };
 
 const getTabBarIcon =
-  (routeName: keyof TabParamList) =>
+  (routeName: keyof TabParamList, notificationCount: number) =>
   ({
     color,
   }: {
@@ -56,12 +64,23 @@ const getTabBarIcon =
     if (name !== 'pollen') {
       return <Icon name={name} size={30} color={color} />;
     } else {
-      return <SvgXml width={30} height={30} fill={color} xml={pollenIcon} />;
+      return (
+        <View style={{ position: 'relative' }}>
+          <SvgXml width={30} height={30} fill={color} xml={pollenIcon} />
+          {notificationCount > 0 && <ARBadge text={notificationCount} />}
+        </View>
+      );
     }
   };
 
 const Home = () => {
   const { bottom } = useSafeAreaInsets();
+  const { count } = useContext(NotificationsContext);
+
+  useEffect(() => {
+    console.log('====>', count);
+  }, [count]);
+
   return (
     <Tab.Navigator
       defaultScreenOptions={{
@@ -81,7 +100,7 @@ const Home = () => {
         tabBarActiveTintColor: theme.colors.white,
         tabBarInactiveTintColor: 'rgba(255,255,255, 0.6)',
 
-        tabBarIcon: getTabBarIcon(route.name),
+        tabBarIcon: getTabBarIcon(route.name, count),
       })}>
       <Tab.Screen name="Carte" component={MapScreen} />
       <Tab.Screen name="Itinéraires" component={ItineraryScreen} />

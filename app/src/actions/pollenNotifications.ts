@@ -86,7 +86,6 @@ export const getPollenSettings = async function (
   fcmToken: string | null,
 ): Promise<PollenSettings[]> {
   const onlinePollen = await getPollen();
-  console.log(onlinePollen);
   const notifications =
     fcmToken !== null ? await getPollenNotifications(fcmToken) : null;
 
