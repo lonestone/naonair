@@ -7,7 +7,10 @@ import React, {
   useState,
 } from 'react';
 import { getPollen } from '../actions/pollen';
-import { getPollenNotifications } from '../actions/pollenNotifications';
+import {
+  getPollenNotifications,
+  savePollenSettings,
+} from '../actions/pollenNotifications';
 import { useNotifications } from '../hooks/useNotifications';
 
 const POLLEN_NOTIFICATIONS_KEY = '@pollennotifications';
@@ -16,12 +19,16 @@ export type Notifications = {
   count: number;
   refreshNotifications: () => void;
   readNotifications: () => Promise<void>;
+  setAllPollenNotificationsToTrue: () => Promise<boolean>;
+  getToken: () => Promise<string>;
 };
 
 const defaultValue: Notifications = {
   count: 0,
   refreshNotifications: () => {},
   readNotifications: async () => {},
+  setAllPollenNotificationsToTrue: async () => false,
+  getToken: async () => '',
 };
 
 export const NotificationsContext = createContext<Notifications>(defaultValue);
@@ -34,18 +41,43 @@ export const NotificationsProvider = ({
   const { getFcmToken } = useNotifications();
 
   useEffect(() => {
-    (async () => {
-      setFcmToken(await getFcmToken());
-    })();
-  }, [getFcmToken]);
+    getToken();
+  }, []);
+
+  const getToken = async () => {
+    try {
+      const token = await getFcmToken();
+      setFcmToken(token);
+      return token || '';
+    } catch (error) {
+      console.log(error);
+      return '';
+    }
+  };
+
+  const setAllPollenNotificationsToTrue = useCallback(async () => {
+    const _token = fcmToken || (await getToken());
+
+    if (!_token) {
+      return false;
+    }
+
+    const pollens = await getPollen();
+
+    for (const { name, group } of pollens) {
+      await savePollenSettings({ name, group, value: true }, _token);
+    }
+    return true;
+  }, [fcmToken]);
 
   const getNotificationsStates = useCallback(async () => {
-    if (!fcmToken) {
+    const _token = fcmToken || (await getToken());
+    if (!_token) {
       return [];
     }
 
     const pollens = await getPollen();
-    const settings = (await getPollenNotifications(fcmToken)) || [];
+    const settings = (await getPollenNotifications(_token)) || [];
     let localPollenNotificationsState = await getLocalPollenNotificationState();
 
     for (const pollen of pollens) {
@@ -53,11 +85,9 @@ export const NotificationsProvider = ({
       const localIndex = localPollenNotificationsState.findIndex(
         item => item.pollenName === pollen.name,
       );
-      console.log(pollen.name, '===>', localIndex);
+
       if (localIndex !== -1 && pollen.state !== 1) {
-        console.log(localPollenNotificationsState);
         localPollenNotificationsState.splice(localIndex, 1);
-        console.log(localPollenNotificationsState);
         continue;
       }
 
@@ -85,7 +115,7 @@ export const NotificationsProvider = ({
     await save(localPollenNotificationsState);
 
     return localPollenNotificationsState.filter(item => item.isRead === false);
-  }, [fcmToken]);
+  }, []);
 
   const refreshNotifications = useCallback(() => {
     getNotificationsStates().then(subscribedActivePollen => {
@@ -112,7 +142,13 @@ export const NotificationsProvider = ({
 
   return (
     <NotificationsContext.Provider
-      value={{ count, refreshNotifications, readNotifications }}>
+      value={{
+        count,
+        refreshNotifications,
+        readNotifications,
+        setAllPollenNotificationsToTrue,
+        getToken,
+      }}>
       {children}
     </NotificationsContext.Provider>
   );

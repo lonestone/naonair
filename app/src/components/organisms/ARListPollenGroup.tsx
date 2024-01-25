@@ -8,6 +8,7 @@ interface ARListPollenGroupProps {
   groupName: string;
   setPollenValue: (pollen: PollenSettings) => void;
   loading: boolean;
+  authorizedPermissions: boolean;
 }
 
 const ARListPollenGroup = ({
@@ -15,6 +16,7 @@ const ARListPollenGroup = ({
   groupName,
   setPollenValue,
   loading,
+  authorizedPermissions,
 }: ARListPollenGroupProps) => {
   const [filteredPollens, setFilteredPollens] = useState<PollenSettings[]>([]);
 
@@ -45,6 +47,7 @@ const ARListPollenGroup = ({
         loading={loading}
         isTitle={true}
         showSelectAll={true}
+        authorizedPermissions={authorizedPermissions}
       />
       <FlatList
         keyExtractor={item => item.name}
@@ -58,6 +61,7 @@ const ARListPollenGroup = ({
               setPollenValue({ name, value: changedValue, group })
             }
             loading={loading}
+            authorizedPermissions={authorizedPermissions}
           />
         )}
       />

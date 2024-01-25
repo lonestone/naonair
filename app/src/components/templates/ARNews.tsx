@@ -83,7 +83,7 @@ export default ({}: NewsDialogType) => {
   return (
     <Modal visible={!!news} dismissable onDismiss={() => {}}>
       <View style={styles.dialog}>
-        {news?.type !== NewsType.None && (
+        {news && news?.type !== NewsType.None && (
           <Icon
             name={iconNewsType[news?.type || NewsType.None]}
             size={20}

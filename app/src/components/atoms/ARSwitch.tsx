@@ -5,9 +5,10 @@ export interface HeaderProps {
   onChange: (value: boolean) => void;
   value: boolean;
   loading: boolean;
+  disabled: boolean;
 }
 
-const ARSwitch = ({ onChange, value, loading }: HeaderProps) => {
+const ARSwitch = ({ onChange, value, loading, disabled }: HeaderProps) => {
   const [isEnabled, setIsEnabled] = useState(value);
 
   useEffect(() => {
@@ -15,7 +16,7 @@ const ARSwitch = ({ onChange, value, loading }: HeaderProps) => {
   }, [value]);
 
   const handleSwitchChange = (newValue: boolean) => {
-    if (!loading) {
+    if (!loading && !disabled) {
       setIsEnabled(newValue);
       onChange(newValue);
     }
@@ -28,6 +29,7 @@ const ARSwitch = ({ onChange, value, loading }: HeaderProps) => {
       ios_backgroundColor="#B2B2C1"
       onValueChange={handleSwitchChange}
       value={isEnabled}
+      disabled={disabled}
     />
   );
 };

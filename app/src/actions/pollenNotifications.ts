@@ -78,16 +78,19 @@ export const savePollenSettings = async function (
     fcmToken,
   });
 
+  console.log(fcmToken);
+  console.log('=>>>', pollen.name);
+
   const pollenSettings = await getPollenSettings(fcmToken);
   return pollenSettings;
 };
 
 export const getPollenSettings = async function (
-  fcmToken: string | null,
+  fcmToken: string,
 ): Promise<PollenSettings[]> {
   const onlinePollen = await getPollen();
   const notifications =
-    fcmToken !== null ? await getPollenNotifications(fcmToken) : null;
+    fcmToken !== '' ? await getPollenNotifications(fcmToken) : null;
 
   if (onlinePollen === null) {
     return [];

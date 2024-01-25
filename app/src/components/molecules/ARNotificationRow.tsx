@@ -8,6 +8,7 @@ interface ARNotificationRowProps {
   value: boolean;
   onChange: (value: boolean) => void;
   loading: boolean;
+  authorizedPermissions: boolean;
   isTitle?: boolean;
   showSelectAll?: boolean;
 }
@@ -50,6 +51,7 @@ const ARNotificationRow = ({
   value,
   onChange,
   loading,
+  authorizedPermissions,
   isTitle = false,
   showSelectAll = false,
 }: ARNotificationRowProps) => {
@@ -61,7 +63,12 @@ const ARNotificationRow = ({
           <Text style={styles.selectAllText}>Tout sélectionner</Text>
         </View>
       )}
-      <ARSwitch onChange={onChange} value={value} loading={loading} />
+      <ARSwitch
+        onChange={onChange}
+        value={value}
+        loading={loading}
+        disabled={!authorizedPermissions}
+      />
     </View>
   );
 };
