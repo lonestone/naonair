@@ -70,7 +70,7 @@ const ARListNotifications = () => {
 
   useEffect(() => {
     if (authorizedPermissions) {
-      // If authorization is new, check if this is the first launch : maybe the user
+      // If authorization is true, check if this is the first launch : maybe the user
       // didn't accept notification first then accept them
       // then you need to sub to all pollen notification
       getToken().then((_token: string) => {
@@ -99,7 +99,6 @@ const ARListNotifications = () => {
 
   const updatePollens = (_token: string) => {
     setLoading(true);
-    console.log('getPollenSettings');
     getPollenSettings(_token)
       .then(setPollenSpecies)
       .finally(() => {

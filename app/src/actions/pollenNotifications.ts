@@ -78,9 +78,6 @@ export const savePollenSettings = async function (
     fcmToken,
   });
 
-  console.log(fcmToken);
-  console.log('=>>>', pollen.name);
-
   const pollenSettings = await getPollenSettings(fcmToken);
   return pollenSettings;
 };

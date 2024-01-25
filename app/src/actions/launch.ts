@@ -29,13 +29,10 @@ export const getIsFirstNotificationLaunched = async (
     const firstLaunch = await AsyncStorage.getItem(
       '@firstNotificationLaunched',
     );
-    console.log(firstLaunch);
     if (firstLaunch) {
       return JSON.parse(firstLaunch);
     } else {
-      console.log("Ici c'est bon");
       await callback().then(result => {
-        console.log(result);
         if (result) {
           setIsFirstNotificationLaunched('false');
         }

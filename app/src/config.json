@@ -33,8 +33,6 @@
     }
   },
   "API": {
-    "baseUrl": "http://localhost:3001/",
-    "pollenStateUrl": "https://www.alertepollens.org/api/states",
-    "pollenToken": "00122206227a3369291ed94df4217c3cd01e7308"
+    "baseUrl": "http://localhost:3001/"
   }
 }
