@@ -2,6 +2,7 @@ import { Logger, Module, OnApplicationBootstrap } from '@nestjs/common';
 
 import * as firebaseAdmin from 'firebase-admin';
 
+import { ConfigService } from '@nestjs/config';
 import { FirebaseService } from './firebase.service';
 
 @Module({
@@ -11,9 +12,14 @@ import { FirebaseService } from './firebase.service';
 export class FirebaseModule implements OnApplicationBootstrap {
   private readonly logger = new Logger(FirebaseModule.name);
 
+  constructor(private readonly configService: ConfigService) {}
+
   async onApplicationBootstrap() {
     try {
-      const firebaseConfig = await require('../../../firebase.json');
+      const firebaseConfig =
+        this.configService.get('NODE_ENV') === 'production'
+          ? await require('/etc/secrets/firebase.json')
+          : await require('../../../firebase.json');
 
       this.logger.log(`Firebase project ${firebaseConfig.project_id}`);
 
