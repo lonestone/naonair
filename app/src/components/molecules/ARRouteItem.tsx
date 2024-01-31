@@ -1,3 +1,4 @@
+import analytics from '@react-native-firebase/analytics';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, View, ViewProps } from 'react-native';
@@ -10,7 +11,6 @@ import { useQAParcours } from '../../hooks/useQA';
 import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARQAChip from '../atoms/ARQAChip';
-import analytics from '@react-native-firebase/analytics';
 
 const styles = StyleSheet.create({
   card: { elevation: 4, margin: 10, backgroundColor: 'white' },

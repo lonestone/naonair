@@ -3,11 +3,24 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from '@react-navigation/stack';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Platform } from 'react-native';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SvgXml } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { getCGUAccepted, getIsFirstLaunched } from '../actions/launch';
+import {
+  getCGUAccepted,
+  getIsFirstLaunched,
+  getIsFirstNotificationLaunched,
+} from '../actions/launch';
+import pollenIcon from '../assets/pollen-icon.svg';
+import ARBadge from '../components/atoms/ARBadge';
 import BackButton from '../components/molecules/ARBackButton';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARChooseItinerary from '../components/templates/ARChooseItinerary';
@@ -16,7 +29,9 @@ import ARListNotifications from '../components/templates/ARListNotifications';
 import ARPlaceFormLayout from '../components/templates/ARPlaceFormLayout';
 import ARPOIDetails from '../components/templates/ARPOIDetails';
 import ARRouteDetail from '../components/templates/ARRouteDetail';
+import { NotificationsContext } from '../contexts/notifications.context';
 import { SnackbarProvider } from '../contexts/snackbar.context';
+import { useOnForegroundFocus } from '../hooks/useOnForgroundFocus';
 import { theme } from '../theme';
 import { StackParamList, TabParamList } from '../types/routes';
 import CGUScreen from './CGUScreen';
@@ -24,21 +39,54 @@ import ItineraryScreen from './ItineraryScreen';
 import MapScreen from './MapScreen';
 import NavigationScreen from './NavigationScreen';
 import OnboardingScreen from './OnboardingScreen';
+import PollensScreen from './PollensScreen';
 import ProfileScreen from './ProfileScreen';
 import RoutesScreen from './RoutesScreen';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 const Stack = createStackNavigator<StackParamList>();
 
-const routeIcon = {
+const routeIcon: {
+  [key in keyof TabParamList]: string;
+} = {
   Carte: 'map',
   Itinéraires: 'near-me',
   Parcours: 'run',
+  Pollens: 'pollen',
   Profil: 'account-circle',
 };
 
+const getTabBarIcon =
+  (routeName: keyof TabParamList, notificationCount: number) =>
+  ({
+    color,
+  }: {
+    focused: boolean;
+    color: string;
+    size: number;
+  }): React.ReactNode => {
+    const name = routeIcon[routeName];
+    if (name !== 'pollen') {
+      return <Icon name={name} size={30} color={color} />;
+    } else {
+      return (
+        <View style={{ position: 'relative' }}>
+          <SvgXml width={30} height={30} fill={color} xml={pollenIcon} />
+          {notificationCount > 0 && <ARBadge text={notificationCount} />}
+        </View>
+      );
+    }
+  };
+
 const Home = () => {
   const { bottom } = useSafeAreaInsets();
+  const { count, setAllPollenNotificationsToTrue } =
+    useContext(NotificationsContext);
+
+  useEffect(() => {
+    getIsFirstNotificationLaunched(setAllPollenNotificationsToTrue);
+  }, []);
+
   return (
     <Tab.Navigator
       defaultScreenOptions={{
@@ -58,13 +106,12 @@ const Home = () => {
         tabBarActiveTintColor: theme.colors.white,
         tabBarInactiveTintColor: 'rgba(255,255,255, 0.6)',
 
-        tabBarIcon: ({ color }) => (
-          <Icon name={routeIcon[route.name]} size={30} color={color} />
-        ),
+        tabBarIcon: getTabBarIcon(route.name, count),
       })}>
       <Tab.Screen name="Carte" component={MapScreen} />
       <Tab.Screen name="Itinéraires" component={ItineraryScreen} />
       <Tab.Screen name="Parcours" component={RoutesScreen} />
+      <Tab.Screen name="Pollens" component={PollensScreen} />
       <Tab.Screen name="Profil" component={ProfileScreen} />
     </Tab.Navigator>
   );
@@ -84,6 +131,12 @@ export default () => {
   const [isCGUAccepted, setIsCGUAccepted] = useState<string>();
   const [isReady, setIsReady] = useState<boolean>(false);
 
+  const { refreshNotifications } = useContext(NotificationsContext);
+
+  useOnForegroundFocus(() => {
+    refreshNotifications();
+  }, true);
+
   const firstLaunched = useCallback(async () => {
     const isFirstLaunched = await getIsFirstLaunched();
     const CGUAccepted = await getCGUAccepted();
@@ -95,8 +148,8 @@ export default () => {
     } else {
       setIsAppFirstLaunched(false);
     }
-
     setIsReady(true);
+    refreshNotifications();
   }, []);
 
   useEffect(() => {

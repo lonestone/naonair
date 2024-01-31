@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
-import { PollenSettings } from '../../actions/pollen';
+import { PollenSettings } from '../../actions/pollenNotifications';
 import ARNotificationRow from '../molecules/ARNotificationRow';
 
 interface ARListPollenGroupProps {
@@ -8,6 +8,7 @@ interface ARListPollenGroupProps {
   groupName: string;
   setPollenValue: (pollen: PollenSettings) => void;
   loading: boolean;
+  authorizedPermissions: boolean;
 }
 
 const ARListPollenGroup = ({
@@ -15,6 +16,7 @@ const ARListPollenGroup = ({
   groupName,
   setPollenValue,
   loading,
+  authorizedPermissions,
 }: ARListPollenGroupProps) => {
   const [filteredPollens, setFilteredPollens] = useState<PollenSettings[]>([]);
 
@@ -45,6 +47,7 @@ const ARListPollenGroup = ({
         loading={loading}
         isTitle={true}
         showSelectAll={true}
+        authorizedPermissions={authorizedPermissions}
       />
       <FlatList
         keyExtractor={item => item.name}
@@ -55,9 +58,10 @@ const ARListPollenGroup = ({
             name={name}
             value={value}
             onChange={(changedValue: boolean) =>
-              setPollenValue({ name: name, value: changedValue, group })
+              setPollenValue({ name, value: changedValue, group })
             }
             loading={loading}
+            authorizedPermissions={authorizedPermissions}
           />
         )}
       />

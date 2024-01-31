@@ -56,6 +56,32 @@ export class PollenService implements OnApplicationBootstrap {
     });
   }
 
+  public async getStatesFromApi() {
+    if (!this._appConfig.pollenUrl) {
+      this.logger.error('No url set for pollen url');
+      throw new InternalServerErrorException();
+    }
+
+    return this.httpService
+      .get(`${this._appConfig.pollenUrl}states`, {
+        headers: { Authorization: `Token ${this._appConfig.pollenToken}` },
+      })
+      .pipe(
+        map((response) => {
+          return response.data as Record<number, string>;
+        }), // Utilise le pipe map pour extraire les données de la réponse
+        catchError((err) =>
+          throwError(() =>
+            this.logger.error(
+              !!err?.response?.status
+                ? `${err.response.status} - ${err.response.data.detail}`
+                : '==> Undefined Error',
+            ),
+          ),
+        ),
+      );
+  }
+
   async fetchAllFromAPI() {
     if (!this._appConfig.pollenUrl) {
       this.logger.error('No url set for pollen url');
@@ -63,7 +89,7 @@ export class PollenService implements OnApplicationBootstrap {
     }
 
     return this.httpService
-      .get(this._appConfig.pollenUrl, {
+      .get(`${this._appConfig.pollenUrl}gardens/NA44`, {
         headers: { Authorization: `Token ${this._appConfig.pollenToken}` },
       })
       .pipe(

@@ -14,6 +14,7 @@ import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { Provider } from 'react-native-paper';
 import { SENTRY } from './config.json';
+import { NotificationsProvider } from './contexts/notifications.context';
 import { useNotifications } from './hooks/useNotifications';
 import Screens from './screens/NavigatorScreen';
 import { theme } from './theme';
@@ -33,10 +34,15 @@ const App = () => {
 
   return (
     <Provider theme={theme}>
-      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.white} />
-      <NavigationContainer>
-        <Screens />
-      </NavigationContainer>
+      <NotificationsProvider>
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor={theme.colors.white}
+        />
+        <NavigationContainer>
+          <Screens />
+        </NavigationContainer>
+      </NotificationsProvider>
     </Provider>
   );
 };

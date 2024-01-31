@@ -5,7 +5,6 @@ export const useNotifications = () => {
   const getFcmToken = async () => {
     try {
       const fcmToken = await messaging().getToken();
-      // console.info(newFcmToken);
       return fcmToken;
     } catch (e) {
       console.error(`Error while getting fcm token => ${e}`);
@@ -60,9 +59,14 @@ export const useNotifications = () => {
     });
   };
 
+  const hasPermissions = async () => {
+    return await messaging().hasPermission();
+  };
+
   return {
     getFcmToken,
     requestUserPermission,
     notificationListener,
+    hasPermissions,
   };
 };
