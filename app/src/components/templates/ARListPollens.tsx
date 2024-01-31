@@ -13,12 +13,6 @@ import { PollenDTO } from '@aireal/dtos';
 import { getPollen, getPollenStates } from '../../actions/pollen';
 import ARPollenStateRow from '../molecules/ARPollenStateRow';
 
-const capitalizeFirstLetter = (inputString: string): string => {
-  return inputString
-    ? inputString.charAt(0).toUpperCase() + inputString.slice(1)
-    : inputString;
-};
-
 const defaultState = (state: number) => {
   if (state <= 0) {
     return "Pas d'émission";
@@ -56,9 +50,7 @@ const ARListPollens = () => {
     const namedStatePollens: PollenRow[] = pollens.map(pollen => {
       return {
         pollen,
-        stateName: capitalizeFirstLetter(
-          states?.[pollen.state] || defaultState(pollen.state),
-        ),
+        stateName: states?.[pollen.state] || defaultState(pollen.state),
       };
     });
 

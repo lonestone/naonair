@@ -107,14 +107,14 @@ const ARListNotifications = () => {
   };
 
   const checkPermissions = () => {
-    hasPermissions().then(permission => {
-      setAuthorizedPermissions(
-        permission === firebase.messaging.AuthorizationStatus.AUTHORIZED,
-      );
-      getToken().then(token => {
-        setToken(token);
-      });
-    });
+    hasPermissions()
+      .then(permission => {
+        setAuthorizedPermissions(
+          permission === firebase.messaging.AuthorizationStatus.AUTHORIZED,
+        );
+        return getToken();
+      })
+      .then(setToken);
   };
 
   const setPollenValue = (pollen: PollenSettings) => {

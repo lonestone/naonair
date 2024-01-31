@@ -12,15 +12,15 @@ const ARPollenStateRow = ({ pollen, stateName }: ARPollenStateRowProps) => {
   const stateColor = useMemo(() => {
     switch (pollen.state) {
       case 0:
-        return { backgroundColor: theme.colors.quality.main.green };
+        return theme.colors.quality.main.green;
       case 1:
-        return { backgroundColor: theme.colors.quality.main.red };
+        return theme.colors.quality.main.red;
       case 9:
-        return { backgroundColor: 'transparent' };
+        return 'transparent';
       case 2:
       case 8:
       default:
-        return { backgroundColor: theme.colors.grey[200] };
+        return theme.colors.grey[200];
     }
   }, [pollen.state]);
   return (
@@ -28,7 +28,7 @@ const ARPollenStateRow = ({ pollen, stateName }: ARPollenStateRowProps) => {
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{pollen.name}</Text>
       </View>
-      <View style={[styles.stateContainer, stateColor]}>
+      <View style={[styles.stateContainer, { backgroundColor: stateColor }]}>
         <Text style={styles.state}>{stateName}</Text>
       </View>
     </View>
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     ...fonts.Lato.regular,
     fontSize: 16,
     lineHeight: 24,
+    textTransform: 'capitalize',
   },
   stateContainer: {
     alignItems: 'center',
