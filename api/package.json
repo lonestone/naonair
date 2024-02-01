@@ -103,5 +103,8 @@
       "./src/mikro-orm.config.ts",
       "./dist/mikro-orm.config.js"
     ]
+  },
+  "engines": {
+    "node": ">=16.20.1 <19.0.0"
   }
 }
