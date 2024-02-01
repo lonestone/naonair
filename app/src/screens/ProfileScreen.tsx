@@ -7,10 +7,10 @@ import { ARButton, ARButtonSize } from '../components/atoms/ARButton';
 import ARCommonHeader from '../components/molecules/ARCommonHeader';
 import ARListItem from '../components/molecules/ARListItem';
 import ARConfirmModal from '../components/templates/ARConfirmModal';
-import { fonts, theme } from '../theme';
-import { ProfileItemType } from '../types/profile';
-import { StackNavigationScreenProp, StackParamList } from '../types/routes';
 import { API } from '../config.json';
+import { fonts, theme } from '../theme';
+import { LinkedScreen, ProfileItemType } from '../types/profile';
+import { StackNavigationScreenProp } from '../types/routes';
 
 const styles = StyleSheet.create({
   container: {
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
 
 const profileItems: ProfileItemType[] = [
   { icon: 'star', title: 'Mes favoris', link: 'Favorites' },
+  { icon: 'bell', title: 'Mes notifications', link: 'Notifications' },
   {
     icon: 'book-open-blank-variant',
     title: 'CGU',
@@ -85,7 +86,7 @@ const ProfileScreen = () => {
   const navigation = useNavigation<StackNavigationScreenProp>();
   const [openModal, setOpenModal] = useState(false);
 
-  const handlePress = async (url?: any, link?: keyof StackParamList) => {
+  const handlePress = async (url?: any, link?: LinkedScreen) => {
     // Checking if the link is supported for links with custom URL scheme.
     if (url) {
       const supported = await Linking.canOpenURL(url);
@@ -93,7 +94,7 @@ const ProfileScreen = () => {
         await Linking.openURL(url);
       }
     } else if (link) {
-      return navigation.navigate('Favorites');
+      return navigation.navigate(link);
     }
   };
 

@@ -6,7 +6,9 @@ export const getIsFirstLaunched = async () => {
     const result = await AsyncStorage.getItem('@firstLaunched');
     if (result) {
       return JSON.parse(result);
-    } else return null;
+    } else {
+      return null;
+    }
   } catch (e) {
     logger.error(e, 'getIsFirstLaunched');
   }
@@ -20,12 +22,49 @@ export const setIsFirstLaunched = async (firstLaunch: string) => {
   }
 };
 
+export const getIsFirstNotificationLaunched = async (
+  callback: () => Promise<boolean>,
+) => {
+  try {
+    const firstLaunch = await AsyncStorage.getItem(
+      '@firstNotificationLaunched',
+    );
+    if (firstLaunch) {
+      return JSON.parse(firstLaunch);
+    } else {
+      await callback().then(result => {
+        if (result) {
+          setIsFirstNotificationLaunched('false');
+        }
+      });
+      return null;
+    }
+  } catch (e) {
+    logger.error(e, 'getIsFirstNotificationLaunched');
+  }
+};
+
+export const setIsFirstNotificationLaunched = async (
+  firstNotificationLaunched: string,
+) => {
+  try {
+    await AsyncStorage.setItem(
+      '@firstNotificationLaunched',
+      firstNotificationLaunched,
+    );
+  } catch (e) {
+    logger.error(e, 'setIsFirstNotificationLaunched');
+  }
+};
+
 export const getCGUAccepted = async () => {
   try {
     const result = await AsyncStorage.getItem('@cgu');
     if (result) {
       return JSON.parse(result);
-    } else return null;
+    } else {
+      return null;
+    }
   } catch (e) {
     logger.error(e, 'getCGUAccepted');
   }

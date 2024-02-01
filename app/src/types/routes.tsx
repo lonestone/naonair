@@ -16,6 +16,7 @@ export type StackParamList = {
     transportMode: RouteProfile;
   };
   Favorites: undefined;
+  Notifications: undefined;
   Navigation: { path: ARPath };
   RouteDetail: { parcours: ARParcours; qa?: number };
   PlaceForm: undefined | { poi: POI };
@@ -29,6 +30,7 @@ export type TabParamList = {
   };
   Parcours: undefined;
   Profil: undefined;
+  Pollens: undefined;
 };
 
 export type StackNavigationScreenProp = StackNavigationProp<StackParamList>;

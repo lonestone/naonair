@@ -1,3 +1,4 @@
+import analytics from '@react-native-firebase/analytics';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, View, ViewProps } from 'react-native';
@@ -12,7 +13,7 @@ import { StackNavigationScreenProp } from '../../types/routes';
 import ARQAChip from '../atoms/ARQAChip';
 
 const styles = StyleSheet.create({
-  card: { elevation: 4, margin: 10 },
+  card: { elevation: 4, margin: 10, backgroundColor: 'white' },
   container: {
     paddingVertical: 16,
     paddingHorizontal: 24,
@@ -68,7 +69,12 @@ export default ({ style, parcours }: ARRouteItemProps) => {
   return (
     <Card
       style={[style, styles.card]}
-      onPress={() => navigation.navigate('RouteDetail', { parcours, qa })}>
+      onPress={async () => {
+        await analytics().logEvent('selection_parcours', {
+          name: nom,
+        });
+        navigation.navigate('RouteDetail', { parcours, qa });
+      }}>
       <View style={styles.mapContainer}>
         <Image
           source={{

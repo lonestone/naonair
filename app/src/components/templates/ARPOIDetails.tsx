@@ -19,11 +19,15 @@ import ARHeadingGroup from '../molecules/ARHeadingGroup';
 import ARForecasts from '../organisms/ARForecasts';
 import ARPollution from '../organisms/ARPollution';
 import { POIMarker } from './ARMapView';
+import analytics from '@react-native-firebase/analytics';
 
 const styles = StyleSheet.create({
   map: {
     height: 300,
+    alignSelf: 'stretch',
+    flex: 0,
     borderRadius: 16,
+    overflow: 'hidden',
   },
   chipWrapper: {
     position: 'absolute',
@@ -56,7 +60,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
   },
-  mapView: { flex: 1, borderRadius: 16, overflow: 'hidden' },
+  mapView: { flex: 1, borderRadius: 16 },
 });
 
 type POIDetailsRouteProp = RouteProp<StackParamList, 'POIDetails'>;
@@ -66,7 +70,20 @@ const ARPOIDetails = () => {
   const { poi } = useRoute<POIDetailsRouteProp>().params || {};
   const [favorited, setFavorited] = useState(poi.favorited);
 
-  const goTo = () => {
+  const goTo = async () => {
+    try {
+      await analytics().logEvent(
+        'me_rendre_a_cet_endroit_button',
+        {
+          name: poi.name,
+          id: poi.id,
+          address: poi.address,
+        },
+      );
+    } catch (e) {
+      console.warn(e);
+    }
+
     navigation.navigate('Itinéraires', {
       end: {
         text: poi.name,
@@ -121,12 +138,13 @@ const ARPOIDetails = () => {
         {poi && (
           <View style={styles.detailView}>
             <View>
-              <Card style={styles.map}>
-                <View style={styles.mapView}>
+              <Card style={styles.mapView}>
+                <View>
                   <ARMap
                     userLocationVisible
                     interactionEnabled
                     heatmapVisible
+                    style={styles.map}
                     onMapLoaded={() => setMapLoaded(true)}
                     center={poi.geolocation}>
                     {isMapLoaded && <POIMarker poi={poi} />}

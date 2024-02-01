@@ -1,4 +1,4 @@
-import MapboxGL from '@react-native-mapbox-gl/maps';
+import MapboxGL from '@maplibre/maplibre-react-native';
 import { Position } from '@turf/turf';
 import React, { createRef } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';

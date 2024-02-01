@@ -2,7 +2,12 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { useKeepAwake } from '@sayem314/react-native-keep-awake';
 import { Position } from '@turf/turf';
 import React, { useState } from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Dimensions,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ARElasticView from '../components/atoms/ARElasticView';
 import ARNavigationMapView from '../components/organisms/ARNavigationMapView';
@@ -37,6 +42,7 @@ export default ({}: NavigationScreenProp) => {
 
   return (
     <>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <ARNavigationMapView
         path={path}
         style={styles.map}

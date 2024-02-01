@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { Portal } from 'react-native-paper';
-import { getAll, POI, POICategory } from '../actions/poi';
+import { POI, POICategory, getAll } from '../actions/poi';
 import { SwitchToggleItem } from '../components/molecules/ARSwitchToggle';
 import ARPOIHeader from '../components/organisms/ARPOIHeader';
 import ARAlert from '../components/templates/ARAlert';
@@ -49,7 +49,7 @@ export default () => {
     {
       key: 'list',
       icon: 'list',
-      render: () => <ARListView pois={pois} category={selectedCategories}/>,
+      render: () => <ARListView pois={pois} category={selectedCategories} />,
     },
   ];
 

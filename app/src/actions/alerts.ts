@@ -1,6 +1,7 @@
 import { AlertDTO } from '@aireal/dtos';
+import { API } from '../config.json';
 
-const ALERTS_URL = 'https://naonair-api-staging.onrender.com/alerts';
+const ALERTS_URL = `${API.baseUrl}alerts`;
 
 export const getLastOne = async (): Promise<AlertDTO | null> => {
   const response = await fetch(ALERTS_URL);

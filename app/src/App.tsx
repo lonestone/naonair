@@ -10,12 +10,12 @@
 
 import { NavigationContainer } from '@react-navigation/native';
 import * as Sentry from '@sentry/react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { Provider } from 'react-native-paper';
-import ARAlert from './components/templates/ARAlert';
-import ARNews from './components/templates/ARNews';
 import { SENTRY } from './config.json';
+import { NotificationsProvider } from './contexts/notifications.context';
+import { useNotifications } from './hooks/useNotifications';
 import Screens from './screens/NavigatorScreen';
 import { theme } from './theme';
 
@@ -26,12 +26,23 @@ if (!__DEV__) {
 }
 
 const App = () => {
+  const { notificationListener, requestUserPermission } = useNotifications();
+  useEffect(() => {
+    requestUserPermission();
+    notificationListener();
+  }, [notificationListener, requestUserPermission]);
+
   return (
     <Provider theme={theme}>
-      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.white} />
-      <NavigationContainer>
-        <Screens />
-      </NavigationContainer>
+      <NotificationsProvider>
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor={theme.colors.white}
+        />
+        <NavigationContainer>
+          <Screens />
+        </NavigationContainer>
+      </NotificationsProvider>
     </Provider>
   );
 };

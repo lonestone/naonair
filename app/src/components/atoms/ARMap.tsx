@@ -2,7 +2,7 @@ import MapboxGL, {
   CameraPadding,
   CameraSettings,
   RasterSourceProps,
-} from '@react-native-mapbox-gl/maps';
+} from '@maplibre/maplibre-react-native';
 import { BBox, Position } from 'geojson';
 import React, {
   createRef,
@@ -91,6 +91,7 @@ const ARMap = (
 ) => {
   const cameraRef = createRef<MapboxGL.Camera>();
   const mapRef = createRef<MapboxGL.MapView>();
+  const [isLoadedFully, setLoadedFully] = useState(false);
 
   const [bounds, setBounds] = useState<
     CameraPadding & { ne: Position; sw: Position }
@@ -127,9 +128,10 @@ const ARMap = (
           pitchEnabled={false}
           surfaceView
           onPress={() => onMapPress && onMapPress()}
-          onDidFinishRenderingMapFully={() =>
-            onMapLoaded && onMapLoaded(mapRef, cameraRef)
-          }
+          onDidFinishRenderingMapFully={() => {
+            onMapLoaded && onMapLoaded(mapRef, cameraRef);
+            setLoadedFully(true);
+          }}
           zoomEnabled={!!interactionEnabled}
           scrollEnabled={!!interactionEnabled}>
           <MapboxGL.Camera
@@ -168,7 +170,8 @@ const ARMap = (
               />
             </MapboxGL.RasterSource>
           )}
-          {children || null}
+
+          {(isLoadedFully && children) || null}
         </MapboxGL.MapView>
       </View>
     </>

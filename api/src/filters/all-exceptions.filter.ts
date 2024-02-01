@@ -1,4 +1,4 @@
-import { Catch, ArgumentsHost } from '@nestjs/common';
+import { ArgumentsHost, Catch } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 import * as Sentry from '@sentry/node';
 

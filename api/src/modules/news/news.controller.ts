@@ -20,20 +20,20 @@ export class NewsController {
 
   @Get()
   async findAll(): Promise<NewsDTO[]> {
-    return await this.newsService.findAll();
+    return this.newsService.findAll();
   }
 
   @Get(':uuid')
   async findByUuid(
     @Param('uuid', ParseUUIDPipe) uuid: string,
   ): Promise<NewsDTO> {
-    return await this.newsService.findByUuid(uuid);
+    return this.newsService.findByUuid(uuid);
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(@Body() createNewsDTO: CreateNewsDTO): Promise<NewsDTO> {
-    return await this.newsService.create(createNewsDTO);
+    return this.newsService.create(createNewsDTO);
   }
 
   @Patch(':uuid')

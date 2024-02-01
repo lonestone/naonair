@@ -18,6 +18,11 @@ You can find Graphhopper project here : https://github.com/lonestone/graphhopper
 
 ## Deployment & Tags
 
+Don't forget to use the correct environnement before pushing your apps in production :
+
+* Check `.env` files
+* "baseUrl" in `api/config.json`
+
 A new version is automatically deployed on Render when a commit is pushed on main branch.
 
 Mobile apps must be manually deployed.
@@ -33,6 +38,19 @@ git push origin vX.Y.Z
 # Y : add new feature(s)
 # Z : minor fix(s)
 ```
+## Staging vs prod
+
+> Warning : staging is the new prod
+
+Please keep in mind that thee is two online environments.
+
+For the application you **must** check what is the current env in `config.json`
+
+For now, please change the url according to the wanted env :
+
+* Prod => "baseUrl": "https://naonair-api-staging.onrender.com/"
+* Preprod => "baseUrl": "https://naonair-api-preprod.onrender.com"
+* local => "baseUrl": "http://localhost:3001/"
 
 ## Docker
 

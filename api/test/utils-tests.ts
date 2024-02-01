@@ -1,5 +1,4 @@
 // don't remove this import, and keep it in first line
-import 'reflect-metadata';
 import {
   INestApplication,
   InternalServerErrorException,
@@ -7,17 +6,19 @@ import {
 } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing/test';
+import 'reflect-metadata';
 import { AppController } from 'src/app.controller';
 import appConfig from 'src/configs/app.config';
 import authConfig from 'src/configs/auth.config';
 import ormConfig from 'src/configs/orm.config';
+import { LoggingInterceptor } from 'src/interceptors/log.interceptors';
 import { AlertsModule } from 'src/modules/alerts/alerts.module';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { NewsModule } from 'src/modules/news/news.module';
 import { OrmModule } from 'src/modules/orm/orm.module';
+import { PollenModule } from 'src/modules/pollen/pollen.module';
 import { DateInDTOConversionPipe } from 'src/pipes/DateInDTOConversion.pipe';
 import * as request from 'supertest';
-import { LoggingInterceptor } from 'src/interceptors/log.interceptors';
 
 export const removeUuid = (data: any) => {
   delete data.uuid;
@@ -36,6 +37,7 @@ export const initTestApp = async () => {
       AuthModule,
       NewsModule,
       AlertsModule,
+      PollenModule,
     ],
     controllers: [AppController],
   }).compile();

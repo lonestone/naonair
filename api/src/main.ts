@@ -1,6 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
-import { HttpAdapterHost } from '@nestjs/core';
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 import { LoggingInterceptor } from './interceptors/log.interceptors';

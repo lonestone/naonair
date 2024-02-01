@@ -1,10 +1,10 @@
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
-import { StackParamList } from './routes';
 
+export type LinkedScreen = 'Favorites' | 'Notifications';
 export type ProfileItemType = {
   icon: IconSource;
   title: string;
   linkIcon?: IconSource;
-  link?: keyof StackParamList;
+  link?: LinkedScreen;
   url?: string;
 };
