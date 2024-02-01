@@ -10,7 +10,7 @@
 		00E356F31AD99517003FC87E /* airealTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* airealTests.m */; };
 		067AF0A905654DEBB4105485 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EDDE8C003A1D47398B8CF5B8 /* MaterialIcons.ttf */; };
 		0A06A2C4BB57472A87D11E19 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5B79DE438344B9CBB261F64 /* FontAwesome5_Solid.ttf */; };
-		13B07FBC1A68108700A75B9A /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		13B07FBC1A68108700A75B9A /* (null) in Sources */ = {isa = PBXBuildFile; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2CFB9B7886744963A7DC631C /* lato_thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 443DAC5B59F74537BE54430C /* lato_thin.ttf */; };
@@ -338,6 +338,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				0CA9319F473A5286BBB9AA7B /* [CP] Copy Pods Resources */,
 				CEBEABA50CB063CD12F576DE /* [CP-User] [RNFB] Core Configuration */,
+				418FE5D82B6B956F001ADED9 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -486,6 +487,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-aireal/Pods-aireal-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		418FE5D82B6B956F001ADED9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"$XCODE_VERSION_MAJOR\" = \"1500\" ]; then\n  echo \"Remove signature files (Xcode 15 workaround)\"\n\n  rm \"$BUILD_DIR/Release-iphoneos/Mapbox.xcframework-ios.signature\"\nfi\n";
+		};
 		C5D836D7A7824F152DC41EDB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -594,7 +612,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B07FBC1A68108700A75B9A /* BuildFile in Sources */,
+				13B07FBC1A68108700A75B9A /* (null) in Sources */,
 				2EC90FDF2A6AA89200127C2C /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -670,9 +688,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = aireal/aireal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = YR674NJJDX;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YR674NJJDX;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = aireal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -688,6 +708,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.airpl.naonair;
 				PRODUCT_NAME = aireal;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Naonair AppStore Distribution";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -706,15 +727,17 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = aireal/aireal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = YR674NJJDX;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YR674NJJDX;
 				INFOPLIST_FILE = aireal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -723,6 +746,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.airpl.naonair;
 				PRODUCT_NAME = aireal;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Naonair AppStore Distribution";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
