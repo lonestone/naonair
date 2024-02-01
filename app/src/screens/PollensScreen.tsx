@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useContext, useEffect } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { Provider } from 'react-native-paper';
@@ -18,6 +19,10 @@ const PollensScreen = () => {
   useEffect(() => {
     readNotifications();
   }, []);
+
+  useFocusEffect(() => {
+    readNotifications();
+  });
 
   return (
     <Provider>

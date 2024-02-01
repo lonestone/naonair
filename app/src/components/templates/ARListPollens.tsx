@@ -11,6 +11,7 @@ import { fonts } from '../../theme';
 
 import { PollenDTO } from '@aireal/dtos';
 import { getPollen, getPollenStates } from '../../actions/pollen';
+import { useOnForegroundFocus } from '../../hooks/useOnForgroundFocus';
 import ARPollenStateRow from '../molecules/ARPollenStateRow';
 
 const defaultState = (state: number) => {
@@ -32,7 +33,15 @@ const ARListPollens = () => {
   const [states, setStates] = useState<Record<number, string>>();
   const [pollens, setPollens] = useState<PollenDTO[]>([]);
 
+  useOnForegroundFocus(() => {
+    updatePollenNotifications();
+  }, true);
+
   useEffect(() => {
+    updatePollenNotifications();
+  }, []);
+
+  const updatePollenNotifications = () => {
     setLoading(true);
     Promise.all([getPollenStates(), getPollen()])
       .then(([statesResponse, pollensResponse]) => {
@@ -44,7 +53,7 @@ const ARListPollens = () => {
         console.error('Error fetching data:', error);
         setLoading(false);
       });
-  }, []);
+  };
 
   const sectionsPollen = useMemo<PollenSection[]>(() => {
     const namedStatePollens: PollenRow[] = pollens.map(pollen => {
