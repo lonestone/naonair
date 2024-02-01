@@ -118,14 +118,6 @@ export class PollenService implements OnApplicationBootstrap {
       // lastValueFrom get Observable data and not all the observable.
       const data = await lastValueFrom(await this.fetchAllFromAPI());
 
-      // TO REMOVE
-      data.push({
-        name: 'Test',
-        group: 'Arbre ',
-        latinName: 'rosa rosa rose',
-        state: 1,
-      });
-
       const stateChanges: UpdatePollenType = [];
 
       // Check all pollen from the api
