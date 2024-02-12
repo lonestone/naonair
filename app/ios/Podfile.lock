@@ -715,8 +715,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  boost: a7c83b31436843459a1961bfd74b96033dc77234
-  DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
+  boost: 57d2868c099736d80fcd648bf211b4431e51a558
+  DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: 4cce221dd782d3ff7c4172167bba09d58af67ccb
   FBReactNativeSpec: c6bd9e179757b3c0ecf815864fae8032377903ef
   Firebase: 63ce8ece0d43743dc28eacac0c6867a2d7fd5a9d
@@ -727,7 +727,7 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 558b1da7d65afeb996fd5c814332f013234ece4e
   FirebaseMessaging: d322bd030a0e97398bf134746e087b88e6ba0074
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
+  glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   GoogleAppMeasurement: 68afe759316673c6554dac35a0c7ae8f5d6cb4ed
   GoogleDataTransport: 57c22343ab29bc686febbf7cbb13bad167c2d8fe
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
