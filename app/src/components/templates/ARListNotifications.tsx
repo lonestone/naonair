@@ -22,6 +22,8 @@ import { useOnForegroundFocus } from '../../hooks/useOnForgroundFocus';
 import { fonts, theme } from '../../theme';
 import BackButton from '../molecules/ARBackButton';
 import ARCommonHeader from '../molecules/ARCommonHeader';
+import ARNotificationRow from '../molecules/ARNotificationRow';
+import ARCollapseTitle from '../organisms/ARCollapseTitle';
 import ARListPollenGroup from '../organisms/ARListPollenGroup';
 
 const styles = StyleSheet.create({
@@ -156,17 +158,30 @@ const ARListNotifications = () => {
           !authorizedPermissions && styles.disabledContainer,
         ]}>
         <ScrollView>
-          {pollenSpecies &&
-            pollenGroups.map(group => (
-              <ARListPollenGroup
-                key={group}
-                pollens={pollenSpecies}
-                groupName={group}
-                setPollenValue={setPollenValue}
+          <ARCollapseTitle title={'Alerte Pollution'}>
+            {
+              <ARNotificationRow
+                name={'Alerte Pic Pollution'}
+                value={true}
+                onChange={(changedValue: boolean) => console.log('press')}
                 loading={loading}
                 authorizedPermissions={authorizedPermissions}
               />
-            ))}
+            }
+          </ARCollapseTitle>
+          <ARCollapseTitle title={'Émissions pollens'}>
+            {pollenSpecies &&
+              pollenGroups.map(group => (
+                <ARListPollenGroup
+                  key={group}
+                  pollens={pollenSpecies}
+                  groupName={group}
+                  setPollenValue={setPollenValue}
+                  loading={loading}
+                  authorizedPermissions={authorizedPermissions}
+                />
+              ))}
+          </ARCollapseTitle>
         </ScrollView>
       </SafeAreaView>
     </>
