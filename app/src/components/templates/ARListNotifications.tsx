@@ -1,7 +1,6 @@
 import { firebase } from '@react-native-firebase/messaging';
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
   Linking,
   Platform,
   Pressable,
@@ -156,7 +155,6 @@ const ARListNotifications = () => {
           styles.container,
           !authorizedPermissions && styles.disabledContainer,
         ]}>
-        {loading && <ActivityIndicator />}
         <ScrollView>
           {pollenSpecies &&
             pollenGroups.map(group => (
