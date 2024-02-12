@@ -9,6 +9,7 @@ import authConfig from './configs/auth.config';
 import ormConfig from './configs/orm.config';
 import sentryConfig from './configs/sentry.config';
 import { AlertsModule } from './modules/alerts/alerts.module';
+import { AlertNotificationsModule } from './modules/alertsNotification/alertsNotification.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FirebaseModule } from './modules/firebase/firebase.module';
 import { NewsModule } from './modules/news/news.module';
@@ -38,6 +39,7 @@ import { SentryModule } from './modules/sentry/sentry.module';
     RoutingModule,
     FirebaseModule,
     PollenNotificationModule,
+    AlertNotificationsModule,
   ],
   controllers: [AppController],
 })

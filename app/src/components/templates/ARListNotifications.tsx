@@ -10,6 +10,10 @@ import {
   View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import {
+  getAlertsNotifications,
+  updateAlertsNotifications,
+} from '../../actions/alertNotifications';
 import { getIsFirstNotificationLaunched } from '../../actions/launch';
 import {
   PollenSettings,
@@ -54,6 +58,7 @@ const ARListNotifications = () => {
   const [pollenGroups, setPollenGroups] = useState<string[]>([]);
   const [authorizedPermissions, setAuthorizedPermissions] =
     useState<boolean>(false);
+  const [alertNotifications, setAlertNotifications] = useState(false);
 
   const { refreshNotifications } = useContext(NotificationsContext);
   const { hasPermissions } = useNotifications();
@@ -100,11 +105,14 @@ const ARListNotifications = () => {
 
   const updatePollens = (_token: string) => {
     setLoading(true);
-    getPollenSettings(_token)
-      .then(setPollenSpecies)
-      .finally(() => {
+    if (_token !== '') {
+      Promise.all([
+        getPollenSettings(_token).then(setPollenSpecies),
+        getAlertsNotifications(_token).then(setAlertNotifications),
+      ]).finally(() => {
         setLoading(false);
       });
+    }
   };
 
   const checkPermissions = () => {
@@ -162,8 +170,12 @@ const ARListNotifications = () => {
             {
               <ARNotificationRow
                 name={'Alerte Pic Pollution'}
-                value={true}
-                onChange={(changedValue: boolean) => console.log('press')}
+                value={alertNotifications}
+                onChange={(changedValue: boolean) =>
+                  getToken().then(_token =>
+                    updateAlertsNotifications(_token, changedValue),
+                  )
+                }
                 loading={loading}
                 authorizedPermissions={authorizedPermissions}
               />

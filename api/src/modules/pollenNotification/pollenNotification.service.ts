@@ -1,10 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
-import {
-  Injectable,
-  Logger,
-  NotFoundException
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 
 import { HttpErrors, UpdatePollenNotificationDTO } from '@aireal/dtos';
 import { PollenEntity } from 'src/entities/pollen.entity';
