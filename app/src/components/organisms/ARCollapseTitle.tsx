@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { List } from 'react-native-paper';
-import { fonts, theme } from '../../theme';
+import { fonts } from '../../theme';
 
 export interface ARCollapseTitleProp {
   title: string;
@@ -22,7 +22,8 @@ const ARCollapseTitle = ({
         expanded={expanded}
         onPress={handlePress}
         titleStyle={styles.title}
-        rippleColor={'transparent'}>
+        rippleColor={'transparent'}
+        style={styles.accordion}>
         {children}
       </List.Accordion>
     </View>
@@ -31,11 +32,11 @@ const ARCollapseTitle = ({
 
 const styles = StyleSheet.create({
   container: {},
-  text: {},
+  accordion: { backgroundColor: 'white' },
   title: {
     ...fonts.Raleway.bold,
     fontSize: 20,
-    color: theme.colors.black,
+    color: 'black',
     lineHeight: 24,
   },
 });

@@ -25,10 +25,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     ...fonts.Lato.regular,
+    color: 'black',
   },
   title: {
     fontSize: 18,
     ...fonts.Lato.bold,
+    color: 'black',
   },
   titleContainer: {
     borderColor: theme.colors.accent,
@@ -43,6 +45,7 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     marginRight: 12,
     alignSelf: 'flex-end',
+    color: 'black',
   },
 });
 
