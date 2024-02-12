@@ -47,4 +47,16 @@ export class AlertsNotificationService {
       await this.em.flush();
     }
   }
+
+  public async sendNotification(alert: AlertsEntity) {
+    const subs = await this.em.find(AlertNotificationsEntity, {});
+    const tokens = subs.map((sub) => sub.fcmToken);
+    for (const token of tokens) {
+      await this.firebaseService.sendPushNotification(
+        token,
+        'Un épisode de pollution par les particules et ozone est actuellement en cours',
+        '',
+      );
+    }
+  }
 }

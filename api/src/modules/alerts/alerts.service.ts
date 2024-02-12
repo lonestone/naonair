@@ -14,6 +14,7 @@ import { log } from 'console';
 import { catchError, lastValueFrom, map, throwError } from 'rxjs';
 import appConfig from 'src/configs/app.config';
 import { AlertsEntity } from 'src/entities/alerts.entity';
+import { AlertsNotificationService } from '../alertsNotification/alertsNotification.service';
 import { AlertsConverterService } from './alerts.converter';
 
 @Injectable()
@@ -26,6 +27,7 @@ export class AlertsService implements OnApplicationBootstrap {
     private readonly em: EntityManager,
     @InjectRepository(AlertsEntity)
     public readonly pollenRepo: EntityRepository<AlertsEntity>,
+    private readonly alertNotificationService: AlertsNotificationService,
   ) {}
   logger = new Logger('AlertsModule');
 
@@ -85,10 +87,11 @@ export class AlertsService implements OnApplicationBootstrap {
         alert.endDate >= now &&
         !alert.notificationSent
       ) {
-        // Todo => Send notification to subscribed user
         alert.notificationSent = true;
         await this.em.persistAndFlush(alert);
-        this.logger.debug(`Notification sent => TODO`);
+
+        // Send notification to all subscribed users
+        this.alertNotificationService.sendNotification(alert);
       }
 
       // Alert do not exist in database. Create it
