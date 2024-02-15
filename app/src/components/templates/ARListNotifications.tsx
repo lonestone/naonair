@@ -166,10 +166,10 @@ const ARListNotifications = () => {
           !authorizedPermissions && styles.disabledContainer,
         ]}>
         <ScrollView>
-          <ARCollapseTitle title={'Alerte Pollution'}>
+          <ARCollapseTitle title={'Alerte pollution'}>
             {
               <ARNotificationRow
-                name={'Alerte Pic Pollution'}
+                name={'Alerte pic pollution'}
                 value={alertNotifications}
                 onChange={(changedValue: boolean) =>
                   getToken().then(_token =>

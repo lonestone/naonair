@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     ...fonts.Lato.regular,
     fontSize: 16,
     lineHeight: 24,
-    textTransform: 'capitalize',
     color: 'black',
   },
   stateContainer: {

@@ -109,7 +109,7 @@ export class PollenNotificationService {
         await this.firebaseService.sendPushNotification(
           pollenNotification.fcmToken,
           'Alerte Pollen',
-          `Une émission du pollen ${name} vient de démarrer`,
+          `Début d'émission de pollen : ${name}`,
         );
       } catch (error) {
         if (error instanceof BadTokenError) {
