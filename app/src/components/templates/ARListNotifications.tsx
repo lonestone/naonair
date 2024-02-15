@@ -1,7 +1,6 @@
 import { firebase } from '@react-native-firebase/messaging';
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
   Linking,
   Platform,
   Pressable,
@@ -11,6 +10,10 @@ import {
   View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import {
+  getAlertsNotifications,
+  updateAlertsNotifications,
+} from '../../actions/alertNotifications';
 import { getIsFirstNotificationLaunched } from '../../actions/launch';
 import {
   PollenSettings,
@@ -23,6 +26,8 @@ import { useOnForegroundFocus } from '../../hooks/useOnForgroundFocus';
 import { fonts, theme } from '../../theme';
 import BackButton from '../molecules/ARBackButton';
 import ARCommonHeader from '../molecules/ARCommonHeader';
+import ARNotificationRow from '../molecules/ARNotificationRow';
+import ARCollapseTitle from '../organisms/ARCollapseTitle';
 import ARListPollenGroup from '../organisms/ARListPollenGroup';
 
 const styles = StyleSheet.create({
@@ -53,6 +58,7 @@ const ARListNotifications = () => {
   const [pollenGroups, setPollenGroups] = useState<string[]>([]);
   const [authorizedPermissions, setAuthorizedPermissions] =
     useState<boolean>(false);
+  const [alertNotifications, setAlertNotifications] = useState(false);
 
   const { refreshNotifications } = useContext(NotificationsContext);
   const { hasPermissions } = useNotifications();
@@ -99,11 +105,14 @@ const ARListNotifications = () => {
 
   const updatePollens = (_token: string) => {
     setLoading(true);
-    getPollenSettings(_token)
-      .then(setPollenSpecies)
-      .finally(() => {
+    if (_token !== '') {
+      Promise.all([
+        getPollenSettings(_token).then(setPollenSpecies),
+        getAlertsNotifications(_token).then(setAlertNotifications),
+      ]).finally(() => {
         setLoading(false);
       });
+    }
   };
 
   const checkPermissions = () => {
@@ -156,19 +165,35 @@ const ARListNotifications = () => {
           styles.container,
           !authorizedPermissions && styles.disabledContainer,
         ]}>
-        {loading && <ActivityIndicator />}
         <ScrollView>
-          {pollenSpecies &&
-            pollenGroups.map(group => (
-              <ARListPollenGroup
-                key={group}
-                pollens={pollenSpecies}
-                groupName={group}
-                setPollenValue={setPollenValue}
+          <ARCollapseTitle title={'Alerte Pollution'}>
+            {
+              <ARNotificationRow
+                name={'Alerte Pic Pollution'}
+                value={alertNotifications}
+                onChange={(changedValue: boolean) =>
+                  getToken().then(_token =>
+                    updateAlertsNotifications(_token, changedValue),
+                  )
+                }
                 loading={loading}
                 authorizedPermissions={authorizedPermissions}
               />
-            ))}
+            }
+          </ARCollapseTitle>
+          <ARCollapseTitle title={'Émissions pollens'}>
+            {pollenSpecies &&
+              pollenGroups.map(group => (
+                <ARListPollenGroup
+                  key={group}
+                  pollens={pollenSpecies}
+                  groupName={group}
+                  setPollenValue={setPollenValue}
+                  loading={loading}
+                  authorizedPermissions={authorizedPermissions}
+                />
+              ))}
+          </ARCollapseTitle>
         </ScrollView>
       </SafeAreaView>
     </>

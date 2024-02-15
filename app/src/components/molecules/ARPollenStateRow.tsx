@@ -23,13 +23,27 @@ const ARPollenStateRow = ({ pollen, stateName }: ARPollenStateRowProps) => {
         return theme.colors.grey[200];
     }
   }, [pollen.state]);
+  const stateTextColor = useMemo(() => {
+    switch (pollen.state) {
+      case 1:
+        return theme.colors.white;
+      case 0:
+      case 9:
+      case 2:
+      case 8:
+      default:
+        return 'black';
+    }
+  }, [pollen.state]);
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{pollen.name}</Text>
       </View>
       <View style={[styles.stateContainer, { backgroundColor: stateColor }]}>
-        <Text style={styles.state}>{stateName}</Text>
+        <Text style={[styles.state, { color: stateTextColor }]}>
+          {stateName.charAt(0).toUpperCase() + stateName.slice(1)}
+        </Text>
       </View>
     </View>
   );
@@ -61,6 +75,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 12,
+    width: 100,
   },
   state: {
     ...fonts.Lato.bold,
