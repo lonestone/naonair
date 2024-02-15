@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     ...fonts.Raleway.bold,
     fontSize: 20,
     lineHeight: 24,
+    color: 'black',
   },
   sectionTitleContainer: {
     marginTop: 42,

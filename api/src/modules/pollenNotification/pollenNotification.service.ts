@@ -1,10 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
-import {
-  Injectable,
-  Logger,
-  NotFoundException
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 
 import { HttpErrors, UpdatePollenNotificationDTO } from '@aireal/dtos';
 import { PollenEntity } from 'src/entities/pollen.entity';
@@ -113,7 +109,7 @@ export class PollenNotificationService {
         await this.firebaseService.sendPushNotification(
           pollenNotification.fcmToken,
           'Alerte Pollen',
-          `Une émission du pollen ${name} vient de démarrer`,
+          `Début d'émission de pollen : ${name}`,
         );
       } catch (error) {
         if (error instanceof BadTokenError) {

@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { updateAlertsNotifications } from '../actions/alertNotifications';
 import { getPollen } from '../actions/pollen';
 import {
   getPollenNotifications,
@@ -67,6 +68,9 @@ export const NotificationsProvider = ({
     for (const { name, group } of pollens) {
       await savePollenSettings({ name, group, value: true }, _token);
     }
+
+    await updateAlertsNotifications(_token, true);
+
     return true;
   }, [fcmToken]);
 

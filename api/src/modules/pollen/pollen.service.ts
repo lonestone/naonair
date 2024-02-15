@@ -134,7 +134,7 @@ export class PollenService implements OnApplicationBootstrap {
             });
 
             existingPollen.state = pollenData.state;
-            await this.em.flush();
+            await this.em.persistAndFlush(existingPollen);
           }
         } catch (error) {
           // Pollen do not exist in database. Create it

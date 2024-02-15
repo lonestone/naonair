@@ -3,6 +3,7 @@ import {
   UpdatePollenNotificationDTO,
 } from '@aireal/dtos';
 import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
+import { ParseAlphaNumTokenPipe } from 'src/pipes/ParseAlphaNumToken.pipe';
 import { PollenNotificationService } from './pollenNotification.service';
 
 @Controller('pollenNotification')
@@ -11,7 +12,7 @@ export class PollenNotificationController {
 
   @Get(':fcmToken')
   async findByToken(
-    @Param('fcmToken') token: string,
+    @Param('fcmToken', ParseAlphaNumTokenPipe) token: string,
   ): Promise<Array<PollenNotificationDTO>> {
     return this.pollenService.findByToken(token);
   }
