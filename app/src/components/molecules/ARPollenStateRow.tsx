@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     textTransform: 'capitalize',
+    color: 'black',
   },
   stateContainer: {
     alignItems: 'center',
