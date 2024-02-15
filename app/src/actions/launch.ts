@@ -27,7 +27,7 @@ export const getIsFirstNotificationLaunched = async (
 ) => {
   try {
     const firstLaunch = await AsyncStorage.getItem(
-      '@firstNotificationLaunched2',
+      '@firstPollenAndAlertsLaunched',
     );
     if (firstLaunch) {
       return JSON.parse(firstLaunch);
@@ -49,7 +49,7 @@ export const setIsFirstNotificationLaunched = async (
 ) => {
   try {
     await AsyncStorage.setItem(
-      '@firstNotificationLaunched',
+      '@firstPollenAndAlertsLaunched',
       firstNotificationLaunched,
     );
   } catch (e) {

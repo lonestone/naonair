@@ -2,7 +2,6 @@ import { API } from '../config.json';
 
 const ALERTS_NOTIFICATIONS_URL = `${API.baseUrl}alertsNotification`;
 
-// A tester
 export const getAlertsNotifications = async (token: string) => {
   const response = await fetch(`${ALERTS_NOTIFICATIONS_URL}/${token}`);
   const json = await response.json();

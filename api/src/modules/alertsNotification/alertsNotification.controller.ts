@@ -1,5 +1,6 @@
 import { UpdateAlertNotificationDTO } from '@aireal/dtos';
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { ParseAlphaNumTokenPipe } from 'src/pipes/ParseAlphaNumToken.pipe';
 import { AlertsNotificationService } from './alertsNotification.service';
 
 @Controller('alertsNotification')
@@ -9,7 +10,9 @@ export class AlertsNotificationController {
   ) {}
 
   @Get(':fcmToken')
-  async findByToken(@Param('fcmToken') token: string): Promise<boolean> {
+  async findByToken(
+    @Param('fcmToken', ParseAlphaNumTokenPipe) token: string,
+  ): Promise<boolean> {
     return this.alertsNotificationsService.findByToken(token);
   }
 
