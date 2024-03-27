@@ -56,7 +56,7 @@ export class AlertsNotificationService {
       try {
         await this.firebaseService.sendPushNotification(
           token,
-          'Un épisode de pollution par les particules et ozone est actuellement en cours',
+          'Épisode de pollution de l’air',
           '',
         );
       } catch (error) {
