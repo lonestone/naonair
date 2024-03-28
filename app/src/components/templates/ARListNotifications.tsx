@@ -149,7 +149,7 @@ const ARListNotifications = () => {
   return (
     <>
       <ARCommonHeader
-        headline="Mes Notifications"
+        headline="Mes notifications"
         left={<BackButton />}
         caption="Retrouvez ici la gestion de vos alertes"
       />
@@ -169,7 +169,7 @@ const ARListNotifications = () => {
           <ARCollapseTitle title={'Alerte pollution'}>
             {
               <ARNotificationRow
-                name={'Alerte pic pollution'}
+                name={'Alerte pic de pollution'}
                 value={alertNotifications}
                 onChange={(changedValue: boolean) =>
                   getToken().then(_token =>
