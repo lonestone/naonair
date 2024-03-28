@@ -82,7 +82,10 @@ export class PollenNotificationService {
 
   public async sendNotificationsFor(updatedPollen: UpdatePollenType) {
     // Only take care of pollen wher the new state is 1
-    const pollenAlerts = updatedPollen.filter((p) => p.newState === 1);
+    const pollenAlerts = updatedPollen.filter(
+      (p) => p.newState === 1 || p.newState === 2,
+    );
+
     // Find all token for this pollen kind
     for (const pollenAlert of pollenAlerts) {
       const pollenEntity = await this.em.findOne(PollenEntity, {
@@ -95,21 +98,26 @@ export class PollenNotificationService {
             pollen: pollenEntity,
           },
         );
-        await this.sendNotifications(pollenNotifications);
+        await this.sendNotifications(pollenNotifications, pollenAlert.newState);
       }
     }
   }
 
   private async sendNotifications(
     pollenNotifications: PollenNotificationEntity[],
+    state: number,
   ) {
+    if (state !== 1 && state !== 2) return;
+
     for (const pollenNotification of pollenNotifications) {
-      const { name, group } = pollenNotification.pollen.unwrap();
+      const { name } = pollenNotification.pollen.unwrap();
       try {
         await this.firebaseService.sendPushNotification(
           pollenNotification.fcmToken,
           'Alerte Pollen',
-          `Début d'émission de pollen : ${name}`,
+          state === 1
+            ? `Début d'émission de pollen : ${name}`
+            : `Une émission du pollen ${name} vient de se terminer`,
         );
       } catch (error) {
         if (error instanceof BadTokenError) {
