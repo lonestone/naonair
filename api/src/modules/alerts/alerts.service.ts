@@ -59,7 +59,7 @@ export class AlertsService implements OnApplicationBootstrap {
       .pipe(catchError((err) => throwError(() => log(err))));
   }
 
-  @Cron('0 6 * * *')
+  @Cron('0 16 * * *')
   async getAlertsNotifications() {
     const now = new Date();
     try {
@@ -68,7 +68,7 @@ export class AlertsService implements OnApplicationBootstrap {
       const firstAlert = data[0];
 
       // Get alert in database
-      let alert = await this.em.findOne(AlertsEntity, {
+      let alert = await this.em.fork().findOne(AlertsEntity, {
         id: firstAlert.id,
       });
 
