@@ -112,8 +112,9 @@ export class PollenService implements OnApplicationBootstrap {
       );
   }
 
-  @Cron('0 16 * * *')
+  @Cron('0 4 * * *')
   async getPollenNotifications() {
+    Logger.log('Fetching pollen data', 'PollenService');
     try {
       // lastValueFrom get Observable data and not all the observable.
       const data = await lastValueFrom(await this.fetchAllFromAPI());

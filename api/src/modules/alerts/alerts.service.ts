@@ -59,8 +59,9 @@ export class AlertsService implements OnApplicationBootstrap {
       .pipe(catchError((err) => throwError(() => log(err))));
   }
 
-  @Cron('0 16 * * *')
+  @Cron('0 4 * * *')
   async getAlertsNotifications() {
+    Logger.log('Fetching alerts from API');
     const now = new Date();
     try {
       // lastValueFrom get Observable data and not all the observable.
