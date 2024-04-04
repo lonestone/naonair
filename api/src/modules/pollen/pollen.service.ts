@@ -112,7 +112,7 @@ export class PollenService implements OnApplicationBootstrap {
       );
   }
 
-  @Cron('0 15 * * *')
+  @Cron('0 16 * * *')
   async getPollenNotifications() {
     try {
       // lastValueFrom get Observable data and not all the observable.

@@ -59,7 +59,7 @@ export class AlertsService implements OnApplicationBootstrap {
       .pipe(catchError((err) => throwError(() => log(err))));
   }
 
-  @Cron('00 15 * * *')
+  @Cron('0 16 * * *')
   async getAlertsNotifications() {
     const now = new Date();
     try {
