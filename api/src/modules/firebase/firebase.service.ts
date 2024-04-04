@@ -28,7 +28,9 @@ export class FirebaseService {
           token,
         })
         .then(() => {
-          this.logger.debug(`Send pushNotification - title: ${title}`);
+          this.logger.debug(
+            `Send pushNotification - title: ${title} - body: ${body}`,
+          );
         });
     } catch (error) {
       await this.handlePushNotificationError(error, token);

@@ -112,7 +112,7 @@ export class PollenService implements OnApplicationBootstrap {
       );
   }
 
-  @Cron('0 6 * * *')
+  @Cron('0 15 * * *')
   async getPollenNotifications() {
     try {
       // lastValueFrom get Observable data and not all the observable.
@@ -123,9 +123,11 @@ export class PollenService implements OnApplicationBootstrap {
       // Check all pollen from the api
       for (const pollenData of data) {
         try {
-          const existingPollen = await this.em.findOneOrFail(PollenEntity, {
-            name: pollenData.name,
-          });
+          const existingPollen = await this.em
+            .fork()
+            .findOneOrFail(PollenEntity, {
+              name: pollenData.name,
+            });
           // Pollen exist in database : update only if needed
           if (existingPollen.state !== pollenData.state) {
             stateChanges.push({
@@ -142,6 +144,10 @@ export class PollenService implements OnApplicationBootstrap {
           await this.em.persistAndFlush(pollenEntity);
         }
       }
+
+      this.logger.debug(
+        `Pollen state changes: ${JSON.stringify(stateChanges)}`,
+      ); // Log the state changes
 
       //Send notifications only for needed pollen
       if (stateChanges.length > 0)
