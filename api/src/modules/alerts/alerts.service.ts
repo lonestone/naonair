@@ -59,8 +59,9 @@ export class AlertsService implements OnApplicationBootstrap {
       .pipe(catchError((err) => throwError(() => log(err))));
   }
 
-  @Cron('0 6 * * *')
+  @Cron('0 4 * * *')
   async getAlertsNotifications() {
+    Logger.log('Fetching alerts from API');
     const now = new Date();
     try {
       // lastValueFrom get Observable data and not all the observable.
@@ -68,7 +69,7 @@ export class AlertsService implements OnApplicationBootstrap {
       const firstAlert = data[0];
 
       // Get alert in database
-      let alert = await this.em.findOne(AlertsEntity, {
+      let alert = await this.em.fork().findOne(AlertsEntity, {
         id: firstAlert.id,
       });
 
