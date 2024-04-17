@@ -51,7 +51,7 @@ export const NotificationsProvider = ({
       setFcmToken(token);
       return token || '';
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return '';
     }
   };

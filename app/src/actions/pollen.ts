@@ -15,7 +15,6 @@ export const getPollen = async (): Promise<PollenDTO[]> => {
     },
   });
   const json = await response.json();
-  console.log(json);
   if (json === undefined) {
     return [];
   }
