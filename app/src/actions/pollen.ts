@@ -8,18 +8,27 @@ const POLLEN_URL = `${baseUrl}pollen`;
 
 export const getPollen = async (): Promise<PollenDTO[]> => {
   // Get Pollen from original API, not our API, to get the client wanted order
-  const response = await fetch(pollenURL, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Token ${POLLEN_TOKEN}`,
-    },
-  });
-  const json = await response.json();
-  if (json === undefined) {
+  try {
+    const response = await fetch(pollenURL, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Token ${POLLEN_TOKEN}`,
+      },
+    });
+    console.log(response);
+    if (!response.ok) {
+      throw new Error(JSON.stringify(response));
+    }
+    const json = await response.json();
+    if (json === undefined) {
+      return [];
+    }
+    return json.species;
+  } catch (error) {
+    console.error(error);
     return [];
   }
-
-  return json.species;
 };
 
 export const getPollenStates = async (): Promise<Record<number, string>> => {
