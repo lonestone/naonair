@@ -1,16 +1,26 @@
 import { PollenDTO } from '@aireal/dtos';
+import { POLLEN_TOKEN } from '@env';
 import { API } from '../config.json';
 
-const POLLEN_URL = `${API.baseUrl}pollen`;
+const { baseUrl, pollenURL } = API;
+
+const POLLEN_URL = `${baseUrl}pollen`;
 
 export const getPollen = async (): Promise<PollenDTO[]> => {
-  const response = await fetch(POLLEN_URL);
+  // Get Pollen from original API, not our API, to get the client wanted order
+  const response = await fetch(pollenURL, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Token ${POLLEN_TOKEN}`,
+    },
+  });
   const json = await response.json();
+  console.log(json);
   if (json === undefined) {
     return [];
   }
 
-  return json;
+  return json.species;
 };
 
 export const getPollenStates = async (): Promise<Record<number, string>> => {
