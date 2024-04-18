@@ -33,6 +33,7 @@
     }
   },
   "API": {
-    "baseUrl": "https://naonair-api-preprod.onrender.com/"
+    "baseUrl": "https://naonair-api-preprod.onrender.com/",
+    "pollenURL": "https://www.alertepollens.org/api/gardens/NA44/"
   }
 }

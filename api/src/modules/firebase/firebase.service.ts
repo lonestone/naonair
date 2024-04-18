@@ -46,7 +46,7 @@ export class FirebaseService {
       case 'messaging/registration-token-not-registered':
         throw new BadTokenError('Token not found', token);
       default:
-        console.log('Error sending message:', error);
+        console.error('Error sending message:', error);
         throw error;
     }
   }

@@ -79,8 +79,8 @@ android {
         applicationId "com.aireal"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 38
-        versionName "1.1.1"
+        versionCode 41
+        versionName "1.1.3"
     }
     signingConfigs {
         debug {

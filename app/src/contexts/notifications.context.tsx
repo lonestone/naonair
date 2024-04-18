@@ -51,7 +51,7 @@ export const NotificationsProvider = ({
       setFcmToken(token);
       return token || '';
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return '';
     }
   };
@@ -170,11 +170,16 @@ type LocalNotificationState = {
 const getLocalPollenNotificationState = async function (): Promise<
   LocalNotificationState[]
 > {
-  const pollenSettings = await AsyncStorage.getItem(POLLEN_NOTIFICATIONS_KEY);
-  if (!pollenSettings) {
+  try {
+    const pollenSettings = await AsyncStorage.getItem(POLLEN_NOTIFICATIONS_KEY);
+    if (!pollenSettings) {
+      return [];
+    }
+    return JSON.parse(pollenSettings) as LocalNotificationState[];
+  } catch (error) {
+    console.error(error);
     return [];
   }
-  return JSON.parse(pollenSettings) as LocalNotificationState[];
 };
 
 const save = async (localData: LocalNotificationState[]) => {

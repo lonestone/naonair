@@ -63,7 +63,7 @@ const ARListPollens = () => {
       };
     });
 
-    return namedStatePollens.reduce((acc, item) => {
+    const sortedByGroup = namedStatePollens.reduce((acc, item) => {
       const existingGroup = acc.find(
         section => section.title === item.pollen.group,
       );
@@ -76,6 +76,19 @@ const ARListPollens = () => {
 
       return acc;
     }, [] as PollenSection[]);
+
+    // Sort by unalphabetical order
+    const result = sortedByGroup.sort((a, b) => {
+      if (a.title < b.title) {
+        return 1;
+      }
+      if (a.title > b.title) {
+        return -1;
+      }
+      return 0;
+    });
+
+    return result;
   }, [states, pollens]);
 
   return (
