@@ -10,7 +10,7 @@
 		00E356F31AD99517003FC87E /* airealTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* airealTests.m */; };
 		067AF0A905654DEBB4105485 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EDDE8C003A1D47398B8CF5B8 /* MaterialIcons.ttf */; };
 		0A06A2C4BB57472A87D11E19 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5B79DE438344B9CBB261F64 /* FontAwesome5_Solid.ttf */; };
-		13B07FBC1A68108700A75B9A /* (null) in Sources */ = {isa = PBXBuildFile; };
+		13B07FBC1A68108700A75B9A /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2CFB9B7886744963A7DC631C /* lato_thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 443DAC5B59F74537BE54430C /* lato_thin.ttf */; };
@@ -612,7 +612,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B07FBC1A68108700A75B9A /* (null) in Sources */,
+				13B07FBC1A68108700A75B9A /* BuildFile in Sources */,
 				2EC90FDF2A6AA89200127C2C /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -690,7 +690,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 42;
 				DEVELOPMENT_TEAM = YR674NJJDX;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YR674NJJDX;
 				ENABLE_BITCODE = NO;
@@ -699,7 +699,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.1.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -729,7 +729,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 42;
 				DEVELOPMENT_TEAM = YR674NJJDX;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YR674NJJDX;
 				INFOPLIST_FILE = aireal/Info.plist;
@@ -737,7 +737,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.1.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
