@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { ComponentProps } from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { StackNavigationScreenProp } from '../../types/routes';
@@ -15,9 +15,9 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 0,
     margin: 0,
-    marginTop: 3,
     marginRight: 10,
     flex: 0,
+    marginTop: Platform.OS === 'ios' ? 0 : 3,
   },
 });
 

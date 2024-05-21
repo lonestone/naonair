@@ -12,9 +12,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import ARElasticView from '../components/atoms/ARElasticView';
 import ARNavigationMapView from '../components/organisms/ARNavigationMapView';
 import ARPathInstructions from '../components/organisms/ARPathInstructions';
-import { FloatingBackButton } from '../components/templates/ARChooseItinerary';
 
 import { StackParamList } from '../types/routes';
+import ARFloatingBackButton from '../components/molecules/ARFloatingBackButton';
 
 export interface NavigationScreenProp {}
 
@@ -42,13 +42,17 @@ export default ({}: NavigationScreenProp) => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
       <ARNavigationMapView
         path={path}
         style={styles.map}
         onUserMoved={setUserPosition}
       />
-      <FloatingBackButton />
+      <ARFloatingBackButton />
       <ARElasticView
         maxHeight={Dimensions.get('screen').height - 150}
         minHeight={130}
