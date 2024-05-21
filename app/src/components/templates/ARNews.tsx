@@ -1,4 +1,4 @@
-import { NewsDTO, NewsType } from '@aireal/dtos/dist';
+import { NewsDTO, NewsType } from '@aireal/dtos';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Caption, Headline, Modal, Paragraph } from 'react-native-paper';
