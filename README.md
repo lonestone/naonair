@@ -20,8 +20,8 @@ You can find Graphhopper project here : https://github.com/lonestone/graphhopper
 
 Don't forget to use the correct environnement before pushing your apps in production :
 
-* Check `.env` files
-* "baseUrl" in `api/config.json`
+- Check `.env` files
+- "baseUrl" in `api/config.json`
 
 A new version is automatically deployed on Render when a commit is pushed on main branch.
 
@@ -38,6 +38,7 @@ git push origin vX.Y.Z
 # Y : add new feature(s)
 # Z : minor fix(s)
 ```
+
 ## Staging vs prod
 
 > Warning : staging is the new prod
@@ -48,9 +49,9 @@ For the application you **must** check what is the current env in `config.json`
 
 For now, please change the url according to the wanted env :
 
-* Prod => "baseUrl": "https://naonair-api-staging.onrender.com/"
-* Preprod => "baseUrl": "https://naonair-api-preprod.onrender.com"
-* local => "baseUrl": "http://localhost:3001/"
+- Prod => "baseUrl": "https://naonair-api-staging.onrender.com/"
+- Preprod => "baseUrl": "https://naonair-api-preprod.onrender.com"
+- local => "baseUrl": "http://localhost:3001/"
 
 ## Docker
 
@@ -101,9 +102,26 @@ $ cd api
 # copy example to right file (don't commit it!)
 $ cp .env.example .env
 
+# go in app folder
+$ cd ../app/
+
+# copy example to right file (don't commit it!)
+$ cp .env.example .env
 ```
 
 Then, fill right properties
+
+## Install projects
+
+When you run the app for the first time, you need to install the dependencies.
+
+### IOS
+
+```
+# Go to the ios folder and build pods
+$ cd app/ios
+$ pod install
+```
 
 ## Start projects
 
@@ -138,6 +156,8 @@ Don't forget to fill .env :
 PASS_KEY : Token used to be connected on backoffice
 JWT_KEY : Key to jwt token generation (Keep it secret)
 ```
+
+Add the `firebase.json` file at the root of the `api` folder.
 
 ## DTOs
 
