@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationScreenProp } from '../../types/routes';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Surface } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { theme } from '../../theme';
