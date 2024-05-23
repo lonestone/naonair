@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Headline, Modal, Paragraph } from 'react-native-paper';
-import { clearStorage } from '../../actions/myplaces';
+
 import { fonts, theme } from '../../theme';
 
 const styles = StyleSheet.create({
@@ -53,18 +53,19 @@ interface Props {
   onPress: () => void;
 }
 
-const ARConfirmClearStorage = ({ open, setOpen, headline, caption, onPress }: Props) => {
-
+const ARConfirmClearStorage = ({
+  open,
+  setOpen,
+  headline,
+  caption,
+  onPress,
+}: Props) => {
   return (
     <Modal visible={open} dismissable onDismiss={() => setOpen(false)}>
       <View style={styles.dialog}>
-        <Headline style={styles.title}>
-          {headline}
-        </Headline>
+        <Headline style={styles.title}>{headline}</Headline>
         <View style={styles.content}>
-          <Paragraph style={styles.paragraph}>
-            {caption}
-          </Paragraph>
+          <Paragraph style={styles.paragraph}>{caption}</Paragraph>
         </View>
         <View style={styles.buttonContent}>
           <Button labelStyle={styles.button} onPress={() => setOpen(false)}>

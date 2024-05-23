@@ -1,16 +1,50 @@
 import { useEffect, useRef, useState } from 'react';
-import { ARParcours, getAll, ParcoursCategory } from '../actions/parcours';
+import {
+  ARParcours,
+  getAll,
+  Parcours,
+  ParcoursCategory,
+} from '../actions/parcours';
+import slugify from 'slugify';
+import { useCustomParcours } from './useCustomParcours';
 
-export const useParcours = function (filters: ParcoursCategory[]) {
+export const useParcours = function (filters?: ParcoursCategory[]) {
+  const [arParcours, setArParcours] = useState<Parcours[]>([]);
   const [parcours, setParcours] = useState<ARParcours[]>([]);
+  const { parcours: customParcours, refreshCustomParcoursList } =
+    useCustomParcours();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
   const fetchingParcours = useRef<number | null>(null);
 
+  const handleParcoursResponse = async (p: ARParcours[]) => {
+    const retrievedParcours = p.map(
+      p =>
+      ({
+        ...p,
+        imageUri: `snapshot_${slugify(p.properties.nom, {
+          lower: true,
+          replacement: '_',
+          remove: /[*+~.()'"!:@-]/g,
+        })}`,
+      } as Parcours),
+    );
+
+    setArParcours(retrievedParcours);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    if (isLoading) {
+    refreshList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setParcours, filters]);
+
+  const refreshList = async () => {
+    if (isLoading || !filters) {
       return;
     }
+
+    await refreshCustomParcoursList();
 
     if (fetchingParcours.current) {
       clearTimeout(fetchingParcours.current);
@@ -20,17 +54,25 @@ export const useParcours = function (filters: ParcoursCategory[]) {
       setIsLoading(true);
       getAll(filters)
         .then(p => {
-          setParcours(p);
-          setIsLoading(false);
+          handleParcoursResponse(p);
         })
         .catch(e => {
           setError(e);
           setIsLoading(false);
         });
     }, 200) as unknown as number;
+  };
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setParcours, filters]);
+  useEffect(() => {
+    if (
+      filters?.includes(ParcoursCategory.CUSTOM) &&
+      customParcours.length > 0
+    ) {
+      setParcours([...customParcours, ...arParcours]);
+    } else {
+      setParcours(arParcours);
+    }
+  }, [customParcours, arParcours, filters]);
 
-  return { parcours, isLoading, error };
+  return { parcours, isLoading, error, refreshList };
 };

@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
   favoriteButton: {
     padding: 0,
     margin: 0,
-    marginTop: 3,
     marginRight: 10,
     flex: 0,
   },

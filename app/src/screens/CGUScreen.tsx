@@ -39,7 +39,7 @@ const CGUScreen = () => {
 
   const handleAcceptedCGU = async () => {
     await setCGUAccepted('1.0');
-    navigation.navigate('Home');
+    navigation.navigate('Home', { screen: 'Carte' });
   };
 
   //* TODO add real CGU link and check version*

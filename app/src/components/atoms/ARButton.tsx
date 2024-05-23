@@ -4,6 +4,7 @@ import { Button } from 'react-native-paper';
 import { fonts } from '../../theme';
 
 export enum ARButtonSize {
+  Xsmall = 'xsmall',
   Small = 'small',
   Medium = 'medium',
 }
@@ -49,6 +50,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7,
     paddingVertical: 3,
   },
+  xsContentStyle: {
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+  },
 });
 
 export const ARButton = ({
@@ -73,6 +78,8 @@ export const ARButton = ({
       contentStyle={StyleSheet.flatten([
         size === ARButtonSize.Medium
           ? styles.mdContentStyle
+          : size === ARButtonSize.Xsmall
+          ? styles.xsContentStyle
           : styles.smContentStyle,
         isReversed && { flexDirection: 'row-reverse' },
       ])}

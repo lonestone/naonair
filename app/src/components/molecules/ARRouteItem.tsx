@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
   spacer: {
     flex: 1,
   },
+  customText: {
+    color: theme.colors.blue[300],
+  },
 });
 
 export interface ARRouteItemProps extends ViewProps {
@@ -60,12 +63,6 @@ export default ({ style, parcours }: ARRouteItemProps) => {
 
   const { coureur, marcheur, cycliste, km, denivele, nom } = properties;
 
-  const imageName = `snapshot_${slugify(properties.nom, {
-    lower: true,
-    replacement: '_',
-    remove: /[*+~.()'"!:@-]/g,
-  })}`;
-
   return (
     <Card
       style={[style, styles.card]}
@@ -78,26 +75,33 @@ export default ({ style, parcours }: ARRouteItemProps) => {
       <View style={styles.mapContainer}>
         <Image
           source={{
-            uri: imageName,
+            uri: parcours.imageUri,
           }}
           style={{ backgroundColor: theme.colors.blue[100], flex: 1 }}
         />
       </View>
       <View style={styles.container}>
         <Text style={styles.headline}>{nom}</Text>
-        <Text style={styles.distance}>{`${km}Km - dénivelé ${denivele}m`}</Text>
+        <Text style={styles.distance}>
+          {`${km.toFixed(2)}Km` + (denivele ? ` - ${denivele}m` : '')}
+        </Text>
 
         <View style={styles.icons}>
-          {[coureur && 'run', marcheur && 'walk', cycliste && 'bike'].map(
-            icon =>
-              icon && (
-                <Icon
-                  key={`icon-${icon}`}
-                  size={20}
-                  color={theme.colors.blue[500]}
-                  name={icon}
-                />
-              ),
+          {parcours.type !== 'Custom' &&
+            [coureur && 'run', marcheur && 'walk', cycliste && 'bike'].map(
+              icon =>
+                icon && (
+                  <Icon
+                    key={`icon-${icon}`}
+                    size={20}
+                    color={theme.colors.blue[500]}
+                    name={icon}
+                  />
+                ),
+            )}
+
+          {parcours.type === 'Custom' && (
+            <Text style={styles.customText}>Parcours personnalisé</Text>
           )}
 
           <View style={styles.spacer} />

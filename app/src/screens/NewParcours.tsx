@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { Surface } from 'react-native-paper';
-import ARMap from '../components/atoms/ARMap';
+import React, { useEffect, useRef, useState } from 'react';
+import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
+import { Portal, Surface } from 'react-native-paper';
+import ARMap, { ARMapHandle } from '../components/atoms/ARMap';
+import { Position } from '@turf/turf';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme } from '../theme';
 import ARFloatingBackButton from '../components/molecules/ARFloatingBackButton';
 import ARParcoursSteps from '../components/templates/ARParcoursSteps';
 import { useUserPosition } from '../hooks/useUserPosition';
-import InitialPositionMarker from '../components/molecules/ARInitialPositionMarker';
+import ARConfirmModal from '../components/templates/ARConfirmModal';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationScreenProp } from '../types/routes';
+import { getBounds } from 'geolib';
+import ARPathLayer from '../components/atoms/ARPathLayer';
+import { ARParcours } from '../actions/parcours';
+import ARPathMarker, {
+  ARPathMarkerType,
+} from '../components/atoms/ARPathMarker';
+import ARFullScreenLoading from '../components/molecules/ARFullScreenLoading';
+import { useCustomParcours } from '../hooks/useCustomParcours';
+import { useParcours } from '../hooks/useParcours';
 
 const styles = StyleSheet.create({
   container: {
@@ -15,20 +27,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   listContainer: {
-    flex: 0,
     shadowOffset: { width: 0, height: -8 },
     shadowRadius: 10,
     shadowOpacity: 0.2,
     elevation: 3,
-    height: '40%',
     paddingVertical: 30,
     paddingHorizontal: 18,
+    backgroundColor: theme.colors.white,
   },
   backButtonSafeArea: {
     position: 'absolute',
     paddingLeft: 16,
     paddingTop: 16,
     zIndex: 10,
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+    backgroundColor: theme.colors.white,
   },
   backButtonContainer: {
     backgroundColor: theme.colors.primary,
@@ -39,24 +54,142 @@ const styles = StyleSheet.create({
 
 const NewParcoursScreen = () => {
   const { userPosition: initialPosition } = useUserPosition();
+  const mapRef = useRef<ARMapHandle>(null);
   const [hasStarted, setHasStarted] = useState(false);
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [points, setPoints] = useState<Position[]>([]);
+  const { saveNewParcours } = useCustomParcours();
+  const { refreshList } = useParcours();
+  const [displayCurrentLocation, setDisplayCurrentLocation] = useState(true);
+  const navigation = useNavigation<StackNavigationScreenProp>();
+
+  useEffect(() => {
+    if (initialPosition) {
+      setPoints([initialPosition]);
+    }
+  }, [initialPosition, setPoints]);
+
+  const handleBack = () => {
+    if (hasStarted) {
+      setCancelModalOpen(true);
+    } else {
+      navigation.goBack();
+    }
+  };
+
+  const onSave = async (
+    name: string,
+    elapsedTime: number,
+    totalDistance: number,
+    averageSpeed: number,
+  ) => {
+    setLoading(true);
+    setHasStarted(false);
+    const bounds = getBounds(
+      points.map(([longitude, latitude]) => ({ latitude, longitude })),
+    );
+
+    if (!bounds || !mapRef.current?.viewRef.current) {
+      return;
+    }
+
+    setDisplayCurrentLocation(false);
+    mapRef.current.setCamera({
+      bounds: {
+        ne: [bounds.maxLng, bounds.maxLat],
+        sw: [bounds.minLng, bounds.minLat],
+        paddingLeft: 50,
+        paddingRight: 50,
+        paddingBottom: 150,
+        paddingTop: 150,
+      },
+    });
+
+    setTimeout(async () => {
+      const uri = await mapRef.current!.viewRef.current!.takeSnap();
+
+      saveNewParcours({
+        name,
+        points,
+        bbox: [bounds.minLng, bounds.minLat, bounds.maxLng, bounds.maxLat],
+        distanceTotal: totalDistance,
+        imageUri: uri,
+        avgSpeed: averageSpeed,
+        timeTaken: elapsedTime,
+      });
+
+      await refreshList();
+      navigation.replace('Home', { screen: 'Parcours' });
+    }, 3000);
+  };
 
   return (
     <>
-      {!hasStarted && <ARFloatingBackButton />}
-      <ARMap userLocationVisible interactionEnabled center={initialPosition}>
-        {hasStarted && initialPosition && (
-          <InitialPositionMarker position={initialPosition} />
+      {loading && <ARFullScreenLoading />}
+      <ARFloatingBackButton onPress={handleBack} />
+      <ARMap
+        ref={mapRef}
+        userLocationVisible={displayCurrentLocation}
+        interactionEnabled={displayCurrentLocation}
+        center={initialPosition}>
+        {points.length > 1 && (
+          <>
+            <ARPathLayer
+              path={
+                {
+                  geometry: {
+                    type: 'MultiLineString',
+                    coordinates: [points],
+                  },
+                } as ARParcours
+              }
+            />
+          </>
+        )}
+        {(hasStarted || points.length > 0) && initialPosition && (
+          <ARPathMarker
+            coordinate={initialPosition}
+            id="start-marker-1"
+            title="Start"
+            type={ARPathMarkerType.START}
+          />
+        )}
+        {!hasStarted && points.length > 0 && (
+          <ARPathMarker
+            coordinate={points[points.length - 1]}
+            id="end-marker-1"
+            title="End"
+            type={ARPathMarkerType.END}
+          />
         )}
       </ARMap>
-      <Surface style={styles.listContainer}>
-        <SafeAreaView edges={['bottom', 'left', 'right']}>
-          <ARParcoursSteps
-            onStarted={() => setHasStarted(true)}
-            onStopped={() => setHasStarted(false)}
-          />
-        </SafeAreaView>
-      </Surface>
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <Surface style={styles.listContainer}>
+          <SafeAreaView edges={['bottom', 'left', 'right']}>
+            <ARParcoursSteps
+              onStarted={() => setHasStarted(true)}
+              onUpdate={setPoints}
+              onSave={onSave}
+            />
+          </SafeAreaView>
+        </Surface>
+      </KeyboardAvoidingView>
+      <Portal>
+        <ARConfirmModal
+          open={cancelModalOpen}
+          headline="Souhaitez-vous vraiment supprimer le parcours ?"
+          caption="Cette action est irréversible et supprimera votre parcours personnalisé"
+          setOpen={setCancelModalOpen}
+          onPress={() => {
+            setCancelModalOpen(false);
+            setPoints([]);
+            navigation.goBack();
+          }}
+        />
+      </Portal>
     </>
   );
 };

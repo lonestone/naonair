@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import FA5Icon from 'react-native-vector-icons/FontAwesome5';
 import { fonts, theme } from '../theme';
 import ARRoutesList from '../components/templates/ARRoutesList';
 import ARFilter, { ARFilterItem } from '../components/molecules/ARFilter';
@@ -43,6 +44,17 @@ export const ROUTE_FILTERS: ARFilterItem<ParcoursCategory>[] = [
         size={20}
         color={selected ? 'white' : theme.colors.blue[500]}
         name="star"
+      />
+    ),
+  },
+  {
+    label: 'Parcours personnalisés',
+    value: ParcoursCategory.CUSTOM,
+    icon: selected => (
+      <FA5Icon
+        size={20}
+        color={selected ? 'white' : theme.colors.blue[500]}
+        name="route"
       />
     ),
   },

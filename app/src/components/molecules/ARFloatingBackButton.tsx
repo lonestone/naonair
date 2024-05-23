@@ -21,13 +21,22 @@ const styles = StyleSheet.create({
   },
 });
 
-export default () => {
+type ARFloatingBackButtonProps = {
+  onPress?: () => void;
+};
+
+export default ({ onPress }: ARFloatingBackButtonProps) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
 
   return (
     <SafeAreaView style={styles.backButtonSafeArea}>
       <Pressable
         onPress={() => {
+          if (onPress) {
+            onPress();
+            return;
+          }
+
           navigation.goBack();
         }}>
         <Surface style={styles.backButtonContainer}>

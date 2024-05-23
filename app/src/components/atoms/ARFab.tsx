@@ -17,5 +17,11 @@ const styles = StyleSheet.create({
 });
 
 export const ARFab = (props: ARFabProps) => {
-  return <FAB style={styles.fab} color="white" {...props} />;
+  return (
+    <FAB
+      style={StyleSheet.flatten([styles.fab, props.style])}
+      color="white"
+      {...props}
+    />
+  );
 };

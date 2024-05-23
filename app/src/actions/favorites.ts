@@ -36,7 +36,7 @@ export const addToFavorites = async function (item: POI | ARParcours) {
     await analytics().logEvent('ajout_poi_favoris', {
       name: item.name,
     });
-  } else if ("properties" in item){
+  } else if ("properties" in item) {
     await analytics().logEvent('ajout_parcours_favoris', {
       name: item.properties.nom,
     });
@@ -58,7 +58,7 @@ export const removeFromFavorites = async function (item: POI | ARParcours) {
     await analytics().logEvent('suppression_poi_favoris', {
       name: item.name,
     });
-  } else if ("properties" in item){
+  } else if ("properties" in item) {
     await analytics().logEvent('suppression_parcours_favoris', {
       name: item.properties.nom,
     });

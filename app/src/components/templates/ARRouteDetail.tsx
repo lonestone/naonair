@@ -1,4 +1,4 @@
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -9,10 +9,10 @@ import {
   isFavorited,
   removeFromFavorites,
 } from '../../actions/favorites';
-import { ARParcours } from '../../actions/parcours';
-import { QATypes, QAValues } from '../../actions/qa';
+import { ARParcours, CustomParcours } from '../../actions/parcours';
+import { QAValues } from '../../actions/qa';
 import { fonts, theme } from '../../theme';
-import { StackParamList } from '../../types/routes';
+import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
 import ARMap from '../atoms/ARMap';
 import ARPathLayer from '../atoms/ARPathLayer';
 import ARQAChip from '../atoms/ARQAChip';
@@ -20,6 +20,11 @@ import BackButton from '../molecules/ARBackButton';
 import ARCommonHeader from '../molecules/ARCommonHeader';
 import FavoriteButton from '../molecules/ARFavoriteButton';
 import ARForecasts from '../organisms/ARForecasts';
+import { useCustomParcours } from '../../hooks/useCustomParcours';
+import ARDeleteParcoursButton from '../molecules/ARDeleteParcoursButton';
+import ARParcourRecordingDataItem from '../molecules/ARParcourRecordingDataItem';
+import { formatTime } from '../../utils/formatTime';
+import ARCarbonEquivalent from '../molecules/ARCarbonEquivalent';
 
 const styles = StyleSheet.create({
   container: {
@@ -57,7 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
   },
-  denivele: {
+  subTitle: {
     ...fonts.Lato.regular,
     fontSize: 14,
     lineHeight: 24,
@@ -112,6 +117,15 @@ const styles = StyleSheet.create({
     color: theme.colors.blue[300],
     flex: 1,
   },
+  actionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  carbonEquivalent: {
+    marginTop: 16,
+    marginBottom: 32,
+  },
 });
 
 export type ARRouteDetailProp = RouteProp<StackParamList, 'RouteDetail'>;
@@ -119,6 +133,8 @@ export type ARRouteDetailProp = RouteProp<StackParamList, 'RouteDetail'>;
 export default ({}: ARRouteDetailProp) => {
   const { parcours, qa } = useRoute<ARRouteDetailProp>().params || {};
   const [favorited, setFavorited] = useState(parcours.properties.favorited);
+  const { deleteParcours } = useCustomParcours();
+  const navigation = useNavigation<StackNavigationScreenProp>();
 
   useEffect(() => {
     checkIsFavorited(parcours);
@@ -129,8 +145,6 @@ export default ({}: ARRouteDetailProp) => {
     setFavorited(result);
   };
 
-  console.info({ parcours });
-
   const {
     coureur,
     cycliste,
@@ -140,7 +154,6 @@ export default ({}: ARRouteDetailProp) => {
     coureurs_temps_min,
     cyclistes_temps_min,
   } = parcours.properties;
-  console.info(parcours);
 
   const speeds = [
     marcheur && {
@@ -168,13 +181,41 @@ export default ({}: ARRouteDetailProp) => {
       : await addToFavorites(parcours);
   };
 
+  const removeParcours = async (p: CustomParcours) => {
+    await deleteParcours(p.properties.id);
+    navigation.replace('Home', { screen: 'Parcours' });
+  };
+
+  const formatDate = (date: string) => {
+    const d = new Date(date);
+    const frenchDate = d.toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+
+    return frenchDate;
+  };
+
   return (
     <>
       <ARCommonHeader
         headline="Détails"
         left={<BackButton />}
         right={
-          <FavoriteButton isFavorited={favorited} onPress={toggleFavorited} />
+          <View style={styles.actionRow}>
+            {parcours.type === 'Custom' && (
+              <ARDeleteParcoursButton
+                onDelete={() => removeParcours(parcours)}
+              />
+            )}
+            {parcours.type !== 'Custom' && (
+              <FavoriteButton
+                isFavorited={favorited}
+                onPress={toggleFavorited}
+              />
+            )}
+          </View>
         }
       />
       <StatusBar
@@ -193,19 +234,25 @@ export default ({}: ARRouteDetailProp) => {
               style={styles.map}>
               <ARPathLayer path={parcours} />
             </ARMap>
-            <ARQAChip
-              style={styles.mapChip}
-              size="md"
-              value={QAValues[qa ?? QATypes.XXBAD]}
-            />
+            {qa && (
+              <ARQAChip style={styles.mapChip} size="md" value={QAValues[qa]} />
+            )}
           </View>
 
           <View style={styles.headContainer}>
             <View style={{ flex: 1 }}>
               <Text style={styles.headline}>{parcours.properties.nom}</Text>
-              <Text style={styles.denivele}>
-                Dénivelé : {parcours.properties.denivele}m
-              </Text>
+              {parcours.properties.denivele > 0 && (
+                <Text style={styles.subTitle}>
+                  Dénivelé : {parcours.properties.denivele}m
+                </Text>
+              )}
+              {parcours.properties.date_maj && (
+                <Text style={styles.subTitle}>
+                  Date d'enregistrement :{' '}
+                  {formatDate(parcours.properties.date_maj)}
+                </Text>
+              )}
             </View>
             <View style={styles.distance}>
               <Text style={styles.distanceKm}>{Math.round(km * 10) / 10}</Text>
@@ -228,10 +275,38 @@ export default ({}: ARRouteDetailProp) => {
               ),
           )}
 
-          <ARForecasts
-            id={parcours.properties.id}
-            type="aireel:parcours_data"
-          />
+          {parcours.type === 'Custom' && (
+            <View style={styles.actionRow}>
+              <ARParcourRecordingDataItem
+                title="Temps"
+                value={formatTime(parcours.properties.timeTaken ?? 0)}
+                size="sm"
+              />
+              <ARParcourRecordingDataItem
+                title="Distance"
+                value={`${parcours.properties.km.toFixed(2)} km`}
+                size="sm"
+              />
+              <ARParcourRecordingDataItem
+                title="Vitesse moyenne"
+                value={`${parcours.properties.avgSpeed?.toFixed(2)} km/h`}
+                size="sm"
+              />
+            </View>
+          )}
+
+          {parcours.type === 'Custom' && (
+            <View style={styles.carbonEquivalent}>
+              <ARCarbonEquivalent distance={parcours.properties.km} />
+            </View>
+          )}
+
+          {parcours.type === undefined && (
+            <ARForecasts
+              id={parcours.properties.id}
+              type="aireel:parcours_data"
+            />
+          )}
         </SafeAreaView>
       </ScrollView>
     </>
