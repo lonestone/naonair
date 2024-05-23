@@ -33,7 +33,7 @@
     }
   },
   "API": {
-    "baseUrl": "https://naonair-api-staging.onrender.com/",
+    "baseUrl": "http://localhost:3001/",
     "pollenURL": "https://www.alertepollens.org/api/gardens/NA44/"
   }
 }

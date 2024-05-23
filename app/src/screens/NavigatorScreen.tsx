@@ -42,6 +42,7 @@ import OnboardingScreen from './OnboardingScreen';
 import PollensScreen from './PollensScreen';
 import ProfileScreen from './ProfileScreen';
 import RoutesScreen from './RoutesScreen';
+import NewParcoursScreen from './NewParcours';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 const Stack = createStackNavigator<StackParamList>();
@@ -231,6 +232,12 @@ export default () => {
         <Stack.Screen
           name="PlaceForm"
           component={ARPlaceFormLayout}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="NewParcours"
+          component={NewParcoursScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

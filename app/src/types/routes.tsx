@@ -20,6 +20,7 @@ export type StackParamList = {
   Navigation: { path: ARPath };
   RouteDetail: { parcours: ARParcours; qa?: number };
   PlaceForm: undefined | { poi: POI };
+  NewParcours: undefined;
 };
 
 export type TabParamList = {
