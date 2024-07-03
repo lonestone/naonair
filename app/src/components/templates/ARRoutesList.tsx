@@ -42,8 +42,15 @@ export default ({ filters }: ARRoutesListProps) => {
           <VirtualizedList<ARParcours>
             data={parcours}
             initialNumToRender={5}
-            renderItem={({ item }) => (
-              <ARRouteItem parcours={item} style={styles.item} />
+            renderItem={({ item, index }) => (
+              <ARRouteItem
+                parcours={item}
+                style={
+                  index === parcours.length - 1
+                    ? StyleSheet.flatten([styles.item, { marginBottom: 90 }])
+                    : styles.item
+                }
+              />
             )}
             keyExtractor={item => `parcours-${item.properties.id}`}
             getItemCount={data => data.length}

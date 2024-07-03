@@ -66,7 +66,7 @@ const profileItems: ProfileItemType[] = [
   {
     icon: 'book-open-blank-variant',
     title: 'CGU',
-    url: `${API.baseUrl}files/CGU_Naonair.pdf`,
+    url: `https://www.naonair.org/mentions-legales-et-conditions-generales-utilisation`,
   },
   {
     icon: 'information',

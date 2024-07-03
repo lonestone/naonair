@@ -1,6 +1,13 @@
 import { Position } from 'geojson';
 import React from 'react';
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import {
+  Platform,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { QAType } from '../../actions/qa';
 import { useQA } from '../../hooks/useQA';
 import { fonts, theme } from '../../theme';
@@ -25,6 +32,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   text: {
+    marginBottom: Platform.OS === 'ios' ? 0 : 3,
     ...fonts.Lato.bold,
   },
   xsText: {

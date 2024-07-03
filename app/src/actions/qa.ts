@@ -2,6 +2,7 @@ import { BBox, FeatureCollection, Point, Position } from 'geojson';
 import { theme } from '../theme';
 import { buildGeoserverUrl } from '../utils/config';
 import logger from '../utils/logger';
+import { API } from '../config.json';
 
 export enum QATypes {
   GOOD = 1,
@@ -147,6 +148,22 @@ export const getQAFromParcours = async (id_parcours: number) => {
   }
 };
 
+export const getQAFromCustomParcours = async (points: [number, number][]) => {
+  const URL = `${API.baseUrl}routing/custom/quality`;
+
+  console.info(URL);
+  const response = await fetch(URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ points }),
+  });
+  const json = (await response.json()) as { value: number };
+
+  return json.value;
+};
+
 export interface Forecast {
   hour: Date;
   value: QAType;
@@ -167,6 +184,8 @@ export const forecast = async (
       id_parcours: typeName === 'aireel:parcours_data' ? poi_id : undefined,
     },
   });
+
+  console.log('URRRRRRRRRL', URL);
 
   try {
     console.info(URL);
@@ -201,4 +220,30 @@ export const forecast = async (
     logger.error(e, 'forecasts');
     throw 'Impossible de récupérer les prévisions';
   }
+};
+
+export const customParcoursForecasts = async (
+  points: [number, number][]
+): Promise<Forecast[]> => {
+  const URL = `${API.baseUrl}routing/custom/forecast`;
+
+  console.info(URL);
+  const response = await fetch(URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ points }),
+  });
+  const json = (await response.json()) as {
+    hour: string;
+    value: number;
+  }[];
+
+  console.log(json);
+
+  return json.map<Forecast>(({ hour, value }) => ({
+    hour: new Date(hour),
+    value: QAValues[value] ?? QAValues[1],
+  }));
 };

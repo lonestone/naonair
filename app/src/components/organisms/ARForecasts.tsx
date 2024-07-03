@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, List, Text } from 'react-native-paper';
-import { useForecast } from '../../hooks/useForecast';
 import { fonts, theme } from '../../theme';
 import ARForecastChart from '../molecules/ARForecastChart';
+import { Forecast } from '../../actions/qa';
 
 const styles = StyleSheet.create({
-  container: { paddingTop: 25 },
+  container: { paddingTop: 18 },
   title: {
     fontSize: 18,
     color: theme.colors.blue[500],
@@ -39,19 +39,17 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     flexDirection: 'row',
-
     alignItems: 'center',
   },
 });
 
 interface Props {
-  id: number;
-  type: 'aireel:poi_data' | 'aireel:parcours_data';
+  indices: Forecast[];
+  isLoading: boolean;
+  error: any;
 }
 
-const ARForecasts = ({ id, type }: Props) => {
-  const [indices, isLoading, error] = useForecast(id, type);
-
+const ARForecasts = ({ indices, isLoading, error }: Props) => {
   return (
     <View style={styles.container}>
       <List.Item

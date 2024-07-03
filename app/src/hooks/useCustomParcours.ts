@@ -7,7 +7,7 @@ import uuid from 'react-native-uuid';
 const CUSTOM_PARCOURS_PREFIX = 'parcours_';
 
 export const useCustomParcours = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [parcours, setParcours] = useState<CustomParcours[]>([]);
 
   const getParcours = async () => {

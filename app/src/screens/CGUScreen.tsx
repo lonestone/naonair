@@ -67,7 +67,9 @@ const CGUScreen = () => {
                 { color: 'blue', textDecorationLine: 'underline' },
               ])}
               onPress={() =>
-                Linking.openURL(`${API.baseUrl}files/CGU_Naonair.pdf`)
+                Linking.openURL(
+                  `https://www.naonair.org/mentions-legales-et-conditions-generales-utilisation`,
+                )
               }>
               Conditions Générales d'Utilisation
             </Text>{' '}

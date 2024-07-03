@@ -11,13 +11,13 @@ export const useCarbonEquivalent = (distance: number) => {
       return;
     }
 
+    setIsLoading(true);
+
     getCO2Equivalent(distance)
       .then(i => {
-        setIsLoading(true);
         setCarbonEquivalent(i);
       })
       .catch(e => {
-        setIsLoading(true);
         setError(e);
       })
       .finally(() => {

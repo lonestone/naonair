@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
     minWidth: 350,
     borderColor: theme.colors.accent,
     borderWidth: 1,
-    marginTop: 15,
     borderRadius: 4,
   },
 });

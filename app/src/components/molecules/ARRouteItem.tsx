@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import slugify from 'slugify';
 import { ARParcours } from '../../actions/parcours';
 import { QATypes, QAValues } from '../../actions/qa';
-import { useQAParcours } from '../../hooks/useQA';
+import { useQACustomParcours, useQAParcours } from '../../hooks/useQA';
 import { fonts, theme } from '../../theme';
 import { StackNavigationScreenProp } from '../../types/routes';
 import ARQAChip from '../atoms/ARQAChip';
@@ -59,7 +59,12 @@ export default ({ style, parcours }: ARRouteItemProps) => {
 
   const { properties } = parcours;
 
-  const qa = useQAParcours(parcours);
+  const qa =
+    parcours.type === 'Custom'
+      ? useQACustomParcours(
+          parcours.geometry.coordinates[0] as [number, number][],
+        )
+      : useQAParcours(parcours);
 
   const { coureur, marcheur, cycliste, km, denivele, nom } = properties;
 

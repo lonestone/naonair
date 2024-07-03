@@ -105,8 +105,8 @@ export default () => {
         <>
           <Headline style={styles.headline}>Les parcours</Headline>
           <Caption style={styles.caption}>
-            Retrouvez des suggestions de promenades et d’itinéraires sportifs
-            basés sur la qualité de l’air
+            Découvrez des promenades, des itinéraires sportifs et enregistrez
+            vos parcours basés sur la qualité de l’air
           </Caption>
           <ARFilter<ParcoursCategory>
             items={ROUTE_FILTERS}

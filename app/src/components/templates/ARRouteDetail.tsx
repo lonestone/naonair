@@ -19,18 +19,23 @@ import ARQAChip from '../atoms/ARQAChip';
 import BackButton from '../molecules/ARBackButton';
 import ARCommonHeader from '../molecules/ARCommonHeader';
 import FavoriteButton from '../molecules/ARFavoriteButton';
-import ARForecasts from '../organisms/ARForecasts';
 import { useCustomParcours } from '../../hooks/useCustomParcours';
 import ARDeleteParcoursButton from '../molecules/ARDeleteParcoursButton';
 import ARParcourRecordingDataItem from '../molecules/ARParcourRecordingDataItem';
 import { formatTime } from '../../utils/formatTime';
 import ARCarbonEquivalent from '../molecules/ARCarbonEquivalent';
+import ARGeoserverForecasts from '../organisms/ARGeoserverForecasts';
+import ARCustomParcoursForecasts from '../organisms/ARCustomParcoursForecasts';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
     padding: 16,
+  },
+  safeArea: {
+    flex: 1,
+    paddingBottom: 32,
   },
   mapContainer: {
     justifyContent: 'center',
@@ -124,7 +129,6 @@ const styles = StyleSheet.create({
   },
   carbonEquivalent: {
     marginTop: 16,
-    marginBottom: 32,
   },
 });
 
@@ -224,7 +228,9 @@ export default ({}: ARRouteDetailProp) => {
         translucent
       />
       <ScrollView style={styles.container}>
-        <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1 }}>
+        <SafeAreaView
+          edges={['bottom', 'left', 'right']}
+          style={styles.safeArea}>
           <View style={styles.mapContainer}>
             <ARMap
               heatmapVisible
@@ -302,9 +308,14 @@ export default ({}: ARRouteDetailProp) => {
           )}
 
           {parcours.type === undefined && (
-            <ARForecasts
+            <ARGeoserverForecasts
               id={parcours.properties.id}
               type="aireel:parcours_data"
+            />
+          )}
+          {parcours.type === 'Custom' && (
+            <ARCustomParcoursForecasts
+              points={parcours.geometry.coordinates[0] as [number, number][]}
             />
           )}
         </SafeAreaView>
