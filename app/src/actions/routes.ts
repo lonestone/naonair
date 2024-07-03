@@ -1,6 +1,6 @@
 import { BBox, LineString, Position } from 'geojson';
 import { API } from '../config.json';
-import { jsonToUrl } from '../utils/config';
+import { jsonToUrl } from '@utils/config';
 import { ARInstruction } from './instructions';
 import { QAType } from './qa';
 

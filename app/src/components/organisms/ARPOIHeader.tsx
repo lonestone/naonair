@@ -5,10 +5,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SvgXml } from 'react-native-svg';
 import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { POICategory, poiIcons } from '../../actions/poi';
-import { fonts, theme } from '../../theme';
+import { fonts, theme } from '@theme';
 import ARHeader from '../atoms/ARHeader';
-import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
-import ARSwitchToggle, { SwitchToggleItem } from '../molecules/ARSwitchToggle';
+import ARFilter, { ARFilterItem } from '@molecules/ARFilter';
+import ARSwitchToggle, { SwitchToggleItem } from '@molecules/ARSwitchToggle';
 
 const styles = StyleSheet.create({
   headlineContainer: {

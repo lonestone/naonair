@@ -29,7 +29,7 @@ import {
   getDistanceLabel,
   getInstructionFromPathSection,
 } from '../../actions/routes';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 import ARDivider from '../atoms/ARDivider';
 
 export interface ARPathInstructionsProps {

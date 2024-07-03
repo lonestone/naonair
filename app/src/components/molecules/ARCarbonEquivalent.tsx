@@ -3,8 +3,8 @@ import { StyleSheet, View, ViewProps } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { theme } from '../../theme';
-import { useCarbonEquivalent } from '../../hooks/useCarbonEquivalent';
+import { theme } from '@theme';
+import { useCarbonEquivalent } from '@hooks/useCarbonEquivalent';
 
 type ARCarbonEquivalentProps = {
   distance: number;

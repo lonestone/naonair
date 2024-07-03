@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCustomParcoursForecast } from '../../hooks/useCustomParcoursForecast';
+import { useCustomParcoursForecast } from '@hooks/useCustomParcoursForecast';
 import ARForecasts from './ARForecasts';
 
 interface Props {

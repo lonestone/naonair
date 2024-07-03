@@ -20,14 +20,14 @@ import {
 } from '../../actions/myhistory';
 import { POI, POICategory, reverse } from '../../actions/poi';
 import { RouteProfile } from '../../actions/routes';
-import { fonts, theme } from '../../theme';
-import { StackNavigationScreenProp, TabParamList } from '../../types/routes';
-import logger from '../../utils/logger';
+import { fonts, theme } from '@theme';
+import { StackNavigationScreenProp, TabParamList } from '@type/routes';
+import logger from '@utils/logger';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARHeader from '../atoms/ARHeader';
-import ARAddressInput from '../molecules/ARAddressInput';
-import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
-import ARListItem from '../molecules/ARListItem';
+import ARAddressInput from '@molecules/ARAddressInput';
+import ARFilter, { ARFilterItem } from '@molecules/ARFilter';
+import ARListItem from '@molecules/ARListItem';
 import analytics from '@react-native-firebase/analytics';
 
 const styles = StyleSheet.create({

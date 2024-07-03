@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { IconButton, Portal } from 'react-native-paper';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ARConfirmModal from '../../components/templates/ARConfirmModal';
+import ARConfirmModal from '@templates/ARConfirmModal';
 
 type ARDeleteParcoursButtonProps = {
   onDelete: () => void;

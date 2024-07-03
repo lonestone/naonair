@@ -21,12 +21,12 @@ import {
   getDistanceLabel,
   getDurationLabel,
 } from '../../actions/routes';
-import { fonts, theme } from '../../theme';
-import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
+import { fonts, theme } from '@theme';
+import { StackNavigationScreenProp, StackParamList } from '@type/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARRouteMapView from '../organisms/ARRouteMapView';
 import analytics from '@react-native-firebase/analytics';
-import ARFloatingBackButton from '../molecules/ARFloatingBackButton';
+import ARFloatingBackButton from '@molecules/ARFloatingBackButton';
 
 type ARChooseItineraryProp = RouteProp<StackParamList, 'ChooseItinerary'>;
 

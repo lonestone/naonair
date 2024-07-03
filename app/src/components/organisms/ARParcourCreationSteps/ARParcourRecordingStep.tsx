@@ -3,9 +3,9 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
 import { Portal, Text } from 'react-native-paper';
 import { ARButton, ARButtonSize } from '../../atoms/ARButton';
-import { theme } from '../../../theme';
+import { theme } from '@theme';
 import Ionicons from 'react-native-vector-icons/FontAwesome5';
-import ARParcourRecordingDataItem from '../../molecules/ARParcourRecordingDataItem';
+import ARParcourRecordingDataItem from '@molecules/ARParcourRecordingDataItem';
 import FA5Icon from 'react-native-vector-icons/FontAwesome5';
 import Geolocation, {
   GeoCoordinates,
@@ -14,7 +14,7 @@ import Geolocation, {
 import { Position } from 'geojson';
 import { getDistance } from 'geolib';
 import ARConfirmModal from '../../templates/ARConfirmModal';
-import { formatTime } from '../../../utils/formatTime';
+import { formatTime } from '@utils/formatTime';
 
 type ARParcourRecordingStepProps = {
   onEnded: (

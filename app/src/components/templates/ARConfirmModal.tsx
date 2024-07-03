@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Headline, Modal, Paragraph } from 'react-native-paper';
 
-import { fonts, theme } from '../../theme';
+import { fonts, theme } from '@theme';
 
 const styles = StyleSheet.create({
   dialog: {

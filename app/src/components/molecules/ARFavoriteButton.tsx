@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
 import { poiIcons } from '../../actions/poi';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 
 export type FavoriteButtonProps = Omit<
   ComponentProps<typeof IconButton>,

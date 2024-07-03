@@ -9,12 +9,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import ARElasticView from '../components/atoms/ARElasticView';
-import ARNavigationMapView from '../components/organisms/ARNavigationMapView';
-import ARPathInstructions from '../components/organisms/ARPathInstructions';
+import ARElasticView from '@atoms/ARElasticView';
+import ARNavigationMapView from '@organisms/ARNavigationMapView';
+import ARPathInstructions from '@organisms/ARPathInstructions';
 
-import { StackParamList } from '../types/routes';
-import ARFloatingBackButton from '../components/molecules/ARFloatingBackButton';
+import { StackParamList } from '@type/routes';
+import ARFloatingBackButton from '@molecules/ARFloatingBackButton';
 
 export interface NavigationScreenProp {}
 

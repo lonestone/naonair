@@ -1,13 +1,13 @@
 import { Feature, FeatureCollection, Point, Position } from 'geojson';
-import cultureIcon from '../assets/culture-icon.svg';
-import favoriteIcon from '../assets/favorite-icon.svg';
-import historyIcon from '../assets/history-icon.svg';
-import marketIcon from '../assets/market-icon.svg';
-import parkIcon from '../assets/park-icon.svg';
-import sportIcon from '../assets/sport-icon.svg';
+import cultureIcon from '@assets/culture-icon.svg';
+import favoriteIcon from '@assets/favorite-icon.svg';
+import historyIcon from '@assets/history-icon.svg';
+import marketIcon from '@assets/market-icon.svg';
+import parkIcon from '@assets/park-icon.svg';
+import sportIcon from '@assets/sport-icon.svg';
 
-import { buildGeoserverUrl, buildMapboxUrl } from '../utils/config';
-import removeAccent from '../utils/remove-accent';
+import { buildGeoserverUrl, buildMapboxUrl } from '@utils/config';
+import removeAccent from '@utils/remove-accent';
 import { getFavorites } from './favorites';
 import { getAllPlaces } from './myplaces';
 import { QAType, QAValues } from './qa';

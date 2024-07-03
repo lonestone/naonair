@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationScreenProp } from '../../types/routes';
+import { StackNavigationScreenProp } from '@type/routes';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Surface } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 import { Pressable, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({

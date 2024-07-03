@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { theme } from '../../theme';
-import logger from '../../utils/logger';
+import { theme } from '@theme';
+import logger from '@utils/logger';
 
 type ARLinkType = {
   label: string;

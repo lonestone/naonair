@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/react-native';
 import * as turf from '@turf/turf';
 import { BBox } from 'geojson';
-import { buildGeoserverUrl } from '../utils/config';
+import { buildGeoserverUrl } from '@utils/config';
 import { getFavorites } from './favorites';
 
 export type BaseParcoursProperties = {

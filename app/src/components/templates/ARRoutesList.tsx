@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { StyleSheet, View, VirtualizedList } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { ARParcours, ParcoursCategory } from '../../actions/parcours';
-import { useParcours } from '../../hooks/useParcours';
-import ARRouteItem from '../molecules/ARRouteItem';
+import { useParcours } from '@hooks/useParcours';
+import ARRouteItem from '@molecules/ARRouteItem';
 import { ARFab } from '../atoms/ARFab';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
+import { StackNavigationScreenProp, StackParamList } from '@type/routes';
 
 const styles = StyleSheet.create({
   container: {

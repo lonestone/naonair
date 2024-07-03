@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { StyleSheet, View, ViewProps } from 'react-native';
 import { Text } from 'react-native-paper';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 
 type ARParcourRecordingDataItemProps = {
   title: string;

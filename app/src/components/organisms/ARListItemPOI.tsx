@@ -1,6 +1,6 @@
 import React from 'react';
 import { POI, POICategory } from '../../actions/poi';
-import ARListItem, { ARListItemProps } from '../molecules/ARListItem';
+import ARListItem, { ARListItemProps } from '@molecules/ARListItem';
 
 export type ListItemPOIProps = {
   poi: POI;

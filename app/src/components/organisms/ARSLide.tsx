@@ -2,7 +2,7 @@ import React from 'react';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Item } from '../../screens/OnboardingScreen';
-import { fonts, theme } from '../../theme';
+import { fonts, theme } from '@theme';
 
 const { width } = Dimensions.get('window');
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { StyleSheet, View, ViewProps } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
-import { theme } from '../../../theme';
+import { theme } from '@theme';
 import { ARButton } from '../../atoms/ARButton';
 
 type ARParcourNameStepProps = {

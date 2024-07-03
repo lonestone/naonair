@@ -1,25 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { Portal, Surface } from 'react-native-paper';
-import ARMap, { ARMapHandle } from '../components/atoms/ARMap';
+import ARMap, { ARMapHandle } from '@atoms/ARMap';
 import { Position } from '@turf/turf';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { theme } from '../theme';
-import ARFloatingBackButton from '../components/molecules/ARFloatingBackButton';
-import ARParcoursSteps from '../components/templates/ARParcoursSteps';
-import { useUserPosition } from '../hooks/useUserPosition';
-import ARConfirmModal from '../components/templates/ARConfirmModal';
+import { theme } from '@theme';
+import ARFloatingBackButton from '@molecules/ARFloatingBackButton';
+import ARParcoursSteps from '@templates/ARParcoursSteps';
+import { useUserPosition } from '@hooks/useUserPosition';
+import ARConfirmModal from '@templates/ARConfirmModal';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationScreenProp } from '../types/routes';
+import { StackNavigationScreenProp } from '@type/routes';
 import { getBounds } from 'geolib';
-import ARPathLayer from '../components/atoms/ARPathLayer';
+import ARPathLayer from '@atoms/ARPathLayer';
 import { ARParcours } from '../actions/parcours';
-import ARPathMarker, {
-  ARPathMarkerType,
-} from '../components/atoms/ARPathMarker';
-import ARFullScreenLoading from '../components/molecules/ARFullScreenLoading';
-import { useCustomParcours } from '../hooks/useCustomParcours';
-import { useParcours } from '../hooks/useParcours';
+import ARPathMarker, { ARPathMarkerType } from '@atoms/ARPathMarker';
+import ARFullScreenLoading from '@molecules/ARFullScreenLoading';
+import { useCustomParcours } from '@hooks/useCustomParcours';
+import { useParcours } from '@hooks/useParcours';
 
 const styles = StyleSheet.create({
   container: {

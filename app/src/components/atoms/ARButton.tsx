@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { Button } from 'react-native-paper';
-import { fonts } from '../../theme';
+import { fonts } from '@theme';
 
 export enum ARButtonSize {
   Xsmall = 'xsmall',

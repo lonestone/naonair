@@ -11,7 +11,21 @@
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
-    "target": "esnext"
+    "target": "esnext",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@atoms/*": ["./src/components/atoms/*"],
+      "@organisms/*": ["./src/components/organisms/*"],
+      "@molecules/*": ["./src/components/molecules/*"],
+      "@templates/*": ["./src/components/templates/*"],
+      "@type/*": ["./src/types/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@theme": ["./src/theme"],
+      "@utils/*": ["./src/utils/*"],
+      "@contexts/*": ["./src/contexts/*"],
+      "@hooks/*": ["./src/hooks/*"]
+    }
   },
   "exclude": [
     "node_modules",

@@ -3,7 +3,7 @@ import { Position } from 'geojson';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, View } from 'react-native';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 
 export enum ARPathMarkerType {
   START,

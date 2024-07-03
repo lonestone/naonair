@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 
 export interface SwitchToggleItem {
   label?: string;

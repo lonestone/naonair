@@ -1,6 +1,6 @@
 import React from 'react';
 import { FAB } from 'react-native-paper';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 import { StyleSheet } from 'react-native';
 
 type ARFabProps = React.ComponentProps<typeof FAB>;

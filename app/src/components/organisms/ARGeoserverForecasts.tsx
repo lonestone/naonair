@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForecast } from '../../hooks/useForecast';
+import { useForecast } from '@hooks/useForecast';
 import ARForecasts from './ARForecasts';
 
 interface Props {

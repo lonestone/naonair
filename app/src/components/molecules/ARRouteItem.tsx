@@ -7,9 +7,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import slugify from 'slugify';
 import { ARParcours } from '../../actions/parcours';
 import { QATypes, QAValues } from '../../actions/qa';
-import { useQACustomParcours, useQAParcours } from '../../hooks/useQA';
-import { fonts, theme } from '../../theme';
-import { StackNavigationScreenProp } from '../../types/routes';
+import { useQACustomParcours, useQAParcours } from '@hooks/useQA';
+import { fonts, theme } from '@theme';
+import { StackNavigationScreenProp } from '@type/routes';
 import ARQAChip from '../atoms/ARQAChip';
 
 const styles = StyleSheet.create({

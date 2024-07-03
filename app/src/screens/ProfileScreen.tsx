@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 import { Linking, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { List, Portal, Provider } from 'react-native-paper';
 import { clearStorage } from '../actions/myplaces';
-import { ARButton, ARButtonSize } from '../components/atoms/ARButton';
-import ARCommonHeader from '../components/molecules/ARCommonHeader';
-import ARListItem from '../components/molecules/ARListItem';
-import ARConfirmModal from '../components/templates/ARConfirmModal';
+import { ARButton, ARButtonSize } from '@atoms/ARButton';
+import ARCommonHeader from '@molecules/ARCommonHeader';
+import ARListItem from '@molecules/ARListItem';
+import ARConfirmModal from '@templates/ARConfirmModal';
 import { API } from '../config.json';
-import { fonts, theme } from '../theme';
-import { LinkedScreen, ProfileItemType } from '../types/profile';
-import { StackNavigationScreenProp } from '../types/routes';
+import { fonts, theme } from '@theme';
+import { LinkedScreen, ProfileItemType } from '@type/profile';
+import { StackNavigationScreenProp } from '@type/routes';
 
 const styles = StyleSheet.create({
   container: {

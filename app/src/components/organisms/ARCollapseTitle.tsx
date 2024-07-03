@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { List } from 'react-native-paper';
-import { fonts } from '../../theme';
+import { fonts } from '@theme';
 
 export interface ARCollapseTitleProp {
   title: string;

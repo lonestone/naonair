@@ -5,7 +5,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { fonts, theme } from '../../theme';
+import { fonts, theme } from '@theme';
 
 const styles = StyleSheet.create({
   container: {

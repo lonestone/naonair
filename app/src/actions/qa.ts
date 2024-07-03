@@ -1,7 +1,7 @@
 import { BBox, FeatureCollection, Point, Position } from 'geojson';
-import { theme } from '../theme';
-import { buildGeoserverUrl } from '../utils/config';
-import logger from '../utils/logger';
+import { theme } from '@theme';
+import { buildGeoserverUrl } from '@utils/config';
+import logger from '@utils/logger';
 import { API } from '../config.json';
 
 export enum QATypes {

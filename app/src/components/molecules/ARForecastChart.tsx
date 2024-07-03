@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Forecast } from '../../actions/qa';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 import ARChartPie from '../atoms/ARChartPie';
 
 const styles = StyleSheet.create({

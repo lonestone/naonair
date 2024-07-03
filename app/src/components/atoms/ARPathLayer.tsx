@@ -3,7 +3,7 @@ import { Feature, Geometry } from 'geojson';
 import React, { useEffect } from 'react';
 import { ARParcours } from '../../actions/parcours';
 import { ARPath } from '../../actions/routes';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 
 const lineStyle: LineLayerStyle = {
   lineColor: theme.colors.blue[500],

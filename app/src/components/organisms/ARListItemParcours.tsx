@@ -1,6 +1,6 @@
 import React from 'react';
 import { ARParcours } from '../../actions/parcours';
-import ARListItem, { ARListItemProps } from '../molecules/ARListItem';
+import ARListItem, { ARListItemProps } from '@molecules/ARListItem';
 
 export type ListItemPOIProps = {
   parcours: ARParcours;

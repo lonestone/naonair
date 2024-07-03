@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import { Text } from 'react-native-paper';
 import { setCGUAccepted } from '../actions/launch';
-import { ARButton, ARButtonSize } from '../components/atoms/ARButton';
-import { fonts, theme } from '../theme';
-import { StackNavigationScreenProp } from '../types/routes';
+import { ARButton, ARButtonSize } from '@atoms/ARButton';
+import { fonts, theme } from '@theme';
+import { StackNavigationScreenProp } from '@type/routes';
 import { API } from '../config.json';
 
 const styles = StyleSheet.create({

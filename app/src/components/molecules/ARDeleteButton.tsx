@@ -4,7 +4,7 @@ import { ComponentProps } from 'react';
 import { StyleSheet } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { StackNavigationScreenProp } from '../../types/routes';
+import { StackNavigationScreenProp } from '@type/routes';
 
 export type DeleteButtonProps = Omit<
   ComponentProps<typeof IconButton>,

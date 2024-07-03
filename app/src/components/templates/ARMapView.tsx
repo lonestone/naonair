@@ -8,11 +8,11 @@ import { StyleSheet, View } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { SvgXml } from 'react-native-svg';
 import { POI, poiIcons } from '../../actions/poi';
-import markerBackground from '../../assets/marker-background.svg';
-import { useQA } from '../../hooks/useQA';
-import { StackNavigationScreenProp } from '../../types/routes';
+import markerBackground from '@assets/marker-background.svg';
+import { useQA } from '@hooks/useQA';
+import { StackNavigationScreenProp } from '@type/routes';
 import ARMap from '../atoms/ARMap';
-import ARLegend from '../molecules/ARLegend';
+import ARLegend from '@molecules/ARLegend';
 import analytics from '@react-native-firebase/analytics';
 
 export interface ARMapViewProps {

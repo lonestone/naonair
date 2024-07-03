@@ -2,9 +2,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import React, { useContext, useEffect } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { Provider } from 'react-native-paper';
-import ARCommonHeader from '../components/molecules/ARCommonHeader';
-import ARListPollens from '../components/templates/ARListPollens';
-import { NotificationsContext } from '../contexts/notifications.context';
+import ARCommonHeader from '@molecules/ARCommonHeader';
+import ARListPollens from '@templates/ARListPollens';
+import { NotificationsContext } from '@contexts/notifications.context';
 
 const styles = StyleSheet.create({
   container: {

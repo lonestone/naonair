@@ -9,8 +9,8 @@ import {
   ViewStyle,
 } from 'react-native';
 import { QAType } from '../../actions/qa';
-import { useQA } from '../../hooks/useQA';
-import { fonts, theme } from '../../theme';
+import { useQA } from '@hooks/useQA';
+import { fonts, theme } from '@theme';
 
 const styles = StyleSheet.create({
   chip: {

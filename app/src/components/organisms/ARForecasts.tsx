@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, List, Text } from 'react-native-paper';
-import { fonts, theme } from '../../theme';
-import ARForecastChart from '../molecules/ARForecastChart';
+import { fonts, theme } from '@theme';
+import ARForecastChart from '@molecules/ARForecastChart';
 import { Forecast } from '../../actions/qa';
 
 const styles = StyleSheet.create({

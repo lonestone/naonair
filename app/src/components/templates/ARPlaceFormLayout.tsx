@@ -9,14 +9,14 @@ import {
   updatePlaceStorage,
 } from '../../actions/myplaces';
 import { POI, POICategory } from '../../actions/poi';
-import useSnackbar from '../../contexts/snackbar.context';
-import { theme } from '../../theme';
-import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
+import useSnackbar from '@contexts/snackbar.context';
+import { theme } from '@theme';
+import { StackNavigationScreenProp, StackParamList } from '@type/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
-import BackButton from '../molecules/ARBackButton';
-import ARCommonHeader from '../molecules/ARCommonHeader';
-import DeleteButton from '../molecules/ARDeleteButton';
-import ARListItem from '../molecules/ARListItem';
+import BackButton from '@molecules/ARBackButton';
+import ARCommonHeader from '@molecules/ARCommonHeader';
+import DeleteButton from '@molecules/ARDeleteButton';
+import ARListItem from '@molecules/ARListItem';
 import ARPlaceForm from '../organisms/ARPlaceForm';
 import ARConfirmModal from './ARConfirmModal';
 
