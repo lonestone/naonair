@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { Portal, Surface } from 'react-native-paper';
 import ARMap, { ARMapHandle } from '@atoms/ARMap';
@@ -68,13 +68,13 @@ const NewParcoursScreen = () => {
     }
   }, [initialPosition, setPoints]);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     if (hasStarted) {
       setCancelModalOpen(true);
     } else {
       navigation.goBack();
     }
-  };
+  }, [hasStarted, navigation]);
 
   const onSave = async (
     name: string,

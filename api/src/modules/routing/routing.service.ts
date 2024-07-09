@@ -17,6 +17,7 @@ import * as path from 'path';
 import { GeoTIFFImage, ReadRasterResult } from 'geotiff';
 import appConfig from 'src/configs/app.config';
 import { Cron } from '@nestjs/schedule';
+import { getMostCommonValue } from 'src/modules/routing/utils';
 
 const geotiffBbox = [
   [-1.927228156940701, 47.09136660612333],
@@ -26,10 +27,11 @@ const geotiffBbox = [
 const IMAGE_RATIO = 4;
 
 const geotiffRes = [7680 / IMAGE_RATIO, 4960 / IMAGE_RATIO];
+const GEOTIFF_URL = `https://api.naonair.org/geoserver/aireel/wms?service=WMS&version=1.1.0&request=GetMap&layers=aireel%3Aaireel_indic_7m_atmo_deg&bbox=${geotiffBbox[0][0]},${geotiffBbox[0][1]},${geotiffBbox[1][0]},${geotiffBbox[1][1]}&srs=EPSG%3A4326&styles&format=image%2Fgeotiff8&width=${geotiffRes[0]}&height=${geotiffRes[1]}`;
+const PREV_GEOTIFF_URL = `https://api.naonair.org/geoserver/aireel/ows?service=WCS&version=2.0.0&request=GetCoverage&CoverageId=aireel__aireel_indic_21m_atmo_prevision_deg&outputCRS=http://www.opengis.net/def/crs/EPSG/0/4326`;
+
 @Injectable()
 export class RoutingService {
-  private readonly geotiffUrl = `https://api.naonair.org/geoserver/aireel/wms?service=WMS&version=1.1.0&request=GetMap&layers=aireel%3Aaireel_indic_7m_atmo_deg&bbox=${geotiffBbox[0][0]},${geotiffBbox[0][1]},${geotiffBbox[1][0]},${geotiffBbox[1][1]}&srs=EPSG%3A4326&styles&format=image%2Fgeotiff8&width=${geotiffRes[0]}&height=${geotiffRes[1]}`;
-  private readonly prevGeotiffUrl = `https://api.naonair.org/geoserver/aireel/ows?service=WCS&version=2.0.0&request=GetCoverage&CoverageId=aireel__aireel_indic_21m_atmo_prevision_deg&outputCRS=http://www.opengis.net/def/crs/EPSG/0/4326`;
   private readonly localFilePath = path.join(__dirname, 'data', 'file.tiff');
   private readonly preLocalFilePath = path.join(
     __dirname,
@@ -55,40 +57,29 @@ export class RoutingService {
   }
   logger = new Logger('RoutingModule');
 
+  // Fetch the air quality of a custom route from its array of coordinates
+  // then returns the most common value
   async getCustomRouteQuality(coords: [number, number][]) {
     const res = await this.getValuesFromCoordinates(coords);
     const values = res.map((v) => v.value);
-    const mostCommonValue = values
-      .sort(
-        (a, b) =>
-          values.filter((v) => v === a).length -
-          values.filter((v) => v === b).length,
-      )
-      .pop();
+    const mostCommonValue = getMostCommonValue(values);
     const val = Math.round((mostCommonValue * 6) / 179);
 
     return val > 1 ? val : 1;
   }
 
+  // Gets the values for each coordinate in the array by converting it to a pixel coordinate inside the geotiff
   private async getValuesFromCoordinates(coords: [number, number][]) {
-    const results = [];
     const imageWidth = this.image.getWidth();
 
-    for (const coord of coords) {
-      const [lon, lat] = coord;
-      const { x, y } = this.latLonToXY(lat, lon, this.image);
-      const value = this.rasters[0][y * imageWidth + x];
-      results.push({ longitude: lon, latitude: lat, value });
-    }
-
-    return results;
+    return this.getAirQualityValuesFromImage(this.image, imageWidth, coords);
   }
 
   // Triggers every hour on minute 15
   @Cron('15 * * * *')
   async ensureFreshGeoTIFF() {
     this.logger.log('Downloading new GeoTIFF file...');
-    const response = await axios.get(this.geotiffUrl, {
+    const response = await axios.get(GEOTIFF_URL, {
       responseType: 'arraybuffer',
     });
     fs.writeFileSync(this.localFilePath, response.data);
@@ -96,7 +87,7 @@ export class RoutingService {
     const tiff = await geotiff.fromFile(this.localFilePath);
     this.image = await tiff.getImage();
     this.rasters = await this.image.readRasters();
-    console.log('Downloaded latest GeoTIFF file');
+    this.logger.log('Downloaded latest GeoTIFF file');
     this.lastDownloaded = new Date();
   }
 
@@ -106,21 +97,14 @@ export class RoutingService {
     const imageWidth = this.prevImage.getWidth();
 
     for (let i = 0; i < this.prevRasters.length; i++) {
-      const results = [];
-      for (const coord of coords) {
-        const [lon, lat] = coord;
-        const { x, y } = this.latLonToXY(lat, lon, this.prevImage);
-        const value = this.prevRasters[i][y * imageWidth + x];
-        results.push({ longitude: lon, latitude: lat, value });
-      }
+      const results = this.getAirQualityValuesFromImage(
+        this.prevImage,
+        imageWidth,
+        coords,
+      );
       const values = results.map((v) => v.value);
-      const mostCommonValue = values
-        .sort(
-          (a, b) =>
-            values.filter((v) => v === a).length -
-            values.filter((v) => v === b).length,
-        )
-        .pop();
+      const mostCommonValue = getMostCommonValue(values);
+
       forecast.push({
         hour: new Date(new Date(today).setHours(today.getHours() + i)),
         value: mostCommonValue,
@@ -134,7 +118,7 @@ export class RoutingService {
   @Cron('0 0 * * *')
   async ensureFreshPrevGeoTIFF() {
     this.logger.log('Downloading new prevision GeoTIFF file...');
-    const response = await axios.get(this.prevGeotiffUrl, {
+    const response = await axios.get(PREV_GEOTIFF_URL, {
       responseType: 'arraybuffer',
     });
     fs.writeFileSync(this.preLocalFilePath, response.data);
@@ -142,7 +126,7 @@ export class RoutingService {
     const tiff = await geotiff.fromFile(this.preLocalFilePath);
     this.prevImage = await tiff.getImage();
     this.prevRasters = await this.prevImage.readRasters();
-    console.log('Downloaded latest prevision GeoTIFF file');
+    this.logger.log('Downloaded latest prevision GeoTIFF file');
     this.prevLastDownloaded = new Date();
   }
 
@@ -226,6 +210,23 @@ export class RoutingService {
     }
 
     return this.getForecastFromCoordinates(input.points);
+  }
+
+  private getAirQualityValuesFromImage(
+    image: GeoTIFFImage,
+    imageWidth: number,
+    coords: [number, number][],
+  ) {
+    const results = [];
+
+    for (const coord of coords) {
+      const [lon, lat] = coord;
+      const { x, y } = this.latLonToXY(lat, lon, image);
+      const value = this.rasters[0][y * imageWidth + x];
+      results.push({ longitude: lon, latitude: lat, value });
+    }
+
+    return results;
   }
 
   private formatData = (

@@ -7,14 +7,11 @@ import { theme } from '@theme';
 import Ionicons from 'react-native-vector-icons/FontAwesome5';
 import ARParcourRecordingDataItem from '@molecules/ARParcourRecordingDataItem';
 import FA5Icon from 'react-native-vector-icons/FontAwesome5';
-import Geolocation, {
-  GeoCoordinates,
-  GeoPosition,
-} from 'react-native-geolocation-service';
 import { Position } from 'geojson';
 import { getDistance } from 'geolib';
 import ARConfirmModal from '../../templates/ARConfirmModal';
 import { formatTime } from '@utils/formatTime';
+import { useParcoursRecording } from '@/hooks/useParcoursRecording';
 
 type ARParcourRecordingStepProps = {
   onEnded: (
@@ -79,9 +76,6 @@ const style = StyleSheet.create({
   },
 });
 
-const MAX_GET_LOCATION_INTERVAL = 500;
-const DISTANCE_FILTER = 10;
-
 function meterPerSecondToKmPerHour(speed: number): number {
   return (speed * 3600) / 1000;
 }
@@ -104,9 +98,14 @@ export default ({
     () => <FA5Icon name="location-arrow" size={18} color="white" />,
     [],
   );
-  const [isRecording, setIsRecording] = useState(true);
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const [pathPoints, setPathPoints] = useState<GeoCoordinates[]>([]);
+  const {
+    elapsedTime,
+    pathPoints,
+    isRecording,
+    stopRecording,
+    setIsRecording,
+  } = useParcoursRecording();
+
   const totalDistance = useMemo(() => {
     let distance = 0;
     for (let i = 0; i < pathPoints.length - 1; i++) {
@@ -133,58 +132,14 @@ export default ({
     const total = pathPoints.length > 0 ? pathPoints.length : 1;
     pathPoints.forEach(point => (speed += point?.speed ?? 0));
 
-    return speed / total > 0 ? speed / total : 0;
+    return Math.max(speed / total, 0);
   }, [pathPoints]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (isRecording) {
-        setElapsedTime(elapsedTime + 1);
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [isRecording, elapsedTime]);
-
-  const startRecording = () => {
-    let pP = [...pathPoints];
-
-    Geolocation.watchPosition(
-      (position: GeoPosition) => {
-        if (position.coords.latitude === 0 && position.coords.longitude === 0) {
-          return;
-        }
-
-        const all = [...pP, position.coords];
-        setPathPoints(all);
-        pP = all;
-        onPointsUpdate(
-          all.map(({ latitude, longitude }) => [longitude, latitude]),
-        );
-      },
-      error => {
-        console.log(error.code, error.message);
-      },
-      {
-        enableHighAccuracy: true,
-        interval: MAX_GET_LOCATION_INTERVAL,
-        fastestInterval: MAX_GET_LOCATION_INTERVAL,
-        distanceFilter: DISTANCE_FILTER,
-        accuracy: {
-          android: 'high',
-          ios: 'best',
-        },
-      },
+    onPointsUpdate(
+      pathPoints.map(({ latitude, longitude }) => [longitude, latitude]),
     );
-  };
-
-  useEffect(() => {
-    if (isRecording) {
-      startRecording();
-    } else {
-      Geolocation.stopObserving();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRecording]);
+  }, [pathPoints, onPointsUpdate]);
 
   return (
     <>
@@ -221,9 +176,7 @@ export default ({
         <View style={style.action}>
           {isRecording && (
             <ARButton
-              onPress={() => {
-                setIsRecording(!isRecording);
-              }}
+              onPress={() => setIsRecording(false)}
               size={ARButtonSize.Xsmall}
               label="Mettre en pause"
               icon={pauseIcon}
@@ -233,9 +186,7 @@ export default ({
           )}
           {!isRecording && (
             <ARButton
-              onPress={() => {
-                setIsRecording(!isRecording);
-              }}
+              onPress={() => setIsRecording(true)}
               size={ARButtonSize.Xsmall}
               label="Reprendre"
               icon={resumeIcon}
@@ -262,8 +213,7 @@ export default ({
           open={modalOpen}
           onPress={() => {
             setModalOpen(false);
-            Geolocation.stopObserving();
-            setIsRecording(false);
+            stopRecording();
             onEnded(
               elapsedTime,
               totalDistance,

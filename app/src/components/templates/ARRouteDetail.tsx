@@ -1,5 +1,5 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -185,21 +185,22 @@ export default ({}: ARRouteDetailProp) => {
       : await addToFavorites(parcours);
   };
 
-  const removeParcours = async (p: CustomParcours) => {
-    await deleteParcours(p.properties.id);
-    navigation.replace('Home', { screen: 'Parcours' });
-  };
+  const removeParcours = useCallback(
+    async (p: CustomParcours) => {
+      await deleteParcours(p.properties.id);
+      navigation.replace('Home', { screen: 'Parcours' });
+    },
+    [deleteParcours, navigation],
+  );
 
-  const formatDate = (date: string) => {
-    const d = new Date(date);
-    const frenchDate = d.toLocaleDateString('fr-FR', {
+  const formatedDate = useMemo(() => {
+    const d = new Date(parcours.properties.date_maj);
+    return d.toLocaleDateString('fr-FR', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
     });
-
-    return frenchDate;
-  };
+  }, [parcours.properties.date_maj]);
 
   return (
     <>
@@ -255,8 +256,7 @@ export default ({}: ARRouteDetailProp) => {
               )}
               {parcours.properties.date_maj && (
                 <Text style={styles.subTitle}>
-                  Date d'enregistrement :{' '}
-                  {formatDate(parcours.properties.date_maj)}
+                  Date d'enregistrement : {formatedDate}
                 </Text>
               )}
             </View>

@@ -68,6 +68,17 @@ export const ARButton = ({
   labelStyle,
   isReversed,
 }: ARButtonType) => {
+  const sizeStyle = React.useMemo(() => {
+    switch (size) {
+      case ARButtonSize.Medium:
+        return styles.mdContentStyle;
+      case ARButtonSize.Small:
+        return styles.smContentStyle;
+      default:
+        return styles.xsContentStyle;
+    }
+  }, [size]);
+
   return (
     <Button
       loading={!!loading}
@@ -76,11 +87,7 @@ export const ARButton = ({
       mode={mode || 'contained'}
       onPress={onPress}
       contentStyle={StyleSheet.flatten([
-        size === ARButtonSize.Medium
-          ? styles.mdContentStyle
-          : size === ARButtonSize.Xsmall
-          ? styles.xsContentStyle
-          : styles.smContentStyle,
+        sizeStyle,
         isReversed && { flexDirection: 'row-reverse' },
       ])}
       labelStyle={StyleSheet.flatten([styles.labelStyle, labelStyle])}

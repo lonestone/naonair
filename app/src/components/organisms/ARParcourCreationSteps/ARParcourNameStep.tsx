@@ -32,12 +32,12 @@ export default ({ onValidate, ...props }: ARParcourNameStepProps) => {
   const [error, setError] = useState('');
 
   const validateName = () => {
-    setError('');
     if (name === '') {
       setError('Le nom du parcours est obligatoire');
       return;
     }
 
+    setError('');
     onValidate(name);
   };
 

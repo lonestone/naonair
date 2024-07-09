@@ -52,7 +52,7 @@ const ARSlideFooter = ({ slides, currentIndex, handleNextSlide }: Props) => {
         </View>
         {currentIndex + 1 === slides.length ? (
           <ARButton
-            label={'Continuer'}
+            label="Continuer"
             size={ARButtonSize.Small}
             onPress={handleNextSlide}
             styleContainer={{ backgroundColor: 'white' }}
@@ -61,7 +61,7 @@ const ARSlideFooter = ({ slides, currentIndex, handleNextSlide }: Props) => {
         ) : (
           <ARButton
             isReversed
-            label={'Suivant'}
+            label="Suivant"
             size={ARButtonSize.Small}
             onPress={handleNextSlide}
             styleContainer={{ backgroundColor: 'white' }}

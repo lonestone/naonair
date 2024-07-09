@@ -121,7 +121,6 @@ export const getQAFromParcours = async (id_parcours: number) => {
     },
   });
 
-  console.info({ URL });
   try {
     const json = (await (
       await fetch(URL, {
@@ -151,7 +150,6 @@ export const getQAFromParcours = async (id_parcours: number) => {
 export const getQAFromCustomParcours = async (points: [number, number][]) => {
   const URL = `${API.baseUrl}routing/custom/quality`;
 
-  console.info(URL);
   const response = await fetch(URL, {
     method: 'POST',
     headers: {
@@ -184,8 +182,6 @@ export const forecast = async (
       id_parcours: typeName === 'aireel:parcours_data' ? poi_id : undefined,
     },
   });
-
-  console.log('URRRRRRRRRL', URL);
 
   try {
     console.info(URL);
@@ -239,8 +235,6 @@ export const customParcoursForecasts = async (
     hour: string;
     value: number;
   }[];
-
-  console.log(json);
 
   return json.map<Forecast>(({ hour, value }) => ({
     hour: new Date(hour),

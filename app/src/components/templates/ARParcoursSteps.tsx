@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { View, ViewProps } from 'react-native';
 import ARParcourInitialStep from '../organisms/ARParcourCreationSteps/ARParcourInitialStep';
@@ -34,22 +34,28 @@ export default ({
   const [totalDistance, setTotalDistance] = useState<number>(0);
   const [averageSpeed, setAverageSpeed] = useState<number>(0);
 
-  const onParcourCreationStarted = () => {
+  const onParcourCreationStarted = useCallback(() => {
     setStep(Steps.RECORDING);
     onStarted();
-  };
+  }, [onStarted]);
 
-  const onParcourRecordingEnded = (eT: number, tD: number, aS: number) => {
-    setElapsedTime(eT);
-    setTotalDistance(tD);
-    setAverageSpeed(aS);
-    setStep(Steps.TITLE);
-  };
+  const onParcourRecordingEnded = useCallback(
+    (eT: number, tD: number, aS: number) => {
+      setElapsedTime(eT);
+      setTotalDistance(tD);
+      setAverageSpeed(aS);
+      setStep(Steps.TITLE);
+    },
+    [],
+  );
 
-  const onParcourValidated = (name: string) => {
-    setStep(Steps.INITIAL);
-    onSave(name, elapsedTime, totalDistance, averageSpeed);
-  };
+  const onParcourValidated = useCallback(
+    (name: string) => {
+      setStep(Steps.INITIAL);
+      onSave(name, elapsedTime, totalDistance, averageSpeed);
+    },
+    [onSave, elapsedTime, totalDistance, averageSpeed],
+  );
 
   return (
     <View {...props}>

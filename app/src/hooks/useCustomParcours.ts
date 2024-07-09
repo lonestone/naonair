@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CustomParcours } from '../actions/parcours';
 import { BBox, Position } from 'geojson';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,7 +10,7 @@ export const useCustomParcours = () => {
   const [loading, setLoading] = useState(true);
   const [parcours, setParcours] = useState<CustomParcours[]>([]);
 
-  const getParcours = async () => {
+  const getParcours = useCallback(async () => {
     setLoading(true);
     const keys = (await AsyncStorage.getAllKeys()).filter(key =>
       key.startsWith(CUSTOM_PARCOURS_PREFIX),
@@ -26,7 +26,7 @@ export const useCustomParcours = () => {
 
     setParcours(customParcours);
     setLoading(false);
-  };
+  }, []);
 
   const saveNewParcours = async ({
     name,
@@ -89,7 +89,7 @@ export const useCustomParcours = () => {
 
   useEffect(() => {
     getParcours();
-  }, []);
+  }, [getParcours]);
 
   return {
     loading,
