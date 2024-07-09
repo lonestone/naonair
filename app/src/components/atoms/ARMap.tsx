@@ -152,14 +152,16 @@ const ARMap = (
               bounds,
             }}
           />
-          <MapboxGL.UserLocation
-            visible={userLocationVisible}
-            renderMode="native"
-            androidRenderMode={isGPS ? 'gps' : 'normal'}
-            animated
-            showsUserHeadingIndicator
-            onUpdate={onUserLocationChanged}
-          />
+          {userLocationVisible && (
+            <MapboxGL.UserLocation
+              visible={userLocationVisible}
+              renderMode="native"
+              androidRenderMode={isGPS ? 'gps' : 'normal'}
+              animated
+              showsUserHeadingIndicator
+              onUpdate={onUserLocationChanged}
+            />
+          )}
           {heatmapVisible && (
             <MapboxGL.RasterSource {...rasterSourceProps}>
               <MapboxGL.RasterLayer
@@ -170,7 +172,6 @@ const ARMap = (
               />
             </MapboxGL.RasterSource>
           )}
-
           {(isLoadedFully && children) || null}
         </MapboxGL.MapView>
       </View>
