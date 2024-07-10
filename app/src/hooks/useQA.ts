@@ -1,7 +1,12 @@
 import { Position } from 'geojson';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ARParcours } from '../actions/parcours';
-import { getQAFromParcours, getQAFromPosition, QAType } from '../actions/qa';
+import {
+  getQAFromCustomParcours,
+  getQAFromParcours,
+  getQAFromPosition,
+  QAType,
+} from '../actions/qa';
 
 export const useQA = (
   coord?: Position,
@@ -41,6 +46,16 @@ export const useQAParcours = (parcours: ARParcours) => {
       parcours.properties.id || parcours.properties.id_parcours,
     ).then(setQA);
   }, [parcours.properties.id, parcours.properties.id_parcours, setQA]);
+
+  return qa;
+};
+
+export const useQACustomParcours = (points: [number, number][]) => {
+  const [qa, setQA] = useState<number>();
+
+  useLayoutEffect(() => {
+    getQAFromCustomParcours(points).then(setQA);
+  }, [points, setQA]);
 
   return qa;
 };

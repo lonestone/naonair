@@ -1,11 +1,10 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationScreenProp } from '../../types/routes';
+import { StackNavigationScreenProp } from '@type/routes';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Surface } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 import { Pressable, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -22,13 +21,22 @@ const styles = StyleSheet.create({
   },
 });
 
-export default () => {
+type ARFloatingBackButtonProps = {
+  onPress?: () => void;
+};
+
+export default ({ onPress }: ARFloatingBackButtonProps) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
 
   return (
     <SafeAreaView style={styles.backButtonSafeArea}>
       <Pressable
         onPress={() => {
+          if (onPress) {
+            onPress();
+            return;
+          }
+
           navigation.goBack();
         }}>
         <Surface style={styles.backButtonContainer}>

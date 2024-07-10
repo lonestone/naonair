@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import { Text } from 'react-native-paper';
 import { setCGUAccepted } from '../actions/launch';
-import { ARButton, ARButtonSize } from '../components/atoms/ARButton';
-import { fonts, theme } from '../theme';
-import { StackNavigationScreenProp } from '../types/routes';
+import { ARButton, ARButtonSize } from '@atoms/ARButton';
+import { fonts, theme } from '@theme';
+import { StackNavigationScreenProp } from '@type/routes';
 import { API } from '../config.json';
 
 const styles = StyleSheet.create({
@@ -39,7 +39,7 @@ const CGUScreen = () => {
 
   const handleAcceptedCGU = async () => {
     await setCGUAccepted('1.0');
-    navigation.navigate('Home');
+    navigation.navigate('Home', { screen: 'Carte' });
   };
 
   //* TODO add real CGU link and check version*
@@ -67,7 +67,9 @@ const CGUScreen = () => {
                 { color: 'blue', textDecorationLine: 'underline' },
               ])}
               onPress={() =>
-                Linking.openURL(`${API.baseUrl}files/CGU_Naonair.pdf`)
+                Linking.openURL(
+                  `https://www.naonair.org/mentions-legales-et-conditions-generales-utilisation`,
+                )
               }>
               Conditions Générales d'Utilisation
             </Text>{' '}

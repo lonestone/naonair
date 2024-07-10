@@ -1,5 +1,11 @@
-import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react';
-import { ARSnackbarProps } from '../components/atoms/ARSnackbar';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
+import { ARSnackbarProps } from '@atoms/ARSnackbar';
 
 interface SnackbarContextType {
   snackbarProps: ARSnackbarProps;

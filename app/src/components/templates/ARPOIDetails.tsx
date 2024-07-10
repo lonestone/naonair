@@ -6,20 +6,21 @@ import { Card, Divider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { addToFavorites, removeFromFavorites } from '../../actions/favorites';
 import { reverse } from '../../actions/poi';
-import { theme } from '../../theme';
-import { StackParamList, TabNavigationScreenProp } from '../../types/routes';
-import logger from '../../utils/logger';
+import { theme } from '@theme';
+import { StackParamList, TabNavigationScreenProp } from '@type/routes';
+import logger from '@utils/logger';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARMap from '../atoms/ARMap';
 import ARQAChip from '../atoms/ARQAChip';
-import BackButton from '../molecules/ARBackButton';
-import ARCommonHeader from '../molecules/ARCommonHeader';
-import FavoriteButton from '../molecules/ARFavoriteButton';
-import ARHeadingGroup from '../molecules/ARHeadingGroup';
-import ARForecasts from '../organisms/ARForecasts';
+import BackButton from '@molecules/ARBackButton';
+import ARCommonHeader from '@molecules/ARCommonHeader';
+import FavoriteButton from '@molecules/ARFavoriteButton';
+import ARHeadingGroup from '@molecules/ARHeadingGroup';
+import ARForecasts from '../organisms/ARGeoserverForecasts';
 import ARPollution from '../organisms/ARPollution';
 import { POIMarker } from './ARMapView';
 import analytics from '@react-native-firebase/analytics';
+import ARGeoserverForecasts from '../organisms/ARGeoserverForecasts';
 
 const styles = StyleSheet.create({
   map: {
@@ -72,14 +73,11 @@ const ARPOIDetails = () => {
 
   const goTo = async () => {
     try {
-      await analytics().logEvent(
-        'me_rendre_a_cet_endroit_button',
-        {
-          name: poi.name,
-          id: poi.id,
-          address: poi.address,
-        },
-      );
+      await analytics().logEvent('me_rendre_a_cet_endroit_button', {
+        name: poi.name,
+        id: poi.id,
+        address: poi.address,
+      });
     } catch (e) {
       console.warn(e);
     }
@@ -166,7 +164,7 @@ const ARPOIDetails = () => {
                 <Divider />
                 <ARPollution poi={poi} />
                 <Divider />
-                <ARForecasts id={poi.poi_id} type="aireel:poi_data" />
+                <ARGeoserverForecasts id={poi.poi_id} type="aireel:poi_data" />
               </>
             )}
           </View>

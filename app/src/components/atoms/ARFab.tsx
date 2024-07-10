@@ -1,6 +1,6 @@
 import React from 'react';
 import { FAB } from 'react-native-paper';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 import { StyleSheet } from 'react-native';
 
 type ARFabProps = React.ComponentProps<typeof FAB>;
@@ -17,5 +17,11 @@ const styles = StyleSheet.create({
 });
 
 export const ARFab = (props: ARFabProps) => {
-  return <FAB style={styles.fab} color="white" {...props} />;
+  return (
+    <FAB
+      style={StyleSheet.flatten([styles.fab, props.style])}
+      color="white"
+      {...props}
+    />
+  );
 };

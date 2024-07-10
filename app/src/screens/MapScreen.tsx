@@ -3,13 +3,13 @@ import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { Portal } from 'react-native-paper';
 import { POI, POICategory, getAll } from '../actions/poi';
-import { SwitchToggleItem } from '../components/molecules/ARSwitchToggle';
-import ARPOIHeader from '../components/organisms/ARPOIHeader';
-import ARAlert from '../components/templates/ARAlert';
-import ARListView from '../components/templates/ARListView';
-import ARMapView from '../components/templates/ARMapView';
-import ARNews from '../components/templates/ARNews';
-import { TabNavigationScreenProp } from '../types/routes';
+import { SwitchToggleItem } from '@molecules/ARSwitchToggle';
+import ARPOIHeader from '@organisms/ARPOIHeader';
+import ARAlert from '@templates/ARAlert';
+import ARListView from '@templates/ARListView';
+import ARMapView from '@templates/ARMapView';
+import ARNews from '@templates/ARNews';
+import { TabNavigationScreenProp } from '@type/routes';
 
 const styles = StyleSheet.create({
   container: {

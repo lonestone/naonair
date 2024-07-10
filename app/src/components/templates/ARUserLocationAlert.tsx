@@ -6,7 +6,7 @@ import {
   checkAndroidPermission,
   checkIOSPermission,
 } from '../../actions/location';
-import { fonts, theme } from '../../theme';
+import { fonts, theme } from '@theme';
 
 const styles = StyleSheet.create({
   modal: {

@@ -3,10 +3,10 @@ import React, { useRef, useState } from 'react';
 import { Dimensions, FlatList, ImageProps, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { setIsFirstLaunched } from '../actions/launch';
-import Footer from '../components/atoms/ARSlideFooter';
-import Slide from '../components/organisms/ARSLide';
-import { theme } from '../theme';
-import { StackNavigationScreenProp } from '../types/routes';
+import Footer from '@atoms/ARSlideFooter';
+import Slide from '@organisms/ARSLide';
+import { theme } from '@theme';
+import { StackNavigationScreenProp } from '@type/routes';
 
 const dimensions = Dimensions.get('window');
 

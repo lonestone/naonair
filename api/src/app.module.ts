@@ -43,4 +43,4 @@ import { SentryModule } from './modules/sentry/sentry.module';
   ],
   controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule { }

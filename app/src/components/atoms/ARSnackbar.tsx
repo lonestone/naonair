@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import useSnackbar from '../../contexts/snackbar.context';
-import { fonts } from '../../theme';
+import useSnackbar from '@contexts/snackbar.context';
+import { fonts } from '@theme';
 
 const styles = StyleSheet.create({
   wrapper: { position: 'absolute', top: 0 },

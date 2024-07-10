@@ -40,10 +40,10 @@ export interface GeoServerParams {
   WIDTH?: number;
   HEIGHT?: number;
   typeName?:
-    | 'aireel:poi_data'
-    | 'aireel:parcours'
-    | 'aireel:parcours_poi_data'
-    | 'aireel:parcours_data';
+  | 'aireel:poi_data'
+  | 'aireel:parcours'
+  | 'aireel:parcours_poi_data'
+  | 'aireel:parcours_data';
   BBOX?: [number, number, number, number];
   CQL_FILTER?: {
     poi_id?: string | number;

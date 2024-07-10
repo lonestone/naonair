@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Forecast } from '../../actions/qa';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 import ARChartPie from '../atoms/ARChartPie';
 
 const styles = StyleSheet.create({
@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
     minWidth: 350,
     borderColor: theme.colors.accent,
     borderWidth: 1,
-    marginTop: 15,
     borderRadius: 4,
   },
 });

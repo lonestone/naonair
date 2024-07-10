@@ -1,33 +1,58 @@
 import * as Sentry from '@sentry/react-native';
 import * as turf from '@turf/turf';
 import { BBox } from 'geojson';
-import { buildGeoserverUrl } from '../utils/config';
+import { buildGeoserverUrl } from '@utils/config';
 import { getFavorites } from './favorites';
 
-export interface ARParcours {
+export type BaseParcoursProperties = {
+  mode: number;
+  id_parcours: number;
+  id: number | string;
+  date_maj: string;
+  nom: string;
+  km: number;
+  denivele: number;
+  cycliste: boolean;
+  coureur: boolean;
+  marcheur: boolean;
+  marcheurs_temps_min: number;
+  cyclistes_temps_min: number;
+  coureurs_temps_min: number;
+  favorited?: boolean;
+  avgSpeed?: number;
+  timeTaken?: number;
+};
+
+interface BaseParcours {
+  type: 'Custom' | undefined;
   geometry: turf.MultiLineString;
   bbox: BBox;
-  properties: {
-    mode: number;
-    id_parcours: number;
-    id: number;
-    date_maj: string;
-    nom: string;
-    km: number;
-    denivele: number;
-    cycliste: boolean;
-    coureur: boolean;
-    marcheur: boolean;
-    marcheurs_temps_min: number;
-    cyclistes_temps_min: number;
-    coureurs_temps_min: number;
-    favorited?: boolean;
-  };
+  properties: BaseParcoursProperties;
+  imageUri: string;
 }
+export interface ParcoursProperties extends BaseParcoursProperties {
+  id: number;
+}
+
+export interface Parcours extends BaseParcours {
+  type: undefined;
+  properties: ParcoursProperties;
+}
+
+interface CustomParcoursProperties extends BaseParcoursProperties {
+  id: string;
+}
+export interface CustomParcours extends BaseParcours {
+  type: 'Custom';
+  properties: CustomParcoursProperties;
+}
+
+export type ARParcours = Parcours | CustomParcours;
 
 // eslint-disable-next-line no-shadow
 export enum ParcoursCategory {
   ALL = 'all',
+  CUSTOM = 'custom',
   FAVORITE = 'favorite',
   WALK = 'marcheur',
   BIKE = 'cycliste',

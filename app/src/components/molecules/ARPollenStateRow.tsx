@@ -1,7 +1,7 @@
 import { PollenDTO } from '@aireal/dtos';
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { fonts, theme } from '../../theme';
+import { fonts, theme } from '@theme';
 
 interface ARPollenStateRowProps {
   pollen: PollenDTO;

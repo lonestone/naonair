@@ -7,12 +7,12 @@ import {
   Text,
   View,
 } from 'react-native';
-import { fonts } from '../../theme';
+import { fonts } from '@theme';
 
 import { PollenDTO } from '@aireal/dtos';
 import { getPollen, getPollenStates } from '../../actions/pollen';
-import { useOnForegroundFocus } from '../../hooks/useOnForgroundFocus';
-import ARPollenStateRow from '../molecules/ARPollenStateRow';
+import { useOnForegroundFocus } from '@hooks/useOnForgroundFocus';
+import ARPollenStateRow from '@molecules/ARPollenStateRow';
 
 const defaultState = (state: number) => {
   if (state <= 0) {

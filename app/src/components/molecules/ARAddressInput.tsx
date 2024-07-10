@@ -10,7 +10,7 @@ import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { TextInput } from 'react-native-paper';
 import { geocoding, getAll, POI, reverse } from '../../actions/poi';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 
 // Gouv API usage
 // https://adresse.data.gouv.fr/api-doc/adresse

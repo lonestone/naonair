@@ -4,7 +4,7 @@ import { Divider, List } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { SvgXml } from 'react-native-svg';
 import { POICategory, poiIcons } from '../../actions/poi';
-import { fonts, theme } from '../../theme';
+import { fonts, theme } from '@theme';
 
 const styles = StyleSheet.create({
   content: {

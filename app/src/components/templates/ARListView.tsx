@@ -4,10 +4,10 @@ import { StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { Paragraph } from 'react-native-paper';
 import { POI, POICategory } from '../../actions/poi';
-import { fonts, theme } from '../../theme';
-import { StackNavigationScreenProp } from '../../types/routes';
+import { fonts, theme } from '@theme';
+import { StackNavigationScreenProp } from '@type/routes';
 import ARQAChip from '../atoms/ARQAChip';
-import ARListItem from '../molecules/ARListItem';
+import ARListItem from '@molecules/ARListItem';
 import analytics from '@react-native-firebase/analytics';
 
 const styles = StyleSheet.create({

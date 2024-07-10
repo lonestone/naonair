@@ -20,13 +20,13 @@ import {
   getPollenSettings,
   savePollenSettings,
 } from '../../actions/pollenNotifications';
-import { NotificationsContext } from '../../contexts/notifications.context';
-import { useNotifications } from '../../hooks/useNotifications';
-import { useOnForegroundFocus } from '../../hooks/useOnForgroundFocus';
-import { fonts, theme } from '../../theme';
-import BackButton from '../molecules/ARBackButton';
-import ARCommonHeader from '../molecules/ARCommonHeader';
-import ARNotificationRow from '../molecules/ARNotificationRow';
+import { NotificationsContext } from '@contexts/notifications.context';
+import { useNotifications } from '@hooks/useNotifications';
+import { useOnForegroundFocus } from '@hooks/useOnForgroundFocus';
+import { fonts, theme } from '@theme';
+import BackButton from '@molecules/ARBackButton';
+import ARCommonHeader from '@molecules/ARCommonHeader';
+import ARNotificationRow from '@molecules/ARNotificationRow';
 import ARCollapseTitle from '../organisms/ARCollapseTitle';
 import ARListPollenGroup from '../organisms/ARListPollenGroup';
 

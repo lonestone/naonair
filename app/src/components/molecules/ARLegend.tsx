@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View, ViewProps } from 'react-native';
 import { Surface, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { QAValues } from '../../actions/qa';
-import { fonts, theme } from '../../theme';
+import { fonts, theme } from '@theme';
 import ARQAChip from '../atoms/ARQAChip';
 
 export interface ARLegendProps extends ViewProps {}

@@ -60,6 +60,7 @@ export interface ARMapProps extends ViewProps {
 
 export interface ARMapHandle {
   setCamera: (settings: CameraSettings) => void;
+  viewRef: RefObject<MapboxGL.MapView>;
 }
 
 // if we don't call this methods, MapboxGL crash on Android
@@ -109,6 +110,7 @@ const ARMap = (
     setCamera: (settings: CameraSettings) => {
       cameraRef.current?.setCamera(settings);
     },
+    viewRef: mapRef,
   }));
 
   const insets = useSafeAreaInsets();

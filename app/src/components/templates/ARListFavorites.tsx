@@ -10,16 +10,16 @@ import {
   ParcoursCategory,
 } from '../../actions/parcours';
 import { getAll as getAllPOIs, POI, POICategory } from '../../actions/poi';
-import { theme } from '../../theme';
-import { StackNavigationScreenProp } from '../../types/routes';
-import logger from '../../utils/logger';
+import { theme } from '@theme';
+import { StackNavigationScreenProp } from '@type/routes';
+import logger from '@utils/logger';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARSnackbar from '../atoms/ARSnackbar';
-import ARFilter, { ARFilterItem } from '../molecules/ARFilter';
+import ARFilter, { ARFilterItem } from '@molecules/ARFilter';
 import ARListItemParcours from '../organisms/ARListItemParcours';
 import ARListItemPOI from '../organisms/ARListItemPOI';
-import BackButton from '../molecules/ARBackButton';
-import ARCommonHeader from '../molecules/ARCommonHeader';
+import BackButton from '@molecules/ARBackButton';
+import ARCommonHeader from '@molecules/ARCommonHeader';
 
 // eslint-disable-next-line no-shadow
 export enum FavoritesType {

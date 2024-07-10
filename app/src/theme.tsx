@@ -62,6 +62,8 @@ export const theme = {
     accent: '#EDEFFE',
     white: 'white',
     lightRed: '#FFEEEE',
+    warning: '#FF9933',
+    error: '#CC0000',
     grey: {
       50: '#F0F0F0',
       100: '#A3A3A3',
