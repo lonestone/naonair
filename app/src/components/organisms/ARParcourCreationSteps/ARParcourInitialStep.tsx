@@ -34,7 +34,7 @@ const style = StyleSheet.create({
 });
 
 const desc =
-  'Pour enregistrer votre parcours personnalisé, vous devez cliquer sur “Démarrer l’enregistrement”, réaliser votre parcours à garder en mémoire et enfin cliquer sur “Arrêter l’enregistrement pour pouvoir le refaire plus tard.';
+  'Pour enregistrer votre parcours personnalisé, vous devez cliquer sur “Démarrer l’enregistrement”, réaliser votre parcours à garder en mémoire et enfin cliquer sur “Arrêter l’enregistrement” pour pouvoir le refaire plus tard.';
 
 export default ({ onStart, ...props }: ARParcoursInitialStepsProps) => {
   const icon = useCallback(

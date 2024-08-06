@@ -43,7 +43,7 @@ export default ({ onValidate, ...props }: ARParcourNameStepProps) => {
 
   return (
     <View {...props} style={StyleSheet.flatten([style.container, props.style])}>
-      <Text style={style.title}>Enregister votre parcours</Text>
+      <Text style={style.title}>Enregistrer votre parcours</Text>
       <TextInput
         autoFocus
         style={style.input}
