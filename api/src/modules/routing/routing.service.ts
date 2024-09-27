@@ -30,6 +30,8 @@ const geotiffRes = [7680 / IMAGE_RATIO, 4960 / IMAGE_RATIO];
 const GEOTIFF_URL = `https://api.naonair.org/geoserver/aireel/wms?service=WMS&version=1.1.0&request=GetMap&layers=aireel%3Aaireel_indic_7m_atmo_deg&bbox=${geotiffBbox[0][0]},${geotiffBbox[0][1]},${geotiffBbox[1][0]},${geotiffBbox[1][1]}&srs=EPSG%3A4326&styles&format=image%2Fgeotiff8&width=${geotiffRes[0]}&height=${geotiffRes[1]}`;
 const PREV_GEOTIFF_URL = `https://api.naonair.org/geoserver/aireel/ows?service=WCS&version=2.0.0&request=GetCoverage&CoverageId=aireel__aireel_indic_21m_atmo_prevision_deg&outputCRS=http://www.opengis.net/def/crs/EPSG/0/4326`;
 
+const fastReload: boolean = false;
+
 @Injectable()
 export class RoutingService {
   private readonly localFilePath = path.join(__dirname, 'data', 'file.tiff');
@@ -70,19 +72,21 @@ export class RoutingService {
 
   // Gets the values for each coordinate in the array by converting it to a pixel coordinate inside the geotiff
   private async getValuesFromCoordinates(coords: [number, number][]) {
-    const imageWidth = this.image.getWidth();
+    const lineWidth = this.image.getWidth();
 
-    return this.getAirQualityValuesFromImage(this.image, imageWidth, coords);
+    return this.getAirQualityValuesFromImage(this.image, this.rasters[0], lineWidth, coords);
   }
 
   // Triggers every hour on minute 15
   @Cron('15 * * * *')
   async ensureFreshGeoTIFF() {
     this.logger.log('Downloading new GeoTIFF file...');
-    const response = await axios.get(GEOTIFF_URL, {
-      responseType: 'arraybuffer',
-    });
-    fs.writeFileSync(this.localFilePath, response.data);
+    if (!fastReload) {
+      const response = await axios.get(GEOTIFF_URL, {
+        responseType: 'arraybuffer',
+      });
+      fs.writeFileSync(this.localFilePath, response.data);
+    }
     const geotiff = await require('geotiff');
     const tiff = await geotiff.fromFile(this.localFilePath);
     this.image = await tiff.getImage();
@@ -97,8 +101,10 @@ export class RoutingService {
     const imageWidth = this.prevImage.getWidth();
 
     for (let i = 0; i < this.prevRasters.length; i++) {
+      const raster = this.prevRasters[i];
       const results = this.getAirQualityValuesFromImage(
         this.prevImage,
+        raster,
         imageWidth,
         coords,
       );
@@ -118,10 +124,12 @@ export class RoutingService {
   @Cron('0 0 * * *')
   async ensureFreshPrevGeoTIFF() {
     this.logger.log('Downloading new prevision GeoTIFF file...');
-    const response = await axios.get(PREV_GEOTIFF_URL, {
-      responseType: 'arraybuffer',
-    });
-    fs.writeFileSync(this.preLocalFilePath, response.data);
+    if (!fastReload) {
+      const response = await axios.get(PREV_GEOTIFF_URL, {
+        responseType: 'arraybuffer',
+      });
+      fs.writeFileSync(this.preLocalFilePath, response.data);
+    }
     const geotiff = await require('geotiff');
     const tiff = await geotiff.fromFile(this.preLocalFilePath);
     this.prevImage = await tiff.getImage();
@@ -130,14 +138,27 @@ export class RoutingService {
     this.prevLastDownloaded = new Date();
   }
 
-  private latLonToXY(lat: number, lon: number, image: GeoTIFFImage) {
+  private latLonToXY(
+    lat: number,
+    lon: number,
+    image: GeoTIFFImage,
+  ): { x: number; y: number } | undefined {
     const fileDirectory = image.fileDirectory;
-    const originX = fileDirectory.ModelTransformation[3];
-    const originY = fileDirectory.ModelTransformation[7];
-    const tileSizeX = fileDirectory.ModelTransformation[0];
-    const tileSizeY = fileDirectory.ModelTransformation[5];
-    const x = Math.round((lon - originX) / tileSizeX);
-    const y = Math.round((lat - originY) / tileSizeY);
+    const [resolutionLon, , , minLon, , resolutionLat, , maxLat] =
+      fileDirectory.ModelTransformation;
+
+    const ticksLon = image.getWidth() * resolutionLon;
+    const ticksLat = image.getHeight() * resolutionLat;
+    const maxLon = minLon + ticksLon;
+    const minLat = maxLat + ticksLat;
+    if (lat < minLat || lat > maxLat || lon < minLon || lon > maxLon) {
+      return;
+    }
+
+    const offsetLon = lon - minLon;
+    const offsetLat = -(lat - maxLat);
+    const x = Math.round(offsetLon / Math.abs(resolutionLon));
+    const y = Math.round(offsetLat / Math.abs(resolutionLat));
 
     return { x, y };
   }
@@ -214,15 +235,19 @@ export class RoutingService {
 
   private getAirQualityValuesFromImage(
     image: GeoTIFFImage,
-    imageWidth: number,
+    raster: ReadRasterResult,
+    lineWidth: number,
     coords: [number, number][],
   ) {
     const results = [];
-
     for (const coord of coords) {
       const [lon, lat] = coord;
-      const { x, y } = this.latLonToXY(lat, lon, image);
-      const value = this.rasters[0][y * imageWidth + x];
+      const coordinates = this.latLonToXY(lat, lon, image);
+      if (!coordinates) {
+        continue;
+      }
+      const { x, y } = coordinates;
+      const value = raster[y * lineWidth + x];
       results.push({ longitude: lon, latitude: lat, value });
     }
 
