@@ -82,10 +82,19 @@ const NewParcoursScreen = () => {
     totalDistance: number,
     averageSpeed: number,
   ) => {
+    const hardPoints: Position[] = [
+      [-1.6215653714205223, 47.20235598492201],
+      [-1.616386323866264, 47.19888607812004],
+      [-1.613848142944731, 47.19541591418511],
+      [-1.6135986433884597, 47.18360051654746],
+      [-1.612279601607853, 47.18162728266171],
+      [-1.6078299033935168, 47.18015304935372],
+      [-1.6039079055626628, 47.179032081239434],
+    ];
     setLoading(true);
     setHasStarted(false);
     const bounds = getBounds(
-      points.map(([longitude, latitude]) => ({ latitude, longitude })),
+      hardPoints.map(([longitude, latitude]) => ({ latitude, longitude })),
     );
 
     if (!bounds || !mapRef.current?.viewRef.current) {
@@ -109,7 +118,7 @@ const NewParcoursScreen = () => {
 
       saveNewParcours({
         name,
-        points,
+        points: hardPoints,
         bbox: [bounds.minLng, bounds.minLat, bounds.maxLng, bounds.maxLat],
         distanceTotal: totalDistance,
         imageUri: uri,
