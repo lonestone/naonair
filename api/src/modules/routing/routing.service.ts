@@ -14,7 +14,7 @@ import { lastValueFrom } from 'rxjs';
 import axios from 'axios';
 import * as fs from 'fs';
 import * as path from 'path';
-import { GeoTIFFImage, ReadRasterResult } from 'geotiff';
+import { GeoTIFFImage, ReadRasterResult, TypedArray } from 'geotiff';
 import appConfig from 'src/configs/app.config';
 import { Cron } from '@nestjs/schedule';
 import { getMostCommonValue } from 'src/modules/routing/utils';
@@ -74,7 +74,12 @@ export class RoutingService {
   private async getValuesFromCoordinates(coords: [number, number][]) {
     const lineWidth = this.image.getWidth();
 
-    return this.getAirQualityValuesFromImage(this.image, this.rasters[0], lineWidth, coords);
+    return this.getAirQualityValuesFromImage(
+      this.image,
+      this.rasters[0],
+      lineWidth,
+      coords,
+    );
   }
 
   // Triggers every hour on minute 15
@@ -235,7 +240,7 @@ export class RoutingService {
 
   private getAirQualityValuesFromImage(
     image: GeoTIFFImage,
-    raster: ReadRasterResult,
+    raster: TypedArray | number,
     lineWidth: number,
     coords: [number, number][],
   ) {
