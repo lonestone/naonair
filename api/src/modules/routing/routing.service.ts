@@ -64,20 +64,20 @@ export class RoutingService {
   async getCustomRouteQuality(coords: [number, number][]) {
     const res = await this.getValuesFromCoordinates(coords);
     const values = res.map((v) => v.value);
-    const mostCommonValue = getMostCommonValue(values);
-    const val = Math.round((mostCommonValue * 6) / 179);
+    const val = getMostCommonValue(values);
 
-    return val > 1 ? val : 1;
+    return Math.max(val, 1);
   }
 
   // Gets the values for each coordinate in the array by converting it to a pixel coordinate inside the geotiff
   private async getValuesFromCoordinates(coords: [number, number][]) {
-    const lineWidth = this.image.getWidth();
+    const imageWidth = this.prevImage.getWidth();
+    const today = new Date(new Date().setMinutes(0, 0, 0));
 
     return this.getAirQualityValuesFromImage(
-      this.image,
-      this.rasters[0],
-      lineWidth,
+      this.prevImage,
+      this.prevRasters[today.getHours() + 1],
+      imageWidth,
       coords,
     );
   }
