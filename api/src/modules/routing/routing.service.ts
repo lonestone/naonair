@@ -105,7 +105,8 @@ export class RoutingService {
     const today = new Date(new Date().setMinutes(0, 0, 0));
     const imageWidth = this.prevImage.getWidth();
 
-    for (let i = 0; i < this.prevRasters.length; i++) {
+    //for (let i = 0; i < this.prevRasters.length; i++) {
+    for (let i = today.getHours(); i < this.prevRasters.length; i++) {
       const raster = this.prevRasters[i];
       const results = this.getAirQualityValuesFromImage(
         this.prevImage,
@@ -117,7 +118,7 @@ export class RoutingService {
       const mostCommonValue = getMostCommonValue(values);
 
       forecast.push({
-        hour: new Date(new Date(today).setHours(today.getHours() + i)),
+        hour: new Date(new Date(today).setHours(i)),
         value: mostCommonValue,
       });
     }
@@ -125,7 +126,7 @@ export class RoutingService {
     return forecast;
   }
 
-  // Triggers every hour
+  // Triggers every night at midnight
   @Cron('0 0 * * *')
   async ensureFreshPrevGeoTIFF() {
     this.logger.log('Downloading new prevision GeoTIFF file...');
