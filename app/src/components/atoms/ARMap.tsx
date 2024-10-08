@@ -56,6 +56,7 @@ export interface ARMapProps extends ViewProps {
     mapRef: RefObject<MapboxGL.MapView>,
     cameraRef: RefObject<MapboxGL.Camera>,
   ) => void;
+  onCameraChanged?: () => void;
 }
 
 export interface ARMapHandle {
@@ -86,6 +87,7 @@ const ARMap = (
     isGPS,
     onUserLocationChanged,
     onMapLoaded,
+    onCameraChanged,
     style,
   }: ARMapProps,
   ref: Ref<ARMapHandle>,
@@ -134,6 +136,7 @@ const ARMap = (
             onMapLoaded && onMapLoaded(mapRef, cameraRef);
             setLoadedFully(true);
           }}
+          onRegionDidChange={onCameraChanged}
           zoomEnabled={!!interactionEnabled}
           scrollEnabled={!!interactionEnabled}>
           <MapboxGL.Camera

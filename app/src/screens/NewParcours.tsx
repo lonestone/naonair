@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { Portal, Surface } from 'react-native-paper';
 import ARMap, { ARMapHandle } from '@atoms/ARMap';
-import { Position } from '@turf/turf';
+import { BBox, Position } from '@turf/turf';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme } from '@theme';
 import ARFloatingBackButton from '@molecules/ARFloatingBackButton';
@@ -50,6 +50,15 @@ const styles = StyleSheet.create({
   },
 });
 
+type DraftParcoursProps = {
+  name: string;
+  points: Position[];
+  bbox: BBox;
+  distanceTotal: number;
+  avgSpeed: number;
+  timeTaken: number;
+};
+
 const NewParcoursScreen = () => {
   const { userPosition: initialPosition } = useUserPosition();
   const mapRef = useRef<ARMapHandle>(null);
@@ -61,6 +70,10 @@ const NewParcoursScreen = () => {
   const { refreshList } = useParcours();
   const [displayCurrentLocation, setDisplayCurrentLocation] = useState(true);
   const navigation = useNavigation<StackNavigationScreenProp>();
+
+  const [draftParcours, setDraftParcours] = useState<DraftParcoursProps | null>(
+    null,
+  );
 
   useEffect(() => {
     if (initialPosition) {
@@ -93,6 +106,16 @@ const NewParcoursScreen = () => {
     }
 
     setDisplayCurrentLocation(false);
+
+    setDraftParcours({
+      name,
+      points,
+      bbox: [bounds.minLng, bounds.minLat, bounds.maxLng, bounds.maxLat],
+      distanceTotal: totalDistance,
+      avgSpeed: averageSpeed,
+      timeTaken: elapsedTime,
+    });
+
     mapRef.current.setCamera({
       bounds: {
         ne: [bounds.maxLng, bounds.maxLat],
@@ -103,23 +126,22 @@ const NewParcoursScreen = () => {
         paddingTop: 150,
       },
     });
+  };
 
-    setTimeout(async () => {
+  const onCameraChanged = async () => {
+    if (draftParcours) {
       const uri = await mapRef.current!.viewRef.current!.takeSnap();
 
       saveNewParcours({
-        name,
-        points,
-        bbox: [bounds.minLng, bounds.minLat, bounds.maxLng, bounds.maxLat],
-        distanceTotal: totalDistance,
+        ...draftParcours,
         imageUri: uri,
-        avgSpeed: averageSpeed,
-        timeTaken: elapsedTime,
       });
+
+      setDraftParcours(null);
 
       await refreshList();
       navigation.replace('Home', { screen: 'Parcours' });
-    }, 3000);
+    }
   };
 
   return (
@@ -129,6 +151,7 @@ const NewParcoursScreen = () => {
       <ARMap
         ref={mapRef}
         userLocationVisible={displayCurrentLocation}
+        onCameraChanged={onCameraChanged}
         interactionEnabled={displayCurrentLocation}
         center={initialPosition}>
         {points.length > 1 && (
