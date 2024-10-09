@@ -120,10 +120,10 @@ const NewParcoursScreen = () => {
       bounds: {
         ne: [bounds.maxLng, bounds.maxLat],
         sw: [bounds.minLng, bounds.minLat],
-        paddingLeft: 50,
-        paddingRight: 50,
-        paddingBottom: 150,
-        paddingTop: 150,
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 50,
+        paddingTop: 50,
       },
     });
   };

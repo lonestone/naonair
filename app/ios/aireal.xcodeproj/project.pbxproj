@@ -339,6 +339,7 @@
 				418FE5D82B6B956F001ADED9 /* ShellScript */,
 				699154ECD503AE66F050E77F /* [CP] Copy Pods Resources */,
 				E69B48259E32C898F603356C /* [CP-User] [RNFB] Core Configuration */,
+				3EE77E6D2CB5252B00F66547 /* Map Signature Fix */,
 			);
 			buildRules = (
 			);
@@ -513,6 +514,24 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		3EE77E6D2CB5252B00F66547 /* Map Signature Fix */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Map Signature Fix";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"$XCODE_VERSION_MAJOR\" = \"1600\" ] || [ \"$XCODE_VERSION_MAJOR\" = \"1500\" ]; then\n  echo \"Mapbox-Signature-Fix:Remove signature files (Xcode 15/16 workaround)\"\n  rm -rf \"$CONFIGURATION_BUILD_DIR/Mapbox.xcframework-ios.signature\";\nfi\n";
 		};
 		418FE5D82B6B956F001ADED9 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -690,7 +709,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YR674NJJDX;
 				ENABLE_BITCODE = NO;
@@ -730,7 +749,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YR674NJJDX;
 				INFOPLIST_FILE = aireal/Info.plist;
