@@ -3,3 +3,7 @@ export enum RoutingProfile {
   ElectricBike = "electric_bike",
   Foot = "foot",
 }
+
+export type GetCustomRouteQualityInput = {
+  points: [number, number][]; // [longitude, latitude]
+}

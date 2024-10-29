@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
 import { poiIcons } from '../../actions/poi';
-import { theme } from '../../theme';
+import { theme } from '@theme';
 
 export type FavoriteButtonProps = Omit<
   ComponentProps<typeof IconButton>,
@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
   favoriteButton: {
     padding: 0,
     margin: 0,
-    marginTop: 3,
     marginRight: 10,
     flex: 0,
   },

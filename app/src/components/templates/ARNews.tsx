@@ -4,8 +4,8 @@ import { StyleSheet, View } from 'react-native';
 import { Caption, Headline, Modal, Paragraph } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { getLast, markNewAsSeen } from '../../actions/news';
-import { theme } from '../../theme';
-import { convertNewsType, iconNewsType } from '../../utils/news';
+import { theme } from '@theme';
+import { convertNewsType, iconNewsType } from '@utils/news';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import { ARLink } from '../atoms/ARLink';
 

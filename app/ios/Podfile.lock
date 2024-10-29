@@ -499,7 +499,7 @@ PODS:
     - React-jsi (= 0.72.3)
     - React-logger (= 0.72.3)
     - React-perflogger (= 0.72.3)
-  - RNCAsyncStorage (1.19.1):
+  - RNCAsyncStorage (1.23.1):
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
@@ -524,14 +524,13 @@ PODS:
   - RNScreens (3.22.1):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.4.3):
+  - RNSentry (5.33.1):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
-    - Sentry (= 7.11.0)
+    - Sentry/HybridSDK (= 8.36.0)
   - RNSVG (13.10.0):
     - React-Core
-  - Sentry (7.11.0):
-    - Sentry/Core (= 7.11.0)
-  - Sentry/Core (7.11.0)
+  - Sentry/HybridSDK (8.36.0)
   - SocketRocket (0.6.1)
   - Yoga (1.14.0)
 
@@ -743,7 +742,7 @@ SPEC CHECKSUMS:
   React-Core: 8293312ad137ea82fd2c29deb163dbc24aa4e00e
   React-CoreModules: 32fab1d62416849a3b6dac6feff9d54e5ddc2d1e
   React-cxxreact: 55d0f7cb6b4cc09ba9190797f1da87182d1a2fb6
-  React-debug: eb609f1405bf93b9f2524ef829260269417b2401
+  React-debug: a9912ae11421e9cf9da5da1fdcfd0ad7b5ea0b87
   React-jsc: 0db8e8cc2074d979c37ffa7b8d7c914833960497
   React-jsi: 58677ff4848ceb6aeb9118fe03448a843ea5e16a
   React-jsiexecutor: 2c15ba1bace70177492368d5180b564f165870fd
@@ -752,7 +751,7 @@ SPEC CHECKSUMS:
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
   react-native-keep-awake: ad1d67f617756b139536977a0bf06b27cec0714a
   react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
-  React-NativeModulesApple: c7caaf47265536f0d6e8b0ac11fa9494cb7d96ec
+  React-NativeModulesApple: 7d864b334b9ab5c56ed79c23707a8dbab6b57da2
   React-perflogger: 6bd153e776e6beed54c56b0847e1220a3ff92ba5
   React-RCTActionSheet: c0b62af44e610e69d9a2049a682f5dba4e9dff17
   React-RCTAnimation: fe7005136b58f58871cab2f70732343b6e330d30
@@ -766,10 +765,10 @@ SPEC CHECKSUMS:
   React-RCTVibration: ea3a68a49873a54ced927c90923fc6932baf344a
   React-rncore: 9672a017af4a7da7495d911f0b690cbcae9dd18d
   React-runtimeexecutor: 369ae9bb3f83b65201c0c8f7d50b72280b5a1dbc
-  React-runtimescheduler: 42543ceae5a3a763eba9dcd3ed361228fbfdfeb8
-  React-utils: c5f5ee7bed653ea51350fd0adbbe9211582c2305
-  ReactCommon: e8a4beae77c7a1d94d4aa873ee684e373940fc13
-  RNCAsyncStorage: f47fe18526970a69c34b548883e1aeceb115e3e1
+  React-runtimescheduler: 6c7f3b4f6c03992684beba89bc18c74d8aaa692b
+  React-utils: 602a38f90190929f898fc8f324a5aa3cb5c5bae4
+  ReactCommon: 6b48d328932673fcb6353e12e52b943682eba14d
+  RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNFBAnalytics: fdecb8b774abd12f9ed79675794159d1a0fadc6c
   RNFBApp: 5ee688b07ed0fa692a3a8fd07df6d6ae41e4c3a0
@@ -777,9 +776,9 @@ SPEC CHECKSUMS:
   RNGestureHandler: dec4645026e7401a0899f2846d864403478ff6a5
   RNReanimated: 8a6a83984cb4d61ebf1065b6137150b6b31ce609
   RNScreens: 50ffe2fa2342eabb2d0afbe19f7c1af286bc7fb3
-  RNSentry: 85f6525b5fe8d2ada065858026b338605b3c09da
+  RNSentry: 68e92bd7669c19a3461c90d951708062ca0bf478
   RNSVG: 80584470ff1ffc7994923ea135a3e5ad825546b9
-  Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
+  Sentry: f8374b5415bc38dfb5645941b3ae31230fbeae57
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
 

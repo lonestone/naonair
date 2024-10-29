@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { Button } from 'react-native-paper';
-import { fonts } from '../../theme';
+import { fonts } from '@theme';
 
 export enum ARButtonSize {
+  Xsmall = 'xsmall',
   Small = 'small',
   Medium = 'medium',
 }
@@ -49,6 +50,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7,
     paddingVertical: 3,
   },
+  xsContentStyle: {
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+  },
 });
 
 export const ARButton = ({
@@ -63,6 +68,17 @@ export const ARButton = ({
   labelStyle,
   isReversed,
 }: ARButtonType) => {
+  const sizeStyle = React.useMemo(() => {
+    switch (size) {
+      case ARButtonSize.Medium:
+        return styles.mdContentStyle;
+      case ARButtonSize.Small:
+        return styles.smContentStyle;
+      default:
+        return styles.xsContentStyle;
+    }
+  }, [size]);
+
   return (
     <Button
       loading={!!loading}
@@ -71,9 +87,7 @@ export const ARButton = ({
       mode={mode || 'contained'}
       onPress={onPress}
       contentStyle={StyleSheet.flatten([
-        size === ARButtonSize.Medium
-          ? styles.mdContentStyle
-          : styles.smContentStyle,
+        sizeStyle,
         isReversed && { flexDirection: 'row-reverse' },
       ])}
       labelStyle={StyleSheet.flatten([styles.labelStyle, labelStyle])}

@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import logger from '../utils/logger';
+import logger from '@utils/logger';
 import { POI } from './poi';
 
 export const getAllPlaces = async () => {

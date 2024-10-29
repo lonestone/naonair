@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { PollenSettings } from '../../actions/pollenNotifications';
-import ARNotificationRow from '../molecules/ARNotificationRow';
+import ARNotificationRow from '@molecules/ARNotificationRow';
 
 interface ARListPollenGroupProps {
   pollens: PollenSettings[];

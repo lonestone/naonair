@@ -1,9 +1,9 @@
 import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import buttonIcon from '../../assets/wave-icon.svg';
+import buttonIcon from '@assets/wave-icon.svg';
 import { Item } from '../../screens/OnboardingScreen';
-import { fonts, theme } from '../../theme';
+import { fonts, theme } from '@theme';
 import { ARButton, ARButtonSize } from './ARButton';
 
 const dimensions = Dimensions.get('window');
@@ -52,7 +52,7 @@ const ARSlideFooter = ({ slides, currentIndex, handleNextSlide }: Props) => {
         </View>
         {currentIndex + 1 === slides.length ? (
           <ARButton
-            label={"Continuer"}
+            label="Continuer"
             size={ARButtonSize.Small}
             onPress={handleNextSlide}
             styleContainer={{ backgroundColor: 'white' }}
@@ -61,7 +61,7 @@ const ARSlideFooter = ({ slides, currentIndex, handleNextSlide }: Props) => {
         ) : (
           <ARButton
             isReversed
-            label={'Suivant'}
+            label="Suivant"
             size={ARButtonSize.Small}
             onPress={handleNextSlide}
             styleContainer={{ backgroundColor: 'white' }}

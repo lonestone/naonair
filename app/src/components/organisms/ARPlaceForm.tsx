@@ -3,8 +3,8 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { POI } from '../../actions/poi';
-import { theme } from '../../theme';
-import ARAddressInput from '../molecules/ARAddressInput';
+import { theme } from '@theme';
+import ARAddressInput from '@molecules/ARAddressInput';
 
 const styles = StyleSheet.create({
   input: {

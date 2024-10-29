@@ -5,7 +5,6 @@ import { Position } from 'geojson';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   ActivityIndicator,
   Headline,
@@ -22,21 +21,16 @@ import {
   getDistanceLabel,
   getDurationLabel,
 } from '../../actions/routes';
-import { fonts, theme } from '../../theme';
-import { StackNavigationScreenProp, StackParamList } from '../../types/routes';
+import { fonts, theme } from '@theme';
+import { StackNavigationScreenProp, StackParamList } from '@type/routes';
 import { ARButton, ARButtonSize } from '../atoms/ARButton';
 import ARRouteMapView from '../organisms/ARRouteMapView';
 import analytics from '@react-native-firebase/analytics';
+import ARFloatingBackButton from '@molecules/ARFloatingBackButton';
 
 type ARChooseItineraryProp = RouteProp<StackParamList, 'ChooseItinerary'>;
 
 const styles = StyleSheet.create({
-  backButtonSafeArea: { position: 'absolute', paddingLeft: 16, paddingTop: 16 },
-  backButtonContainer: {
-    backgroundColor: theme.colors.primary,
-    padding: 16,
-    borderRadius: 50,
-  },
   mapContainer: {
     flex: 1,
   },
@@ -109,23 +103,6 @@ const styles = StyleSheet.create({
 });
 
 export type ARRouteType = 'fastest_path' | 'cleanest_path';
-
-export const FloatingBackButton = () => {
-  const navigation = useNavigation<StackNavigationScreenProp>();
-
-  return (
-    <SafeAreaView style={styles.backButtonSafeArea}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.goBack();
-        }}>
-        <Surface style={styles.backButtonContainer}>
-          <Icon name="arrow-left" size={16} color={theme.colors.white} />
-        </Surface>
-      </TouchableOpacity>
-    </SafeAreaView>
-  );
-};
 
 const ItineraryItem = ({
   isSelected,
@@ -219,7 +196,7 @@ const ItineraryList = ({
             await analytics().logEvent('demarrage_navigation', {
               selected,
             });
-            
+
             navigation.navigate('Navigation', { path: userRoute[selected] });
           }}
           styleContainer={styles.letsGoButton}
@@ -322,7 +299,7 @@ export default () => {
       ) : (
         <LoadingView />
       )}
-      <FloatingBackButton />
+      <ARFloatingBackButton />
     </>
   );
 };

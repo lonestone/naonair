@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Caption, Title } from 'react-native-paper';
-import { fonts, theme } from '../../theme';
+import { fonts, theme } from '@theme';
 
 const styles = StyleSheet.create({
   container: { marginTop: 35, marginLeft: 0, marginBottom: 35 },

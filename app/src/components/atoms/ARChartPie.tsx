@@ -2,8 +2,8 @@ import { format } from 'date-fns';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
-import { fonts, theme } from '../../theme';
-import { ForecastType } from '../../types/forecasts';
+import { fonts, theme } from '@theme';
+import { ForecastType } from '@type/forecasts';
 
 const styles = StyleSheet.create({
   container: { padding: 15, alignItems: 'center' },

@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text, Title } from 'react-native-paper';
 import { POI } from '../../actions/poi';
 import { QAType, QAValues } from '../../actions/qa';
-import { fonts, theme } from '../../theme';
+import { fonts, theme } from '@theme';
 import ARQAChip from '../atoms/ARQAChip';
 
 const styles = StyleSheet.create({

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { fonts, theme } from '../../theme';
+import { fonts, theme } from '@theme';
 import ARSwitch from '../atoms/ARSwitch';
 
 interface ARNotificationRowProps {

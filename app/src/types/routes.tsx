@@ -8,7 +8,9 @@ import { ARPath, RouteProfile } from '../actions/routes';
 export type StackParamList = {
   CGU: undefined;
   Onboarding: undefined;
-  Home: undefined;
+  Home: {
+    screen?: keyof TabParamList;
+  };
   POIDetails: { poi: POI };
   ChooseItinerary: {
     start?: Position;
@@ -20,6 +22,7 @@ export type StackParamList = {
   Navigation: { path: ARPath };
   RouteDetail: { parcours: ARParcours; qa?: number };
   PlaceForm: undefined | { poi: POI };
+  NewParcours: undefined;
 };
 
 export type TabParamList = {

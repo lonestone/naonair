@@ -12,7 +12,7 @@ import {
   getPollenNotifications,
   savePollenSettings,
 } from '../actions/pollenNotifications';
-import { useNotifications } from '../hooks/useNotifications';
+import { useNotifications } from '@hooks/useNotifications';
 
 const POLLEN_NOTIFICATIONS_KEY = '@pollennotifications';
 

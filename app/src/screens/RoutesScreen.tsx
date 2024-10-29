@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { fonts, theme } from '../theme';
-import ARRoutesList from '../components/templates/ARRoutesList';
-import ARFilter, { ARFilterItem } from '../components/molecules/ARFilter';
-import ARHeader from '../components/atoms/ARHeader';
+import FA5Icon from 'react-native-vector-icons/FontAwesome5';
+import { fonts, theme } from '@theme';
+import ARRoutesList from '@templates/ARRoutesList';
+import ARFilter, { ARFilterItem } from '@molecules/ARFilter';
+import ARHeader from '@atoms/ARHeader';
 import { Caption, Headline } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -43,6 +44,17 @@ export const ROUTE_FILTERS: ARFilterItem<ParcoursCategory>[] = [
         size={20}
         color={selected ? 'white' : theme.colors.blue[500]}
         name="star"
+      />
+    ),
+  },
+  {
+    label: 'Parcours personnalisés',
+    value: ParcoursCategory.CUSTOM,
+    icon: selected => (
+      <FA5Icon
+        size={20}
+        color={selected ? 'white' : theme.colors.blue[500]}
+        name="route"
       />
     ),
   },
@@ -93,8 +105,8 @@ export default () => {
         <>
           <Headline style={styles.headline}>Les parcours</Headline>
           <Caption style={styles.caption}>
-            Retrouvez des suggestions de promenades et d’itinéraires sportifs
-            basés sur la qualité de l’air
+            Découvrez des promenades, des itinéraires sportifs et enregistrez
+            vos parcours basés sur la qualité de l’air
           </Caption>
           <ARFilter<ParcoursCategory>
             items={ROUTE_FILTERS}

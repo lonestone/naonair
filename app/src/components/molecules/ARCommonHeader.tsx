@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Caption, Headline } from 'react-native-paper';
-import { fonts, theme } from '../../theme';
+import { fonts, theme } from '@theme';
 import ARHeader from '../atoms/ARHeader';
 
 const styles = StyleSheet.create({
@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 0,
     margin: 0,
+    alignItems: 'center',
   },
   headlineContainer: {
     flex: 1,

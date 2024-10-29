@@ -19,21 +19,21 @@ import {
   getIsFirstLaunched,
   getIsFirstNotificationLaunched,
 } from '../actions/launch';
-import pollenIcon from '../assets/pollen-icon.svg';
-import ARBadge from '../components/atoms/ARBadge';
-import BackButton from '../components/molecules/ARBackButton';
-import ARCommonHeader from '../components/molecules/ARCommonHeader';
-import ARChooseItinerary from '../components/templates/ARChooseItinerary';
-import ARListFavorites from '../components/templates/ARListFavorites';
-import ARListNotifications from '../components/templates/ARListNotifications';
-import ARPlaceFormLayout from '../components/templates/ARPlaceFormLayout';
-import ARPOIDetails from '../components/templates/ARPOIDetails';
-import ARRouteDetail from '../components/templates/ARRouteDetail';
-import { NotificationsContext } from '../contexts/notifications.context';
-import { SnackbarProvider } from '../contexts/snackbar.context';
-import { useOnForegroundFocus } from '../hooks/useOnForgroundFocus';
-import { theme } from '../theme';
-import { StackParamList, TabParamList } from '../types/routes';
+import pollenIcon from '@assets/pollen-icon.svg';
+import ARBadge from '@atoms/ARBadge';
+import BackButton from '@molecules/ARBackButton';
+import ARCommonHeader from '@molecules/ARCommonHeader';
+import ARChooseItinerary from '@templates/ARChooseItinerary';
+import ARListFavorites from '@templates/ARListFavorites';
+import ARListNotifications from '@templates/ARListNotifications';
+import ARPlaceFormLayout from '@templates/ARPlaceFormLayout';
+import ARPOIDetails from '@templates/ARPOIDetails';
+import ARRouteDetail from '@templates/ARRouteDetail';
+import { NotificationsContext } from '@contexts/notifications.context';
+import { SnackbarProvider } from '@contexts/snackbar.context';
+import { useOnForegroundFocus } from '@hooks/useOnForgroundFocus';
+import { theme } from '@theme';
+import { StackParamList, TabParamList } from '@type/routes';
 import CGUScreen from './CGUScreen';
 import ItineraryScreen from './ItineraryScreen';
 import MapScreen from './MapScreen';
@@ -42,6 +42,7 @@ import OnboardingScreen from './OnboardingScreen';
 import PollensScreen from './PollensScreen';
 import ProfileScreen from './ProfileScreen';
 import RoutesScreen from './RoutesScreen';
+import NewParcoursScreen from './NewParcours';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 const Stack = createStackNavigator<StackParamList>();
@@ -231,6 +232,12 @@ export default () => {
         <Stack.Screen
           name="PlaceForm"
           component={ARPlaceFormLayout}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="NewParcours"
+          component={NewParcoursScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

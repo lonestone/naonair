@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, VirtualizedList } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { ARParcours, ParcoursCategory } from '../../actions/parcours';
-import { useParcours } from '../../hooks/useParcours';
-import ARRouteItem from '../molecules/ARRouteItem';
+import { useParcours } from '@hooks/useParcours';
+import ARRouteItem from '@molecules/ARRouteItem';
+import { ARFab } from '../atoms/ARFab';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationScreenProp, StackParamList } from '@type/routes';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,22 +26,39 @@ export interface ARRoutesListProps {
 }
 
 export default ({ filters }: ARRoutesListProps) => {
-  const { parcours, isLoading } = useParcours(filters);
+  const { parcours, refreshList, isLoading } = useParcours(filters);
+  const { navigate } = useNavigation<StackNavigationScreenProp>();
+  const route = useRoute<RouteProp<StackParamList, 'Home'>>();
+
+  useEffect(() => {
+    refreshList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route]);
 
   return (
     <View style={styles.container}>
-      {parcours.length > 0 && (
-        <VirtualizedList<ARParcours>
-          data={parcours}
-          initialNumToRender={5}
-          renderItem={({ item }) => (
-            <ARRouteItem parcours={item} style={styles.item} />
-          )}
-          keyExtractor={item => `parcours-${item.properties.id}`}
-          getItemCount={data => data.length}
-          getItem={(data, index) => data[index]}
-        />
+      {parcours.length > 0 && !isLoading && (
+        <View>
+          <VirtualizedList<ARParcours>
+            data={parcours}
+            initialNumToRender={5}
+            renderItem={({ item, index }) => (
+              <ARRouteItem
+                parcours={item}
+                style={
+                  index === parcours.length - 1
+                    ? StyleSheet.flatten([styles.item, { marginBottom: 90 }])
+                    : styles.item
+                }
+              />
+            )}
+            keyExtractor={item => `parcours-${item.properties.id}`}
+            getItemCount={data => data.length}
+            getItem={(data, index) => data[index]}
+          />
+        </View>
       )}
+      <ARFab icon="plus" onPress={() => navigate('NewParcours')} />
       {isLoading && (
         <ActivityIndicator style={styles.container} size="large" animating />
       )}

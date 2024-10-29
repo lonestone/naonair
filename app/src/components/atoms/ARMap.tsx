@@ -56,10 +56,12 @@ export interface ARMapProps extends ViewProps {
     mapRef: RefObject<MapboxGL.MapView>,
     cameraRef: RefObject<MapboxGL.Camera>,
   ) => void;
+  onCameraChanged?: () => void;
 }
 
 export interface ARMapHandle {
   setCamera: (settings: CameraSettings) => void;
+  viewRef: RefObject<MapboxGL.MapView>;
 }
 
 // if we don't call this methods, MapboxGL crash on Android
@@ -85,6 +87,7 @@ const ARMap = (
     isGPS,
     onUserLocationChanged,
     onMapLoaded,
+    onCameraChanged,
     style,
   }: ARMapProps,
   ref: Ref<ARMapHandle>,
@@ -109,6 +112,7 @@ const ARMap = (
     setCamera: (settings: CameraSettings) => {
       cameraRef.current?.setCamera(settings);
     },
+    viewRef: mapRef,
   }));
 
   const insets = useSafeAreaInsets();
@@ -132,6 +136,7 @@ const ARMap = (
             onMapLoaded && onMapLoaded(mapRef, cameraRef);
             setLoadedFully(true);
           }}
+          onRegionDidChange={onCameraChanged}
           zoomEnabled={!!interactionEnabled}
           scrollEnabled={!!interactionEnabled}>
           <MapboxGL.Camera
@@ -152,14 +157,16 @@ const ARMap = (
               bounds,
             }}
           />
-          <MapboxGL.UserLocation
-            visible={userLocationVisible}
-            renderMode="native"
-            androidRenderMode={isGPS ? 'gps' : 'normal'}
-            animated
-            showsUserHeadingIndicator
-            onUpdate={onUserLocationChanged}
-          />
+          {userLocationVisible && (
+            <MapboxGL.UserLocation
+              visible={userLocationVisible}
+              renderMode="native"
+              androidRenderMode={isGPS ? 'gps' : 'normal'}
+              animated
+              showsUserHeadingIndicator
+              onUpdate={onUserLocationChanged}
+            />
+          )}
           {heatmapVisible && (
             <MapboxGL.RasterSource {...rasterSourceProps}>
               <MapboxGL.RasterLayer
@@ -170,7 +177,6 @@ const ARMap = (
               />
             </MapboxGL.RasterSource>
           )}
-
           {(isLoadedFully && children) || null}
         </MapboxGL.MapView>
       </View>
