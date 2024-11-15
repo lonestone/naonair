@@ -125,8 +125,8 @@ export class RoutingService {
     return forecast;
   }
 
-  // Triggers every night at midnight
-  @Cron('0 0 * * *')
+  // Triggers every hour on minute 15
+  @Cron('15 * * * *')
   async ensureFreshPrevGeoTIFF() {
     this.logger.log('Downloading new prevision GeoTIFF file...');
     if (!fastReload) {

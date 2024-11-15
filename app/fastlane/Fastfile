@@ -49,3 +49,21 @@ lane :deploy do
   end
 end
 
+
+lane :deploy2 do
+  
+  platform :android do
+    gradle(
+      task: "bundle",
+      build_type: "Release", 
+      project_dir: './android',
+    )
+
+    copy_artifacts(
+      target_path: "./tests",
+      artifacts: ['./android/app/build/outputs/bundle/**/*.aab']
+    )
+    # upload_to_play_store
+  end
+end
+

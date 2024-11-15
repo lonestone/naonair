@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 import { Portal, Surface } from 'react-native-paper';
 import ARMap, { ARMapHandle } from '@atoms/ARMap';
 import { BBox, Position } from '@turf/turf';
@@ -47,6 +47,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
     padding: 16,
     borderRadius: 50,
+  },
+  scrollView: {
+    height: '100%',
   },
 });
 
@@ -188,15 +191,17 @@ const NewParcoursScreen = () => {
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <Surface style={styles.listContainer}>
-          <SafeAreaView edges={['bottom', 'left', 'right']}>
-            <ARParcoursSteps
-              onStarted={() => setHasStarted(true)}
-              onUpdate={setPoints}
-              onSave={onSave}
-            />
-          </SafeAreaView>
-        </Surface>
+        <ScrollView style={styles.scrollView} bounces={false}>
+          <Surface style={styles.listContainer}>
+            <SafeAreaView edges={['bottom', 'left', 'right']}>
+              <ARParcoursSteps
+                onStarted={() => setHasStarted(true)}
+                onUpdate={setPoints}
+                onSave={onSave}
+              />
+            </SafeAreaView>
+          </Surface>
+        </ScrollView>
       </KeyboardAvoidingView>
       <Portal>
         <ARConfirmModal
