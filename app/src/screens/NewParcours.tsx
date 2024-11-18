@@ -190,7 +190,7 @@ const NewParcoursScreen = () => {
       </ARMap>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        behavior={Platform.OS === 'ios' ? 'padding' : null}>
         <ScrollView style={styles.scrollView} bounces={false}>
           <Surface style={styles.listContainer}>
             <SafeAreaView edges={['bottom', 'left', 'right']}>
