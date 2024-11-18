@@ -42,6 +42,7 @@ const style = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: 12,
   },
   btnLabel: {
     fontWeight: 'bold',
@@ -51,6 +52,7 @@ const style = StyleSheet.create({
     backgroundColor: theme.colors.warning,
     paddingVertical: 4,
     paddingHorizontal: 0,
+    flexShrink: 1,
   },
   stopBtn: {
     backgroundColor: theme.colors.error,
