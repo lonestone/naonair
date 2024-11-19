@@ -40,8 +40,6 @@ export class RoutingService {
     'data',
     'prev_file.tiff',
   );
-  private lastDownloaded: Date;
-  private prevLastDownloaded: Date;
   private image: GeoTIFFImage;
   private rasters: ReadRasterResult;
   private prevImage: GeoTIFFImage;
@@ -97,7 +95,6 @@ export class RoutingService {
     this.image = await tiff.getImage();
     this.rasters = await this.image.readRasters();
     this.logger.log('Downloaded latest GeoTIFF file');
-    this.lastDownloaded = new Date();
   }
 
   private async getForecastFromCoordinates(coords: [number, number][]) {
@@ -140,7 +137,6 @@ export class RoutingService {
     this.prevImage = await tiff.getImage();
     this.prevRasters = await this.prevImage.readRasters();
     this.logger.log('Downloaded latest prevision GeoTIFF file');
-    this.prevLastDownloaded = new Date();
   }
 
   private latLonToXY(
