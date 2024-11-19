@@ -105,7 +105,7 @@ export class RoutingService {
     const today = new Date(new Date().setMinutes(0, 0, 0));
     const imageWidth = this.prevImage.getWidth();
 
-    for (let i = 0; i < this.prevRasters.length; i++) {
+    for (let i = 1; i < this.prevRasters.length; i++) {
       const raster = this.prevRasters[i];
       const results = this.getAirQualityValuesFromImage(
         this.prevImage,
