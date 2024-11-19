@@ -64,20 +64,20 @@ export class RoutingService {
   async getCustomRouteQuality(coords: [number, number][]) {
     const res = await this.getValuesFromCoordinates(coords);
     const values = res.map((v) => v.value);
-    const val = getMostCommonValue(values);
+    const mostCommonValue = getMostCommonValue(values);
+    const val = Math.round((mostCommonValue * 6) / 179);
 
     return Math.max(val, 1);
   }
 
   // Gets the values for each coordinate in the array by converting it to a pixel coordinate inside the geotiff
   private async getValuesFromCoordinates(coords: [number, number][]) {
-    const imageWidth = this.prevImage.getWidth();
-    const today = new Date(new Date().setMinutes(0, 0, 0));
+    const lineWidth = this.image.getWidth();
 
     return this.getAirQualityValuesFromImage(
-      this.prevImage,
-      this.prevRasters[today.getHours() + 1],
-      imageWidth,
+      this.image,
+      this.rasters[0],
+      lineWidth,
       coords,
     );
   }
@@ -105,7 +105,7 @@ export class RoutingService {
     const today = new Date(new Date().setMinutes(0, 0, 0));
     const imageWidth = this.prevImage.getWidth();
 
-    for (let i = today.getHours() + 1; i < this.prevRasters.length; i++) {
+    for (let i = 0; i < this.prevRasters.length; i++) {
       const raster = this.prevRasters[i];
       const results = this.getAirQualityValuesFromImage(
         this.prevImage,
@@ -117,7 +117,7 @@ export class RoutingService {
       const mostCommonValue = getMostCommonValue(values);
 
       forecast.push({
-        hour: new Date(new Date(today).setHours(i)),
+        hour: new Date(new Date(today).setHours(today.getHours() + i)),
         value: mostCommonValue,
       });
     }
