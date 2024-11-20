@@ -11,7 +11,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import * as Sentry from '@sentry/react-native';
 import React, { useEffect } from 'react';
-import { StatusBar } from 'react-native';
+import { LogBox, StatusBar } from 'react-native';
 import { Provider } from 'react-native-paper';
 import { SENTRY } from './config.json';
 import { NotificationsProvider } from './contexts/notifications.context';
@@ -24,6 +24,8 @@ if (!__DEV__) {
     dsn: SENTRY.dsn,
   });
 }
+
+LogBox.ignoreAllLogs();
 
 const App = () => {
   const { notificationListener, requestUserPermission } = useNotifications();
