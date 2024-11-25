@@ -6,6 +6,7 @@ export const checkAndroidPermission = async (): Promise<boolean> => {
     await PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+      PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
     ]);
   } catch (e) {
     console.info(e);

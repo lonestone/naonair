@@ -40,8 +40,6 @@ export class RoutingService {
     'data',
     'prev_file.tiff',
   );
-  private lastDownloaded: Date;
-  private prevLastDownloaded: Date;
   private image: GeoTIFFImage;
   private rasters: ReadRasterResult;
   private prevImage: GeoTIFFImage;
@@ -64,20 +62,20 @@ export class RoutingService {
   async getCustomRouteQuality(coords: [number, number][]) {
     const res = await this.getValuesFromCoordinates(coords);
     const values = res.map((v) => v.value);
-    const val = getMostCommonValue(values);
+    const mostCommonValue = getMostCommonValue(values);
+    const val = Math.round((mostCommonValue * 6) / 179);
 
     return Math.max(val, 1);
   }
 
   // Gets the values for each coordinate in the array by converting it to a pixel coordinate inside the geotiff
   private async getValuesFromCoordinates(coords: [number, number][]) {
-    const imageWidth = this.prevImage.getWidth();
-    const today = new Date(new Date().setMinutes(0, 0, 0));
+    const lineWidth = this.image.getWidth();
 
     return this.getAirQualityValuesFromImage(
-      this.prevImage,
-      this.prevRasters[today.getHours() + 1],
-      imageWidth,
+      this.image,
+      this.rasters[0],
+      lineWidth,
       coords,
     );
   }
@@ -97,7 +95,6 @@ export class RoutingService {
     this.image = await tiff.getImage();
     this.rasters = await this.image.readRasters();
     this.logger.log('Downloaded latest GeoTIFF file');
-    this.lastDownloaded = new Date();
   }
 
   private async getForecastFromCoordinates(coords: [number, number][]) {
@@ -105,7 +102,7 @@ export class RoutingService {
     const today = new Date(new Date().setMinutes(0, 0, 0));
     const imageWidth = this.prevImage.getWidth();
 
-    for (let i = today.getHours() + 1; i < this.prevRasters.length; i++) {
+    for (let i = 1; i < this.prevRasters.length; i++) {
       const raster = this.prevRasters[i];
       const results = this.getAirQualityValuesFromImage(
         this.prevImage,
@@ -117,7 +114,7 @@ export class RoutingService {
       const mostCommonValue = getMostCommonValue(values);
 
       forecast.push({
-        hour: new Date(new Date(today).setHours(i)),
+        hour: new Date(new Date(today).setHours(today.getHours() + i)),
         value: mostCommonValue,
       });
     }
@@ -125,8 +122,8 @@ export class RoutingService {
     return forecast;
   }
 
-  // Triggers every night at midnight
-  @Cron('0 0 * * *')
+  // Triggers every hour on minute 15
+  @Cron('15 * * * *')
   async ensureFreshPrevGeoTIFF() {
     this.logger.log('Downloading new prevision GeoTIFF file...');
     if (!fastReload) {
@@ -140,7 +137,6 @@ export class RoutingService {
     this.prevImage = await tiff.getImage();
     this.prevRasters = await this.prevImage.readRasters();
     this.logger.log('Downloaded latest prevision GeoTIFF file');
-    this.prevLastDownloaded = new Date();
   }
 
   private latLonToXY(
