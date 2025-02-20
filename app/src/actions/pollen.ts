@@ -2,6 +2,8 @@ import { PollenDTO } from '@aireal/dtos';
 import { POLLEN_TOKEN } from '@env';
 import { API } from '../config.json';
 
+import Config from 'react-native-config';
+
 const { baseUrl, pollenURL } = API;
 
 const POLLEN_URL = `${baseUrl}pollen`;
@@ -13,7 +15,7 @@ export const getPollen = async (): Promise<PollenDTO[]> => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Token ${POLLEN_TOKEN}`,
+        Authorization: `Token ${'00122206227a3369291ed94df4217c3cd01e7308'}`,
       },
     });
     console.log(response);

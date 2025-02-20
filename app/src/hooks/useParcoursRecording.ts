@@ -4,8 +4,11 @@ import Geolocation, {
   GeoPosition,
 } from 'react-native-geolocation-service';
 
+//import BackgroundService from 'react-native-background-actions';
+
 const MAX_GET_LOCATION_INTERVAL = 500;
-const DISTANCE_FILTER = 10;
+//const DISTANCE_FILTER = 10;
+const DISTANCE_FILTER = 1;
 
 export const useParcoursRecording = () => {
   const [isRecording, setIsRecording] = useState(true);
