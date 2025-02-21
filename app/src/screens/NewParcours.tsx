@@ -65,6 +65,7 @@ type DraftParcoursProps = {
 const NewParcoursScreen = () => {
   const { userPosition: initialPosition } = useUserPosition();
   const mapRef = useRef<ARMapHandle>(null);
+  const cameraRef = createRef<MapLibreGL.Camera>();
   const [hasStarted, setHasStarted] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -119,7 +120,7 @@ const NewParcoursScreen = () => {
       timeTaken: elapsedTime,
     });
 
-    mapRef.current.setCamera({
+    cameraRef.current.setCamera({
       bounds: {
         ne: [bounds.maxLng, bounds.maxLat],
         sw: [bounds.minLng, bounds.minLat],
@@ -153,6 +154,7 @@ const NewParcoursScreen = () => {
       <ARFloatingBackButton onPress={handleBack} />
       <ARMap
         ref={mapRef}
+        cameraRef={cameraRef}
         userLocationVisible={displayCurrentLocation}
         onCameraChanged={onCameraChanged}
         interactionEnabled={displayCurrentLocation}

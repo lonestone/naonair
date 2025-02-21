@@ -1,4 +1,4 @@
-import MapboxGL from '@maplibre/maplibre-react-native';
+import MapLibreGL from '@maplibre/maplibre-react-native';
 import { Position } from '@turf/turf';
 import React, { createRef } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
@@ -14,16 +14,16 @@ export interface ARNavigationMapViewProp {
 }
 
 export default ({ path, style, onUserMoved }: ARNavigationMapViewProp) => {
-  const mapRef = createRef<ARMapHandle>();
+  const cameraRef = createRef<MapLibreGL.Camera>();
 
   const { points } = path;
 
   const start = points.coordinates[0];
   const end = points.coordinates[points.coordinates.length - 1];
 
-  const onUserLocationChanged = ({ coords }: MapboxGL.Location) => {
+  const onUserLocationChanged = ({ coords }: MapLibreGL.Location) => {
     const userPosition = [coords.longitude, coords.latitude];
-    mapRef.current?.setCamera({
+    cameraRef.current?.setCamera({
       centerCoordinate: userPosition,
       heading: coords.heading,
       animationMode: 'easeTo',
@@ -37,7 +37,7 @@ export default ({ path, style, onUserMoved }: ARNavigationMapViewProp) => {
       interactionEnabled
       userLocationVisible
       isGPS
-      ref={mapRef}
+      cameraRef={cameraRef}
       cameraSettings={{ pitch: 30, zoomLevel: 17 }}
       onUserLocationChanged={onUserLocationChanged}>
       <>

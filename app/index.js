@@ -1,3 +1,5 @@
+console.log('yayyyy');
+
 if (__DEV__) {
   import("./ReactotronConfig").then(() => console.info("Reactotron Configured"));
 }

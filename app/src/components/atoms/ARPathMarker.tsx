@@ -1,4 +1,4 @@
-import MapboxGL from '@maplibre/maplibre-react-native';
+import MapLibreGL from '@maplibre/maplibre-react-native';
 import { Position } from 'geojson';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -54,11 +54,11 @@ const EndMarker = () => (
 
 export default ({ id, title, type, coordinate }: ARPathMarkerProp) => {
   return (
-    <MapboxGL.PointAnnotation id={id} title={title} coordinate={coordinate}>
+    <MapLibreGL.PointAnnotation id={id} title={title} coordinate={coordinate}>
       <>
         {type === ARPathMarkerType.START && <StartMarker />}
         {type === ARPathMarkerType.END && <EndMarker />}
       </>
-    </MapboxGL.PointAnnotation>
+    </MapLibreGL.PointAnnotation>
   );
 };
