@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Position } from '@turf/turf';
 import React, { createRef, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 import { SvgXml } from 'react-native-svg';
 import { POI, poiIcons } from '../../actions/poi';
 import markerBackground from '@assets/marker-background.svg';

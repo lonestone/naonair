@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { View, ViewProps } from 'react-native';
 import ARParcourInitialStep from '../organisms/ARParcourCreationSteps/ARParcourInitialStep';
 import ARParcourRecordingStep from '../organisms/ARParcourCreationSteps/ARParcourRecordingStep';
 import { Position } from 'geojson';
 import ARParcourNameStep from '../organisms/ARParcourCreationSteps/ARParcourNameStep';
+import { checkPermission } from '@/actions/location';
 
 type ARParcoursStepsProps = {
   onStarted: () => void;
@@ -33,6 +34,16 @@ export default ({
   const [elapsedTime, setElapsedTime] = useState<number>(0);
   const [totalDistance, setTotalDistance] = useState<number>(0);
   const [averageSpeed, setAverageSpeed] = useState<number>(0);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        await checkPermission();
+      } catch (error) {
+        console.error('Error checking permission', error);
+      }
+    })();
+  }, []);
 
   const onParcourCreationStarted = useCallback(() => {
     setStep(Steps.RECORDING);

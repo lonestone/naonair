@@ -1,6 +1,6 @@
 import { Position } from 'geojson';
 import { useEffect, useState } from 'react';
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 
 export const useUserPosition = function () {
   const [userPosition, setUserPosition] = useState<Position | undefined>();
