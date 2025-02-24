@@ -108,6 +108,7 @@ const NewParcoursScreen = () => {
     );
 
     if (!bounds || !mapRef.current?.viewRef.current) {
+      setLoading(false);
       return;
     }
 

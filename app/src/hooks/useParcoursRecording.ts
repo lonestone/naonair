@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import Geolocation, { GeolocationResponse } from '@react-native-community/geolocation';
+import Geolocation, { GeolocationError, GeolocationResponse } from '@react-native-community/geolocation';
+import { Platform } from 'react-native';
 
 const MAX_GET_LOCATION_INTERVAL = 500;
 //const DISTANCE_FILTER = 10;
@@ -14,7 +15,7 @@ export const useParcoursRecording = () => {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [previousElapsedTime, setPreviousElapsedTime] = useState(0);
 
-  console.log('useParcoursRecording');
+  //console.log('useParcoursRecording');
 
   // 1hz clock, use it as a dependency on siblings hooks
   useEffect(() => {
@@ -42,7 +43,8 @@ export const useParcoursRecording = () => {
     console.log('startRecording');
 
     setStartTime((prev) => prev ?? Date.now());
-    let newPathPoints = [...pathPoints];
+
+    const accuracyOption = Platform.OS === 'ios' ? true : false;
 
     const localWatchId = Geolocation.watchPosition(
       (position: GeolocationResponse) => {
@@ -51,14 +53,14 @@ export const useParcoursRecording = () => {
           return;
         }
 
-        newPathPoints = [...newPathPoints, position.coords];
-        setPathPoints(newPathPoints);
+        setPathPoints((points) => [...points, position.coords]);
       },
-      error => {
+      (error: GeolocationError) => {
+        console.log(error);
         console.log(error.code, error.message);
       },
       {
-        enableHighAccuracy: true,
+        enableHighAccuracy: accuracyOption,
         interval: MAX_GET_LOCATION_INTERVAL,
         fastestInterval: MAX_GET_LOCATION_INTERVAL,
         distanceFilter: DISTANCE_FILTER,
@@ -81,6 +83,8 @@ export const useParcoursRecording = () => {
     startRecording();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log('pathPoints', pathPoints);
 
   return {
     isRecording,
