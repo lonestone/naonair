@@ -104,8 +104,8 @@ export default ({
     elapsedTime,
     pathPoints,
     isRecording,
+    startRecording,
     stopRecording,
-    setIsRecording,
   } = useParcoursRecording();
 
   const totalDistance = useMemo(() => {
@@ -178,7 +178,7 @@ export default ({
         <View style={style.action}>
           {isRecording && (
             <ARButton
-              onPress={() => setIsRecording(false)}
+              onPress={stopRecording}
               size={ARButtonSize.Xsmall}
               label="Mettre en pause"
               icon={pauseIcon}
@@ -188,7 +188,7 @@ export default ({
           )}
           {!isRecording && (
             <ARButton
-              onPress={() => setIsRecording(true)}
+              onPress={startRecording}
               size={ARButtonSize.Xsmall}
               label="Reprendre"
               icon={resumeIcon}
