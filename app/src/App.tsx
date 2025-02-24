@@ -19,6 +19,7 @@ import { useNotifications } from './hooks/useNotifications';
 import Screens from './screens/NavigatorScreen';
 import { theme } from './theme';
 
+
 if (!__DEV__) {
   Sentry.init({
     dsn: SENTRY.dsn,
