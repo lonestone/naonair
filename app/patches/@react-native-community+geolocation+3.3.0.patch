@@ -1,0 +1,15 @@
+diff --git a/node_modules/@react-native-community/geolocation/android/src/main/java/com/reactnativecommunity/geolocation/LocationService.java b/node_modules/@react-native-community/geolocation/android/src/main/java/com/reactnativecommunity/geolocation/LocationService.java
+index 60c89f2..14d436f 100644
+--- a/node_modules/@react-native-community/geolocation/android/src/main/java/com/reactnativecommunity/geolocation/LocationService.java
++++ b/node_modules/@react-native-community/geolocation/android/src/main/java/com/reactnativecommunity/geolocation/LocationService.java
+@@ -45,8 +45,8 @@ public class LocationService extends Service implements LocationHandler {
+     public int onStartCommand(Intent intent, int flags, int startId) {
+         Log.i(TAG, "onStartCommand");
+         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+-                .setContentTitle("Location Service")
+-                .setContentText("Running")
++                .setContentTitle("Naonair: Service de localisation")
++                .setContentText("En cours d'exécution")
+                 .setSmallIcon(android.R.drawable.ic_menu_mylocation)
+                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                 .build();
