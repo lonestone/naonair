@@ -36,6 +36,7 @@ const App = () => {
       skipPermissionRequests: false,
       authorizationLevel: 'always',
       locationProvider: 'auto',
+      enableBackgroundLocationUpdates: true,
     });
   }, []);
 
