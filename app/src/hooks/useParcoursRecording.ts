@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import Geolocation, { GeolocationError, GeolocationResponse } from '@react-native-community/geolocation';
-import { Platform } from 'react-native';
 
 const MAX_GET_LOCATION_INTERVAL = 500;
 //const DISTANCE_FILTER = 10;
@@ -33,18 +32,18 @@ export const useParcoursRecording = () => {
       return Math.floor((Date.now() - startTime) / 1000);
     }
     return 0;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ticks, startTime]);
 
   const elapsedTime = useMemo(() => {
     return recentElapsedTime + previousElapsedTime;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ticks, recentElapsedTime, previousElapsedTime]);
 
   const startRecording = () => {
     console.log('startRecording');
 
     setStartTime((prev) => prev ?? Date.now());
-
-    const accuracyOption = Platform.OS === 'ios' ? true : false;
 
     const localWatchId = Geolocation.watchPosition(
       (position: GeolocationResponse) => {
@@ -60,7 +59,7 @@ export const useParcoursRecording = () => {
         console.log(error.code, error.message);
       },
       {
-        enableHighAccuracy: accuracyOption,
+        enableHighAccuracy: true,
         interval: MAX_GET_LOCATION_INTERVAL,
         fastestInterval: MAX_GET_LOCATION_INTERVAL,
         distanceFilter: DISTANCE_FILTER,
@@ -81,10 +80,7 @@ export const useParcoursRecording = () => {
 
   useEffect(() => {
     startRecording();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log('pathPoints', pathPoints);
 
   return {
     isRecording,
