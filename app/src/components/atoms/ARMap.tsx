@@ -11,6 +11,7 @@ import React, {
   RefObject,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useState,
 } from 'react';
 import { Platform, StyleSheet, View, ViewProps } from 'react-native';
@@ -114,6 +115,19 @@ const ARMap = (
 
   const insets = useSafeAreaInsets();
 
+  const mergedCameraSettings = useMemo(() => {
+    let result = {
+      ...defaultSettingsCamera,
+      ...cameraSettings,
+    };
+    if (bounds) {
+      // "Create a camera stop with bounds and centerCoordinate – this is not possible."
+      result.bounds = bounds;
+      result.centerCoordinate = undefined;
+    }
+    return result;
+  }, [bounds, cameraSettings]);
+
   return (
     <>
       <View style={StyleSheet.flatten([styles.container, style])}>
@@ -148,11 +162,7 @@ const ARMap = (
               paddingTop: 25 + insets.top,
             }}
             animationMode={animationMode || 'moveTo'}
-            defaultSettings={{
-              ...defaultSettingsCamera,
-              ...cameraSettings,
-              bounds,
-            }}
+            defaultSettings={mergedCameraSettings}
           />
           {userLocationVisible && (
             <MapLibreGL.UserLocation
