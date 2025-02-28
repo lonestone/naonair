@@ -44,7 +44,7 @@
     "react-native-screens": "^3.34.0",
     "react-native-svg": "^15.2.0",
     "react-native-uuid": "^2.0.2",
-    "react-native-vector-icons": "^10.0.0",
+    "react-native-vector-icons": "^10.2.0",
     "slugify": "^1.6.5"
   },
   "devDependencies": {

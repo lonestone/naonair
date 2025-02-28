@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import Geolocation, { GeolocationError, GeolocationResponse } from '@react-native-community/geolocation';
+import { configureGeolocationLibrary } from '@/actions/location';
 
 const MAX_GET_LOCATION_INTERVAL = 500;
 //const DISTANCE_FILTER = 10;
@@ -45,9 +46,13 @@ export const useParcoursRecording = () => {
 
     setStartTime((prev) => prev ?? Date.now());
 
+    if (watchId) {
+      Geolocation.clearWatch(watchId);
+    }
+
     const localWatchId = Geolocation.watchPosition(
       (position: GeolocationResponse) => {
-        console.log('hey position', position);
+        console.log('position', position);
         if (position.coords.latitude === 0 && position.coords.longitude === 0) {
           return;
         }
@@ -55,7 +60,6 @@ export const useParcoursRecording = () => {
         setPathPoints((points) => [...points, position.coords]);
       },
       (error: GeolocationError) => {
-        console.log(error);
         console.log(error.code, error.message);
       },
       {
@@ -75,11 +79,13 @@ export const useParcoursRecording = () => {
       setWatchId(null);
       setPreviousElapsedTime(elapsedTime);
       setStartTime(null);
+      //configureGeolocationLibrary(false);
     }
   };
 
   useEffect(() => {
     startRecording();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

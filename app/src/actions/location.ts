@@ -1,5 +1,23 @@
-import { Alert, Linking, PermissionsAndroid, Platform } from 'react-native';
+import { Linking, PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
+
+export const configureGeolocationLibrary = (background: boolean = false) => {
+  let actualBackground: boolean = true;
+  if (Platform.OS === 'android') {
+    actualBackground = background;
+    if (background) {
+      console.log('Starting background service with notification');
+    } else {
+      console.log('Ending background service');
+    }
+  }
+  Geolocation.setRNConfiguration({
+    skipPermissionRequests: false,
+    authorizationLevel: 'always',
+    locationProvider: 'auto',
+    enableBackgroundLocationUpdates: actualBackground,
+  });
+};
 
 export const checkAndroidPermission = async (): Promise<boolean> => {
   try {
@@ -30,7 +48,7 @@ export const checkAndroidPermission = async (): Promise<boolean> => {
       const resultBackground = await PermissionsAndroid.request(permissions.background);
       if (resultBackground !== PermissionsAndroid.RESULTS.GRANTED) {
         console.warn('Background not granted');
-        //Linking.openSettings();
+        Linking.openSettings();
       }
     }
 

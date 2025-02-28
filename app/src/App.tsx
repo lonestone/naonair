@@ -18,7 +18,7 @@ import { NotificationsProvider } from './contexts/notifications.context';
 import { useNotifications } from './hooks/useNotifications';
 import Screens from './screens/NavigatorScreen';
 import { theme } from './theme';
-import Geolocation from '@react-native-community/geolocation';
+import { configureGeolocationLibrary } from './actions/location';
 
 
 if (!__DEV__) {
@@ -32,12 +32,7 @@ LogBox.ignoreAllLogs();
 const App = () => {
   const { notificationListener, requestUserPermission } = useNotifications();
   useEffect(() => {
-    Geolocation.setRNConfiguration({
-      skipPermissionRequests: false,
-      authorizationLevel: 'always',
-      locationProvider: 'auto',
-      enableBackgroundLocationUpdates: true,
-    });
+    configureGeolocationLibrary();
   }, []);
 
   useEffect(() => {
