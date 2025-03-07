@@ -24,12 +24,13 @@ lane :deploy do
       output_directory: "build"
     )
 
-    testflight(
-      ipa: "build/aireal.ipa", 
-      skip_waiting_for_build_processing: true, 
-      team_id: '124095409',
-      username: "julien.smolareck@lonestone.io",
-    )
+
+    #testflight(
+    #  ipa: "build/aireal.ipa", 
+    #  skip_waiting_for_build_processing: true, 
+    #  team_id: '124095409',
+    #  username: "julien.smolareck@lonestone.io",
+    #)
 
     clean_build_artifacts
   end
@@ -64,6 +65,18 @@ lane :deploy2 do
       artifacts: ['./android/app/build/outputs/bundle/**/*.aab']
     )
     # upload_to_play_store
+  end
+end
+
+
+lane :deploy3 do
+  
+  platform :android do
+    gradle(
+      task: "assemble",
+      build_type: "Release", 
+      project_dir: './android',
+    )
   end
 end
 
