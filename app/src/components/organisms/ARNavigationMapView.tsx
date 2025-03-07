@@ -3,7 +3,7 @@ import { Position } from '@turf/turf';
 import React, { createRef } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { ARPath } from '../../actions/routes';
-import ARMap, { ARMapHandle } from '../atoms/ARMap';
+import ARMap from '../atoms/ARMap';
 import ARPathLayer from '../atoms/ARPathLayer';
 import ARPathMarker, { ARPathMarkerType } from '../atoms/ARPathMarker';
 
@@ -13,8 +13,8 @@ export interface ARNavigationMapViewProp {
   onUserMoved: (coord: Position) => void;
 }
 
-export default ({ path, style, onUserMoved }: ARNavigationMapViewProp) => {
-  const cameraRef = createRef<MapLibreGL.Camera>();
+export default ({ path, onUserMoved }: ARNavigationMapViewProp) => {
+  const cameraRef = createRef<MapLibreGL.CameraRef>();
 
   const { points } = path;
 

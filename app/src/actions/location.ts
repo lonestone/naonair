@@ -72,8 +72,11 @@ export const checkAndroidPermission = async (): Promise<boolean> => {
 };
 
 export const checkIOSPermission = async () => {
-  const result = await Geolocation.requestAuthorization('always');
-  return result === 'granted';
+  return new Promise<boolean>((resolve) => {
+    Geolocation.requestAuthorization(() => {
+      resolve(true);
+    });
+  });
 };
 
 export const checkPermission = async () => {
@@ -101,8 +104,6 @@ export const checkAndroidPermissionAndGetLocation = async (): Promise<boolean> =
         enableHighAccuracy: true,
         timeout: 15000,
         maximumAge: 10000,
-        showLocationDialog: true,
-        forceRequestLocation: true,
       },
     );
   });

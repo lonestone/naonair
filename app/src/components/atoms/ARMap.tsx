@@ -54,15 +54,16 @@ export interface ARMapProps extends ViewProps {
   animationMode?: 'flyTo' | 'easeTo' | 'linearTo' | 'moveTo';
   onUserLocationChanged?: (location: MapLibreGL.Location) => void;
   onMapLoaded?: (
-    mapRef: RefObject<MapLibreGL.MapView>,
-    cameraRef: RefObject<MapLibreGL.Camera>,
+    mapRef: RefObject<MapLibreGL.MapViewRef>,
+    cameraRef: RefObject<MapLibreGL.CameraRef>,
   ) => void;
   onCameraChanged?: () => void;
+  cameraRef?: RefObject<MapLibreGL.CameraRef>;
 }
 
 export interface ARMapHandle {
   setCamera: (settings: CameraSettings) => void;
-  viewRef: RefObject<MapLibreGL.MapView>;
+  viewRef: RefObject<MapLibreGL.MapViewRef>;
 }
 
 if (Platform.OS === 'android') {
@@ -87,11 +88,13 @@ const ARMap = (
     onMapLoaded,
     onCameraChanged,
     style,
+    cameraRef,
   }: ARMapProps,
   ref: Ref<ARMapHandle>,
 ) => {
-  const cameraRef = createRef<MapLibreGL.Camera>();
-  const mapRef = createRef<MapLibreGL.MapView>();
+  const defaultCameraRef = createRef<MapLibreGL.CameraRef>();
+  const mapRef = createRef<MapLibreGL.MapViewRef>();
+  const actualCameraRef = cameraRef || defaultCameraRef;
   const [isLoadedFully, setLoadedFully] = useState(false);
 
   const [bounds, setBounds] = useState<
@@ -108,7 +111,7 @@ const ARMap = (
 
   useImperativeHandle(ref, () => ({
     setCamera: (settings: CameraSettings) => {
-      cameraRef.current?.setCamera(settings);
+      actualCameraRef.current?.setCamera(settings);
     },
     viewRef: mapRef,
   }));
@@ -144,14 +147,14 @@ const ARMap = (
           surfaceView
           onPress={() => onMapPress && onMapPress()}
           onDidFinishRenderingMapFully={() => {
-            onMapLoaded && onMapLoaded(mapRef, cameraRef);
+            onMapLoaded && onMapLoaded(mapRef, actualCameraRef);
             setLoadedFully(true);
           }}
           onRegionDidChange={onCameraChanged}
           zoomEnabled={!!interactionEnabled}
           scrollEnabled={!!interactionEnabled}>
           <MapLibreGL.Camera
-            ref={cameraRef}
+            ref={actualCameraRef}
             bounds={bounds}
             centerCoordinate={center}
             minZoomLevel={8}

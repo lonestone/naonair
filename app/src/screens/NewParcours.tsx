@@ -68,7 +68,7 @@ type DraftParcoursProps = {
 const NewParcoursScreen = () => {
   const { userPosition: initialPosition } = useUserPosition();
   const mapRef = useRef<ARMapHandle>(null);
-  const cameraRef = createRef<MapLibreGL.Camera>();
+  const cameraRef = createRef<MapLibreGL.CameraRef>();
   const [hasStarted, setHasStarted] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -146,7 +146,7 @@ const NewParcoursScreen = () => {
         timeTaken: elapsedTime,
       });
 
-      cameraRef.current.setCamera({
+      cameraRef.current?.setCamera({
         bounds: {
           ne: [bounds.maxLng, bounds.maxLat],
           sw: [bounds.minLng, bounds.minLat],

@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 
 export const POIMarker = ({ poi }: { poi: POI }) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
-  const annotationRef = createRef<MapLibreGL.PointAnnotation>();
+  const annotationRef = createRef<MapLibreGL.PointAnnotationRef>();
 
   const [selected, setSelected] = useState<boolean>(false);
   const [qa] = useQA(poi.geolocation, poi.qa);
