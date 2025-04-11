@@ -17,6 +17,9 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
+# Désactiver l'utilisation de l'IDFA pour Firebase Analytics
+$RNFirebaseAnalyticsWithoutAdIdSupport = true
+
 target 'aireal' do
   config = use_native_modules!
 	

@@ -2,29 +2,18 @@ PODS:
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.76.7)
-  - Firebase/Analytics (11.8.0):
-    - Firebase/Core
-  - Firebase/Core (11.8.0):
+  - Firebase/AnalyticsWithoutAdIdSupport (11.8.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (~> 11.8.0)
+    - FirebaseAnalytics/WithoutAdIdSupport (~> 11.8.0)
   - Firebase/CoreOnly (11.8.0):
     - FirebaseCore (~> 11.8.0)
   - Firebase/Messaging (11.8.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 11.8.0)
-  - FirebaseAnalytics (11.8.0):
-    - FirebaseAnalytics/AdIdSupport (= 11.8.0)
+  - FirebaseAnalytics/WithoutAdIdSupport (11.8.0):
     - FirebaseCore (~> 11.8.0)
     - FirebaseInstallations (~> 11.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
-    - GoogleUtilities/MethodSwizzler (~> 8.0)
-    - GoogleUtilities/Network (~> 8.0)
-    - "GoogleUtilities/NSData+zlib (~> 8.0)"
-    - nanopb (~> 3.30910.0)
-  - FirebaseAnalytics/AdIdSupport (11.8.0):
-    - FirebaseCore (~> 11.8.0)
-    - FirebaseInstallations (~> 11.0)
-    - GoogleAppMeasurement (= 11.8.0)
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 11.8.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
     - GoogleUtilities/MethodSwizzler (~> 8.0)
     - GoogleUtilities/Network (~> 8.0)
@@ -54,20 +43,6 @@ PODS:
     - nanopb (~> 3.30910.0)
   - fmt (9.1.0)
   - glog (0.3.5)
-  - GoogleAppMeasurement (11.8.0):
-    - GoogleAppMeasurement/AdIdSupport (= 11.8.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
-    - GoogleUtilities/MethodSwizzler (~> 8.0)
-    - GoogleUtilities/Network (~> 8.0)
-    - "GoogleUtilities/NSData+zlib (~> 8.0)"
-    - nanopb (~> 3.30910.0)
-  - GoogleAppMeasurement/AdIdSupport (11.8.0):
-    - GoogleAppMeasurement/WithoutAdIdSupport (= 11.8.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
-    - GoogleUtilities/MethodSwizzler (~> 8.0)
-    - GoogleUtilities/Network (~> 8.0)
-    - "GoogleUtilities/NSData+zlib (~> 8.0)"
-    - nanopb (~> 3.30910.0)
   - GoogleAppMeasurement/WithoutAdIdSupport (11.8.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
     - GoogleUtilities/MethodSwizzler (~> 8.0)
@@ -1700,7 +1675,7 @@ PODS:
   - RNCMaskedView (0.1.11):
     - React
   - RNFBAnalytics (21.11.0):
-    - Firebase/Analytics (= 11.8.0)
+    - Firebase/AnalyticsWithoutAdIdSupport (= 11.8.0)
     - React-Core
     - RNFBApp
   - RNFBApp (21.11.0):
@@ -2268,7 +2243,7 @@ SPEC CHECKSUMS:
   ReactCommon: 96a73306a57d4fe87af663351c46104c25805a4c
   RNCAsyncStorage: 5e6785eb5807fea536631c6d69bea10814a4323a
   RNCMaskedView: 4c5ee1c8667d56077246cc6d1977f77393923560
-  RNFBAnalytics: 1dfa1e8dd307e0d75b8fce82e308fd791a6d8163
+  RNFBAnalytics: 88e411addf8127786f779af8dad29c99391ce543
   RNFBApp: b5626640e0f4b4fe5be4f44375df703c0d62ee4b
   RNFBMessaging: 8e38f5ca846497f8a9c91d33f311c00ca52d119c
   RNGestureHandler: 587e384d7d9368e91fea928ed2229547faab987f
@@ -2280,6 +2255,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 069a51fa94a03880d83adc91995fe180e997ce58
 
-PODFILE CHECKSUM: d3e5fa016dd69bc244aa918ecf5259c771851330
+PODFILE CHECKSUM: 90973114e9c1ed831cd4d8dfafbfc27274dda76b
 
 COCOAPODS: 1.14.2
