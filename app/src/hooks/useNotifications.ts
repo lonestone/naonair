@@ -1,5 +1,6 @@
 import messaging from '@react-native-firebase/messaging';
 import { PermissionsAndroid, Platform } from 'react-native';
+import { requestTrackingPermission } from 'react-native-tracking-transparency';
 
 export const useNotifications = () => {
   const getFcmToken = async () => {
@@ -14,20 +15,35 @@ export const useNotifications = () => {
 
   const requestUserPermission = async () => {
     if (Platform.OS === 'ios') {
-      const authStatus = await messaging().requestPermission();
+      // iOS: Demander la permission de tracking (ATT) et les notifications
+      try {
+        // Demande de permission de tracking (ATT)
+        const trackingStatus = await requestTrackingPermission();
+        console.info('Tracking permission status:', trackingStatus);
 
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-      enabled
-        ? console.info('AuthorizationStatus for FCM enabled')
-        : console.warn(
-            'AuthorizationStatus NOT enabled. Check the permissions',
-          );
+        // Demande de permission pour les notifications
+        const authStatus = await messaging().requestPermission();
+        const enabled =
+          authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+          authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+        if (enabled) {
+          console.info('AuthorizationStatus for FCM enabled');
+        } else {
+          console.warn('AuthorizationStatus NOT enabled. Check the permissions');
+        }
+      } catch (error) {
+        console.error('Error requesting iOS permissions:', error);
+      }
     } else if (Platform.OS === 'android') {
-      PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-      );
+      // Android: Seulement la demande de permission pour les notifications
+      try {
+        await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+        );
+      } catch (error) {
+        console.error('Error requesting Android notification permission:', error);
+      }
     }
   };
 
