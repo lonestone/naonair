@@ -1401,6 +1401,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-tracking-transparency (0.1.2):
+    - React
   - React-nativeconfig (0.76.7)
   - React-NativeModulesApple (0.76.7):
     - glog
@@ -1952,6 +1954,7 @@ DEPENDENCIES:
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - "react-native-keep-awake (from `../node_modules/@sayem314/react-native-keep-awake`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-tracking-transparency (from `../node_modules/react-native-tracking-transparency`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -2087,6 +2090,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@sayem314/react-native-keep-awake"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-tracking-transparency:
+    :path: "../node_modules/react-native-tracking-transparency"
   React-nativeconfig:
     :path: "../node_modules/react-native/ReactCommon"
   React-NativeModulesApple:
@@ -2215,6 +2220,7 @@ SPEC CHECKSUMS:
   react-native-geolocation: 385a085313c4c699677a378a6f16520a66304c85
   react-native-keep-awake: 3dce9a2f1bc2ae8699e095e58d7daf982070bc4e
   react-native-safe-area-context: 0dd54fff7079d24a1bbec18990323289600e70e2
+  react-native-tracking-transparency: 15eb319f2b982070eb9831582af27d87badfa624
   React-nativeconfig: c77447a7820ac780b97f121ae6248ac07248835f
   React-NativeModulesApple: 4daf5828d6d817a6541f3ec1b60a4b88fd7fb35f
   React-perflogger: d1149037ac466ad2141d4ae541ca16cb73b2343b
@@ -2255,6 +2261,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 069a51fa94a03880d83adc91995fe180e997ce58
 
-PODFILE CHECKSUM: 90973114e9c1ed831cd4d8dfafbfc27274dda76b
+PODFILE CHECKSUM: 50380807f234d33e6abb60c7a367140dc27aa8d7
 
 COCOAPODS: 1.14.2
