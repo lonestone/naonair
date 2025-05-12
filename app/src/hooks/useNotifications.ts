@@ -1,6 +1,6 @@
 import messaging from '@react-native-firebase/messaging';
 import { PermissionsAndroid, Platform } from 'react-native';
-import { requestTrackingPermission } from 'react-native-tracking-transparency';
+import { requestTrackingPermission, getTrackingStatus } from 'react-native-tracking-transparency';
 
 export const useNotifications = () => {
   const getFcmToken = async () => {
@@ -15,11 +15,16 @@ export const useNotifications = () => {
 
   const requestUserPermission = async () => {
     if (Platform.OS === 'ios') {
-      // iOS: Demander la permission de tracking (ATT) et les notifications
       try {
-        // Demande de permission de tracking (ATT)
-        const trackingStatus = await requestTrackingPermission();
-        console.info('Tracking permission status:', trackingStatus);
+        // Vérifier d'abord le statut actuel
+        const currentStatus = await getTrackingStatus();
+
+        // Si le statut est "not-determined", attendre un court délai avant de demander
+        if (currentStatus === 'not-determined') {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          const trackingStatus = await requestTrackingPermission();
+          console.info('Tracking permission status:', trackingStatus);
+        }
 
         // Demande de permission pour les notifications
         const authStatus = await messaging().requestPermission();
