@@ -36,6 +36,8 @@
 	<key>NSPrivacyTracking</key>
 	<true/>
 	<key>NSPrivacyTrackingDomains</key>
-	<array/>
+	<array>
+		<string>api.naonair.org</string>
+	</array>
 </dict>
 </plist>
