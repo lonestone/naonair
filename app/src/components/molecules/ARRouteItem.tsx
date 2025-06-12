@@ -68,6 +68,8 @@ export default ({ style, parcours }: ARRouteItemProps) => {
 
   const { coureur, marcheur, cycliste, km, denivele, nom } = properties;
 
+  console.log('imageUri', parcours.imageUri);
+
   return (
     <Card
       style={[style, styles.card]}

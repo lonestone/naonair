@@ -26,16 +26,25 @@ export const useParcours = function (filters?: ParcoursCategory[]) {
 
   const handleParcoursResponse = async (p: ARParcours[]) => {
     const retrievedParcours = p.map(
-      p =>
+      localP =>
       ({
-        ...p,
-        imageUri: `snapshot_${slugify(p.properties.nom, {
+        ...localP,
+        imageUri: `snapshot_${slugify(localP.properties.nom, {
           lower: true,
           replacement: '_',
           remove: /[*+~.()'"!:@-]/g,
         })}`,
       } as Parcours),
     );
+
+    console.log('before yay');
+    p.forEach(localParcours => {
+      console.log(localParcours);
+    });
+    console.log('after yay');
+    retrievedParcours.forEach(localParcours => {
+      console.log(localParcours.imageUri);
+    });
 
     setArParcours(retrievedParcours);
     setArParcoursLoading(false);
