@@ -97,7 +97,7 @@ export class AlertsService implements OnApplicationBootstrap {
 
       // Alert do not exist in database. Create it
     } catch (error) {
-      this.logger.error('Error fetching alerts from API');
+      this.logger.error('Error fetching alerts from API', error);
     }
   }
 }

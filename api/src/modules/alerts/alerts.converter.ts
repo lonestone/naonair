@@ -5,8 +5,8 @@ import { AlertDTO } from '@aireal/dtos';
 export class AlertsConverterService {
   public toDTO = (alert: any): AlertDTO => ({
     id: alert.id,
-    startDate: alert.date_heure_debut,
-    endDate: alert.date_heure_fin,
+    startDate: new Date(alert.date_heure_debut),
+    endDate: new Date(alert.date_heure_fin),
     pollutant: alert.polluant,
     seuil: alert.seuil,
     color: alert.couleur,
