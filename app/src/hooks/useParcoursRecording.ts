@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import Geolocation, { GeolocationError, GeolocationResponse } from '@react-native-community/geolocation';
-import { configureGeolocationLibrary } from '@/actions/location';
 
 const MAX_GET_LOCATION_INTERVAL = 500;
 //const DISTANCE_FILTER = 10;
