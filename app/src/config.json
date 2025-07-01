@@ -34,6 +34,7 @@
   },
   "API": {
     "baseUrl": "https://naonair-api-staging.onrender.com/",
+    "localBbaseUrl": "http://192.168.1.41:3001/",
     "pollenURL": "https://www.alertepollens.org/api/gardens/NA44/",
     "impactCO2Url": "https://impactco2.fr/api/v1"
   }

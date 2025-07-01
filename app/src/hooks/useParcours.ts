@@ -37,15 +37,6 @@ export const useParcours = function (filters?: ParcoursCategory[]) {
       } as Parcours),
     );
 
-    console.log('before yay');
-    p.forEach(localParcours => {
-      console.log(localParcours);
-    });
-    console.log('after yay');
-    retrievedParcours.forEach(localParcours => {
-      console.log(localParcours.imageUri);
-    });
-
     setArParcours(retrievedParcours);
     setArParcoursLoading(false);
   };
