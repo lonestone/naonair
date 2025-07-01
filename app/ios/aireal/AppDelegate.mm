@@ -1,8 +1,8 @@
 #import "RNFBMessagingModule.h"
 #import "AppDelegate.h"
 #import <Firebase.h>
+#import <FirebaseAnalytics/FIRAnalytics.h>
 #import <React/RCTBundleURLProvider.h>
-
 
 @implementation AppDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -14,9 +14,16 @@
   self.initialProps = [RNFBMessagingModule addCustomPropsToUserProps:nil withLaunchOptions:launchOptions];
   [FIRApp configure];
   
+  [FIRAnalytics setAnalyticsCollectionEnabled:YES];
+  
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
+{
+  return [self bundleURL];
+}
+ 
+- (NSURL *)bundleURL
 {
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];

@@ -1,31 +1,64 @@
-import { useEffect, useState } from 'react';
-import Geolocation, {
-  GeoCoordinates,
-  GeoPosition,
-} from 'react-native-geolocation-service';
+import { useEffect, useMemo, useState } from 'react';
+import Geolocation, { GeolocationError, GeolocationResponse } from '@react-native-community/geolocation';
 
 const MAX_GET_LOCATION_INTERVAL = 500;
-const DISTANCE_FILTER = 10;
+//const DISTANCE_FILTER = 10;
+const DISTANCE_FILTER = 1;
 
 export const useParcoursRecording = () => {
-  const [isRecording, setIsRecording] = useState(true);
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const [pathPoints, setPathPoints] = useState<GeoCoordinates[]>([]);
+  const [watchId, setWatchId] = useState<number | null>(null);
+  const isRecording = useMemo(() => watchId !== null, [watchId]);
+  const [pathPoints, setPathPoints] = useState<any[]>([]);
+
+  const [ticks, setTicks] = useState(0);
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [previousElapsedTime, setPreviousElapsedTime] = useState(0);
+
+  //console.log('useParcoursRecording');
+
+  // 1hz clock, use it as a dependency on siblings hooks
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setTicks(ticks + 1);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [ticks]);
+
+  const recentElapsedTime = useMemo(() => {
+    if (startTime) {
+      return Math.floor((Date.now() - startTime) / 1000);
+    }
+    return 0;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ticks, startTime]);
+
+  const elapsedTime = useMemo(() => {
+    return recentElapsedTime + previousElapsedTime;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ticks, recentElapsedTime, previousElapsedTime]);
 
   const startRecording = () => {
-    let pP = [...pathPoints];
+    console.log('startRecording');
 
-    Geolocation.watchPosition(
-      (position: GeoPosition) => {
+    setStartTime((prev) => prev ?? Date.now());
+
+    if (watchId) {
+      Geolocation.clearWatch(watchId);
+    }
+
+    const localWatchId = Geolocation.watchPosition(
+      (position: GeolocationResponse) => {
+        console.log('position', position);
         if (position.coords.latitude === 0 && position.coords.longitude === 0) {
           return;
         }
 
-        const all = [...pP, position.coords];
-        setPathPoints(all);
-        pP = all;
+        setPathPoints((points) => [...points, position.coords]);
       },
-      error => {
+      (error: GeolocationError) => {
         console.log(error.code, error.message);
       },
       {
@@ -33,42 +66,32 @@ export const useParcoursRecording = () => {
         interval: MAX_GET_LOCATION_INTERVAL,
         fastestInterval: MAX_GET_LOCATION_INTERVAL,
         distanceFilter: DISTANCE_FILTER,
-        accuracy: {
-          android: 'high',
-          ios: 'best',
-        },
       },
     );
+    setWatchId(localWatchId);
   };
-
-  useEffect(() => {
-    if (isRecording) {
-      startRecording();
-    } else {
-      Geolocation.stopObserving();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRecording]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (isRecording) {
-        setElapsedTime(elapsedTime + 1);
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [isRecording, elapsedTime]);
 
   const stopRecording = () => {
-    Geolocation.stopObserving();
-    setIsRecording(false);
+    console.log('stopRecording');
+    if (watchId !== null) {
+      Geolocation.clearWatch(watchId);
+      setWatchId(null);
+      setPreviousElapsedTime(elapsedTime);
+      setStartTime(null);
+      //configureGeolocationLibrary(false);
+    }
   };
+
+  useEffect(() => {
+    startRecording();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     isRecording,
     elapsedTime,
     pathPoints,
+    startRecording,
     stopRecording,
-    setIsRecording,
   };
 };

@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 import { TextInput } from 'react-native-paper';
 import { geocoding, getAll, POI, reverse } from '../../actions/poi';
 import { theme } from '@theme';

@@ -1,5 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { createRef, useCallback, useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
+
+import MapLibreGL from '@maplibre/maplibre-react-native';
 import { Portal, Surface } from 'react-native-paper';
 import ARMap, { ARMapHandle } from '@atoms/ARMap';
 import { BBox, Position } from '@turf/turf';
@@ -18,6 +20,7 @@ import ARPathMarker, { ARPathMarkerType } from '@atoms/ARPathMarker';
 import ARFullScreenLoading from '@molecules/ARFullScreenLoading';
 import { useCustomParcours } from '@hooks/useCustomParcours';
 import { useParcours } from '@hooks/useParcours';
+import { checkPermission, configureGeolocationLibrary } from '@/actions/location';
 
 const styles = StyleSheet.create({
   container: {
@@ -65,6 +68,7 @@ type DraftParcoursProps = {
 const NewParcoursScreen = () => {
   const { userPosition: initialPosition } = useUserPosition();
   const mapRef = useRef<ARMapHandle>(null);
+  const cameraRef = createRef<MapLibreGL.CameraRef>();
   const [hasStarted, setHasStarted] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -79,6 +83,17 @@ const NewParcoursScreen = () => {
   );
 
   useEffect(() => {
+    (async () => {
+      try {
+        console.log('useEffect mount');
+        await checkPermission();
+      } catch (error) {
+        console.error('Error checking permission', error);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
     if (initialPosition) {
       setPoints([initialPosition]);
     }
@@ -90,7 +105,13 @@ const NewParcoursScreen = () => {
     } else {
       navigation.goBack();
     }
+    configureGeolocationLibrary(false);
   }, [hasStarted, navigation]);
+
+  const onStart = () => {
+    configureGeolocationLibrary(true);
+    setHasStarted(true);
+  };
 
   const onSave = async (
     name: string,
@@ -98,37 +119,48 @@ const NewParcoursScreen = () => {
     totalDistance: number,
     averageSpeed: number,
   ) => {
-    setLoading(true);
-    setHasStarted(false);
-    const bounds = getBounds(
-      points.map(([longitude, latitude]) => ({ latitude, longitude })),
-    );
+    try {
+      setLoading(true);
+      setHasStarted(false);
+      configureGeolocationLibrary(false);
 
-    if (!bounds || !mapRef.current?.viewRef.current) {
-      return;
+      if (points.length === 0) {
+        throw new Error('No points');
+      }
+      const bounds = getBounds(
+        points.map(([longitude, latitude]) => ({ latitude, longitude })),
+      );
+
+      if (!bounds || !mapRef.current?.viewRef.current) {
+        throw new Error('No bounds or map ref');
+      }
+
+      setDisplayCurrentLocation(false);
+
+      setDraftParcours({
+        name,
+        points,
+        bbox: [bounds.minLng, bounds.minLat, bounds.maxLng, bounds.maxLat],
+        distanceTotal: totalDistance,
+        avgSpeed: averageSpeed,
+        timeTaken: elapsedTime,
+      });
+
+      cameraRef.current?.setCamera({
+        bounds: {
+          ne: [bounds.maxLng, bounds.maxLat],
+          sw: [bounds.minLng, bounds.minLat],
+          paddingLeft: 30,
+          paddingRight: 30,
+          paddingBottom: 50,
+          paddingTop: 50,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
     }
-
-    setDisplayCurrentLocation(false);
-
-    setDraftParcours({
-      name,
-      points,
-      bbox: [bounds.minLng, bounds.minLat, bounds.maxLng, bounds.maxLat],
-      distanceTotal: totalDistance,
-      avgSpeed: averageSpeed,
-      timeTaken: elapsedTime,
-    });
-
-    mapRef.current.setCamera({
-      bounds: {
-        ne: [bounds.maxLng, bounds.maxLat],
-        sw: [bounds.minLng, bounds.minLat],
-        paddingLeft: 30,
-        paddingRight: 30,
-        paddingBottom: 50,
-        paddingTop: 50,
-      },
-    });
   };
 
   const onCameraChanged = async () => {
@@ -153,6 +185,7 @@ const NewParcoursScreen = () => {
       <ARFloatingBackButton onPress={handleBack} />
       <ARMap
         ref={mapRef}
+        cameraRef={cameraRef}
         userLocationVisible={displayCurrentLocation}
         onCameraChanged={onCameraChanged}
         interactionEnabled={displayCurrentLocation}
@@ -195,7 +228,7 @@ const NewParcoursScreen = () => {
           <Surface style={styles.listContainer}>
             <SafeAreaView edges={['bottom', 'left', 'right']}>
               <ARParcoursSteps
-                onStarted={() => setHasStarted(true)}
+                onStarted={onStart}
                 onUpdate={setPoints}
                 onSave={onSave}
               />

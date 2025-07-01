@@ -63,7 +63,15 @@ export class RoutingService {
     const res = await this.getValuesFromCoordinates(coords);
     const values = res.map((v) => v.value);
     const mostCommonValue = getMostCommonValue(values);
-    const val = Math.round((mostCommonValue * 6) / 179);
+    // Unsure if that's correct: Somewhat works near 1, but not above (yellow vs green mismatch :/)
+    /**
+     * Sample: 46, 48 aka medium green (nowadays Q1)
+     * Values goes from 1 to 255. Actual max value is 179.
+     * Ex: 46 => 46/179 => 0.25 => * 6 => 1.5 => Math.round(1.5) => 2
+     * See naonair_scale.png within project (purple missing btw)
+     */
+    const val = Math.round((mostCommonValue / 179) * 6) + 1;
+    //this.logger.log('getCustomRouteQuality', mostCommonValue, val);
 
     return Math.max(val, 1);
   }
@@ -80,8 +88,8 @@ export class RoutingService {
     );
   }
 
-  // Triggers every hour on minute 15
-  @Cron('15 * * * *')
+  // Triggers every hour on minute 10
+  @Cron('10 * * * *')
   async ensureFreshGeoTIFF() {
     this.logger.log('Downloading new GeoTIFF file...');
     if (!fastReload) {
@@ -122,8 +130,8 @@ export class RoutingService {
     return forecast;
   }
 
-  // Triggers every hour on minute 15
-  @Cron('15 * * * *')
+  // Triggers every hour on minute 10
+  @Cron('10 * * * *')
   async ensureFreshPrevGeoTIFF() {
     this.logger.log('Downloading new prevision GeoTIFF file...');
     if (!fastReload) {

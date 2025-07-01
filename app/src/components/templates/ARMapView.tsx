@@ -1,11 +1,11 @@
 /// <reference path="../../custom.d.ts" />
 
-import MapboxGL from '@maplibre/maplibre-react-native';
+import MapLibreGL from '@maplibre/maplibre-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Position } from '@turf/turf';
 import React, { createRef, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 import { SvgXml } from 'react-native-svg';
 import { POI, poiIcons } from '../../actions/poi';
 import markerBackground from '@assets/marker-background.svg';
@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
 
 export const POIMarker = ({ poi }: { poi: POI }) => {
   const navigation = useNavigation<StackNavigationScreenProp>();
-  const annotationRef = createRef<MapboxGL.PointAnnotation>();
+  const annotationRef = createRef<MapLibreGL.PointAnnotationRef>();
 
   const [selected, setSelected] = useState<boolean>(false);
   const [qa] = useQA(poi.geolocation, poi.qa);
 
   return (
-    <MapboxGL.PointAnnotation
+    <MapLibreGL.PointAnnotation
       ref={annotationRef}
       coordinate={poi.geolocation}
       anchor={{ x: 0.5, y: 1 }}
@@ -95,7 +95,7 @@ export const POIMarker = ({ poi }: { poi: POI }) => {
           xml={poiIcons[poi.category] || null}
         />
       </View>
-    </MapboxGL.PointAnnotation>
+    </MapLibreGL.PointAnnotation>
   );
 };
 

@@ -52,7 +52,7 @@ export default ({ visible }: ARUserLocationAlertProps) => {
   // const watch = useCallback(async () => {
   //   try {
   //     if (Platform.OS === 'android') {
-  //       await checkAndroidPermission();
+  //       await checkAndroidPermissionAndGetLocation();
   //     } else {
   //       setUserLocationEnabled(await checkIOSPermission());
   //     }

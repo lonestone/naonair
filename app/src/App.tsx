@@ -18,6 +18,8 @@ import { NotificationsProvider } from './contexts/notifications.context';
 import { useNotifications } from './hooks/useNotifications';
 import Screens from './screens/NavigatorScreen';
 import { theme } from './theme';
+import { configureGeolocationLibrary } from './actions/location';
+
 
 if (!__DEV__) {
   Sentry.init({
@@ -29,6 +31,10 @@ LogBox.ignoreAllLogs();
 
 const App = () => {
   const { notificationListener, requestUserPermission } = useNotifications();
+  useEffect(() => {
+    configureGeolocationLibrary();
+  }, []);
+
   useEffect(() => {
     requestUserPermission();
     notificationListener();

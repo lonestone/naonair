@@ -44,7 +44,14 @@ export const useQAParcours = (parcours: ARParcours) => {
   useLayoutEffect(() => {
     getQAFromParcours(
       parcours.properties.id || parcours.properties.id_parcours,
-    ).then(setQA);
+    )
+      .then((value) => {
+        console.info('getQAFromParcours', value);
+        setQA(value);
+      })
+      .catch(e => {
+        console.error('getQAFromParcours', e);
+      });
   }, [parcours.properties.id, parcours.properties.id_parcours, setQA]);
 
   return qa;
@@ -54,7 +61,14 @@ export const useQACustomParcours = (points: [number, number][]) => {
   const [qa, setQA] = useState<number>();
 
   useLayoutEffect(() => {
-    getQAFromCustomParcours(points).then(setQA);
+    getQAFromCustomParcours(points)
+      .then((value) => {
+        console.info('getQAFromCustomParcours', value);
+        setQA(value);
+      })
+      .catch(e => {
+        console.error('getQAFromCustomParcours',e);
+      });
   }, [points, setQA]);
 
   return qa;

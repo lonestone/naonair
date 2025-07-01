@@ -41,11 +41,7 @@ export const NotificationsProvider = ({
   const [fcmToken, setFcmToken] = useState<string | null>();
   const { getFcmToken } = useNotifications();
 
-  useEffect(() => {
-    getToken();
-  }, []);
-
-  const getToken = async () => {
+  const getToken = useCallback(async () => {
     try {
       const token = await getFcmToken();
       setFcmToken(token);
@@ -54,7 +50,11 @@ export const NotificationsProvider = ({
       console.error(error);
       return '';
     }
-  };
+  }, [getFcmToken]);
+
+  useEffect(() => {
+    getToken();
+  }, [getToken]);
 
   const setAllPollenNotificationsToTrue = useCallback(async () => {
     const _token = fcmToken || (await getToken());
@@ -72,7 +72,7 @@ export const NotificationsProvider = ({
     await updateAlertsNotifications(_token, true);
 
     return true;
-  }, [fcmToken]);
+  }, [fcmToken, getToken]);
 
   const getNotificationsStates = useCallback(async () => {
     const _token = fcmToken || (await getToken());
@@ -119,7 +119,7 @@ export const NotificationsProvider = ({
     await save(localPollenNotificationsState);
 
     return localPollenNotificationsState.filter(item => item.isRead === false);
-  }, []);
+  }, [fcmToken, getToken]);
 
   const refreshNotifications = useCallback(() => {
     getNotificationsStates().then(subscribedActivePollen => {
@@ -132,7 +132,7 @@ export const NotificationsProvider = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fcmToken, getNotificationsStates]);
 
-  const readNotifications = async () => {
+  const readNotifications = useCallback(async () => {
     let localPollenNotificationsState = await getLocalPollenNotificationState();
     localPollenNotificationsState = localPollenNotificationsState.map(item => {
       return {
@@ -142,7 +142,7 @@ export const NotificationsProvider = ({
     });
     await save(localPollenNotificationsState);
     refreshNotifications();
-  };
+  }, [refreshNotifications]);
 
   return (
     <NotificationsContext.Provider

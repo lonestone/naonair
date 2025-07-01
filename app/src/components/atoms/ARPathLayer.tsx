@@ -1,6 +1,6 @@
-import MapboxGL, { LineLayerStyle } from '@maplibre/maplibre-react-native';
+import MapLibreGL, { LineLayerStyle } from '@maplibre/maplibre-react-native';
 import { Feature, Geometry } from 'geojson';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ARParcours } from '../../actions/parcours';
 import { ARPath } from '../../actions/routes';
 import { theme } from '@theme';
@@ -28,7 +28,7 @@ export default ({ path, id, isSelected }: ARPathLayerProp) => {
   };
 
   return (
-    <MapboxGL.ShapeSource
+    <MapLibreGL.ShapeSource
       id={`source-${id}`}
       lineMetrics
       shape={
@@ -37,7 +37,7 @@ export default ({ path, id, isSelected }: ARPathLayerProp) => {
           geometry: path.points || path.geometry,
         } as Feature<Geometry>
       }>
-      <MapboxGL.LineLayer id={`route-${id}`} style={line()} />
-    </MapboxGL.ShapeSource>
+      <MapLibreGL.LineLayer id={`route-${id}`} style={line()} />
+    </MapLibreGL.ShapeSource>
   );
 };

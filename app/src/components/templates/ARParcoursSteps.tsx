@@ -53,6 +53,7 @@ export default ({
     (name: string) => {
       setStep(Steps.INITIAL);
       onSave(name, elapsedTime, totalDistance, averageSpeed);
+
     },
     [onSave, elapsedTime, totalDistance, averageSpeed],
   );

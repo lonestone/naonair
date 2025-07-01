@@ -4,7 +4,7 @@ import { BBox } from '@turf/turf';
 import { Position } from 'geojson';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 import {
   ActivityIndicator,
   Headline,

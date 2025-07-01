@@ -1,4 +1,4 @@
-import MapboxGL, {
+import MapLibreGL, {
   CameraPadding,
   CameraSettings,
   RasterSourceProps,
@@ -11,6 +11,7 @@ import React, {
   RefObject,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useState,
 } from 'react';
 import { Platform, StyleSheet, View, ViewProps } from 'react-native';
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   map: { flex: 1 },
 });
 
-const styleJSON = JSON.stringify(require('../../assets/db/mapViewStyle.json'));
+const styleJSON = require('../../assets/db/mapViewStyle.json');
 
 const defaultSettingsCamera: CameraSettings = {
   zoomLevel: 14,
@@ -51,27 +52,25 @@ export interface ARMapProps extends ViewProps {
   isGPS?: boolean;
   cameraSettings?: CameraSettings;
   animationMode?: 'flyTo' | 'easeTo' | 'linearTo' | 'moveTo';
-  onUserLocationChanged?: (location: MapboxGL.Location) => void;
+  onUserLocationChanged?: (location: MapLibreGL.Location) => void;
   onMapLoaded?: (
-    mapRef: RefObject<MapboxGL.MapView>,
-    cameraRef: RefObject<MapboxGL.Camera>,
+    mapRef: RefObject<MapLibreGL.MapViewRef>,
+    cameraRef: RefObject<MapLibreGL.CameraRef>,
   ) => void;
   onCameraChanged?: () => void;
+  cameraRef?: RefObject<MapLibreGL.CameraRef>;
 }
 
 export interface ARMapHandle {
   setCamera: (settings: CameraSettings) => void;
-  viewRef: RefObject<MapboxGL.MapView>;
+  viewRef: RefObject<MapLibreGL.MapViewRef>;
 }
-
-// if we don't call this methods, MapboxGL crash on Android
-MapboxGL.setAccessToken('');
 
 if (Platform.OS === 'android') {
-  MapboxGL.requestAndroidLocationPermissions();
+  MapLibreGL.requestAndroidLocationPermissions();
 }
 
-MapboxGL.offlineManager.clearAmbientCache();
+MapLibreGL.OfflineManager.clearAmbientCache();
 
 const ARMap = (
   {
@@ -89,11 +88,13 @@ const ARMap = (
     onMapLoaded,
     onCameraChanged,
     style,
+    cameraRef,
   }: ARMapProps,
   ref: Ref<ARMapHandle>,
 ) => {
-  const cameraRef = createRef<MapboxGL.Camera>();
-  const mapRef = createRef<MapboxGL.MapView>();
+  const defaultCameraRef = createRef<MapLibreGL.CameraRef>();
+  const mapRef = createRef<MapLibreGL.MapViewRef>();
+  const actualCameraRef = cameraRef || defaultCameraRef;
   const [isLoadedFully, setLoadedFully] = useState(false);
 
   const [bounds, setBounds] = useState<
@@ -110,21 +111,34 @@ const ARMap = (
 
   useImperativeHandle(ref, () => ({
     setCamera: (settings: CameraSettings) => {
-      cameraRef.current?.setCamera(settings);
+      actualCameraRef.current?.setCamera(settings);
     },
     viewRef: mapRef,
   }));
 
   const insets = useSafeAreaInsets();
 
+  const mergedCameraSettings = useMemo(() => {
+    let result = {
+      ...defaultSettingsCamera,
+      ...cameraSettings,
+    };
+    if (bounds) {
+      // "Create a camera stop with bounds and centerCoordinate – this is not possible."
+      result.bounds = bounds;
+      result.centerCoordinate = undefined;
+    }
+    return result;
+  }, [bounds, cameraSettings]);
+
   return (
     <>
       <View style={StyleSheet.flatten([styles.container, style])}>
-        <MapboxGL.MapView
-          // styleURL="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json" // leave it for now if we need to use this style
-          // styleURL="https://geoserveis.icgc.cat/contextmaps/positron.json" // same as `styleJSON`, but I prefer to keep the URL to prevent finding it if we decided to use it
+        <MapLibreGL.MapView
+          // mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json" // leave it for now if we need to use this style
+          // mapStyle="https://geoserveis.icgc.cat/contextmaps/positron.json" // same as `styleJSON`, but I prefer to keep the URL to prevent finding it if we decided to use it
           ref={mapRef}
-          styleJSON={styleJSON}
+          mapStyle={styleJSON}
           style={styles.map}
           logoEnabled={false}
           attributionEnabled={false}
@@ -133,14 +147,14 @@ const ARMap = (
           surfaceView
           onPress={() => onMapPress && onMapPress()}
           onDidFinishRenderingMapFully={() => {
-            onMapLoaded && onMapLoaded(mapRef, cameraRef);
+            onMapLoaded && onMapLoaded(mapRef, actualCameraRef);
             setLoadedFully(true);
           }}
           onRegionDidChange={onCameraChanged}
           zoomEnabled={!!interactionEnabled}
           scrollEnabled={!!interactionEnabled}>
-          <MapboxGL.Camera
-            ref={cameraRef}
+          <MapLibreGL.Camera
+            ref={actualCameraRef}
             bounds={bounds}
             centerCoordinate={center}
             minZoomLevel={8}
@@ -151,14 +165,10 @@ const ARMap = (
               paddingTop: 25 + insets.top,
             }}
             animationMode={animationMode || 'moveTo'}
-            defaultSettings={{
-              ...defaultSettingsCamera,
-              ...cameraSettings,
-              bounds,
-            }}
+            defaultSettings={mergedCameraSettings}
           />
           {userLocationVisible && (
-            <MapboxGL.UserLocation
+            <MapLibreGL.UserLocation
               visible={userLocationVisible}
               renderMode="native"
               androidRenderMode={isGPS ? 'gps' : 'normal'}
@@ -168,17 +178,17 @@ const ARMap = (
             />
           )}
           {heatmapVisible && (
-            <MapboxGL.RasterSource {...rasterSourceProps}>
-              <MapboxGL.RasterLayer
+            <MapLibreGL.RasterSource {...rasterSourceProps}>
+              <MapLibreGL.RasterLayer
                 id="airreel_layer"
                 aboveLayerID="place_country_major" // used to force the layer to draw below roads and buildings
                 sourceID="aireel_source"
                 style={{ rasterOpacity: 0.6 }}
               />
-            </MapboxGL.RasterSource>
+            </MapLibreGL.RasterSource>
           )}
           {(isLoadedFully && children) || null}
-        </MapboxGL.MapView>
+        </MapLibreGL.MapView>
       </View>
     </>
   );
