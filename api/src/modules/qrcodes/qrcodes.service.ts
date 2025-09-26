@@ -8,7 +8,7 @@ export interface QRCodeOptions {
 
 @Injectable()
 export class QRCodesService {
-  private readonly baseUrl = 'https://naonair.app/poi/';
+  private readonly baseUrl = 'https://naonair-api-staging.onrender.com/poi/';
 
   async generateQRCode(poiId: number, options: QRCodeOptions): Promise<Buffer | string> {
     const url = `${this.baseUrl}${poiId}`;
