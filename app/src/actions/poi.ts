@@ -177,7 +177,7 @@ export const getAll = async (params?: {
   return results;
 };
 
-export const getOne = async (poi_id: number) => {
+export const getOne = async (poi_id: number): Promise<POI | null> => {
   const URL = buildGeoserverUrl('ows', {
     REQUEST: 'GetFeature',
     VERSION: '1.0.0',
@@ -189,13 +189,54 @@ export const getOne = async (poi_id: number) => {
     },
   });
 
-  const response = await fetch(URL);
-  const json = (await response.json()) as FeatureCollection<
-    Point,
-    POIFeatureProperties
-  >;
+  try {
+    const response = await fetch(URL);
+    const json = (await response.json()) as FeatureCollection<
+      Point,
+      POIFeatureProperties
+    >;
 
-  return json.features[0].properties;
+    if (!json.features || json.features.length === 0) {
+      return null;
+    }
+
+    const feature = json.features[0];
+    const { properties, geometry } = feature;
+    const { type, id, adresse, lieu, indice } = properties;
+
+    const getCategory = (): POICategory => {
+      switch (type) {
+        case 'Parc':
+          return POICategory.PARK;
+        case 'Sport':
+          return POICategory.SPORT;
+        case 'Culture':
+          return POICategory.CULTURE;
+        case 'Marché':
+          return POICategory.MARKET;
+        case 'favoris':
+          return POICategory.FAVORITE;
+        case 'history':
+          return POICategory.HISTORY;
+        default:
+          return POICategory.ALL;
+      }
+    };
+
+    return {
+      ...properties,
+      id,
+      poi_id,
+      category: getCategory(),
+      name: lieu,
+      address: adresse,
+      geolocation: geometry.coordinates,
+      qa: QAValues[indice],
+    };
+  } catch (error) {
+    console.error('Error fetching POI by ID:', error);
+    return null;
+  }
 };
 
 export const reverse = async ([lon, lat]: Position): Promise<

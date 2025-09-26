@@ -19,6 +19,21 @@ import { useNotifications } from './hooks/useNotifications';
 import Screens from './screens/NavigatorScreen';
 import { theme } from './theme';
 import { configureGeolocationLibrary } from './actions/location';
+import { StackParamList } from './types/routes';
+
+const linking = {
+  prefixes: ['https://naonair.app'],
+  config: {
+    screens: {
+      Home: {
+        screens: {
+          Carte: 'map',
+        },
+      },
+      POIDetails: 'poi/:poiId',
+    },
+  },
+};
 
 
 if (!__DEV__) {
@@ -47,7 +62,7 @@ const App = () => {
           barStyle="dark-content"
           backgroundColor={theme.colors.white}
         />
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
           <Screens />
         </NavigationContainer>
       </NotificationsProvider>

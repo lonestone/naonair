@@ -10,7 +10,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { Platform, View } from 'react-native';
+import { Platform, View, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SvgXml } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -28,6 +28,7 @@ import ARListFavorites from '@templates/ARListFavorites';
 import ARListNotifications from '@templates/ARListNotifications';
 import ARPlaceFormLayout from '@templates/ARPlaceFormLayout';
 import ARPOIDetails from '@templates/ARPOIDetails';
+import { getOne } from '../actions/poi';
 import ARRouteDetail from '@templates/ARRouteDetail';
 import { NotificationsContext } from '@contexts/notifications.context';
 import { SnackbarProvider } from '@contexts/snackbar.context';
@@ -127,6 +128,42 @@ const options: StackNavigationOptions = {
   ),
 };
 
+const POIDetailsWrapper: React.FC<{ route: any }> = ({ route }) => {
+  const [poi, setPoi] = useState<POI | null>(null);
+  const [loading, setLoading] = useState(false);
+  const { poi: directPoi, poiId } = route.params || {};
+
+  useEffect(() => {
+    if (directPoi) {
+      setPoi(directPoi);
+    } else if (poiId) {
+      setLoading(true);
+      getOne(parseInt(poiId))
+        .then((fetchedPoi) => {
+          if (fetchedPoi) {
+            setPoi(fetchedPoi);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching POI:', error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [directPoi, poiId]);
+
+  if (loading) {
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Loading...</Text></View>;
+  }
+
+  if (!poi) {
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>POI not found</Text></View>;
+  }
+
+  return <ARPOIDetails route={{ params: { poi } }} />;
+};
+
 export default () => {
   const [isAppFirstLaunched, setIsAppFirstLaunched] = useState<boolean>(true);
   const [isCGUAccepted, setIsCGUAccepted] = useState<string>();
@@ -201,7 +238,7 @@ export default () => {
 
         <Stack.Screen
           name="POIDetails"
-          component={ARPOIDetails}
+          component={POIDetailsWrapper}
           options={{ headerShown: false }}
         />
 
