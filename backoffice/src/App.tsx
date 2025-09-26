@@ -4,6 +4,7 @@ import ARHeader from "./components/molecules/ARHeader";
 import ARSnackbarAlert from "./components/molecules/ARSnackbarAlert";
 import LoginTemplate from "./components/templates/LoginTemplate";
 import { NewsTemplate } from "./components/templates/NewsTemplate";
+import { QRCodeTemplate } from "./components/templates/QRCodeTemplate";
 import { AuthProvider } from "./contexts/auth.context";
 import { SnackbarProvider } from "./contexts/snackbar.context";
 import Layout from "./router/layout/Layout";
@@ -23,6 +24,9 @@ function App() {
             </Route>
             <Route element={<PrivateLayout />} path={ARRoutes.Home}>
               <Route path={ARRoutes.Home} element={<NewsTemplate />} />
+            </Route>
+            <Route element={<PrivateLayout />} path={ARRoutes.QRCodes}>
+              <Route path={ARRoutes.QRCodes} element={<QRCodeTemplate />} />
             </Route>
           </Routes>
         </Container>

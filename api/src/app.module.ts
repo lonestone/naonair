@@ -16,6 +16,7 @@ import { NewsModule } from './modules/news/news.module';
 import { OrmModule } from './modules/orm/orm.module';
 import { PollenModule } from './modules/pollen/pollen.module';
 import { PollenNotificationModule } from './modules/pollenNotification/pollenNotification.module';
+import { QRCodesModule } from './modules/qrcodes/qrcodes.module';
 import { RoutingModule } from './modules/routing/routing.module';
 import { SentryModule } from './modules/sentry/sentry.module';
 
@@ -40,6 +41,7 @@ import { SentryModule } from './modules/sentry/sentry.module';
     FirebaseModule,
     PollenNotificationModule,
     AlertNotificationsModule,
+    QRCodesModule,
   ],
   controllers: [AppController],
 })
