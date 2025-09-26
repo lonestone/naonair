@@ -22,7 +22,7 @@ import { configureGeolocationLibrary } from './actions/location';
 import { StackParamList } from './types/routes';
 
 const linking = {
-  prefixes: ['https://naonair.app'],
+  prefixes: ['https://naonair-api-staging.onrender.com'],
   config: {
     screens: {
       Home: {

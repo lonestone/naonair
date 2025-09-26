@@ -124,7 +124,7 @@
 	</array>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:naonair.app</string>
+		<string>applinks:naonair-api-staging.onrender.com</string>
 	</array>
 </dict>
 </plist>
