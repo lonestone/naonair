@@ -10,8 +10,8 @@ Ce répertoire contient les fichiers de vérification pour les Universal Links.
 ## Déploiement
 
 Ces fichiers doivent être accessibles à :
-- `https://naonair-api-staging.onrender.com/.well-known/apple-app-site-association`
-- `https://naonair-api-staging.onrender.com/.well-known/assetlinks.json`
+- `https://app.naonair.org/.well-known/apple-app-site-association`
+- `https://app.naonair.org/.well-known/assetlinks.json`
 
 ## Configuration
 
@@ -28,4 +28,4 @@ Ces fichiers doivent être accessibles à :
 
 Après déploiement, tester avec :
 - **iOS**: https://search.developer.apple.com/appsearch-validation-tool/
-- **Android**: https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://naonair-api-staging.onrender.com&relation=delegate_permission/common.handle_all_urls
+- **Android**: https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://app.naonair.org&relation=delegate_permission/common.handle_all_urls

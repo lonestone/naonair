@@ -1,11 +1,11 @@
-import { Controller, Get, Param, Req, Res } from '@nestjs/common';
+import { Controller, Get, Param, Query, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 @Controller()
 export class PoiRedirectController {
-  @Get('poi/:id')
+  @Get('poi')
   async redirectToPoi(
-    @Param('id') poiId: string,
+    @Query('id') poiId: string,
     @Req() req: Request,
     @Res() res: Response,
   ) {
@@ -159,8 +159,8 @@ export class PoiRedirectController {
     }
   }
 
-  @Get('poi/:id/unavailable')
-  unavailablePoi(@Param('id') poiId: string, @Res() res: Response) {
+  @Get('poi/unavailable')
+  unavailablePoi(@Query('id') poiId: string, @Res() res: Response) {
     const htmlContent = `
 <!DOCTYPE html>
 <html>
