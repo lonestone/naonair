@@ -33,11 +33,9 @@ const linking = {
         path: 'poi',
         parse: {
           poiId: (url: string) => {
-            console.log('🔗 Universal Link - URL reçue par React Navigation:', url);
             // Extraire l'ID depuis l'URL complète
             const match = url.match(/[?&]id=(\d+)/);
             const poiId = match ? match[1] : null;
-            console.log('🔗 POI ID extrait par React Navigation:', poiId);
             return poiId;
           },
         },

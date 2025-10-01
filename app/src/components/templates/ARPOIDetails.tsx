@@ -73,16 +73,9 @@ const ARPOIDetails = ({ poi: poiProp }: ARPOIDetailsProps = {}) => {
   const poi = poiProp || routePoi;
   const [favorited, setFavorited] = useState(poi?.favorited || false);
 
-  console.log('🔗 ARPOIDetails - POI prop:', poiProp);
-  console.log('🔗 ARPOIDetails - POI route:', routePoi);
-  console.log('🔗 ARPOIDetails - POI final:', poi);
-  console.log('🔗 ARPOIDetails - POI existe:', !!poi);
-  console.log('🔗 ARPOIDetails - POI name:', poi?.name);
-
   // Mettre à jour favorited quand poi change
   React.useEffect(() => {
     if (poi) {
-      console.log('🔗 ARPOIDetails - Mise à jour favorited avec POI:', poi.name);
       setFavorited(poi.favorited || false);
     }
   }, [poi]);
@@ -143,7 +136,6 @@ const ARPOIDetails = ({ poi: poiProp }: ARPOIDetailsProps = {}) => {
 
   // Si pas de POI, afficher un message de chargement
   if (!poi) {
-    console.log('🔗 ARPOIDetails - Pas de POI, affichage du message de chargement');
     return (
       <>
         <ARCommonHeader

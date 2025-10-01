@@ -134,41 +134,24 @@ const POIDetailsWrapper: React.FC<{ route: any }> = ({ route }) => {
   const { poi: directPoi, poiId, id } = route.params || {};
   const actualPoiId = poiId || id; // Utiliser poiId ou id selon ce qui est disponible
 
-  console.log('🔗 POIDetailsWrapper - Route params:', route.params);
-  console.log('🔗 POIDetailsWrapper - poiId:', poiId);
-  console.log('🔗 POIDetailsWrapper - id:', id);
-  console.log('🔗 POIDetailsWrapper - actualPoiId:', actualPoiId);
-
   useEffect(() => {
     if (directPoi) {
-      console.log('🔗 Utilisation du POI direct:', directPoi);
       setPoi(directPoi);
     } else if (actualPoiId) {
-      console.log('🔗 Récupération du POI avec ID:', actualPoiId);
-      console.log('🔗 ID converti en int:', parseInt(actualPoiId));
       setLoading(true);
       getAll()
         .then((allPois) => {
-          console.log('🔗 Tous les POI récupérés:', allPois.length);
           const fetchedPoi = allPois.find(p => p.poi_id === parseInt(actualPoiId));
-          console.log('🔗 POI trouvé:', fetchedPoi);
           if (fetchedPoi) {
-            console.log('🔗 POI valide, mise à jour du state');
             setPoi(fetchedPoi);
-          } else {
-            console.log('🔗 POI non trouvé dans la liste');
           }
         })
         .catch((error) => {
-          console.error('🔗 Erreur lors de la récupération des POI:', error);
-          console.error('🔗 Détails de l\'erreur:', error.message);
+          console.error('Error fetching POI:', error);
         })
         .finally(() => {
-          console.log('🔗 Fin de la récupération des POI');
           setLoading(false);
         });
-    } else {
-      console.log('🔗 Aucun POI ID fourni');
     }
   }, [directPoi, actualPoiId]);
 
@@ -177,24 +160,19 @@ const POIDetailsWrapper: React.FC<{ route: any }> = ({ route }) => {
   }
 
   if (!poi) {
-    console.log('🔗 Pas de POI, affichage du message d\'erreur');
     return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>POI not found : {actualPoiId || 'no ID'}</Text></View>;
   }
 
   // Vérification de sécurité supplémentaire
   if (!poi || typeof poi !== 'object' || !poi.id) {
-    console.log('🔗 POI invalide:', poi);
     return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>POI invalide</Text></View>;
   }
 
   // Vérification que le POI a bien la propriété favorited
   if (typeof poi.favorited === 'undefined') {
-    console.log('🔗 POI sans propriété favorited, ajout de la valeur par défaut');
     poi.favorited = false;
   }
 
-  console.log('🔗 Rendu du composant ARPOIDetails avec POI:', poi);
-  console.log('🔗 POI favorited:', poi.favorited);
   return <ARPOIDetails poi={poi} />;
 };
 
