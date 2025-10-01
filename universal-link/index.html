@@ -53,22 +53,50 @@
       height: 40px;
     }
   </style>
+  <script>
+    // Redirect to store if app is not installed
+    // Universal Links will automatically open the app if installed
+    // If not installed, this page loads and we redirect to the store
+    function redirectToStore() {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+      const isAndroid = /android/i.test(userAgent);
+
+      if (isIOS) {
+        // Redirect to App Store after a short delay
+        setTimeout(() => {
+          window.location.href = 'https://apps.apple.com/us/app/naonair/id1613891601';
+        }, 1500);
+      } else if (isAndroid) {
+        // Redirect to Play Store after a short delay
+        setTimeout(() => {
+          window.location.href = 'https://play.google.com/store/apps/details?id=com.aireal';
+        }, 1500);
+      }
+    }
+
+    // Auto-redirect only if coming from /poi route
+    if (window.location.pathname === '/poi') {
+      redirectToStore();
+    }
+  </script>
 </head>
 <body>
   <div class="container">
     <h1>Naonair</h1>
-    <h2>Air Quality Monitoring</h2>
+    <h2>Surveillance de la qualité de l'air</h2>
     <p class="description">
-      Download the Naonair mobile app to monitor air quality in real-time,
-      discover points of interest, and plan your routes based on air pollution levels.
+
+      Téléchargez l'application mobile Naonair pour surveiller la qualité de l'air en temps réel,
+      découvrir des points d'intérêt et planifier vos trajets en fonction de la pollution de l'air.
     </p>
 
     <div class="store-buttons">
       <a href="https://apps.apple.com/us/app/naonair/id1613891601" class="store-button">
-        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1530144000" alt="Download on the App Store">
+        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/fr-fr?size=250x83&amp;releaseDate=1530144000" alt="Download on the App Store">
       </a>
       <a href="https://play.google.com/store/apps/details?id=com.aireal" class="store-button">
-        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play">
+        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" alt="Get it on Google Play">
       </a>
     </div>
   </div>
