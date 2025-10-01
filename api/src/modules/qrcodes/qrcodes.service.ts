@@ -10,7 +10,10 @@ export interface QRCodeOptions {
 export class QRCodesService {
   private readonly baseUrl = 'https://app.naonair.org/poi';
 
-  async generateQRCode(poiId: number, options: QRCodeOptions): Promise<Buffer | string> {
+  async generateQRCode(
+    poiId: number,
+    options: QRCodeOptions,
+  ): Promise<Buffer | string> {
     const url = `${this.baseUrl}?id=${poiId}`;
 
     if (options.format === 'png') {

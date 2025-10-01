@@ -1,10 +1,10 @@
-import { Feature, FeatureCollection, Point, Position } from 'geojson';
 import cultureIcon from '@assets/culture-icon.svg';
 import favoriteIcon from '@assets/favorite-icon.svg';
 import historyIcon from '@assets/history-icon.svg';
 import marketIcon from '@assets/market-icon.svg';
 import parkIcon from '@assets/park-icon.svg';
 import sportIcon from '@assets/sport-icon.svg';
+import { Feature, FeatureCollection, Point, Position } from 'geojson';
 
 import { buildGeoserverUrl, buildMapboxUrl } from '@utils/config';
 import removeAccent from '@utils/remove-accent';
@@ -223,6 +223,10 @@ export const getOne = async (poi_id: number): Promise<POI | null> => {
       }
     };
 
+    // Récupérer les favoris pour définir la propriété favorited
+    const favorites = await getFavorites();
+    const isFavorited = favorites.has(`poi-${id}`);
+
     return {
       ...properties,
       id,
@@ -232,6 +236,7 @@ export const getOne = async (poi_id: number): Promise<POI | null> => {
       address: adresse,
       geolocation: geometry.coordinates,
       qa: QAValues[indice],
+      favorited: isFavorited, // ← Ajouter cette ligne
     };
   } catch (error) {
     console.error('Error fetching POI by ID:', error);

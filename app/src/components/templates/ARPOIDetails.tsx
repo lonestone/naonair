@@ -1,26 +1,22 @@
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
-import { Card, Divider } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { addToFavorites, removeFromFavorites } from '../../actions/favorites';
-import { reverse } from '../../actions/poi';
-import { theme } from '@theme';
-import { StackParamList, TabNavigationScreenProp } from '@type/routes';
-import logger from '@utils/logger';
-import { ARButton, ARButtonSize } from '../atoms/ARButton';
-import ARMap from '../atoms/ARMap';
-import ARQAChip from '../atoms/ARQAChip';
 import BackButton from '@molecules/ARBackButton';
 import ARCommonHeader from '@molecules/ARCommonHeader';
 import FavoriteButton from '@molecules/ARFavoriteButton';
 import ARHeadingGroup from '@molecules/ARHeadingGroup';
-import ARForecasts from '../organisms/ARGeoserverForecasts';
+import analytics from '@react-native-firebase/analytics';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { theme } from '@theme';
+import { StackParamList, TabNavigationScreenProp } from '@type/routes';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Card, Divider } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { addToFavorites, removeFromFavorites } from '../../actions/favorites';
+import { ARButton, ARButtonSize } from '../atoms/ARButton';
+import ARMap from '../atoms/ARMap';
+import ARQAChip from '../atoms/ARQAChip';
+import ARGeoserverForecasts from '../organisms/ARGeoserverForecasts';
 import ARPollution from '../organisms/ARPollution';
 import { POIMarker } from './ARMapView';
-import analytics from '@react-native-firebase/analytics';
-import ARGeoserverForecasts from '../organisms/ARGeoserverForecasts';
 
 const styles = StyleSheet.create({
   map: {
@@ -66,12 +62,34 @@ const styles = StyleSheet.create({
 
 type POIDetailsRouteProp = RouteProp<StackParamList, 'POIDetails'>;
 
-const ARPOIDetails = () => {
+interface ARPOIDetailsProps {
+  poi?: any;
+}
+
+const ARPOIDetails = ({ poi: poiProp }: ARPOIDetailsProps = {}) => {
   const navigation = useNavigation<TabNavigationScreenProp>();
-  const { poi } = useRoute<POIDetailsRouteProp>().params || {};
-  const [favorited, setFavorited] = useState(poi.favorited);
+  const route = useRoute<POIDetailsRouteProp>();
+  const routePoi = route.params?.poi;
+  const poi = poiProp || routePoi;
+  const [favorited, setFavorited] = useState(poi?.favorited || false);
+
+  console.log('🔗 ARPOIDetails - POI prop:', poiProp);
+  console.log('🔗 ARPOIDetails - POI route:', routePoi);
+  console.log('🔗 ARPOIDetails - POI final:', poi);
+  console.log('🔗 ARPOIDetails - POI existe:', !!poi);
+  console.log('🔗 ARPOIDetails - POI name:', poi?.name);
+
+  // Mettre à jour favorited quand poi change
+  React.useEffect(() => {
+    if (poi) {
+      console.log('🔗 ARPOIDetails - Mise à jour favorited avec POI:', poi.name);
+      setFavorited(poi.favorited || false);
+    }
+  }, [poi]);
 
   const goTo = async () => {
+    if (!poi) return;
+    
     try {
       await analytics().logEvent('me_rendre_a_cet_endroit_button', {
         name: poi.name,
@@ -117,9 +135,27 @@ const ARPOIDetails = () => {
   const [isMapLoaded, setMapLoaded] = useState<boolean>(false);
 
   const toggleFavorited = async () => {
-    setFavorited(value => !value);
+    if (!poi) return;
+
+    setFavorited((value: boolean) => !value);
     favorited ? await removeFromFavorites(poi) : await addToFavorites(poi);
   };
+
+  // Si pas de POI, afficher un message de chargement
+  if (!poi) {
+    console.log('🔗 ARPOIDetails - Pas de POI, affichage du message de chargement');
+    return (
+      <>
+        <ARCommonHeader
+          headline="Détails"
+          left={<BackButton />}
+        />
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>Chargement du POI...</Text>
+        </View>
+      </>
+    );
+  }
 
   return (
     <>
@@ -133,54 +169,50 @@ const ARPOIDetails = () => {
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={{ paddingBottom: 100 }}>
-        {poi && (
-          <View style={styles.detailView}>
-            <View>
-              <Card style={styles.mapView}>
-                <View>
-                  <ARMap
-                    userLocationVisible
-                    interactionEnabled
-                    heatmapVisible
-                    style={styles.map}
-                    onMapLoaded={() => setMapLoaded(true)}
-                    center={poi.geolocation}>
-                    {isMapLoaded && <POIMarker poi={poi} />}
-                  </ARMap>
-                </View>
-                <View style={styles.chipWrapper}>
-                  <ARQAChip
-                    size="md"
-                    shadow
-                    coord={poi.geolocation}
-                    value={poi.qa}
-                  />
-                </View>
-              </Card>
-            </View>
-            <ARHeadingGroup title={poi.name} caption={poi.address} />
-            {poi.poi_id && (
-              <>
-                <Divider />
-                <ARPollution poi={poi} />
-                <Divider />
-                <ARGeoserverForecasts id={poi.poi_id} type="aireel:poi_data" />
-              </>
-            )}
+        <View style={styles.detailView}>
+          <View>
+            <Card style={styles.mapView}>
+              <View>
+                <ARMap
+                  userLocationVisible
+                  interactionEnabled
+                  heatmapVisible
+                  style={styles.map}
+                  onMapLoaded={() => setMapLoaded(true)}
+                  center={poi.geolocation}>
+                  {isMapLoaded && <POIMarker poi={poi} />}
+                </ARMap>
+              </View>
+              <View style={styles.chipWrapper}>
+                <ARQAChip
+                  size="md"
+                  shadow
+                  coord={poi.geolocation}
+                  value={poi.qa}
+                />
+              </View>
+            </Card>
           </View>
-        )}
-      </ScrollView>
-      {poi && (
-        <ARButton
-          size={ARButtonSize.Medium}
-          styleContainer={styles.button}
-          onPress={goTo}
-          icon={({ color }) => (
-            <Icon name="navigation-variant" size={25} color={color} />
+          <ARHeadingGroup title={poi.name} caption={poi.address} />
+          {poi.poi_id && (
+            <>
+              <Divider />
+              <ARPollution poi={poi} />
+              <Divider />
+              <ARGeoserverForecasts id={poi.poi_id} type="aireel:poi_data" />
+            </>
           )}
-          label="Me rendre à cet endroit"
-        />
-      )}
+        </View>
+      </ScrollView>
+      <ARButton
+        size={ARButtonSize.Medium}
+        styleContainer={styles.button}
+        onPress={goTo}
+        icon={({ color }) => (
+          <Icon name="navigation-variant" size={25} color={color} />
+        )}
+        label="Me rendre à cet endroit"
+      />
     </>
   );
 };

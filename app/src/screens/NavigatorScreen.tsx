@@ -1,8 +1,23 @@
+import pollenIcon from '@assets/pollen-icon.svg';
+import ARBadge from '@atoms/ARBadge';
+import { NotificationsContext } from '@contexts/notifications.context';
+import { SnackbarProvider } from '@contexts/snackbar.context';
+import { useOnForegroundFocus } from '@hooks/useOnForgroundFocus';
+import BackButton from '@molecules/ARBackButton';
+import ARCommonHeader from '@molecules/ARCommonHeader';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   createStackNavigator,
   StackNavigationOptions,
 } from '@react-navigation/stack';
+import ARChooseItinerary from '@templates/ARChooseItinerary';
+import ARListFavorites from '@templates/ARListFavorites';
+import ARListNotifications from '@templates/ARListNotifications';
+import ARPlaceFormLayout from '@templates/ARPlaceFormLayout';
+import ARPOIDetails from '@templates/ARPOIDetails';
+import ARRouteDetail from '@templates/ARRouteDetail';
+import { theme } from '@theme';
+import { StackParamList, TabParamList } from '@type/routes';
 import React, {
   useCallback,
   useContext,
@@ -10,7 +25,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { Platform, View, Text } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SvgXml } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,31 +34,16 @@ import {
   getIsFirstLaunched,
   getIsFirstNotificationLaunched,
 } from '../actions/launch';
-import pollenIcon from '@assets/pollen-icon.svg';
-import ARBadge from '@atoms/ARBadge';
-import BackButton from '@molecules/ARBackButton';
-import ARCommonHeader from '@molecules/ARCommonHeader';
-import ARChooseItinerary from '@templates/ARChooseItinerary';
-import ARListFavorites from '@templates/ARListFavorites';
-import ARListNotifications from '@templates/ARListNotifications';
-import ARPlaceFormLayout from '@templates/ARPlaceFormLayout';
-import ARPOIDetails from '@templates/ARPOIDetails';
-import { getOne } from '../actions/poi';
-import ARRouteDetail from '@templates/ARRouteDetail';
-import { NotificationsContext } from '@contexts/notifications.context';
-import { SnackbarProvider } from '@contexts/snackbar.context';
-import { useOnForegroundFocus } from '@hooks/useOnForgroundFocus';
-import { theme } from '@theme';
-import { StackParamList, TabParamList } from '@type/routes';
+import { getAll, POI } from '../actions/poi';
 import CGUScreen from './CGUScreen';
 import ItineraryScreen from './ItineraryScreen';
 import MapScreen from './MapScreen';
 import NavigationScreen from './NavigationScreen';
+import NewParcoursScreen from './NewParcours';
 import OnboardingScreen from './OnboardingScreen';
 import PollensScreen from './PollensScreen';
 import ProfileScreen from './ProfileScreen';
 import RoutesScreen from './RoutesScreen';
-import NewParcoursScreen from './NewParcours';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 const Stack = createStackNavigator<StackParamList>();
@@ -131,37 +131,71 @@ const options: StackNavigationOptions = {
 const POIDetailsWrapper: React.FC<{ route: any }> = ({ route }) => {
   const [poi, setPoi] = useState<POI | null>(null);
   const [loading, setLoading] = useState(false);
-  const { poi: directPoi, poiId } = route.params || {};
+  const { poi: directPoi, poiId, id } = route.params || {};
+  const actualPoiId = poiId || id; // Utiliser poiId ou id selon ce qui est disponible
+
+  console.log('🔗 POIDetailsWrapper - Route params:', route.params);
+  console.log('🔗 POIDetailsWrapper - poiId:', poiId);
+  console.log('🔗 POIDetailsWrapper - id:', id);
+  console.log('🔗 POIDetailsWrapper - actualPoiId:', actualPoiId);
 
   useEffect(() => {
     if (directPoi) {
+      console.log('🔗 Utilisation du POI direct:', directPoi);
       setPoi(directPoi);
-    } else if (poiId) {
+    } else if (actualPoiId) {
+      console.log('🔗 Récupération du POI avec ID:', actualPoiId);
+      console.log('🔗 ID converti en int:', parseInt(actualPoiId));
       setLoading(true);
-      getOne(parseInt(poiId))
-        .then((fetchedPoi) => {
+      getAll()
+        .then((allPois) => {
+          console.log('🔗 Tous les POI récupérés:', allPois.length);
+          const fetchedPoi = allPois.find(p => p.poi_id === parseInt(actualPoiId));
+          console.log('🔗 POI trouvé:', fetchedPoi);
           if (fetchedPoi) {
+            console.log('🔗 POI valide, mise à jour du state');
             setPoi(fetchedPoi);
+          } else {
+            console.log('🔗 POI non trouvé dans la liste');
           }
         })
         .catch((error) => {
-          console.error('Error fetching POI:', error);
+          console.error('🔗 Erreur lors de la récupération des POI:', error);
+          console.error('🔗 Détails de l\'erreur:', error.message);
         })
         .finally(() => {
+          console.log('🔗 Fin de la récupération des POI');
           setLoading(false);
         });
+    } else {
+      console.log('🔗 Aucun POI ID fourni');
     }
-  }, [directPoi, poiId]);
+  }, [directPoi, actualPoiId]);
 
   if (loading) {
     return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Loading...</Text></View>;
   }
 
   if (!poi) {
-    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>POI not found</Text></View>;
+    console.log('🔗 Pas de POI, affichage du message d\'erreur');
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>POI not found : {actualPoiId || 'no ID'}</Text></View>;
   }
 
-  return <ARPOIDetails route={{ params: { poi } }} />;
+  // Vérification de sécurité supplémentaire
+  if (!poi || typeof poi !== 'object' || !poi.id) {
+    console.log('🔗 POI invalide:', poi);
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>POI invalide</Text></View>;
+  }
+
+  // Vérification que le POI a bien la propriété favorited
+  if (typeof poi.favorited === 'undefined') {
+    console.log('🔗 POI sans propriété favorited, ajout de la valeur par défaut');
+    poi.favorited = false;
+  }
+
+  console.log('🔗 Rendu du composant ARPOIDetails avec POI:', poi);
+  console.log('🔗 POI favorited:', poi.favorited);
+  return <ARPOIDetails poi={poi} />;
 };
 
 export default () => {

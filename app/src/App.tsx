@@ -13,13 +13,12 @@ import * as Sentry from '@sentry/react-native';
 import React, { useEffect } from 'react';
 import { LogBox, StatusBar } from 'react-native';
 import { Provider } from 'react-native-paper';
+import { configureGeolocationLibrary } from './actions/location';
 import { SENTRY } from './config.json';
 import { NotificationsProvider } from './contexts/notifications.context';
 import { useNotifications } from './hooks/useNotifications';
 import Screens from './screens/NavigatorScreen';
 import { theme } from './theme';
-import { configureGeolocationLibrary } from './actions/location';
-import { StackParamList } from './types/routes';
 
 const linking = {
   prefixes: ['https://app.naonair.org'],
@@ -30,7 +29,19 @@ const linking = {
           Carte: 'map',
         },
       },
-      POIDetails: 'poi',
+      POIDetails: {
+        path: 'poi',
+        parse: {
+          poiId: (url: string) => {
+            console.log('🔗 Universal Link - URL reçue par React Navigation:', url);
+            // Extraire l'ID depuis l'URL complète
+            const match = url.match(/[?&]id=(\d+)/);
+            const poiId = match ? match[1] : null;
+            console.log('🔗 POI ID extrait par React Navigation:', poiId);
+            return poiId;
+          },
+        },
+      },
     },
   },
 };
