@@ -34,8 +34,7 @@ const linking = {
         parse: {
           poiId: (url: string) => {
             const match = url.match(/[?&]id=(\d+)/);
-            const poiId = match ? match[1] : null;
-            return poiId;
+            return match ? match[1] : null;
           },
         },
       },
