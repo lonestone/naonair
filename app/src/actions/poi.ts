@@ -12,7 +12,7 @@ import { getFavorites } from './favorites';
 import { getAllPlaces } from './myplaces';
 import { QAType, QAValues } from './qa';
 
-// eslint-disable-next-line no-shadow
+
 export enum POICategory {
   ALL = 'all',
   FAVORITE = 'favorite',
@@ -223,7 +223,6 @@ export const getOne = async (poi_id: number): Promise<POI | null> => {
       }
     };
 
-    // Récupérer les favoris pour définir la propriété favorited
     const favorites = await getFavorites();
     const isFavorited = favorites.has(`poi-${id}`);
 

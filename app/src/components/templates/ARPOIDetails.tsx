@@ -73,7 +73,6 @@ const ARPOIDetails = ({ poi: poiProp }: ARPOIDetailsProps = {}) => {
   const poi = poiProp || routePoi;
   const [favorited, setFavorited] = useState(poi?.favorited || false);
 
-  // Mettre à jour favorited quand poi change
   React.useEffect(() => {
     if (poi) {
       setFavorited(poi.favorited || false);
@@ -134,7 +133,6 @@ const ARPOIDetails = ({ poi: poiProp }: ARPOIDetailsProps = {}) => {
     favorited ? await removeFromFavorites(poi) : await addToFavorites(poi);
   };
 
-  // Si pas de POI, afficher un message de chargement
   if (!poi) {
     return (
       <>

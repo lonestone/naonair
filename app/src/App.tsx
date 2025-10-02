@@ -33,7 +33,6 @@ const linking = {
         path: 'poi',
         parse: {
           poiId: (url: string) => {
-            // Extraire l'ID depuis l'URL complète
             const match = url.match(/[?&]id=(\d+)/);
             const poiId = match ? match[1] : null;
             return poiId;
