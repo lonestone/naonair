@@ -1,10 +1,10 @@
-import { Feature, FeatureCollection, Point, Position } from 'geojson';
 import cultureIcon from '@assets/culture-icon.svg';
 import favoriteIcon from '@assets/favorite-icon.svg';
 import historyIcon from '@assets/history-icon.svg';
 import marketIcon from '@assets/market-icon.svg';
 import parkIcon from '@assets/park-icon.svg';
 import sportIcon from '@assets/sport-icon.svg';
+import { Feature, FeatureCollection, Point, Position } from 'geojson';
 
 import { buildGeoserverUrl, buildMapboxUrl } from '@utils/config';
 import removeAccent from '@utils/remove-accent';
@@ -12,7 +12,7 @@ import { getFavorites } from './favorites';
 import { getAllPlaces } from './myplaces';
 import { QAType, QAValues } from './qa';
 
-// eslint-disable-next-line no-shadow
+
 export enum POICategory {
   ALL = 'all',
   FAVORITE = 'favorite',
@@ -177,7 +177,7 @@ export const getAll = async (params?: {
   return results;
 };
 
-export const getOne = async (poi_id: number) => {
+export const getOne = async (poi_id: number): Promise<POI | null> => {
   const URL = buildGeoserverUrl('ows', {
     REQUEST: 'GetFeature',
     VERSION: '1.0.0',
@@ -189,13 +189,58 @@ export const getOne = async (poi_id: number) => {
     },
   });
 
-  const response = await fetch(URL);
-  const json = (await response.json()) as FeatureCollection<
-    Point,
-    POIFeatureProperties
-  >;
+  try {
+    const response = await fetch(URL);
+    const json = (await response.json()) as FeatureCollection<
+      Point,
+      POIFeatureProperties
+    >;
 
-  return json.features[0].properties;
+    if (!json.features || json.features.length === 0) {
+      return null;
+    }
+
+    const feature = json.features[0];
+    const { properties, geometry } = feature;
+    const { type, id, adresse, lieu, indice } = properties;
+
+    const getCategory = (): POICategory => {
+      switch (type) {
+        case 'Parc':
+          return POICategory.PARK;
+        case 'Sport':
+          return POICategory.SPORT;
+        case 'Culture':
+          return POICategory.CULTURE;
+        case 'Marché':
+          return POICategory.MARKET;
+        case 'favoris':
+          return POICategory.FAVORITE;
+        case 'history':
+          return POICategory.HISTORY;
+        default:
+          return POICategory.ALL;
+      }
+    };
+
+    const favorites = await getFavorites();
+    const isFavorited = favorites.has(`poi-${id}`);
+
+    return {
+      ...properties,
+      id,
+      poi_id,
+      category: getCategory(),
+      name: lieu,
+      address: adresse,
+      geolocation: geometry.coordinates,
+      qa: QAValues[indice],
+      favorited: isFavorited, // ← Ajouter cette ligne
+    };
+  } catch (error) {
+    console.error('Error fetching POI by ID:', error);
+    return null;
+  }
 };
 
 export const reverse = async ([lon, lat]: Position): Promise<

@@ -25,6 +25,7 @@ module.exports = {
           '@organisms': './src/components/organisms',
           '@molecules': './src/components/molecules',
           '@templates': './src/components/templates',
+          '@wrappers': './src/components/wrappers',
           '@type': './src/types',
           '@assets': './src/assets',
           '@theme': './src/theme',

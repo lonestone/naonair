@@ -11,6 +11,7 @@
   version "1.0.0"
   resolved "file:../dtos"
   dependencies:
+    "@babel/runtime" "^7.28.4"
     "@types/validator" "^13.7.1"
     class-transformer "^0.5.1"
     class-validator "^0.13.2"
@@ -253,7 +254,17 @@
   resolved "https://registry.npmjs.org/@babel/helper-plugin-utils/-/helper-plugin-utils-7.22.5.tgz"
   integrity sha512-uLls06UVKgFG9QD4OeFYLEGteMIAa5kpTPcFL28yuCIIzsf6ZyKZMllKVOCZFhiZ5ptnwX4mtKdWCBE/uT4amg==
 
-"@babel/helper-plugin-utils@^7.18.6", "@babel/helper-plugin-utils@^7.20.2", "@babel/helper-plugin-utils@^7.22.5":
+"@babel/helper-plugin-utils@^7.18.6":
+  version "7.22.5"
+  resolved "https://registry.npmjs.org/@babel/helper-plugin-utils/-/helper-plugin-utils-7.22.5.tgz"
+  integrity sha512-uLls06UVKgFG9QD4OeFYLEGteMIAa5kpTPcFL28yuCIIzsf6ZyKZMllKVOCZFhiZ5ptnwX4mtKdWCBE/uT4amg==
+
+"@babel/helper-plugin-utils@^7.20.2":
+  version "7.22.5"
+  resolved "https://registry.npmjs.org/@babel/helper-plugin-utils/-/helper-plugin-utils-7.22.5.tgz"
+  integrity sha512-uLls06UVKgFG9QD4OeFYLEGteMIAa5kpTPcFL28yuCIIzsf6ZyKZMllKVOCZFhiZ5ptnwX4mtKdWCBE/uT4amg==
+
+"@babel/helper-plugin-utils@^7.22.5":
   version "7.22.5"
   resolved "https://registry.npmjs.org/@babel/helper-plugin-utils/-/helper-plugin-utils-7.22.5.tgz"
   integrity sha512-uLls06UVKgFG9QD4OeFYLEGteMIAa5kpTPcFL28yuCIIzsf6ZyKZMllKVOCZFhiZ5ptnwX4mtKdWCBE/uT4amg==
@@ -302,7 +313,14 @@
   dependencies:
     "@babel/types" "^7.22.5"
 
-"@babel/helper-skip-transparent-expression-wrappers@^7.20.0", "@babel/helper-skip-transparent-expression-wrappers@^7.22.5":
+"@babel/helper-skip-transparent-expression-wrappers@^7.20.0":
+  version "7.22.5"
+  resolved "https://registry.npmjs.org/@babel/helper-skip-transparent-expression-wrappers/-/helper-skip-transparent-expression-wrappers-7.22.5.tgz"
+  integrity sha512-tK14r66JZKiC43p8Ki33yLBVJKlQDFoA8GYN67lWCDCqoL6EMMSuM9b+Iff2jHaM/RRFYl7K+iiru7hbRqNx8Q==
+  dependencies:
+    "@babel/types" "^7.22.5"
+
+"@babel/helper-skip-transparent-expression-wrappers@^7.22.5":
   version "7.22.5"
   resolved "https://registry.npmjs.org/@babel/helper-skip-transparent-expression-wrappers/-/helper-skip-transparent-expression-wrappers-7.22.5.tgz"
   integrity sha512-tK14r66JZKiC43p8Ki33yLBVJKlQDFoA8GYN67lWCDCqoL6EMMSuM9b+Iff2jHaM/RRFYl7K+iiru7hbRqNx8Q==
@@ -2643,62 +2661,61 @@
   resolved "https://registry.npmjs.org/@sayem314/react-native-keep-awake/-/react-native-keep-awake-1.3.0.tgz"
   integrity sha512-Pi8YnZbpzhjzkgAhSu33tci687CyZyT6Y0HNbitIBdjFDzibnYZIsj+LVPjFJPTsnJejsq1hMxK/fDesE+wlMQ==
 
-"@sentry-internal/feedback@7.119.1":
-  version "7.119.1"
-  resolved "https://registry.npmjs.org/@sentry-internal/feedback/-/feedback-7.119.1.tgz"
-  integrity sha512-EPyW6EKZmhKpw/OQUPRkTynXecZdYl4uhZwdZuGqnGMAzswPOgQvFrkwsOuPYvoMfXqCH7YuRqyJrox3uBOrTA==
+"@sentry-internal/browser-utils@10.12.0":
+  version "10.12.0"
+  resolved "https://registry.npmjs.org/@sentry-internal/browser-utils/-/browser-utils-10.12.0.tgz"
+  integrity sha512-dozbx389jhKynj0d657FsgbBVOar7pX3mb6GjqCxslXF0VKpZH2Xks0U32RgDY/nK27O+o095IWz7YvjVmPkDw==
   dependencies:
-    "@sentry/core" "7.119.1"
-    "@sentry/types" "7.119.1"
-    "@sentry/utils" "7.119.1"
+    "@sentry/core" "10.12.0"
 
-"@sentry-internal/replay-canvas@7.119.1":
-  version "7.119.1"
-  resolved "https://registry.npmjs.org/@sentry-internal/replay-canvas/-/replay-canvas-7.119.1.tgz"
-  integrity sha512-O/lrzENbMhP/UDr7LwmfOWTjD9PLNmdaCF408Wx8SDuj7Iwc+VasGfHg7fPH4Pdr4nJON6oh+UqoV4IoG05u+A==
+"@sentry-internal/feedback@10.12.0":
+  version "10.12.0"
+  resolved "https://registry.npmjs.org/@sentry-internal/feedback/-/feedback-10.12.0.tgz"
+  integrity sha512-0+7ceO6yQPPqfxRc9ue/xoPHKcnB917ezPaehGQNfAFNQB9PNTG1y55+8mRu0Fw+ANbZeCt/HyoCmXuRdxmkpg==
   dependencies:
-    "@sentry/core" "7.119.1"
-    "@sentry/replay" "7.119.1"
-    "@sentry/types" "7.119.1"
-    "@sentry/utils" "7.119.1"
+    "@sentry/core" "10.12.0"
 
-"@sentry-internal/tracing@7.119.1":
-  version "7.119.1"
-  resolved "https://registry.npmjs.org/@sentry-internal/tracing/-/tracing-7.119.1.tgz"
-  integrity sha512-cI0YraPd6qBwvUA3wQdPGTy8PzAoK0NZiaTN1LM3IczdPegehWOaEG5GVTnpGnTsmBAzn1xnBXNBhgiU4dgcrQ==
+"@sentry-internal/replay-canvas@10.12.0":
+  version "10.12.0"
+  resolved "https://registry.npmjs.org/@sentry-internal/replay-canvas/-/replay-canvas-10.12.0.tgz"
+  integrity sha512-W/z1/+69i3INNfPjD1KuinSNaRQaApjzwb37IFmiyF440F93hxmEYgXHk3poOlYYaigl2JMYbysGPWOiXnqUXA==
   dependencies:
-    "@sentry/core" "7.119.1"
-    "@sentry/types" "7.119.1"
-    "@sentry/utils" "7.119.1"
+    "@sentry-internal/replay" "10.12.0"
+    "@sentry/core" "10.12.0"
 
-"@sentry/babel-plugin-component-annotate@2.20.1":
-  version "2.20.1"
-  resolved "https://registry.npmjs.org/@sentry/babel-plugin-component-annotate/-/babel-plugin-component-annotate-2.20.1.tgz"
-  integrity sha512-4mhEwYTK00bIb5Y9UWIELVUfru587Vaeg0DQGswv4aIRHIiMKLyNqCEejaaybQ/fNChIZOKmvyqXk430YVd7Qg==
-
-"@sentry/browser@7.119.1":
-  version "7.119.1"
-  resolved "https://registry.npmjs.org/@sentry/browser/-/browser-7.119.1.tgz"
-  integrity sha512-aMwAnFU4iAPeLyZvqmOQaEDHt/Dkf8rpgYeJ0OEi50dmP6AjG+KIAMCXU7CYCCQDn70ITJo8QD5+KzCoZPYz0A==
+"@sentry-internal/replay@10.12.0":
+  version "10.12.0"
+  resolved "https://registry.npmjs.org/@sentry-internal/replay/-/replay-10.12.0.tgz"
+  integrity sha512-/1093gSNGN5KlOBsuyAl33JkzGiG38kCnxswQLZWpPpR6LBbR1Ddb18HjhDpoQNNEZybJBgJC3a5NKl43C2TSQ==
   dependencies:
-    "@sentry-internal/feedback" "7.119.1"
-    "@sentry-internal/replay-canvas" "7.119.1"
-    "@sentry-internal/tracing" "7.119.1"
-    "@sentry/core" "7.119.1"
-    "@sentry/integrations" "7.119.1"
-    "@sentry/replay" "7.119.1"
-    "@sentry/types" "7.119.1"
-    "@sentry/utils" "7.119.1"
+    "@sentry-internal/browser-utils" "10.12.0"
+    "@sentry/core" "10.12.0"
 
-"@sentry/cli-darwin@2.37.0":
-  version "2.37.0"
-  resolved "https://registry.npmjs.org/@sentry/cli-darwin/-/cli-darwin-2.37.0.tgz"
-  integrity sha512-CsusyMvO0eCPSN7H+sKHXS1pf637PWbS4rZak/7giz/z31/6qiXmeMlcL3f9lLZKtFPJmXVFO9uprn1wbBVF8A==
+"@sentry/babel-plugin-component-annotate@4.3.0":
+  version "4.3.0"
+  resolved "https://registry.npmjs.org/@sentry/babel-plugin-component-annotate/-/babel-plugin-component-annotate-4.3.0.tgz"
+  integrity sha512-OuxqBprXRyhe8Pkfyz/4yHQJc5c3lm+TmYWSSx8u48g5yKewSQDOxkiLU5pAk3WnbLPy8XwU/PN+2BG0YFU9Nw==
 
-"@sentry/cli@2.37.0":
-  version "2.37.0"
-  resolved "https://registry.npmjs.org/@sentry/cli/-/cli-2.37.0.tgz"
-  integrity sha512-fM3V4gZRJR/s8lafc3O07hhOYRnvkySdPkvL/0e0XW0r+xRwqIAgQ5ECbsZO16A5weUiXVSf03ztDL1FcmbJCQ==
+"@sentry/browser@10.12.0":
+  version "10.12.0"
+  resolved "https://registry.npmjs.org/@sentry/browser/-/browser-10.12.0.tgz"
+  integrity sha512-lKyaB2NFmr7SxPjmMTLLhQ7xfxaY3kdkMhpzuRI5qwOngtKt4+FtvNYHRuz+PTtEFv4OaHhNNbRn6r91gWguQg==
+  dependencies:
+    "@sentry-internal/browser-utils" "10.12.0"
+    "@sentry-internal/feedback" "10.12.0"
+    "@sentry-internal/replay" "10.12.0"
+    "@sentry-internal/replay-canvas" "10.12.0"
+    "@sentry/core" "10.12.0"
+
+"@sentry/cli-darwin@2.55.0":
+  version "2.55.0"
+  resolved "https://registry.npmjs.org/@sentry/cli-darwin/-/cli-darwin-2.55.0.tgz"
+  integrity sha512-jGHE7SHHzqXUmnsmRLgorVH6nmMmTjQQXdPZbSL5tRtH8d3OIYrVNr5D72DSgD26XAPBDMV0ibqOQ9NKoiSpfA==
+
+"@sentry/cli@2.55.0":
+  version "2.55.0"
+  resolved "https://registry.npmjs.org/@sentry/cli/-/cli-2.55.0.tgz"
+  integrity sha512-cynvcIM2xL8ddwELyFRSpZQw4UtFZzoM2rId2l9vg7+wDREPDocMJB9lEQpBIo3eqhp9JswqUT037yjO6iJ5Sw==
   dependencies:
     https-proxy-agent "^5.0.0"
     node-fetch "^2.6.7"
@@ -2706,118 +2723,47 @@
     proxy-from-env "^1.1.0"
     which "^2.0.2"
   optionalDependencies:
-    "@sentry/cli-darwin" "2.37.0"
-    "@sentry/cli-linux-arm" "2.37.0"
-    "@sentry/cli-linux-arm64" "2.37.0"
-    "@sentry/cli-linux-i686" "2.37.0"
-    "@sentry/cli-linux-x64" "2.37.0"
-    "@sentry/cli-win32-i686" "2.37.0"
-    "@sentry/cli-win32-x64" "2.37.0"
+    "@sentry/cli-darwin" "2.55.0"
+    "@sentry/cli-linux-arm" "2.55.0"
+    "@sentry/cli-linux-arm64" "2.55.0"
+    "@sentry/cli-linux-i686" "2.55.0"
+    "@sentry/cli-linux-x64" "2.55.0"
+    "@sentry/cli-win32-arm64" "2.55.0"
+    "@sentry/cli-win32-i686" "2.55.0"
+    "@sentry/cli-win32-x64" "2.55.0"
 
-"@sentry/core@7.119.0":
-  version "7.119.0"
-  resolved "https://registry.npmjs.org/@sentry/core/-/core-7.119.0.tgz"
-  integrity sha512-CS2kUv9rAJJEjiRat6wle3JATHypB0SyD7pt4cpX5y0dN5dZ1JrF57oLHRMnga9fxRivydHz7tMTuBhSSwhzjw==
-  dependencies:
-    "@sentry/types" "7.119.0"
-    "@sentry/utils" "7.119.0"
+"@sentry/core@10.12.0":
+  version "10.12.0"
+  resolved "https://registry.npmjs.org/@sentry/core/-/core-10.12.0.tgz"
+  integrity sha512-Jrf0Yo7DvmI/ZQcvBnA0xKNAFkJlVC/fMlvcin+5IrFNRcqOToZ2vtF+XqTgjRZymXQNE8s1QTD7IomPHk0TAw==
 
-"@sentry/core@7.119.1":
-  version "7.119.1"
-  resolved "https://registry.npmjs.org/@sentry/core/-/core-7.119.1.tgz"
-  integrity sha512-YUNnH7O7paVd+UmpArWCPH4Phlb5LwrkWVqzFWqL3xPyCcTSof2RL8UmvpkTjgYJjJ+NDfq5mPFkqv3aOEn5Sw==
+"@sentry/react-native@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.npmjs.org/@sentry/react-native/-/react-native-7.2.0.tgz"
+  integrity sha512-rjqYgEjntPz1sPysud78wi4B9ui7LBVPsG6qr8s/htLMYho9GPGFA5dF+eqsQWqMX8NDReAxNkLTC4+gCNklLQ==
   dependencies:
-    "@sentry/types" "7.119.1"
-    "@sentry/utils" "7.119.1"
+    "@sentry/babel-plugin-component-annotate" "4.3.0"
+    "@sentry/browser" "10.12.0"
+    "@sentry/cli" "2.55.0"
+    "@sentry/core" "10.12.0"
+    "@sentry/react" "10.12.0"
+    "@sentry/types" "10.12.0"
 
-"@sentry/hub@7.119.0":
-  version "7.119.0"
-  resolved "https://registry.npmjs.org/@sentry/hub/-/hub-7.119.0.tgz"
-  integrity sha512-183h5B/rZosLxpB+ZYOvFdHk0rwZbKskxqKFtcyPbDAfpCUgCass41UTqyxF6aH1qLgCRxX8GcLRF7frIa/SOg==
+"@sentry/react@10.12.0":
+  version "10.12.0"
+  resolved "https://registry.npmjs.org/@sentry/react/-/react-10.12.0.tgz"
+  integrity sha512-TpqgdoYbkf5JynmmW2oQhHQ/h5w+XPYk0cEb/UrsGlvJvnBSR+5tgh0AqxCSi3gvtp82rAXI5w1TyRPBbhLDBw==
   dependencies:
-    "@sentry/core" "7.119.0"
-    "@sentry/types" "7.119.0"
-    "@sentry/utils" "7.119.0"
-
-"@sentry/integrations@7.119.0":
-  version "7.119.0"
-  resolved "https://registry.npmjs.org/@sentry/integrations/-/integrations-7.119.0.tgz"
-  integrity sha512-OHShvtsRW0A+ZL/ZbMnMqDEtJddPasndjq+1aQXw40mN+zeP7At/V1yPZyFaURy86iX7Ucxw5BtmzuNy7hLyTA==
-  dependencies:
-    "@sentry/core" "7.119.0"
-    "@sentry/types" "7.119.0"
-    "@sentry/utils" "7.119.0"
-    localforage "^1.8.1"
-
-"@sentry/integrations@7.119.1":
-  version "7.119.1"
-  resolved "https://registry.npmjs.org/@sentry/integrations/-/integrations-7.119.1.tgz"
-  integrity sha512-CGmLEPnaBqbUleVqrmGYjRjf5/OwjUXo57I9t0KKWViq81mWnYhaUhRZWFNoCNQHns+3+GPCOMvl0zlawt+evw==
-  dependencies:
-    "@sentry/core" "7.119.1"
-    "@sentry/types" "7.119.1"
-    "@sentry/utils" "7.119.1"
-    localforage "^1.8.1"
-
-"@sentry/react-native@^5.33.1":
-  version "5.36.0"
-  resolved "https://registry.npmjs.org/@sentry/react-native/-/react-native-5.36.0.tgz"
-  integrity sha512-MPTN5Wb6wEplIVydh2oXOdLJYqCAWKvncN5TBPN5OG8XdCsDqF7LyH2Sz+SK2T3hMPKESl3StAMhrrNSmHDbNg==
-  dependencies:
-    "@sentry/babel-plugin-component-annotate" "2.20.1"
-    "@sentry/browser" "7.119.1"
-    "@sentry/cli" "2.37.0"
-    "@sentry/core" "7.119.1"
-    "@sentry/hub" "7.119.0"
-    "@sentry/integrations" "7.119.0"
-    "@sentry/react" "7.119.1"
-    "@sentry/types" "7.119.1"
-    "@sentry/utils" "7.119.1"
-
-"@sentry/react@7.119.1":
-  version "7.119.1"
-  resolved "https://registry.npmjs.org/@sentry/react/-/react-7.119.1.tgz"
-  integrity sha512-Bri314LnSVm16K3JATgn3Zsq6Uj3M/nIjdUb3nggBw0BMlFWMsyFjUCfmCio5d80KJK/lUjOIxRjzu79M6jOzQ==
-  dependencies:
-    "@sentry/browser" "7.119.1"
-    "@sentry/core" "7.119.1"
-    "@sentry/types" "7.119.1"
-    "@sentry/utils" "7.119.1"
+    "@sentry/browser" "10.12.0"
+    "@sentry/core" "10.12.0"
     hoist-non-react-statics "^3.3.2"
 
-"@sentry/replay@7.119.1":
-  version "7.119.1"
-  resolved "https://registry.npmjs.org/@sentry/replay/-/replay-7.119.1.tgz"
-  integrity sha512-4da+ruMEipuAZf35Ybt2StBdV1S+oJbSVccGpnl9w6RoeQoloT4ztR6ML3UcFDTXeTPT1FnHWDCyOfST0O7XMw==
+"@sentry/types@10.12.0":
+  version "10.12.0"
+  resolved "https://registry.npmjs.org/@sentry/types/-/types-10.12.0.tgz"
+  integrity sha512-sKGj3l3V8ZKISh2Tu88bHfnm5ztkRtSLdmpZ6TmCeJdSM9pV+RRd6CMJ0RnSEXmYHselPNUod521t2NQFd4W1w==
   dependencies:
-    "@sentry-internal/tracing" "7.119.1"
-    "@sentry/core" "7.119.1"
-    "@sentry/types" "7.119.1"
-    "@sentry/utils" "7.119.1"
-
-"@sentry/types@7.119.0":
-  version "7.119.0"
-  resolved "https://registry.npmjs.org/@sentry/types/-/types-7.119.0.tgz"
-  integrity sha512-27qQbutDBPKGbuJHROxhIWc1i0HJaGLA90tjMu11wt0E4UNxXRX+UQl4Twu68v4EV3CPvQcEpQfgsViYcXmq+w==
-
-"@sentry/types@7.119.1":
-  version "7.119.1"
-  resolved "https://registry.npmjs.org/@sentry/types/-/types-7.119.1.tgz"
-  integrity sha512-4G2mcZNnYzK3pa2PuTq+M2GcwBRY/yy1rF+HfZU+LAPZr98nzq2X3+mJHNJoobeHRkvVh7YZMPi4ogXiIS5VNQ==
-
-"@sentry/utils@7.119.0":
-  version "7.119.0"
-  resolved "https://registry.npmjs.org/@sentry/utils/-/utils-7.119.0.tgz"
-  integrity sha512-ZwyXexWn2ZIe2bBoYnXJVPc2esCSbKpdc6+0WJa8eutXfHq3FRKg4ohkfCBpfxljQGEfP1+kfin945lA21Ka+A==
-  dependencies:
-    "@sentry/types" "7.119.0"
-
-"@sentry/utils@7.119.1":
-  version "7.119.1"
-  resolved "https://registry.npmjs.org/@sentry/utils/-/utils-7.119.1.tgz"
-  integrity sha512-ju/Cvyeu/vkfC5/XBV30UNet5kLEicZmXSyuLwZu95hEbL+foPdxN+re7pCI/eNqfe3B2vz7lvz5afLVOlQ2Hg==
-  dependencies:
-    "@sentry/types" "7.119.1"
+    "@sentry/core" "10.12.0"
 
 "@sideway/address@^4.1.3":
   version "4.1.4"
@@ -6482,11 +6428,6 @@ image-size@^1.0.2:
   dependencies:
     queue "6.0.2"
 
-immediate@~3.0.5:
-  version "3.0.6"
-  resolved "https://registry.npmjs.org/immediate/-/immediate-3.0.6.tgz"
-  integrity sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==
-
 import-fresh@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/import-fresh/-/import-fresh-2.0.0.tgz"
@@ -7462,13 +7403,6 @@ libphonenumber-js@^1.9.43:
   resolved "https://registry.npmjs.org/libphonenumber-js/-/libphonenumber-js-1.10.37.tgz"
   integrity sha512-Z10PCaOCiAxbUxLyR31DNeeNugSVP6iv/m7UrSKS5JHziEMApJtgku4e9Q69pzzSC9LnQiM09sqsGf2ticZnMw==
 
-lie@3.1.1:
-  version "3.1.1"
-  resolved "https://registry.npmjs.org/lie/-/lie-3.1.1.tgz"
-  integrity sha512-RiNhHysUjhrDQntfYSfY4MU24coXXdEOgw9WGcKHNeEwffDYbF//u87M1EWaMGzuFoSbqW0C9C6lEEhDOAswfw==
-  dependencies:
-    immediate "~3.0.5"
-
 lighthouse-logger@^1.0.0:
   version "1.4.2"
   resolved "https://registry.npmjs.org/lighthouse-logger/-/lighthouse-logger-1.4.2.tgz"
@@ -7481,13 +7415,6 @@ lines-and-columns@^1.1.6:
   version "1.2.4"
   resolved "https://registry.npmjs.org/lines-and-columns/-/lines-and-columns-1.2.4.tgz"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
-
-localforage@^1.8.1:
-  version "1.10.0"
-  resolved "https://registry.npmjs.org/localforage/-/localforage-1.10.0.tgz"
-  integrity sha512-14/H1aX7hzBBmmh7sGPd+AOMkkIrHM3Z1PAyGgZigA1H1p5O5ANnMyWzvpAETtG68/dC4pC0ncy3+PPGzXZHPg==
-  dependencies:
-    lie "3.1.1"
 
 locate-path@^3.0.0:
   version "3.0.0"
@@ -8741,7 +8668,7 @@ react-test-renderer@18.2.0:
     react-shallow-renderer "^16.15.0"
     scheduler "^0.23.0"
 
-react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", react@^18.2.0, react@>=16.0, react@>=16.3.0, react@>=16.6.1, react@>=16.8, react@>=17.0.0, "react@15.x || 16.x || 17.x || 18.x", react@18.3.1:
+react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.14.0 || 17.x || 18.x || 19.x", react@^18.2.0, react@>=16.0, react@>=16.3.0, react@>=16.6.1, react@>=16.8, react@>=17.0.0, react@18.3.1:
   version "18.3.1"
   resolved "https://registry.npmjs.org/react/-/react-18.3.1.tgz"
   integrity sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==
