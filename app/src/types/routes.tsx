@@ -11,7 +11,7 @@ export type StackParamList = {
   Home: {
     screen?: keyof TabParamList;
   };
-  POIDetails: { poi: POI };
+  POIDetails: { poi?: POI; poiId?: string };
   ChooseItinerary: {
     start?: Position;
     end?: Position;

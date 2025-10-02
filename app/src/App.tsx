@@ -13,12 +13,35 @@ import * as Sentry from '@sentry/react-native';
 import React, { useEffect } from 'react';
 import { LogBox, StatusBar } from 'react-native';
 import { Provider } from 'react-native-paper';
+import { configureGeolocationLibrary } from './actions/location';
 import { SENTRY } from './config.json';
 import { NotificationsProvider } from './contexts/notifications.context';
 import { useNotifications } from './hooks/useNotifications';
 import Screens from './screens/NavigatorScreen';
 import { theme } from './theme';
-import { configureGeolocationLibrary } from './actions/location';
+
+const linking = {
+  prefixes: ['https://app.naonair.org'],
+  config: {
+    screens: {
+      Home: {
+        screens: {
+          Carte: 'map',
+        },
+      },
+      POIDetails: {
+        path: 'poi',
+        parse: {
+          poiId: (url: string) => {
+            const match = url.match(/[?&]id=(\d+)/);
+            const poiId = match ? match[1] : null;
+            return poiId;
+          },
+        },
+      },
+    },
+  },
+};
 
 
 if (!__DEV__) {
@@ -47,7 +70,7 @@ const App = () => {
           barStyle="dark-content"
           backgroundColor={theme.colors.white}
         />
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
           <Screens />
         </NavigationContainer>
       </NotificationsProvider>

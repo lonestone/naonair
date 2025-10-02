@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import { Close, Download, QrCode, Visibility } from "@mui/icons-material";
 import {
+  Box,
+  Button,
   Card,
   CardContent,
-  Typography,
-  Button,
-  Box,
-  Stack,
   Chip,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
+  DialogContent,
+  DialogTitle,
   IconButton,
+  Stack,
+  Typography,
 } from "@mui/material";
-import { Download, QrCode, Visibility, Close } from "@mui/icons-material";
+import React, { useState } from "react";
 import { POI, downloadQRCode } from "../../api/poi.api";
 
 interface POIQRCodeItemProps {
@@ -149,7 +149,7 @@ const POIQRCodeItem: React.FC<POIQRCodeItemProps> = ({ poi }) => {
                 }}
               />
               <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-                URL: https://naonair.app/poi/{poi.poi_id}
+                URL: https://app.naonair.org/poi?id={poi.poi_id}
               </Typography>
               <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
                 Scannez ce code pour accéder directement au POI
