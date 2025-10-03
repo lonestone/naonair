@@ -8,8 +8,9 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-# WHY?!
-ENV['USE_HERMES'] = '0'
+# Hermes re-enabled (Oct 2025) - MapLibre 10.2.1 should be compatible now
+# Previously disabled in Jan 2024 (commit 08b3266) due to iOS bug with older MapLibre version
+# ENV['USE_HERMES'] = '0'
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -39,7 +40,6 @@ target 'aireal' do
   end
 
   post_install do |installer|
-    $MLRN.post_install(installer)
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
       installer,
@@ -47,5 +47,8 @@ target 'aireal' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # MapLibre post_install must be called after react_native_post_install
+    $MLRN.post_install(installer)
   end
 end
