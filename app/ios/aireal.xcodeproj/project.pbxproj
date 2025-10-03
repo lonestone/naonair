@@ -721,7 +721,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = aireal/aireal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 64;
 				DEVELOPMENT_TEAM = "";
@@ -741,7 +741,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.airpl.naonair;
 				PRODUCT_NAME = aireal;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Naonair Dev Tatiana";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Naonair AppStore Distribution";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -761,7 +761,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = aireal/aireal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 64;
 				DEVELOPMENT_TEAM = "";
@@ -780,7 +780,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.airpl.naonair;
 				PRODUCT_NAME = aireal;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Naonair Dev Tatiana";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Naonair AppStore Distribution";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
