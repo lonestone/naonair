@@ -1,5 +1,6 @@
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
+import QrCodeIcon from "@mui/icons-material/QrCode";
 import { SxProps } from "@mui/lab/node_modules/@mui/system";
 import { AppBar, Box, Button, IconButton } from "@mui/material";
 import { Theme } from "@mui/system";
@@ -44,7 +45,7 @@ const ARHeader = () => {
             >
               Actualités
             </Button>
-            {/* <Button
+            <Button
               color="inherit"
               startIcon={<QrCodeIcon />}
               onClick={() => handleNavigation(ARRoutes.QRCodes)}
@@ -52,7 +53,7 @@ const ARHeader = () => {
               sx={{ color: 'white', borderColor: 'white' }}
             >
               QR Codes
-            </Button> */}
+            </Button>
           </Box>
         )}
       </Box>
