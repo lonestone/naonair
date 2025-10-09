@@ -48,30 +48,21 @@ const extractPoiIdFromUrl = (url: string): string | null => {
     const poiId = urlObj.searchParams.get('id');
     return poiId;
   } catch (error) {
-    console.error('[DEEP LINK] Error parsing URL:', error);
     return null;
   }
 };
 
 // Function to handle deep link navigation
 const handleDeepLinkNavigation = (url: string) => {
-  console.log('[DEEP LINK] Handling deep link:', url);
-  
   // Extract POI ID from URL
   const poiId = extractPoiIdFromUrl(url);
   if (poiId) {
-    console.log('[DEEP LINK] Extracted POI ID:', poiId);
-    
     // Check if navigation is ready
     if (navigationRef.current) {
-      console.log('[DEEP LINK] Navigation is ready, navigating to POI:', poiId);
       navigationRef.current.navigate('POIDetails', { poiId });
     } else {
-      console.log('[DEEP LINK] Navigation not ready, storing pending URL');
       pendingDeepLinkUrl = url;
     }
-  } else {
-    console.log('[DEEP LINK] No POI ID found in URL');
   }
 };
 
@@ -97,25 +88,14 @@ const App = () => {
   }, [notificationListener, requestUserPermission]);
 
   useEffect(() => {
-    // Log initial URL
-    Linking.getInitialURL().then(url => {
-      console.log('[DEEP LINK] Initial URL:', url);
-    });
-
     // Listen for URL events when app is already running
     const subscription = Linking.addEventListener('url', ({ url }) => {
-      console.log('[DEEP LINK] URL event received:', url);
-      console.log('[DEEP LINK] App state when URL received:', AppState.currentState);
-      
       // Extract POI ID and navigate directly
       const poiId = extractPoiIdFromUrl(url);
       if (poiId) {
-        console.log('[DEEP LINK] Extracted POI ID:', poiId);
-        
         // Wait a bit for the app to be fully active, then navigate
         setTimeout(() => {
           if (navigationRef.current) {
-            console.log('[DEEP LINK] Navigating to POI:', poiId);
             navigationRef.current.navigate('POIDetails', { poiId });
           }
         }, 500);
@@ -138,16 +118,11 @@ const App = () => {
           ref={navigationRef}
           linking={linking}
           onReady={() => {
-            console.log('[DEEP LINK] Navigation is ready');
             // Process any pending deep link when navigation becomes ready
             if (pendingDeepLinkUrl) {
-              console.log('[DEEP LINK] Processing pending deep link:', pendingDeepLinkUrl);
               handleDeepLinkNavigation(pendingDeepLinkUrl);
               pendingDeepLinkUrl = null;
             }
-          }}
-          onStateChange={(state) => {
-            console.log('[DEEP LINK] Navigation state changed:', JSON.stringify(state, null, 2));
           }}>
           <Screens />
         </NavigationContainer>
