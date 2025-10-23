@@ -8,10 +8,10 @@
  * @format
  */
 
-import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainer, createNavigationContainerRef, getStateFromPath as getStateFromPathDefault } from '@react-navigation/native';
 import * as Sentry from '@sentry/react-native';
 import React, { useEffect } from 'react';
-import { AppState, Linking, LogBox, StatusBar } from 'react-native';
+import { Linking, LogBox, StatusBar } from 'react-native';
 import { Provider } from 'react-native-paper';
 import { configureGeolocationLibrary } from './actions/location';
 import { SENTRY } from './config.json';
@@ -29,8 +29,9 @@ let pendingDeepLinkUrl: string | null = null;
 
 const linking = {
   prefixes: ['https://app.naonair.org', 'naonair://'],
-  config: {
+ config: {
     screens: {
+      Home: '',
       POIDetails: {
         path: 'poi',
         parse: {
@@ -38,6 +39,24 @@ const linking = {
         },
       },
     },
+  },
+  getStateFromPath(path: string, options: any) {
+    // Let React Native build the state from the link
+    const state = getStateFromPathDefault(path, options);
+    if (!state) return state;
+
+    // If the first route is POIDetails, insert Home before
+    const firstRoute = state.routes?.[0];
+    if (firstRoute?.name === 'POIDetails') {
+      return {
+        ...state,
+        routes: [{ name: 'Home' as never }, ...state.routes],
+        // focus on the last route (POIDetails)
+        index: (state.routes?.length ?? 0),
+      };
+    }
+
+    return state;
   },
 };
 
@@ -118,12 +137,12 @@ const App = () => {
           ref={navigationRef}
           linking={linking}
           onReady={() => {
-            // Process any pending deep link when navigation becomes ready
             if (pendingDeepLinkUrl) {
               handleDeepLinkNavigation(pendingDeepLinkUrl);
               pendingDeepLinkUrl = null;
             }
-          }}>
+          }}
+        >
           <Screens />
         </NavigationContainer>
       </NotificationsProvider>
